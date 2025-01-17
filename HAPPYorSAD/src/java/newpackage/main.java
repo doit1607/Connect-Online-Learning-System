@@ -12,5 +12,7 @@ public class main {
     public static void main(String[] args) {
         System.out.println("hẻlloo");
         System.out.println("good afternoon!");
+        System.out.println("char ");
+        System.out.println("abc ");
     }
 }
