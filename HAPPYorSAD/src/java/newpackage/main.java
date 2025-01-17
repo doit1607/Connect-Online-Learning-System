@@ -13,5 +13,6 @@ public class main {
         System.out.println("hẻlloo");
         System.out.println("good afternoon!");
         System.out.println("char ");
+        System.out.println("abc ");
     }
 }
