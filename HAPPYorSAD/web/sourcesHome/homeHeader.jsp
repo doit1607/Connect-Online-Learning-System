@@ -13,24 +13,36 @@
         <link rel="stylesheet" href="../css/cssHome/homeHeader.css">
         <title>JSP Page</title>
     </head>
-    <body>
-        <header class="navbar">
-            <div class="logo">
-                <img src="../images/images.png" alt="HAPPYorSAD Logo"> 
-                <span>HAPPYor<strong>SAD</strong></span>
-            </div>
-            <ul class="menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Instructor</a></li>
-                <li><a href="#">Student</a></li>
-                <li><a href="#">Pages</a></li>
-                <li><a href="#">Blog</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <span class="theme-toggle">&#9788;</span> 
-                <button class="signin">Signin</button>
-                <button class="signup">Signup</button>
-            </div>
-        </header>
-    </body>
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPYorSAD Navbar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="../images/images.png" alt="HAPPYorSAD Logo"> 
+            <span>HAPPYor<strong>SAD</strong></span>
+        </div>
+        <ul class="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Instructor</a></li>
+            <li><a href="#">Student</a></li>
+            <li><a href="#">Pages</a></li>
+            <li><a href="#">Blog</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <span class="theme-toggle">&#9788;</span> 
+            <button class="signin">Signin</button>
+            <button class="signup">Signup</button>
+        </div>
+    </header>
+</body>
+</html>
+
+    
+
 </html>
