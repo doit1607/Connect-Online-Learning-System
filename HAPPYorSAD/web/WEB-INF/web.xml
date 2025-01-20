@@ -4,6 +4,10 @@
         <servlet-name>ShowAllCourse</servlet-name>
         <servlet-class>controller.ShowAllCourse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePage</servlet-name>
+        <servlet-class>controller.HomePage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
