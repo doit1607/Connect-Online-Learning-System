@@ -10,8 +10,8 @@
         <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="css/cssCourse/courses_styles.css">
         <link rel="stylesheet" type="text/css" href="css/cssCourse/courses_responsive.css">
-        <link rel="stylesheet" href="../css/cssHome/homeHeader.css">       
-        <link rel="stylesheet" href="../css/cssHome/homeFooter.css">
+        <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
+        <link rel="stylesheet" href="css/cssHome/homeFooter.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
     <body>
