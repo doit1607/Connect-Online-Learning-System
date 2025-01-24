@@ -4,6 +4,7 @@
  */
 package model;
 
+import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,32 +35,31 @@ public class DAOuser extends DBConnection {
         return false;
     }
 
-    public boolean addUser(String username, String password, String email, String phoneNumber, String dateOfBirth, String gender) throws ParseException {
+    public void addUser(User u) {
         try {
 
-            String sql = "INSERT INTO User (username, password, email, phone_number, date_of_birth, gender, is_guest, status, role) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, false, 'active', 'user')";
+            String sql = "INSERT INTO [dbo].[User] "
+                    + "([username], [avatar_path], [password], [status], [email], [phone_number], "
+                    + "[date_of_birth], [gender], [created_at], [role], [is_guest]) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            stmt.setString(3, email);
-            stmt.setString(4, phoneNumber);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date parsedDate = formatter.parse(dateOfBirth);
-            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
-            stmt.setDate(5, sqlDate);
-            stmt.setString(6, gender);
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Registration successful. Welcome, " + username + "!");
-                return true;
-            } else {
-                System.out.println("Registration failed.");
-                return false;
-            }
+            stmt.setString(1, u.getUsername());
+            stmt.setString(2, u.getAvatarPath());
+            stmt.setString(3, u.getPassword());
+            stmt.setString(4, u.getStatus());
+            stmt.setString(5, u.getEmail());
+            stmt.setString(6, u.getPhoneNumber());
+            stmt.setDate(7, new java.sql.Date(u.getDateOfBirth().getTime()));
+            stmt.setString(8, u.getGender());
+            stmt.setDate(9, new java.sql.Date(u.getCreatedAt().getTime()));
+            stmt.setString(10, u.getRole());
+            stmt.setBoolean(11, u.isGuest());
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+           
         }
     }
 
@@ -78,7 +78,5 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
-
-  
 
 }
