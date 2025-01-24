@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import model.DAOUser;
+import model.DAOuser;
 
 /**
  *
@@ -71,7 +71,7 @@ public class LoginUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession s = request.getSession();
-        DAOUser u = new DAOUser();
+        DAOuser u = new DAOuser();
         String login = request.getParameter("login");
         String rememberMe = request.getParameter("rememberMe");
         String logout = request.getParameter("logout");
@@ -149,10 +149,7 @@ public class LoginUserController extends HttpServlet {
          * @return a String containing servlet description
          */
         @Override
-        public String getServletInfo
-        
-        
-            () {
+        public String getServletInfo() {
         return "Short description";
         }// </editor-fold>
 
