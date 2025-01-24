@@ -130,7 +130,7 @@
     <body>
         <div class="login-container">
             <h2>Login User</h2>
-            <form action="LoginUser" method="POST">
+            <form action="LoginUser?service=login" method="POST">
                 <div class="input-group">
                     <label for="username">Username:</label>
                     <input type="text" name="usernameLogin" value="${cookie.usernameUser_cookie.value}" required>

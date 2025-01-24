@@ -100,54 +100,42 @@
                     transform: scale(1);
                 }
             }
-
         </style>
     </head>
     <body>
         <div class="register-container">
             <h2>Register User</h2>
-            <form action="RegisterUser" method="POST">
+            <form action="LoginUser?out=register" method="POST" enctype="multipart/form-data">
                 <div class="input-group">
                     <label for="username">Username:</label>
-                    <input type="text" name="username" id="username" required>
-                </div>
-                <div class="input-group">
-                    <label for="avatar">Avatar Path:</label>
-                    <input type="text" name="avatar_path" id="avatar">
+                    <input type="text" name="usernameRegis" id="username" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" required>
+                    <input type="password" name="passwordRegis" id="password" required>
                 </div>
                 <div class="input-group">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" required>
+                    <input type="email" name="emailRegis" id="email" required>
                 </div>
                 <div class="input-group">
                     <label for="phone">Phone Number:</label>
-                    <input type="text" name="phone_number" id="phone" required>
+                    <input type="text" name="phoneRegis" id="phone" required>
+                </div>
+                <div class="input-group">
+                    <label for="avatar">Avatar:</label>
+                    <input type="file" name="avatarRegis" id="avatar" accept="image/*" required>
                 </div>
                 <div class="input-group">
                     <label for="dob">Date of Birth:</label>
-                    <input type="date" name="date_of_birth" id="dob" required>
+                    <input type="date" name="dateofbirthRegis" id="dob" required>
                 </div>
                 <div class="input-group">
                     <label for="gender">Gender:</label>
-                    <select name="gender" id="gender" required>
+                    <select name="genderRegis" id="gender" required>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="role">Role:</label>
-                    <input type="text" name="role" id="role" required>
-                </div>
-                <div class="input-group">
-                    <label for="is_guest">Is Guest:</label>
-                    <select name="is_guest" id="is_guest" required>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
                     </select>
                 </div>
                 <button type="submit" class="register-btn">Register</button>
