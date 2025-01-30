@@ -1,0 +1,47 @@
+<%-- 
+    Document   : updateMentorProfile
+    Created on : Jan 30, 2025, 3:18:48 PM
+    Author     : admin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Update Mentor Profile</title>
+    </head>
+    <body>
+        <h1>Update Your Profile</h1>
+        <div class="form-container">
+            <form action="updatementorprofile" method="post">
+                <label for="avatar">Avatar (URL):</label>
+                <input type="text" id="avatar" name="avatar" value="${mentor.avatarPath}" required>
+
+                <label for="username">Account Name:</label>
+                <input type="text" id="username" name="username" value="${mentor.username}" required>
+
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="fullname" name="fullname" value="${mentor.fullname}" required>
+
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" value="${mentor.dateOfBirth}" required>
+
+                <label for="email">Email (Read-Only):</label>
+                <input type="email" id="email" name="email" value="${mentor.email}" readonly>
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="Male" ${mentor.gender == 'Male' ? 'selected' : ''}>Male</option>
+                    <option value="Female" ${mentor.gender == 'Female' ? 'selected' : ''}>Female</option>
+                    <option value="Other" ${mentor.gender == 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="${mentor.address}" required>
+
+                <button type="submit">OK</button>
+            </form>
+        </div>
+    </body>
+</html>
