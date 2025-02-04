@@ -4,17 +4,18 @@
  */
 package entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class CV {
     private int id, userId;
     private String filePath, status;
-    private Date validFrom, validUntil, createdAt, updatedAt;
+    private LocalDate validFrom, validUntil, createdAt, updatedAt;
 
     public CV() {
     }
 
-    public CV(int id, int userId, String filePath, String status, Date validFrom, Date validUntil, Date createdAt, Date updatedAt) {
+    public CV(int id, int userId, String filePath, String status, LocalDate validFrom, LocalDate validUntil, LocalDate createdAt, LocalDate updatedAt) {
         this.id = id;
         this.userId = userId;
         this.filePath = filePath;
@@ -57,35 +58,38 @@ public class CV {
         this.status = status;
     }
 
-    public Date getValidFrom() {
+    public LocalDate getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Date validFrom) {
+    public void setValidFrom(LocalDate validFrom) {
         this.validFrom = validFrom;
     }
 
-    public Date getValidUntil() {
+    public LocalDate getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(Date validUntil) {
+    public void setValidUntil(LocalDate validUntil) {
         this.validUntil = validUntil;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    
+    
 }

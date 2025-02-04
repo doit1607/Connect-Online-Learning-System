@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- 
     Document   : ChangePass
     Created on : Jan 19, 2025, 2:03:49 PM
@@ -9,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Change password Page</title>
+        <title>Change Password Page</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -87,27 +88,27 @@
     </head>
     <body>
         <div class="container">
-        <h2>Change Password</h2>
-        <form id="changePasswordForm" action="ChangePassword" method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter username" required>
-            </div>
-            <div class="form-group">
-                <label for="currentPassword">Current Password:</label>
-                <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" required>
-            </div>
-            <div class="form-group">
-                <label for="newPassword">New Password:</label>
-                <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm New Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter new password" required>
-            </div>
-            <button type="submit" class="btn">Change Password</button>
-        </form>
-        <p id="errorMessage" class="error-message"></p>
-    </div>
+            <h2>Change Password</h2>
+            <form action="LoginUser" method="post">
+                <input type="hidden" name="service" value="changepass">
+                <div class="form-group"><form action="LoginUser?register=out" method="post">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" name="currentpassword" placeholder="Enter current password" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" name="newpassword" placeholder="Enter new password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmpassword" placeholder="Re-enter new password" required>
+                </div>
+                <button type="submit" class="btn">Change Password</button>
+            </form>
+                <c:if test="${requestScope.error != null}">
+                    ${requestScope.error}
+                </c:if>
+
+        </div>
     </body>
 </html>
