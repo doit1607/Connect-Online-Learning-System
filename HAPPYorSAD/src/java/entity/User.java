@@ -12,9 +12,8 @@ import java.util.Date;
  */
 public class User {
     
-    
-    private String username, avatarPath, password,
-                     status, email, phoneNumber;
+    private String avatarPath, username, fullname, password,
+                     status, email, phoneNumber, address; // add fullname, address
     private Date dateOfBirth, createdAt;
     private String gender, role;
     private boolean isGuest;
@@ -22,20 +21,28 @@ public class User {
     public User() {
     }
 
-    public User(String username, String avatarPath, String password, String status, String email, String phoneNumber,
-                        Date dateOfBirth, String gender, Date createdAt, String role, boolean isGuest) {
-        
-        this.username = username;
+    public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, Date createdAt, String gender, String role, boolean isGuest) {
         this.avatarPath = avatarPath;
+        this.username = username;
+        this.fullname = fullname;
         this.password = password;
         this.status = status;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.address = address;
         this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
         this.createdAt = createdAt;
+        this.gender = gender;
         this.role = role;
         this.isGuest = isGuest;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
     }
 
     public String getUsername() {
@@ -46,12 +53,12 @@ public class User {
         this.username = username;
     }
 
-    public String getAvatarPath() {
-        return avatarPath;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setAvatarPath(String avatarPath) {
-        this.avatarPath = avatarPath;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getPassword() {
@@ -86,20 +93,20 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public Date getCreatedAt() {
@@ -110,6 +117,14 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getRole() {
         return role;
     }
@@ -118,11 +133,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isGuest() {
+    public boolean getIsGuest() {
         return isGuest;
     }
 
-    public void setGuest(boolean guest) {
-        isGuest = guest;
-    }
+    public void setIsGuest(boolean isGuest) {
+        this.isGuest = isGuest;
+    }    
 }

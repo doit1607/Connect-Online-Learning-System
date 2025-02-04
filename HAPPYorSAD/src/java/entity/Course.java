@@ -11,7 +11,6 @@ package entity;
 import java.time.LocalDateTime;
 
 public class Course {
-    private int id;
     private String title;
     private String description;
     private int managerId;
@@ -21,9 +20,8 @@ public class Course {
     private int courseMajorId;
 
     // Constructor
-    public Course(int id, String title, String description, int managerId, int mentorId,
+    public Course(String title, String description, int managerId, int mentorId,
                   LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
-        this.id = id;
         this.title = title;
         this.description = description;
         this.managerId = managerId;
@@ -31,15 +29,6 @@ public class Course {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.courseMajorId = courseMajorId;
-    }
-
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {

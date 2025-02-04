@@ -8,51 +8,23 @@ package entity;
  *
  * @author dungb
  */
-import java.time.LocalDateTime;
-
 public class Mentee {
-    private int id;
-    private int menteeId;
-    private int userId; // Assuming mentee_id and userID are related
+
     private String name;
-    private String email;
-    private String goals;
-    private LocalDateTime createdAt;
+    private String accountName;
+    private int numberOfMentee;
+    private double totalHours;
+    private int totalCourses;
 
-    // Constructor
-    public Mentee(int id, int menteeId, int userId, String name, String email, String goals, LocalDateTime createdAt) {
-        this.id = id;
-        this.menteeId = menteeId;
-        this.userId = userId;
+    public Mentee() {
+    }
+
+    public Mentee(String name, String accountName, int numberOfMentee, double totalHours, int totalCourses) {
         this.name = name;
-        this.email = email;
-        this.goals = goals;
-        this.createdAt = createdAt;
-    }
-
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getMenteeId() {
-        return menteeId;
-    }
-
-    public void setMenteeId(int menteeId) {
-        this.menteeId = menteeId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+        this.accountName = accountName;
+        this.numberOfMentee = numberOfMentee;
+        this.totalHours = totalHours;
+        this.totalCourses = totalCourses;
     }
 
     public String getName() {
@@ -63,27 +35,35 @@ public class Mentee {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
-    public String getGoals() {
-        return goals;
+    public int getNumberOfMentee() {
+        return numberOfMentee;
     }
 
-    public void setGoals(String goals) {
-        this.goals = goals;
+    public void setNumberOfMentee(int numberOfMentee) {
+        this.numberOfMentee = numberOfMentee;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public double getTotalHours() {
+        return totalHours;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setTotalHours(double totalHours) {
+        this.totalHours = totalHours;
     }
-  }
+
+    public int getTotalCourses() {
+        return totalCourses;
+    }
+
+    public void setTotalCourses(int totalCourses) {
+        this.totalCourses = totalCourses;
+    }
+}
