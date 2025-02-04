@@ -5,6 +5,7 @@
 package model;
 
 import entity.User;
+import jakarta.servlet.jsp.jstl.sql.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +60,7 @@ public class DAOuser extends DBConnection {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-           
+
         }
     }
 
@@ -77,6 +78,39 @@ public class DAOuser extends DBConnection {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public String getPasswordByUsername(String username) {
+        String password ;
+        try {
+            String sql = "SELECT password FROM User WHERE username = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                password = rs.getString("password");
+                return password;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public void UpdatePassword(String username,String password){
+        try {
+            String Sql = "UPDATE User SET password = ? WHERE username = ?";
+            PreparedStatement st = conn.prepareStatement(Sql);
+            st.setString(1, password);
+            st.setString(2, username);
+            int rowsUpdated = st.executeUpdate();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        
     }
 
 }
