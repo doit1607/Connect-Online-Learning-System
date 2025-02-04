@@ -8,7 +8,7 @@
         <style>
             body {
                 font-family: Arial, sans-serif;
-                
+
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -70,7 +70,7 @@
             .login-btn {
                 width: 100%;
                 padding: 10px;
-                background-color: #007BFF; 
+                background-color: #007BFF;
                 color: white;
                 border: none;
                 border-radius: 5px;
@@ -130,7 +130,8 @@
     <body>
         <div class="login-container">
             <h2>Login User</h2>
-            <form action="LoginUser?service=login" method="POST">
+            <form action="LoginUser" method="POST">
+                <input type="hidden" name="service" value="login">
                 <div class="input-group">
                     <label for="username">Username:</label>
                     <input type="text" name="usernameLogin" value="${cookie.usernameUser_cookie.value}" required>
@@ -149,7 +150,7 @@
                     <input type="checkbox" name="rememberMe" id="rememberMe" value="on">
                     <label for="rememberMe">RememberMe</label>
                 </div>
-                
+
                 <button type="submit" name="login" value="login" class="login-btn">Login</button>
                 <div class="forgot-password">
                     <a href="forgotPassword.jsp">Forgot Password?</a>
