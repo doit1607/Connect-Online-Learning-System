@@ -56,7 +56,7 @@ public class LoginUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doPost(request, response);
     }
 
     /**
@@ -70,18 +70,19 @@ public class LoginUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession s = request.getSession();
-        DAOuser u = new DAOuser();
-        String login = request.getParameter("login");
-        String rememberMe = request.getParameter("rememberMe");
-        String logout = request.getParameter("logout");
-        String register = request.getParameter("register");
-        String usernameLogin = request.getParameter("usernameLogin");
-        String passwordLogin = request.getParameter("passwordLogin");
-        if (login != null) {
-            boolean checkLogin = u.loginUser(usernameLogin, passwordLogin);
-            if (checkLogin == true) {
-                if (rememberMe != null) {
+        HttpSession session = request.getSession();
+        DAOuser userDAO = new DAOuser();
+        
+        
+        String service = request.getParameter("service");
+        
+        if ("login".equals(service)) {
+            String usernameLogin = request.getParameter("usernameLogin");
+            String passwordLogin = request.getParameter("passwordLogin");
+            String rememberMe = request.getParameter("rememberMe");
+            
+            if (userDAO.loginUser(usernameLogin, passwordLogin)) {
+                if ("on".equals(rememberMe)) {
                     Cookie c = new Cookie("usernameUser_cookie", usernameLogin);
                     c.setMaxAge(3600);
                     response.addCookie(c);
@@ -90,68 +91,76 @@ public class LoginUserController extends HttpServlet {
                     c.setMaxAge(0);
                     response.addCookie(c);
                 }
-                s.setAttribute("usernameUser", usernameLogin);
-                request.getRequestDispatcher("sourcesHome/homeDetail.jsp").forward(request, response);
+                session.setAttribute("usernameUser", usernameLogin);
+                request.getRequestDispatcher("/sourcesHome/homeDetail.jsp").forward(request, response);
             } else {
-                String error = "Wrong username or password!!";
-                request.setAttribute("error", error);
-                request.getRequestDispatcher("LoginUser.jsp").forward(request, response);
+                request.setAttribute("error", "Wrong username or password!!");
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             }
             return;
         }
-        if ("out".equals(logout)) {
-            s.invalidate();
-            request.getRequestDispatcher("LoginUser.jsp").forward(request, response);
+
+        if ("logout".equals(service)) {
+            session.invalidate();
+            response.sendRedirect("/view/LoginUser.jsp");
             return;
         }
-        if ("out".equals(register)) {
+        
+        if ("register".equals(service)) {
             String usernameRegis = request.getParameter("usernameRegis");
             String passwordRegis = request.getParameter("passwordRegis");
             String emailRegis = request.getParameter("emailRegis");
             String phoneRegis = request.getParameter("phoneRegis");
-
+            String genderRegis = request.getParameter("genderRegis");
+            
             Date dateOfBirth = null;
-            Date createAt = new Date(System.currentTimeMillis());
-
             try {
                 String dateString = request.getParameter("dateofbirthRegis");
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date utilDate = formatter.parse(dateString);
                 dateOfBirth = new Date(utilDate.getTime());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            String status = "Active";
+            
             String avatar_path = request.getParameter("avatarRegis");
-            String genderRegis = request.getParameter("genderRegis");
-            String role = "User";
-            Boolean is_guest = false;
-            Boolean userExist = u.checkUsernameExist(usernameRegis);
-            if (!userExist) {
-                User user = new User(usernameRegis, avatar_path, passwordRegis, status, emailRegis, phoneRegis, dateOfBirth, role, createAt, role, is_guest);
-                u.addUser(user);
-                String msg = "Register Successfully!!";
-                request.setAttribute("msg", msg);
-                request.getRequestDispatcher("LoginUser.jsp").forward(request, response);
+            
+            if (!userDAO.checkUsernameExist(usernameRegis)) {
+                User newUser = new User(usernameRegis, avatar_path, passwordRegis, "Active", emailRegis, phoneRegis, dateOfBirth, "User", new Date(), "User", false);
+                userDAO.addUser(newUser);
+                request.setAttribute("msg", "Register Successfully!!");
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {
-                String msg = "Username Already Exist!!";
-                request.setAttribute("msg", msg);
-                request.getRequestDispatcher("registerUser.jsp").forward(request, response);
+                request.setAttribute("msg", "Username Already Exist!!");
+                request.getRequestDispatcher("/view/registerUser.jsp").forward(request, response);
+            }
+            return;
+        }
+        
+        if ("changepass".equals(service)) {
+            String username = request.getParameter("username");
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+            
+            if (userDAO.loginUser(username, oldPassword)) {
+                userDAO.UpdatePassword(username, newPassword);
+                request.setAttribute("msg", "Password changed successfully!");
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Incorrect old password!");
+                request.getRequestDispatcher("/view/changePassword.jsp").forward(request, response);
             }
         }
-        return;
     }
 
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo() {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-        }// </editor-fold>
-
-    }
-    
+    }// </editor-fold>
+   
+}
