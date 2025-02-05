@@ -24,7 +24,7 @@
         <body>
             <header class="navbar">
                 <div class="logo">
-                    <img src="../images/images.png" alt="HAPPYorSAD Logo"> 
+                    <img src="images/images.png" alt="HAPPYorSAD Logo"> 
                     <span>HAPPYor<strong>SAD</strong></span>
                 </div>
                 <ul class="menu">
