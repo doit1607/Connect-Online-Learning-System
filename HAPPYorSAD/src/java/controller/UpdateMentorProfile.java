@@ -48,8 +48,26 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
-        int id = Integer.parseInt(request.getParameter("id"));
-        User mentor = mento.getMenteeById(id); // lay ra mentee_id can update
+        // Get ID parameter
+        String idParam = request.getParameter("id");
+
+        // Validate ID
+        int id = 0;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                id = Integer.parseInt(idParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid ID format!");
+                request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            request.setAttribute("error", "ID parameter is missing!");
+            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+            return;
+        }
+
+        User mentor = mento.getMentorById(id);
         request.setAttribute("mentor", mentor);
         request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
     }

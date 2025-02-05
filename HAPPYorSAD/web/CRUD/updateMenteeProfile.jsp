@@ -16,7 +16,9 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
-            <form action="updatementeeprofile" method="get">
+            <form action="/HAPPYorSAD/updatementeeprofile" method="get">
+                <input type="hidden" name="id" value="${mentee.id}">
+                
                 <label for="avatar">Avatar (URL):</label>
                 <input type="text" id="avatar" name="avatar" value="${mentee.avatarPath}" required>
 
@@ -52,7 +54,7 @@
             // thông báo thành công
             <% if (request.getAttribute("successMessage") != null) { %>
                 alert("<%= request.getAttribute("successMessage") %>");
-                window.location.href = "Course.jsp"; // trở về trang Course
+                window.location.href = "/view/Course.jsp"; // trở về trang Course
             <% } %>
 
             // thông báo lỗi

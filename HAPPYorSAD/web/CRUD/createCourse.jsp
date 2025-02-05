@@ -14,7 +14,7 @@
         <title>Create Course</title>
     </head>
     <body>
-        <form action="CourseURL" method="post">
+        <form action="/HAPPYorSAD/createCourse" method="post">
             <input type="hidden" name="service" value="createCourse">
             <%@include file="../sourcesHome/homeHeader.jsp" %>
             <table>

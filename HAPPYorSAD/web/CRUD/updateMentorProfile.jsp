@@ -16,7 +16,9 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
-            <form action="updatementorprofile" method="get">
+            <form action="/HAPPYorSAD/updatementorprofile" method="get">
+                <input type="hidden" name="id" value="${mentor.id}">
+                
                 <label for="avatar">Avatar (URL):</label>
                 <input type="text" id="avatar" name="avatar" value="${mentor.avatarPath}" required>
 
