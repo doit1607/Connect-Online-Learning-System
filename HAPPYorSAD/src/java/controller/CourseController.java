@@ -20,7 +20,7 @@ import model.DAOCourse;
  *
  * @author admin
  */
-@WebServlet(name="CourseController", urlPatterns={"/CourseURL"})
+@WebServlet(name="CourseController", urlPatterns={"/createCourse"})
 public class CourseController extends HttpServlet {
    
     /** 
@@ -40,7 +40,7 @@ public class CourseController extends HttpServlet {
             if (service.equals("createCourse")) {
                 String submit = request.getParameter("submit");
                 if (submit == null) {
-                    request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+                    request.getRequestDispatcher("createCourse.jsp").forward(request, response);
                 } else {
                     // get data
                     String title = request.getParameter("title");
@@ -59,7 +59,7 @@ public class CourseController extends HttpServlet {
                     LocalDateTime updatedAt = LocalDateTime.parse(updateAt);
                     Course cr = new Course(title, description, managerID, mentorID, createdAt, updatedAt, courseMajorID);
                     dao.createCourse(cr);
-                    response.sendRedirect("CourseURL?service=listAllCourse");
+                    response.sendRedirect("/HAPPYorSAD/Course");
                 }
             } 
         }

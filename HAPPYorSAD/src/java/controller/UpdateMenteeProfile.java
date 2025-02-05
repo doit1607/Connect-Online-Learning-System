@@ -6,7 +6,6 @@ package controller;
 
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -48,10 +47,29 @@ public class UpdateMenteeProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
-        int id = Integer.parseInt(request.getParameter("id"));
-        User mentee = mente.getMenteeById(id); // lay ra mentee_id can update
+        // Get ID parameter
+        String idParam = request.getParameter("id");
+
+        // Validate ID
+        int id = 0;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                id = Integer.parseInt(idParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid ID format!");
+                request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            request.setAttribute("error", "ID parameter is missing!");
+            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+            return;
+        }
+
+        User mentee = mente.getMenteeById(id);
         request.setAttribute("mentee", mentee);
         request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+
     }
 
     /**
@@ -69,9 +87,18 @@ public class UpdateMenteeProfile extends HttpServlet {
         String avatar = request.getParameter("avatar");
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
-        java.sql.Date DOB = java.sql.Date.valueOf(request.getParameter("DOB"));
+        String dob = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
         String address = request.getParameter("address");
+
+        java.sql.Date DOB = null;
+        if (dob != null && !dob.isEmpty()) {
+            DOB = java.sql.Date.valueOf(dob);
+        } else {
+            request.setAttribute("error", "Date of birth can not empty!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMenteeProfile.jsp").forward(request, response);
+            return;
+        }
 
         User mentee = new User();
         mentee.setAvatarPath(avatar);
@@ -89,7 +116,7 @@ public class UpdateMenteeProfile extends HttpServlet {
 
         } else {
             request.setAttribute("error", "Unable update profile!");
-            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMenteeProfile.jsp").forward(request, response);
         }
     }
 

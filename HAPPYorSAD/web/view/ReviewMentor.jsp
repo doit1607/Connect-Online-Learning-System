@@ -19,7 +19,7 @@
             <h1>Rate & Comment Mentor</h1>
 
             <!-- Rating Form -->
-            <form action="RateMentor" method="post">
+            <form action="/HAPPYorSAD/reviewmentor" method="post">
                 <input type="hidden" name="mentorId" value="${param.mentorId}">
                 <input type="hidden" name="userId" value="1"> <!-- Replace with dynamic user session -->
 
