@@ -19,7 +19,7 @@
         <div class="footer">
             <div class="footer-container">
                 <div class="footer-logo">
-                    <img src="../images/images.png" alt="HAPPYorSAD Logo"> 
+                    <img src="images/images.png" alt="HAPPYorSAD Logo"> 
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
                 </div>
 
