@@ -1,9 +1,3 @@
-<%-- 
-    Document   : updateMenteeProfile
-    Created on : Jan 27, 2025, 12:15:31 AM
-    Author     : admin
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,9 +10,7 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
-            <form action="updatementeeprofile" method="post">
-                <label for="avatar">Avatar (URL):</label>
-                <input type="text" id="avatar" name="avatar" value="${mentee.avatarPath}" required>
+            <form action="updatementeeprofile" method="post" enctype="multipart/form-data">
 
                 <label for="username">Account Name:</label>
                 <input type="text" id="username" name="username" value="${mentee.username}" required>
@@ -41,6 +33,9 @@
 
                 <label for="address">Address:</label>
                 <input type="text" id="address" name="address" value="${mentee.address}" required>
+
+                <label for="avatar">Profile Picture:</label>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
 
                 <button type="submit">OK</button>
             </form>
