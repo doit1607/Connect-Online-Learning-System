@@ -9,9 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../css/cssStatistic/MenteeStatistic.css">
         <title>Statistic of all Mentee</title>
     </head>
     <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Statistic of all Mentee</h1>
         <table border = 1>
             <tr>
@@ -31,5 +33,6 @@
                 </tr>
             </c:forEach>
         </table>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
 </html>
