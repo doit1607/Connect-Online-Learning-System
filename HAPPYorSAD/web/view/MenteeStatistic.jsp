@@ -15,24 +15,26 @@
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Statistic of all Mentee</h1>
-        <table border = 1>
-            <tr>
-                <th>Name</th>
-                <th>Account Name</th>
-                <th>Number of Mentees</th>
-                <th>Total Hours</th>
-                <th>Total Skills</th>
-            </tr>
-            <c:forEach var="mentee" items="${listMentee}">
+        <form action="menteestatistic" method="get">
+            <table border = 1>
                 <tr>
-                    <td>${mentee.name}</td>
-                    <td>${mentee.account_name}</td>
-                    <td>${mentee.numberOfMentee}</td>
-                    <td>${mentee.totalHours}</td>
-                    <td>${mentee.totalCourses}</td>
+                    <th>Name</th>
+                    <th>Account Name</th>
+                    <th>Number of Mentees</th>
+                    <th>Total Hours</th>
+                    <th>Total Skills</th>
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach var="mentee" items="${listMentee}">
+                    <tr>
+                        <td>${mentee.name}</td>
+                        <td>${mentee.account_name}</td>
+                        <td>${mentee.numberOfMentee}</td>
+                        <td>${mentee.totalHours}</td>
+                        <td>${mentee.totalCourses}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </form>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
 </html>

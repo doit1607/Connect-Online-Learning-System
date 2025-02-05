@@ -20,7 +20,7 @@ import entity.Mentee;
  *
  * @author admin
  */
-@WebServlet(name="MenteeStatistic", urlPatterns={"/menteestatisticURL"})
+@WebServlet(name="MenteeStatistic", urlPatterns={"/menteestatistic"})
 public class MenteeStatistic extends HttpServlet {
    
     /** 

@@ -8,6 +8,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 */
 /* Global Styles */
 /* General body and container styles */
+/* General body and container styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f7fc;
@@ -16,8 +17,8 @@ body {
 }
 
 .container {
-    width: 60%;
-    margin: 20px auto;
+    width: 100%;
+    margin: auto;
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -32,29 +33,31 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Rating stars container */
+/* Rating Stars */
 .rating {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    flex-direction: row-reverse; /* Reverse order */
+    gap: 5px;
+    margin: 15px 0;
 }
 
 .rating input {
-    display: none;
+    display: none; /* Hide default radio button */
 }
 
 .rating label {
-    font-size: 2rem;
+    font-size: 30px;
     color: #ccc;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
-/* Highlight stars when selected */
-.rating input:checked ~ label,
-.rating input:hover ~ label,
-.rating input:focus ~ label {
-    color: #FFD700; /* Gold color for stars */
+/* Star Hover & Checked Effect (Left to Right) */
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    color: gold;
 }
 
 /* Comment textarea */
