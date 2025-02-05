@@ -21,15 +21,15 @@
                 background-color: white;
                 padding: 40px;
                 width: 350px;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Bóng ?? m?m */
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
                 border-radius: 10px;
-                border: 2px solid #007BFF; /* Vi?n xanh lá */
+                border: 2px solid #007BFF;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
 
             .login-container:hover {
-                transform: translateY(-5px); /* Hi?u ?ng nâng nh? lên khi hover */
-                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Bóng ?? sâu h?n khi hover */
+                transform: translateY(-5px);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
             }
 
             .login-container h2 {
@@ -80,8 +80,8 @@
             }
 
             .login-btn:hover {
-                background-color: #007BFF; /* ??i màu khi hover */
-                transform: translateY(-3px); /* Nâng nh? nút khi hover */
+                background-color: #0056b3;
+                transform: translateY(-3px);
             }
 
             .forgot-password {
@@ -91,7 +91,7 @@
             }
 
             .forgot-password a {
-                color: #007BFF; /* ??i màu xanh d??ng */
+                color: #007BFF;
                 text-decoration: none;
             }
 
@@ -106,7 +106,7 @@
             }
 
             .signup-link a {
-                color: #007BFF; /* ??i màu xanh d??ng */
+                color: #007BFF;
                 text-decoration: none;
             }
 
@@ -130,7 +130,8 @@
     <body>
         <div class="login-container">
             <h2>Login User</h2>
-            <form action="LoginUser" method="POST">
+            
+            <form action="/HAPPYorSAD/LoginUser" method="POST">
                 <input type="hidden" name="service" value="login">
                 <div class="input-group">
                     <label for="username">Username:</label>
