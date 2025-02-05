@@ -1,6 +1,6 @@
 <%-- 
     Document   : updateMenteeProfile
-    Created on : Jan 27, 2025, 12:15:31 AM
+    Created on : Feb 5, 2025, 4:22:30 PM
     Author     : admin
 --%>
 
@@ -49,7 +49,7 @@
     </body>
     <script>
         window.onload = function() {
-            // thông báo update thành công
+            // thông báo thành công
             <% if (request.getAttribute("successMessage") != null) { %>
                 alert("<%= request.getAttribute("successMessage") %>");
                 window.location.href = "Course.jsp"; // trở về trang Course
@@ -62,3 +62,4 @@
         };
     </script>
 </html>
+
