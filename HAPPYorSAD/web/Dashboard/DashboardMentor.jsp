@@ -20,7 +20,7 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <div class="all-container">
            <%@include file="../sourcesDashboard/LeftMenuMentor.jsp" %>
-           <%@include file="../sourcesDashboard/RightContentMentor.jsp" %>
+           
         </div>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
