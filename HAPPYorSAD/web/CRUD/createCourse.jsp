@@ -9,11 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../css/cssCRUD/createCourse.css">
+        
         <title>Create Course</title>
     </head>
     <body>
         <form action="CourseURL" method="post">
             <input type="hidden" name="service" value="createCourse">
+            <%@include file="../sourcesHome/homeHeader.jsp" %>
             <table>
                 <caption>Create Course</caption>
                 <tr>
@@ -31,8 +34,9 @@
                 <tr>
                     <td><input type="submit" value="createCourse" name="submit"></td>
                     <td><input type="reset" value="Clear"></td>
-                </tr>
+                </tr>               
             </table>
+            <%@include file="../sourcesHome/homeFooter.jsp" %>
         </form>
     </body>
 </html>

@@ -9,9 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../css/cssCRUD/updateProfile.css">
         <title>Update Mentor Profile</title>
     </head>
     <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
             <form action="updatementorprofile" method="post">
@@ -43,5 +45,6 @@
                 <button type="submit">OK</button>
             </form>
         </div>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
 </html>
