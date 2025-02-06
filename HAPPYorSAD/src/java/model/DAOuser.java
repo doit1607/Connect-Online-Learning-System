@@ -73,7 +73,7 @@ public class DAOuser extends DBConnection {
             stmt.setString(10, u.getGender());
             stmt.setDate(11, new java.sql.Date(u.getCreatedAt().getTime()));
             stmt.setString(12, u.getRole());
-            stmt.setBoolean(13, true);
+            stmt.setBoolean(13, false);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
