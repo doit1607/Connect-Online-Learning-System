@@ -166,27 +166,27 @@
                 <form id="signupForm">
                     <div class="input-group">
                         <label for="username">User Name</label>
-                        <input type="text" id="username" required>
+                        <input type="text" id="usernameRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="fullname">Full Name</label>
-                        <input type="text" id="fullname" required>
+                        <input type="text" id="fullnameRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" required>
+                        <input type="email" id="emailRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" required>
+                        <input type="tel" id="phoneRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" required>
+                        <input type="date" id="dobRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="gender">Sex</label>
-                        <select id="gender" required>
+                        <select id="genderRegis" required>
                             <option value="">Choose Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -194,11 +194,11 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="address">Address</label>
+                        <label for="addressRegis">Address</label>
                         <input type="text" id="address" required>
                     </div>
                     <div class="input-group">
-                        <label for="password">Password</label>
+                        <label for="passwordRegis">Password</label>
                         <input type="password" id="password" required>
                     </div>
                     <div class="input-group">
