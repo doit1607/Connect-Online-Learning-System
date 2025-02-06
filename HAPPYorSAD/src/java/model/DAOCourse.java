@@ -8,12 +8,10 @@ import entity.Course;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -38,7 +36,7 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
 
-                Course course = new Course(title, description, managerId, mentorId, courseMajorId, status);
+                Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
                 listCourse.add(course);
             }
             result.close();
@@ -90,7 +88,7 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
 
-                Course course = new Course(title, description, managerId, mentorId, courseMajorId, status);
+                Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
                 listCourse.add(course);
             }
             result.close();

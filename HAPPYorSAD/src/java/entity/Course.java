@@ -24,7 +24,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, String description, int managerId, int mentorId, int courseMajorId, String status) {
+    public Course(int id, String title, String description, int managerId, int mentorId, int courseMajorId, String status) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.managerId = managerId;
