@@ -42,11 +42,15 @@
             </header>
             <script>
                 function redirectToSignup() {
-                    window.location.href = "/HAPPYorSAD/LoginUser?service=register"; // Redirect to the signup page
+                    console.log("Redirecting to: /HAPPYorSAD/LoginUser?service=register");
+                    window.location.href = "/HAPPYorSAD/LoginUser?service=register";
                 }
+
                 function redirectToLogin() {
-                    window.location.href = "/HAPPYorSAD/LoginUser?service=login"; // Redirect to the signup page
+                    console.log("Redirecting to: /HAPPYorSAD/LoginUser?service=login");
+                    window.location.href = "/HAPPYorSAD/LoginUser?service=login";
                 }
+
             </script>
         </body>
     </html>

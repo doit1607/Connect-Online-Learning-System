@@ -156,7 +156,7 @@
         <div class="container">
             <div class="left-section">
                 <div class="illustration">
-                    <img src="../images/images.png" alt="Illustration">
+                    <img src="/HAPPYorSAD/images/images.png" alt="Illustration">
                 </div>
                 <h2>Welcome to HappyOrSad Courses.</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
@@ -165,7 +165,7 @@
                 <div class="logo">
                     <h1><span class="logo-highlight">Dreams</span>HOS</h1>
                 </div>
-                <div class="back-home"><a href="../Home/HomePage.jsp">Back to Home</a></div>
+                <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                 <div class="signin-box">
                     <h2>Sign into Your Account</h2>
                     <form action="/HAPPYorSAD/LoginUser" method="POST">

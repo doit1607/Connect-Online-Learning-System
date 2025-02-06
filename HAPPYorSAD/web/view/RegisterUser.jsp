@@ -161,7 +161,7 @@
                 <h2>Welcome to HappyorSAD</h2>
             </div>
             <div class="form-container">
-                <div class="back-home"><a href="../Home/HomePage.jsp">Back to Home</a></div>
+                <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                 <h2>Sign up</h2>
                 <form id="signupForm">
                     <div class="input-group">
