@@ -13,14 +13,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 90%;
-                width: 100%;
+                min-height: 100vh;
             }
 
             .container {
                 display: flex;
                 width: 100%;
-                height: 90%;
+                min-height: 100vh;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 background-color: white;
                 border-radius: 0;
@@ -34,19 +33,19 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 5vh;
+                padding: 3vh; /* Reduced padding for compactness */
                 text-align: center;
             }
 
             .info h2 {
                 margin-bottom: 1vh;
                 color: #d32f2f;
-                font-size: 2.5vw;
+                font-size: 2vw;
             }
 
             .form-container {
                 flex: 1;
-                padding: 5vh;
+                padding: 3vh; /* Reduced padding for compactness */
                 position: relative;
             }
 
@@ -72,27 +71,27 @@
             }
 
             .input-group {
-                margin-bottom: 2vh;
+                margin-bottom: 1.5vh; /* Reduced margin for compactness */
             }
 
             .input-group label {
                 display: block;
-                margin-bottom: 1vh;
+                margin-bottom: 0.5vh; /* Reduced margin for compactness */
                 font-weight: bold;
-                font-size: 1.5vw;
+                font-size: 1.3vw; /* Slightly smaller font for compactness */
             }
 
             .input-group input,
             .input-group select {
                 width: 100%;
-                padding: 1.5vh;
+                padding: 1vh; /* Reduced padding for compactness */
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 font-size: 1.5vw;
             }
 
             .terms {
-                margin-top: 2vh;
+                margin-top: 1.5vh; /* Reduced margin for compactness */
                 display: flex;
                 align-items: center;
                 font-size: 1.2vw;
@@ -105,12 +104,12 @@
             .submit-btn {
                 background-color: #ff7043;
                 color: white;
-                padding: 2vh;
+                padding: 1.5vh; /* Reduced padding for compactness */
                 border: none;
                 width: 100%;
                 border-radius: 5px;
                 cursor: pointer;
-                font-size: 1.8vw;
+                font-size: 1.6vw; /* Slightly smaller font for compactness */
                 font-weight: bold;
                 margin-top: 2vh;
             }
@@ -127,8 +126,8 @@
             }
 
             .avatar-preview img {
-                max-width: 10vw;
-                max-height: 10vw;
+                max-width: 8vw; /* Reduced size of avatar preview */
+                max-height: 8vw; /* Reduced size of avatar preview */
                 border-radius: 50%;
                 object-fit: cover;
             }
@@ -136,12 +135,12 @@
             button {
                 background-color: #ff7043;
                 color: white;
-                padding: 2vh;
+                padding: 1.5vh; /* Reduced padding for compactness */
                 border: none;
                 width: 100%;
                 border-radius: 5px;
                 cursor: pointer;
-                font-size: 1.8vw;
+                font-size: 1.6vw; /* Slightly smaller font for compactness */
                 font-weight: bold;
                 margin-top: 2vh;
             }
@@ -149,7 +148,6 @@
             button:hover {
                 background-color: #ff5733;
             }
-
         </style>
     </head>
     <body>
@@ -163,11 +161,15 @@
             <div class="form-container">
                 <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                 <h2>Sign up</h2>
-                <form id="signupForm">
+                <form action="/HAPPYorSAD/LoginUser" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="service" value="register">
                     <div class="input-group">
                         <label for="username">User Name</label>
                         <input type="text" id="usernameRegis" required>
                     </div>
+                    <c:if test="${requestScope.msg != null}">
+                        ${requestScope.msg}
+                    </c:if>
                     <div class="input-group">
                         <label for="fullname">Full Name</label>
                         <input type="text" id="fullnameRegis" required>
@@ -195,11 +197,11 @@
                     </div>
                     <div class="input-group">
                         <label for="addressRegis">Address</label>
-                        <input type="text" id="address" required>
+                        <input type="text" id="addressRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="passwordRegis">Password</label>
-                        <input type="password" id="password" required>
+                        <input type="password" id="passwordRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="confirmPassword">Confirm Password</label>
@@ -213,20 +215,18 @@
                         <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
                     </div>
                     <button type="submit" class="submit-btn">Create Account</button>
-                    <p>Or sign in with</p>
-                    <button class="google">Sign in using Google</button>
-                    <button class="facebook">Sign in using Facebook</button>
-                    <p>Already have an account? <a href="#">Sign in</a></p>
+
+                    <p>Already have an account? <a href="/HAPPYorSAD/view/LoginUser.jsp">Sign in</a></p>
                 </form>
             </div>
         </div>
 
         <script>
-            document.getElementById("password").addEventListener("input", checkPasswords);
+            document.getElementById("passwordRegis").addEventListener("input", checkPasswords);
             document.getElementById("confirmPassword").addEventListener("input", checkPasswords);
 
             function checkPasswords() {
-                let password = document.getElementById("password").value;
+                let password = document.getElementById("passwordRegis").value;
                 let confirmPassword = document.getElementById("confirmPassword").value;
                 let message = document.getElementById("passwordMessage");
 

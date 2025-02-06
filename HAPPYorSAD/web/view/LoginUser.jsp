@@ -1,4 +1,4 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -14,14 +14,14 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100vh;
-                width: 100vw;
+                height: 100%;
+                width: 100%;
             }
 
             .container {
                 display: flex;
                 width: 100%;
-                height: 100vh;
+                height: 90vh;
                 max-width: 100%;
                 background: white;
                 border-radius: 0;
@@ -54,6 +54,14 @@
                 flex-direction: column;
                 justify-content: center;
             }
+            .remember-me {
+                margin-bottom: 20px;
+                align-items: center;
+                gap: 10px; 
+                justify-content: flex-start; 
+            }
+
+
 
             h2 {
                 margin-bottom: 20px;
@@ -75,7 +83,7 @@
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 font-size: 14px;
-                margin-top: 10px;
+                margin-top: 0px;
             }
 
             .terms {
@@ -148,6 +156,7 @@
             .back-home a:hover {
                 text-decoration: underline;
             }
+
         </style>
     </head>
 
@@ -165,13 +174,10 @@
                 <div class="logo">
                     <h1><span class="logo-highlight">Dreams</span>HOS</h1>
 
-                    <div class="signup-link">
-                        <p>Don't have an account? <a href="RegisterUser.jsp">Sign up</a></p>
 
-                    </div>
                     <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                     <div class="signin-box">
-                        <h2>Sign into Your Account</h2>
+                       
                         <form action="/HAPPYorSAD/LoginUser" method="POST">
                             <input type="hidden" name="service" value="login">
                             <label for="username">Username</label>
@@ -180,10 +186,6 @@
                             <input type="password" name="passwordLogin" placeholder="Enter your password" required>
                             <div class="forgot-password">
                                 <a href="forgotPassword.jsp">Forgot Password?</a>
-                            </div>
-                            <div class="remember-me">
-                                <input type="checkbox" name="rememberMe" id="rememberMe" value="on"> 
-                                <label for="rememberMe">Remember me</label>
                             </div>
                             <c:if test="${requestScope.error != null}">
                                 ${requestScope.error}
@@ -199,7 +201,8 @@
                             <button class="facebook-btn">Sign In using Facebook</button>
                         </div>
                         <div class="signup-link">
-                            <p>New User? <a href="/HAPPYorSAD/LoginUser?service=register">Create an Account</a></p>
+                            <p>Don't have an account? <a href="/HAPPYorSAD/view/RegisterUser.jsp">Sign up</a></p>
+
                         </div>
                     </div>
                 </div>

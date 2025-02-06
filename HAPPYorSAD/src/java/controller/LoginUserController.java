@@ -124,16 +124,16 @@ public class LoginUserController extends HttpServlet {
                 e.printStackTrace();
             }
 
-            String avatar_path = request.getParameter("avatarRegis");
+            String avatar_path = null;
 
             if (!userDAO.checkUsernameExist(usernameRegis)) {
-                User newUser = new User(avatar_path, usernameRegis, fullnameRegis, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "User", false);
+                User newUser = new User(avatar_path, usernameRegis, fullnameRegis, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "mentee", false);
                 userDAO.addUser(newUser);
                 request.setAttribute("msg", "Register Successfully!!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {
                 request.setAttribute("msg", "Username Already Exist!!");
-                request.getRequestDispatcher("/view/registerUser.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
             }
             return;
         }
