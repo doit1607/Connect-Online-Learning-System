@@ -12,6 +12,14 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateCourse</servlet-name>
+        <servlet-class>controller.UpdateCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseManager</servlet-name>
+        <servlet-class>controller.CourseManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -19,5 +27,13 @@
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCourse</servlet-name>
+        <url-pattern>/UpdateCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseManager</servlet-name>
+        <url-pattern>/CourseManager</url-pattern>
     </servlet-mapping>
 </web-app>

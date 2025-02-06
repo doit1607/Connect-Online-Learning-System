@@ -21,33 +21,31 @@ import java.util.logging.Logger;
  */
 public class DAOCourse extends DBConnection {
 
-    public List<Course> getAllCourse() {
+     public List<Course> getAllCourse() {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT *\n"
-                + "  FROM [course]";
-
+        String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
             while (result.next()) {
+                int id = result.getInt("id");
                 String title = result.getString("title");
                 String description = result.getString("description");
-                int managerId = result.getInt("managerId");
-                int mentorId = result.getInt("mentorId");
-                LocalDateTime createdAt = result.getTimestamp("createdAt").toLocalDateTime();
-                LocalDateTime updatedAt = result.getTimestamp("updatedAt").toLocalDateTime();
-                int courseMajorId = result.getInt("courseMajorId");
+                int managerId = result.getInt("manager_id"); // Sửa lại tên cột cho đúng
+                int mentorId = result.getInt("mentor_id");
+                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
+                int courseMajorId = result.getInt("course_major_id");
 
-                Course course = new Course(title, description, managerId, mentorId, createdAt, updatedAt, courseMajorId);
+                Course course = new Course(id, title, description, managerId, mentorId, createdAt, updatedAt, courseMajorId);
                 listCourse.add(course);
             }
-            connect.close();
             result.close();
-            return listCourse;
+            connect.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
-        return null;
+        return listCourse;
     }
 
     public int createCourse(Course cr) {
@@ -65,5 +63,37 @@ public class DAOCourse extends DBConnection {
             Logger.getLogger(DAOCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
+    }
+    public List<Course> getAllCourseOrderByName() {
+        ArrayList<Course> listCourse = new ArrayList<>();
+        String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course ORDER BY title";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            ResultSet result = connect.executeQuery();
+            while (result.next()) {
+                int id = result.getInt("id");
+                String title = result.getString("title");
+                String description = result.getString("description");
+                int managerId = result.getInt("manager_id"); // Sửa lại tên cột cho đúng
+                int mentorId = result.getInt("mentor_id");
+                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
+                int courseMajorId = result.getInt("course_major_id");
+
+                Course course = new Course(id, title, description, managerId, mentorId, createdAt, updatedAt, courseMajorId);
+                listCourse.add(course);
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCourse;
+    }
+    public static void main(String[] args) {
+        DAOCourse dao = new DAOCourse();
+
+        List<Course> listCourse1 = dao.getAllCourse();
+        System.out.println(listCourse1);
     }
 }

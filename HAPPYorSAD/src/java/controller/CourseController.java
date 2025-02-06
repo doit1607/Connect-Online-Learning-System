@@ -43,6 +43,7 @@ public class CourseController extends HttpServlet {
                     request.getRequestDispatcher("createCourse.jsp").forward(request, response);
                 } else {
                     // get data
+                    String id = request.getParameter("id");
                     String title = request.getParameter("title");
                     String description = request.getParameter("description");
                     String managerId = request.getParameter("managerId");
@@ -51,13 +52,14 @@ public class CourseController extends HttpServlet {
                     String updateAt = request.getParameter("updatedAt");
                     String courseMajorId = request.getParameter("courseMajorId");
                     
-                    //convert
+                    //convert                   
+                    int id = Integer.parseInt(id);
                     int courseMajorID = Integer.parseInt(courseMajorId);
                     int managerID = Integer.parseInt(managerId);
                     int mentorID = Integer.parseInt(mentorId);
                     LocalDateTime createdAt = LocalDateTime.parse(createAt);
                     LocalDateTime updatedAt = LocalDateTime.parse(updateAt);
-                    Course cr = new Course(title, description, managerID, mentorID, createdAt, updatedAt, courseMajorID);
+                    Course cr = new Course(id,title, description, managerID, mentorID, createdAt, updatedAt, courseMajorID);
                     dao.createCourse(cr);
                     response.sendRedirect("/HAPPYorSAD/Course");
                 }

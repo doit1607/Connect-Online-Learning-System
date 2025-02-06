@@ -35,9 +35,10 @@ public class ShowAllCourse extends HttpServlet {
             throws ServletException, IOException {
         DAOCourse dao = new DAOCourse();
         HttpSession session = request.getSession();
-        List<Course> listAllCousre = dao.getAllCourse();
+        List<Course> listAllCousre = dao.getAllCourseOrderByName();
         session.setAttribute("listAllCousre", listAllCousre);       
         request.getRequestDispatcher("view/Course.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -74,7 +74,7 @@ table tr:hover {
 }
 
 .btn-edit {
-    padding: 5px 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -86,20 +86,16 @@ table tr:hover {
 .btn-edit:hover {
     background-color: #0056b3;
 }
-
-.btn-delete {
-    padding: 5px 10px;
-    border: none;
+.status-select {
+    padding: 8px;
+    font-size: 16px;
     border-radius: 4px;
+    border: 1px solid #ccc;
     cursor: pointer;
-    font-size: 14px;
-    background-color: #dc3545;
-    color: #fff;
+    width: 70%;
+    margin-bottom: 8px;
 }
 
-.btn-delete:hover {
-    background-color: #c82333;
-}
 
 .form-container {
     width: 70%;
@@ -145,6 +141,22 @@ form input:focus, form textarea:focus {
     cursor: pointer;
     font-size: 16px;
     text-align: center;
+    margin-bottom: 20px;
+    margin-top: 8px;
+}
+
+.btn-delete {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
 }
 .overlay {
     position: fixed;
@@ -173,4 +185,17 @@ body.overlay-active {
 
 .btn-save:hover {
     background-color: #218838;
+}
+.toggle-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: green;
+    border-radius: 5px;
+}
+
+.disabled {
+    background-color: red;
 }
