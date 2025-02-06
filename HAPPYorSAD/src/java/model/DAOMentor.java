@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import entity.Mentor;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,16 +14,18 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 /**
  *
  * @author Dell
  */
 public class DAOMentor {
-     private Connection conn;
+
+    private Connection conn;
 
     public DAOMentor(Connection conn) {
         this.conn = conn;
-    } 
+    }
 
     public List<Mentor> getMentors(String search) throws SQLException {
         List<Mentor> list = new ArrayList<>();
@@ -35,19 +38,20 @@ public class DAOMentor {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Mentor(
-                        rs.getInt("id"),
-                        rs.getInt("mentorId"),
-                        rs.getInt("userId"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getDouble("rating"),
-                        rs.getInt("reviews"),
-                        rs.getDouble("pricePerSlot"),
-                        rs.getString("expertise"),
-                        rs.getString("bio"),
-                        rs.getTimestamp("createdAt").toLocalDateTime(),
-                        rs.getDouble("baseRate"),
-                        rs.getDouble("multiplier")
+                            rs.getInt("id"),
+                            rs.getInt("mentorId"),
+                            rs.getInt("userId"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getDouble("rating"),
+                            rs.getInt("reviews"),
+                            rs.getDouble("pricePerSlot"),
+                            rs.getString("expertise"),
+                            rs.getString("bio"),
+                            rs.getTimestamp("createdAt").toLocalDateTime(),
+                            rs.getDouble("baseRate"),
+                            rs.getDouble("multiplier"),
+                            rs.getBoolean("is_deleted")
                     ));
                 }
             }
