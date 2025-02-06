@@ -17,7 +17,7 @@ public class DAOuser extends DBConnection {
 
     public boolean loginUser(String username, String password) {
         try {
-            String sql = "Select * from [User] where username = ? and password = ?";
+            String sql = "Select * from Users where username = ? and password = ?";
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
             state.setString(2, password);
@@ -35,7 +35,7 @@ public class DAOuser extends DBConnection {
     public void addUser(User u) {
         try {
             // The SQL query
-            String sql = "INSERT INTO [dbo].[User]\n"
+            String sql = "INSERT INTO [dbo].Users\n"
                     + "           ([username]\n"
                     + "           ,[fullname]\n"
                     + "           ,[avatar_path]\n"
@@ -77,13 +77,13 @@ public class DAOuser extends DBConnection {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            
+
         }
     }
 
     public boolean checkUsernameExist(String username) {
         try {
-            String sql = "Select * from [User] where username = ? ";
+            String sql = "Select * from Users where username = ? ";
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
             ResultSet rs = state.executeQuery();
@@ -100,7 +100,7 @@ public class DAOuser extends DBConnection {
     public String getPasswordByUsername(String username) {
         String password;
         try {
-            String sql = "SELECT password FROM User WHERE username = ?";
+            String sql = "SELECT password FROM Users WHERE username = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
@@ -117,7 +117,7 @@ public class DAOuser extends DBConnection {
 
     public void UpdatePassword(String username, String password) {
         try {
-            String Sql = "UPDATE User SET password = ? WHERE username = ?";
+            String Sql = "UPDATE Users SET password = ? WHERE username = ?";
             PreparedStatement st = conn.prepareStatement(Sql);
             st.setString(1, password);
             st.setString(2, username);
@@ -131,7 +131,7 @@ public class DAOuser extends DBConnection {
     // fetch Mentee by id
     public User getMenteeById(int id) {
         User mentee = null;
-        String sql = "Select * from [User] where id = ? and role = 'mentee'";
+        String sql = "Select * from Users where id = ? and role = 'mentee'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
@@ -157,7 +157,7 @@ public class DAOuser extends DBConnection {
     // Update Mentee profile
     public boolean updateMenteeProfile(User mentee) {
         boolean isUpdate = false;
-        String sql = "Update [User] set avatar_path = ?, fullname = ?, phone_number = ?,"
+        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -180,7 +180,7 @@ public class DAOuser extends DBConnection {
     // fetch Mentor by id
     public User getMentorById(int id) {
         User mentor = null;
-        String sql = "Select * from [User] where id = ? and role = 'mentor'";
+        String sql = "Select * from Users where id = ? and role = 'mentor'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
@@ -206,7 +206,7 @@ public class DAOuser extends DBConnection {
     // Update Mentor profile
     public boolean updateMentorProfile(User mentor) {
         boolean isUpdate = false;
-        String sql = "Update [User] set avatar_path = ?, fullname = ?, phone_number = ?,"
+        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
