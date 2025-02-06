@@ -61,6 +61,7 @@ public class CreateCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         int managerId = Integer.parseInt(request.getParameter("managerId"));
@@ -68,7 +69,7 @@ public class CreateCourse extends HttpServlet {
         int courseMajorId = Integer.parseInt(request.getParameter("courseMajorId"));
         String status = request.getParameter("status");
 
-        Course course = new Course(title, description, managerId, mentorId, courseMajorId, status);
+        Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
         DAOCourse dao = new DAOCourse();
 
         if (dao.createCourse(course)) {

@@ -18,13 +18,14 @@
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
-        <table>
-            <caption>Create Course</caption>
-            <% String message = (String) request.getAttribute("message");
+        <form action="createcourse" method="post">
+            <table>
+                <caption>Create Course</caption>
+                <% String message = (String) request.getAttribute("message");
                 if (message != null) { %>
-            <p style="color: green;"><%= message %></p>
-            <% } %>
-            <form action="createcourse" method="post">
+                <p style="color: green;"><%= message %></p>
+                <% } %>
+
                 <tr>
                     <td><label for="title">Course Name:</label></td>
                     <td><input type="text" name="title" id="title" required></td>
@@ -37,10 +38,11 @@
                 <tr>
                     <td><input type="submit" value="createcourse" name="submit"></td>
                     <td><input type="reset" value="Clear"></td>
-                </tr>               
-        </table>
+                </tr>      
+            </table>
+        </form>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
-    </form>
 
-</body>
+
+    </body>
 </html>

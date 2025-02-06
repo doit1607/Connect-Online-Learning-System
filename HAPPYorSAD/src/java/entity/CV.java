@@ -5,7 +5,6 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class CV {
     private int id, userId;
