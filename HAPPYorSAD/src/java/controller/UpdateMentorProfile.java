@@ -84,12 +84,26 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
+
+        // Retrieve ID parameter safely
+        String idParam = request.getParameter("id");
+        int id = 0;
+
         String avatar = request.getParameter("avatar");
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
-        java.sql.Date DOB = java.sql.Date.valueOf(request.getParameter("DOB"));
+        String dob = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
         String address = request.getParameter("address");
+
+        java.sql.Date DOB = null;
+        if (dob != null && !dob.isEmpty()) {
+            DOB = java.sql.Date.valueOf(dob);
+        } else {
+            request.setAttribute("error", "Date of birth can not empty!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
+            return;
+        }
 
         User mentor = new User();
         mentor.setAvatarPath(avatar);
@@ -105,7 +119,7 @@ public class UpdateMentorProfile extends HttpServlet {
             request.getRequestDispatcher("/view/Course.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Unable update profile!");
-            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
         }
     }
 

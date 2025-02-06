@@ -36,8 +36,9 @@ public class DAOCourse extends DBConnection {
                 LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
                 int courseMajorId = result.getInt("course_major_id");
+                String status = result.getString("status");
 
-                Course course = new Course(id, title, description, managerId, mentorId, createdAt, updatedAt, courseMajorId);
+                Course course = new Course(title, description, managerId, mentorId, courseMajorId, status);
                 listCourse.add(course);
             }
             result.close();
@@ -48,21 +49,29 @@ public class DAOCourse extends DBConnection {
         return listCourse;
     }
 
-    public int createCourse(Course cr) {
-        int n = 0;
+    public boolean createCourse(Course cr) {
         String sql = "INSERT INTO [dbo].[Course]\n"
                 + "           ([title]\n"
                 + "           ,[description]\n"
+                + "           ,[manager_id]\n"
+                + "           ,[mentor_id]\n"
+                + "           ,[status]\n"
                 + "           ,[course_major_id])\n"
-                + "     VALUES('" + cr.getTitle() + "','" + cr.getDescription() + "'," + cr.getCourseMajorId() + ")";
-        System.out.println(sql);
+                + "     VALUES(?, ?, ?, ?, ?, ?)";
+        
         try {
-            Statement state = conn.createStatement();
-            n = state.executeUpdate(sql);
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, cr.getTitle());
+            pre.setString(2, cr.getDescription());
+            pre.setInt(3, cr.getManagerId());
+            pre.setInt(4, cr.getMentorId());
+            pre.setString(5, "Active");
+            pre.setInt(6, cr.getCourseMajorId());
+            return pre.executeUpdate() > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCourse.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        return n;
+        return false;
     }
     public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
@@ -79,8 +88,9 @@ public class DAOCourse extends DBConnection {
                 LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
                 int courseMajorId = result.getInt("course_major_id");
+                String status = result.getString("status");
 
-                Course course = new Course(id, title, description, managerId, mentorId, createdAt, updatedAt, courseMajorId);
+                Course course = new Course(title, description, managerId, mentorId, courseMajorId, status);
                 listCourse.add(course);
             }
             result.close();

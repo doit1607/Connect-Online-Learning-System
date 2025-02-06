@@ -9,7 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../css/cssReview/ReviewMentor.css">
+        <link rel="stylesheet" href="css/cssReview/ReviewMentor.css">
+        <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
+        <link rel="stylesheet" href="css/cssHome/homeFooter.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <title>Review Mentor Page</title>
     </head>
     <body>
@@ -18,10 +21,11 @@
             <%@include file="../sourcesHome/homeHeader.jsp" %>
             <h1>Rate & Comment Mentor</h1>
 
+
             <!-- Rating Form -->
-            <form action="/HAPPYorSAD/reviewmentor" method="post">
+            <form action="reviewmentor" method="post">
                 <input type="hidden" name="mentorId" value="${param.mentorId}">
-                <input type="hidden" name="userId" value="1"> <!-- Replace with dynamic user session -->
+                <input type="hidden" name="menteeId" value="1"> <!-- Replace with dynamic user session -->
 
                 <div class="rating">
                     <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
@@ -34,11 +38,26 @@
                 <label for="comment">Comment:</label>
                 <textarea name="comment" required></textarea>
 
+                <input type="hidden" name="mentorId" value="${mentorId}">
+                <input type="hidden" name="menteeId" value="${menteeId}">
+
                 <button type="submit">OK</button>
             </form>
 
             <%@include file="../sourcesHome/homeFooter.jsp" %>
-        </div>
+        </div>    
+        <script>
+            window.onload = function () {
+            <% String successMessage = (String) request.getAttribute("success"); %>
+            <% if (successMessage != null) { %>
+                alert("<%= successMessage %>");
+            <% } %>
 
+            <% String errorMessage = (String) request.getAttribute("error"); %>
+            <% if (errorMessage != null) { %>
+                alert("<%= errorMessage %>");
+            <% } %>
+            };
+        </script>
     </body>
 </html>
