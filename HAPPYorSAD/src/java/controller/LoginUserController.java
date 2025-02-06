@@ -126,7 +126,7 @@ public class LoginUserController extends HttpServlet {
             String avatar_path = request.getParameter("avatarRegis");
             
             if (!userDAO.checkUsernameExist(usernameRegis)) {
-                User newUser = new User(usernameRegis, avatar_path, passwordRegis, "Active", emailRegis, phoneRegis, dateOfBirth, "User", new Date(), "User", false);
+                User newUser = new User(avatar_path, usernameRegis, service, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "User", false);
                 userDAO.addUser(newUser);
                 request.setAttribute("msg", "Register Successfully!!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);

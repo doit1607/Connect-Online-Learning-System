@@ -32,7 +32,7 @@ public class DBConnection {
     }
 
     public DBConnection() {
-        this("jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming",
+        this("jdbc:sqlserver://localhost:1433;databaseName=final4",
                 "sa", "123456");
     }
 

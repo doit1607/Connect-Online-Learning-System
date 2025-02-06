@@ -26,7 +26,7 @@
             <nav>
                 <h4>Dashboard</h4>
                 <ul>
-                    <li><i class="fas fa-tachometer-alt"></i> <a href="index.jsp?page=dashboard">Dashboard</a></li>
+                    <li><i class="fas fa-tachometer-alt"></i> <a href="../index.jsp?page=dashboard">Dashboard</a></li>
                     <li><i class="fas fa-user"></i> <a href="index.jsp?page=profile">My Profile</a></li>
                     <li><i class="fas fa-book"></i> <a href="index.jsp?page=enrolled_courses">Enrolled Courses</a></li>
                     <li><i class="fas fa-star"></i> <a href="index.jsp?page=reviews">Reviews</a></li>

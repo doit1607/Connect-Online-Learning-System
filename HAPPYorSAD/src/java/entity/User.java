@@ -11,9 +11,9 @@ import java.util.Date;
  * @author Ann
  */
 public class User {
-    
+
     private String avatarPath, username, fullname, password,
-                     status, email, phoneNumber, address; // add fullname, address
+            status, email, phoneNumber, address; // add fullname, address
     private Date dateOfBirth, createdAt;
     private String gender, role;
     private boolean isGuest;
@@ -139,5 +139,11 @@ public class User {
 
     public void setIsGuest(boolean isGuest) {
         this.isGuest = isGuest;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "avatarPath=" + avatarPath + ", username=" + username + ", fullname=" + fullname + ", password=" + password + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", createdAt=" + createdAt + ", gender=" + gender + ", role=" + role + ", isGuest=" + isGuest + '}';
+    }
+
 }

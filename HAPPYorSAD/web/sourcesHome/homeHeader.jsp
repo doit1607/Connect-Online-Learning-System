@@ -42,10 +42,10 @@
             </header>
             <script>
                 function redirectToSignup() {
-                    window.location.href = "RegisterUser.jsp"; // Redirect to the signup page
+                    window.location.href = "/HAPPYorSAD/LoginUser?service=register"; // Redirect to the signup page
                 }
                 function redirectToLogin() {
-                    window.location.href = "LoginUser.jsp"; // Redirect to the signup page
+                    window.location.href = "/HAPPYorSAD/LoginUser?service=login"; // Redirect to the signup page
                 }
             </script>
         </body>

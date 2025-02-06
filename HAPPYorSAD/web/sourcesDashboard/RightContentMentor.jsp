@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-<!--        <div class="right-content">
+        <div class="right-content">
             <%
                 // Lấy tham số "page" từ URL
                 String page = request.getParameter("page");
@@ -21,11 +21,9 @@
                 if (page == null || page.equals("")) {
                     page = "dashboard"; // Mặc định hiển thị trang Dashboard
                 }
-
-                // Điều hướng đến nội dung tương ứng
                 switch (page) {
                     case "dashboard":
-            %><jsp:include page="mentor/Dashboard.jsp" /><%
+                        %><jsp:include page="../Dashboard/DashboardMentor.jsp" /><%
                         break;
                     case "profile":
             %><jsp:include page="mentor/Profile.jsp" /><%
@@ -34,7 +32,7 @@
             %><jsp:include page="mentor/EnrolledCourses.jsp" /><%
                         break;
                     case "reviews":
-            %><jsp:include page="mentor/Reviews.jsp" /><%
+            %><jsp:include page="../view/ReviewMentor.jsp" /><%
                         break;
                     case "order_history":
             %><jsp:include page="mentor/OrderHistory.jsp" /><%
@@ -64,10 +62,10 @@
             %><jsp:include page="mentor/Settings.jsp" /><%
                         break;
                     default:
-            %><jsp:include page="mentor/404.jsp" /><%  // Trang lỗi nếu không tìm thấy
+            %><jsp:include page="mentor/404.jsp" /><%  
                         break;
                 }
             %>
-        </div>-->
+        </div>
     </body>
 </html>

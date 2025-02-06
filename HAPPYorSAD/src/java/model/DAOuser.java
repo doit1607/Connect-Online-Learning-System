@@ -34,29 +34,50 @@ public class DAOuser extends DBConnection {
 
     public void addUser(User u) {
         try {
+            // The SQL query
+            String sql = "INSERT INTO [dbo].[User]\n"
+                    + "           ([username]\n"
+                    + "           ,[fullname]\n"
+                    + "           ,[avatar_path]\n"
+                    + "           ,[password]\n"
+                    + "           ,[status]\n"
+                    + "           ,[email]\n"
+                    + "           ,[address]\n"
+                    + "           ,[phone_number]\n"
+                    + "           ,[date_of_birth]\n"
+                    + "           ,[gender]\n"
+                    + "           ,[created_at]\n"
+                    + "           ,[role]\n"
+                    + "           ,[is_guest]) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            String sql = "INSERT INTO [dbo].[User] "
-                    + "([username], [avatar_path], [password], [status], [email], [phone_number], "
-                    + "[date_of_birth], [gender], [created_at], [role], [is_guest]) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+            // Create a prepared statement
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, u.getUsername());
-            stmt.setString(2, u.getAvatarPath());
-            stmt.setString(3, u.getPassword());
-            stmt.setString(4, u.getStatus());
-            stmt.setString(5, u.getEmail());
-            stmt.setString(6, u.getPhoneNumber());
-            stmt.setDate(7, new java.sql.Date(u.getDateOfBirth().getTime()));
-            stmt.setString(8, u.getGender());
-            stmt.setDate(9, new java.sql.Date(u.getCreatedAt().getTime()));
-            stmt.setString(10, u.getRole());
-            stmt.setBoolean(11, u.getIsGuest());
 
+            // Set the user properties
+            stmt.setString(1, u.getUsername());
+            stmt.setString(2, u.getFullname());
+            stmt.setString(3, u.getAvatarPath());
+            stmt.setString(4, u.getPassword());
+            stmt.setString(5, u.getStatus());
+            stmt.setString(6, u.getEmail());
+            stmt.setString(7, u.getAddress());
+            stmt.setString(8, u.getPhoneNumber());
+
+            if (u.getDateOfBirth() != null) {
+                stmt.setDate(9, new java.sql.Date(u.getDateOfBirth().getTime()));
+            } else {
+                stmt.setDate(9, null);  // Or set a default date
+            }
+
+            stmt.setString(10, u.getGender());
+            stmt.setDate(11, new java.sql.Date(u.getCreatedAt().getTime()));
+            stmt.setString(12, u.getRole());
+            stmt.setBoolean(13, true);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-
+            
         }
     }
 
@@ -155,7 +176,7 @@ public class DAOuser extends DBConnection {
         }
         return isUpdate;
     }
-    
+
     // fetch Mentor by id
     public User getMentorById(int id) {
         User mentor = null;
