@@ -4,27 +4,49 @@
  */
 package entity;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author dungb
  */
 public class Mentee {
 
+    private int id;
+    private int user_id;
     private String name;
-    private String accountName;
-    private int numberOfMentee;
-    private double totalHours;
-    private int totalCourses;
+    private String is_deleted;
+    private String email;
+    private String goals;
+    private LocalDateTime createdAt;
 
     public Mentee() {
     }
 
-    public Mentee(String name, String accountName, int numberOfMentee, double totalHours, int totalCourses) {
+    public Mentee(int id, int user_id, String name, String is_deleted, String email, String goals, LocalDateTime createdAt) {
+        this.id = id;
+        this.user_id = user_id;
         this.name = name;
-        this.accountName = accountName;
-        this.numberOfMentee = numberOfMentee;
-        this.totalHours = totalHours;
-        this.totalCourses = totalCourses;
+        this.is_deleted = is_deleted;
+        this.email = email;
+        this.goals = goals;
+        this.createdAt = createdAt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {
@@ -35,35 +57,37 @@ public class Mentee {
         this.name = name;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getIs_deleted() {
+        return is_deleted;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setIs_deleted(String is_deleted) {
+        this.is_deleted = is_deleted;
     }
 
-    public int getNumberOfMentee() {
-        return numberOfMentee;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNumberOfMentee(int numberOfMentee) {
-        this.numberOfMentee = numberOfMentee;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public double getTotalHours() {
-        return totalHours;
+    public String getGoals() {
+        return goals;
     }
 
-    public void setTotalHours(double totalHours) {
-        this.totalHours = totalHours;
+    public void setGoals(String goals) {
+        this.goals = goals;
     }
 
-    public int getTotalCourses() {
-        return totalCourses;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTotalCourses(int totalCourses) {
-        this.totalCourses = totalCourses;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
+
+    
 }

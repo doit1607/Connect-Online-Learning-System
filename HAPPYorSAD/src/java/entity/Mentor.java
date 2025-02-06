@@ -23,11 +23,12 @@ public class Mentor {
     private LocalDateTime createdAt;
     private double baseRate;
     private double multiplier;
+    private boolean is_deleted;
 
     // Constructor
     public Mentor(int id, int mentorId, int userId, String name, String email, double rating, int reviews,
                   double pricePerSlot, String expertise, String bio, LocalDateTime createdAt,
-                  double baseRate, double multiplier) {
+                  double baseRate, double multiplier, boolean is_deleted) {
         this.id = id;
         this.mentorId = mentorId;
         this.userId = userId;
@@ -41,6 +42,7 @@ public class Mentor {
         this.createdAt = createdAt;
         this.baseRate = baseRate;
         this.multiplier = multiplier;
+        this.is_deleted = is_deleted;
     }
 
     // Getters and Setters
@@ -148,9 +150,21 @@ public class Mentor {
         this.multiplier = multiplier;
     }
 
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+    
+    
+
     // Method to calculate the final price per slot based on baseRate and multiplier
     public double calculateFinalPrice() {
         return baseRate * multiplier;
     }
+    
+    
 }
 

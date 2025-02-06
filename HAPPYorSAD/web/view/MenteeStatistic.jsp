@@ -4,6 +4,7 @@
     Author     : admin
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,23 +20,27 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Statistic of all Mentee</h1>
         <form action="menteestatistic" method="get">
-            <table border = 1>
-                <tr>
-                    <th>Name</th>
-                    <th>Account Name</th>
-                    <th>Number of Mentees</th>
-                    <th>Total Hours</th>
-                    <th>Total Skills</th>
-                </tr>
-                <c:forEach var="mentee" items="${listMentee}">
+            <table>
+                <thead>
                     <tr>
+                        <th>No.</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Goals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="mentee" items="${sessionScope.listAllMentee}" varStatus="status">
+                    <tr>
+                        <td>${status.index + 1}</td>
+                        <td>${mentee.id}</td>
                         <td>${mentee.name}</td>
-                        <td>${mentee.account_name}</td>
-                        <td>${mentee.numberOfMentee}</td>
-                        <td>${mentee.totalHours}</td>
-                        <td>${mentee.totalCourses}</td>
+                        <td>${mentee.email}</td>
+                        <td>${mentee.goals}</td>                        
                     </tr>
                 </c:forEach>
+                </tbody>
             </table>
         </form>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
