@@ -61,24 +61,32 @@ public class CreateCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String idStr = request.getParameter("id");
+        String managerIdStr = request.getParameter("managerId");
+        String mentorIdStr = request.getParameter("mentorId");
+        String courseMajorIdStr = request.getParameter("courseMajorId");
+
+        int id = (idStr != null && !idStr.isEmpty()) ? Integer.parseInt(idStr) : 0;
+        int managerId = (managerIdStr != null && !managerIdStr.isEmpty()) ? Integer.parseInt(managerIdStr) : 0;
+        int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
+        int courseMajorId = (courseMajorIdStr != null && !courseMajorIdStr.isEmpty()) ? Integer.parseInt(courseMajorIdStr) : 0;
+
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        int managerId = Integer.parseInt(request.getParameter("managerId"));
-        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-        int courseMajorId = Integer.parseInt(request.getParameter("courseMajorId"));
         String status = request.getParameter("status");
 
         Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
         DAOCourse dao = new DAOCourse();
 
-        if (dao.createCourse(course)) {
+        boolean isSuccess = dao.createCourse(course);
+        if (isSuccess) {
             request.setAttribute("message", "Course added successfully!");
         } else {
             request.setAttribute("message", "Error adding course.");
         }
-        request.getRequestDispatcher("createCourse.jsp").forward(request, response);
-    
+
+        request.getRequestDispatcher("/CRUD/CreateCourses.jsp").forward(request, response);
+
     }
 
     /**

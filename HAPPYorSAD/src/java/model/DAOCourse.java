@@ -103,5 +103,6 @@ public class DAOCourse extends DBConnection {
 
         List<Course> listCourse1 = dao.getAllCourse();
         System.out.println(listCourse1);
+        
     }
 }
