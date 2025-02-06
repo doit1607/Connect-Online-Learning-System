@@ -72,15 +72,14 @@ public class LoginUserController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
-        
-        
+
         String service = request.getParameter("service");
-        
+
         if ("login".equals(service)) {
             String usernameLogin = request.getParameter("usernameLogin");
             String passwordLogin = request.getParameter("passwordLogin");
             String rememberMe = request.getParameter("rememberMe");
-            
+
             if (userDAO.loginUser(usernameLogin, passwordLogin)) {
                 if ("on".equals(rememberMe)) {
                     Cookie c = new Cookie("usernameUser_cookie", usernameLogin);
@@ -105,28 +104,30 @@ public class LoginUserController extends HttpServlet {
             response.sendRedirect("/view/LoginUser.jsp");
             return;
         }
-        
+
         if ("register".equals(service)) {
             String usernameRegis = request.getParameter("usernameRegis");
             String passwordRegis = request.getParameter("passwordRegis");
             String emailRegis = request.getParameter("emailRegis");
             String phoneRegis = request.getParameter("phoneRegis");
             String genderRegis = request.getParameter("genderRegis");
-            
+            String addressRegis = request.getParameter("addressRegis");
+            String fullnameRegis = request.getParameter("fullnameRegis");
+
             Date dateOfBirth = null;
             try {
-                String dateString = request.getParameter("dateofbirthRegis");
+                String dateString = request.getParameter("dobRegis");
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date utilDate = formatter.parse(dateString);
                 dateOfBirth = new Date(utilDate.getTime());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             String avatar_path = request.getParameter("avatarRegis");
-            
+
             if (!userDAO.checkUsernameExist(usernameRegis)) {
-                User newUser = new User(avatar_path, usernameRegis, service, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "User", false);
+                User newUser = new User(avatar_path, usernameRegis, fullnameRegis, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "User", false);
                 userDAO.addUser(newUser);
                 request.setAttribute("msg", "Register Successfully!!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
@@ -136,12 +137,12 @@ public class LoginUserController extends HttpServlet {
             }
             return;
         }
-        
+
         if ("changepass".equals(service)) {
             String username = request.getParameter("username");
             String oldPassword = request.getParameter("oldPassword");
             String newPassword = request.getParameter("newPassword");
-            
+
             if (userDAO.loginUser(username, oldPassword)) {
                 userDAO.UpdatePassword(username, newPassword);
                 request.setAttribute("msg", "Password changed successfully!");
@@ -162,5 +163,5 @@ public class LoginUserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-   
+
 }

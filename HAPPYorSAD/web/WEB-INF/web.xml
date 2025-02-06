@@ -20,6 +20,10 @@
         <servlet-name>CourseManager</servlet-name>
         <servlet-class>controller.CourseManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <servlet-class>controller.Home</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -35,5 +39,9 @@
     <servlet-mapping>
         <servlet-name>CourseManager</servlet-name>
         <url-pattern>/CourseManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/Home</url-pattern>
     </servlet-mapping>
 </web-app>
