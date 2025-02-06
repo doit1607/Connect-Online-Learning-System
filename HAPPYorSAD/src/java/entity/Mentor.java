@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
+
 import java.time.LocalDateTime;
 
 /**
@@ -10,13 +11,14 @@ import java.time.LocalDateTime;
  * @author dungb
  */
 public class Mentor {
+
     private int id;
     private int mentorId;
     private int userId; // Assuming mentor_id and userID are related
     private String name;
     private String email;
     private double rating;
-    private int reviews;
+    private String reviews;
     private double pricePerSlot;
     private String expertise;
     private String bio;
@@ -26,9 +28,9 @@ public class Mentor {
     private boolean is_deleted;
 
     // Constructor
-    public Mentor(int id, int mentorId, int userId, String name, String email, double rating, int reviews,
-                  double pricePerSlot, String expertise, String bio, LocalDateTime createdAt,
-                  double baseRate, double multiplier, boolean is_deleted) {
+    public Mentor(int id, int mentorId, int userId, String name, String email, double rating, String reviews,
+            double pricePerSlot, String expertise, String bio, LocalDateTime createdAt,
+            double baseRate, double multiplier, boolean is_deleted) {
         this.id = id;
         this.mentorId = mentorId;
         this.userId = userId;
@@ -43,6 +45,16 @@ public class Mentor {
         this.baseRate = baseRate;
         this.multiplier = multiplier;
         this.is_deleted = is_deleted;
+    }
+
+    public Mentor(int id, String name, String email, double rating, String reviews) {
+        this.id = id;
+
+        this.name = name;
+        this.email = email;
+        this.rating = rating;
+        this.reviews = reviews;
+
     }
 
     // Getters and Setters
@@ -94,11 +106,11 @@ public class Mentor {
         this.rating = rating;
     }
 
-    public int getReviews() {
+    public String getReviews() {
         return reviews;
     }
 
-    public void setReviews(int reviews) {
+    public void setReviews(String reviews) {
         this.reviews = reviews;
     }
 
@@ -157,14 +169,15 @@ public class Mentor {
     public void setIs_deleted(boolean is_deleted) {
         this.is_deleted = is_deleted;
     }
-    
-    
-
-    // Method to calculate the final price per slot based on baseRate and multiplier
     public double calculateFinalPrice() {
         return baseRate * multiplier;
     }
-    
-    
-}
 
+    @Override
+    public String toString() {
+        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + '}';
+    }
+    
+    
+
+}

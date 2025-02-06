@@ -14,6 +14,7 @@ import java.util.List;
 
 @WebServlet("/viewMentors")
 public class ViewMentor extends HttpServlet {
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String search = request.getParameter("search");
@@ -23,7 +24,7 @@ public class ViewMentor extends HttpServlet {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming", "sa", "123456");
 
-            DAOMentor DAOmentor = new DAOMentor(conn);
+            DAOMentor DAOmentor = new DAOMentor();
             List<Mentor> mentors = DAOmentor.getMentors(search);
 
             request.setAttribute("mentors", mentors);

@@ -24,6 +24,10 @@
         <servlet-name>Home</servlet-name>
         <servlet-class>controller.Home</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMentor_Mentee</servlet-name>
+        <servlet-class>controller.ViewMentor_Mentee</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -43,5 +47,9 @@
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
         <url-pattern>/Home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMentor_Mentee</servlet-name>
+        <url-pattern>/ViewMentor_Mentee</url-pattern>
     </servlet-mapping>
 </web-app>

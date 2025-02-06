@@ -19,13 +19,7 @@ import java.util.Date;
  *
  * @author Dell
  */
-public class DAOMentor {
-
-    private Connection conn;
-
-    public DAOMentor(Connection conn) {
-        this.conn = conn;
-    }
+public class DAOMentor extends DBConnection {
 
     public List<Mentor> getMentors(String search) throws SQLException {
         List<Mentor> list = new ArrayList<>();
@@ -44,7 +38,7 @@ public class DAOMentor {
                             rs.getString("name"),
                             rs.getString("email"),
                             rs.getDouble("rating"),
-                            rs.getInt("reviews"),
+                            rs.getString("reviews"),
                             rs.getDouble("pricePerSlot"),
                             rs.getString("expertise"),
                             rs.getString("bio"),
@@ -58,4 +52,36 @@ public class DAOMentor {
         }
         return list;
     }
+
+    public List<Mentor> getMentorsSuggestion() {
+        List<Mentor> list = new ArrayList<>();
+        String sql = "SELECT id, name, email, rating, reviews FROM Mentor ";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new Mentor(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getDouble("rating"),
+                        rs.getString("reviews")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+
+        return list;
+    }
+    
+     public static void main(String[] args) {
+        DAOMentor dao = new DAOMentor();
+
+        List<Mentor> list = dao.getMentorsSuggestion();
+        System.out.println(list);
+
+    }
+
 }
