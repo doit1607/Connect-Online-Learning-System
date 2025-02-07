@@ -48,7 +48,41 @@ public class ReviewMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
-        // Get mentorId safely
+
+        // Kiểm tra phương thức HTTP
+        String method = request.getMethod();
+
+        // Nếu là POST -> Xử lý đánh giá mentor
+        if ("POST".equalsIgnoreCase(method)) {
+            int mentorId = 0, menteeId = 0, rating = 0;
+            String comment = request.getParameter("comment");
+
+            try {
+                mentorId = Integer.parseInt(request.getParameter("mentorId"));
+                menteeId = Integer.parseInt(request.getParameter("menteeId"));
+                rating = Integer.parseInt(request.getParameter("rating"));
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid input! Please enter valid numbers.");
+                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
+                return;
+            }
+
+            if (rating < 1 || rating > 5) {
+                request.setAttribute("error", "Rating should be between 1 and 5.");
+                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
+                return;
+            }
+
+            boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
+
+            if (isSuccess) {
+                request.setAttribute("success", "Rating submitted successfully!");
+            } else {
+                request.setAttribute("error", "Failed to submit rating. Please try again.");
+            }
+        }
+
+        // Xử lý hiển thị đánh giá của mentor
         String idParam = request.getParameter("mentorId");
         int mentorId = 0;
 
@@ -66,8 +100,8 @@ public class ReviewMentor extends HttpServlet {
             return;
         }
 
-        List<MentorReview> review = dao.getReviewByMentorId(mentorId);
-        request.setAttribute("reviews", review);
+        List<MentorReview> reviews = dao.getReviewByMentorId(mentorId);
+        request.setAttribute("reviews", reviews);
         request.setAttribute("mentorId", mentorId);
         request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
     }
@@ -83,34 +117,7 @@ public class ReviewMentor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAORateMentor dao = new DAORateMentor();
-        int mentorId = 0, menteeId = 0, rating = 0;
-        String comment = request.getParameter("comment");
 
-        try {
-            mentorId = Integer.parseInt(request.getParameter("mentorId"));
-            menteeId = Integer.parseInt(request.getParameter("menteeId"));
-            rating = Integer.parseInt(request.getParameter("rating"));
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid input! Please enter valid numbers.");
-            request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-        }
-        
-        if (rating < 1 || rating > 5) {
-            request.setAttribute("error", "Rating should be between 1 and 5.");
-            request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-            return;
-        }
-
-        boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
-
-        if (isSuccess) {
-            request.setAttribute("success", "Rating submitted successfully!");
-        } else {
-            request.setAttribute("error", "Failed to submit rating. Please try again.");
-        }
-
-        request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
     }
 
     /**

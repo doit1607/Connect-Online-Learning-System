@@ -58,3 +58,38 @@ tr:hover {
     margin-top: 20px;
 }
 
+/* Phân trang */
+.pagination {
+    display: flex;
+    justify-content: center; /* Căn giữa */
+    margin-top: 20px;
+}
+
+/* Các số trang */
+.pagination a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+/* Khi hover vào số trang */
+.pagination a:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Số trang được chọn */
+.pagination a.active {
+    background: #0056b3;
+    color: white;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 91, 187, 0.8);
+}
+
