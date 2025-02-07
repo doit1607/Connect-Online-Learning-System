@@ -19,7 +19,7 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
-            <form action="/HAPPYorSAD/updatementeeprofile" method="post ">
+            <form action="/HAPPYorSAD/updatementeeprofile" method="post">
                 <input type="hidden" name="id" value="${mentee.id}">
                 
                 <label for="avatar">Avatar (URL):</label>

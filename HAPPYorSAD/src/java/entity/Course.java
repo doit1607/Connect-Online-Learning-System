@@ -16,22 +16,24 @@ public class Course {
     private String description;
     private int managerId;
     private int mentorId;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int courseMajorId;
-    private String status;
-
+    
     public Course() {
     }
 
-    public Course(int id, String title, String description, int managerId, int mentorId, int courseMajorId, String status) {
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.managerId = managerId;
         this.mentorId = mentorId;
-        this.courseMajorId = courseMajorId;
         this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseMajorId = courseMajorId;
     }
 
     public int getId() {
@@ -74,6 +76,14 @@ public class Course {
         this.mentorId = mentorId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -98,12 +108,6 @@ public class Course {
         this.courseMajorId = courseMajorId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    
     
 }

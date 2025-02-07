@@ -4,12 +4,13 @@
     Author     : admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../css/cssCRUD/createCourse.css">
+        <link rel="stylesheet" href="css/cssCRUD/createCourse.css">
         <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
         <link rel="stylesheet" href="css/cssHome/homeFooter.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -17,35 +18,31 @@
         <title>Create Course</title>
     </head>
     <body>
+        <% String message = (String) request.getAttribute("message"); %>
+        <% if (message != null) { %>
+        <div class="alert-message">
+            <p><%= message %></p>
+        </div>
+        <% } %>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
 
-        <form action="createcourse" method="post">
-            <%@include file="../sourcesHome/homeHeader.jsp" %>
-            <table>
-                <caption>Create Course</caption>
-                <% String message = (String) request.getAttribute("message");
-                if (message != null) { %>
-                <p style="color: green;"><%= message %></p>
-                <% } %>
+        <div class="form-container">
+            <h1>Create Course</h1>
+            <form>
+                <label for="title">Course Name:</label>
+                <input type="text" name="title" id="title" required>
 
-                <tr>
-                    <td><label for="title">Course Name:</label></td>
-                    <td><input type="text" name="title" id="title" required></td>
-                </tr>
-
-                <tr>
-                    <td><label for="description">Description:</label></td>
-                    <td><input type="text" name="description" id="description"></td>
-                </tr>
+                <label for="description">Description:</label>
+                <input type="text" name="description" id="description">
 
                 <input type="hidden" name="status" value="active">
 
-                <tr>
-                    <td><input type="submit" value="CreateCourse"></td>
-                    <td><input type="reset" value="Clear"></td>
-                </tr>
-            </table>    
-            <%@include file="../sourcesHome/homeFooter.jsp" %> 
-        </form>
-
+                <div class="button-group">
+                    <button type="submit">Create Course</button>
+                    <button type="reset">Clear</button>
+                </div>
+            </form>
+        </div>  
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
 </html>

@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author Acer
  */
 public class DAOCourse extends DBConnection {
 
-     public List<Course> getAllCourse() {
+    public List<Course> getAllCourse() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course";
         try {
@@ -36,7 +35,7 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
 
-                Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId);
                 listCourse.add(course);
             }
             result.close();
@@ -54,9 +53,11 @@ public class DAOCourse extends DBConnection {
                 + "           ,[manager_id]\n"
                 + "           ,[mentor_id]\n"
                 + "           ,[status]\n"
+                + "           ,[created_at]\n"
+                + "           ,[updated_at]\n"
                 + "           ,[course_major_id])\n"
-                + "     VALUES(?, ?, ?, ?, ?, ?)";
-        
+                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, cr.getTitle());
@@ -64,13 +65,16 @@ public class DAOCourse extends DBConnection {
             pre.setInt(3, cr.getManagerId());
             pre.setInt(4, cr.getMentorId());
             pre.setString(5, "Active");
-            pre.setInt(6, cr.getCourseMajorId());
+            pre.setTimestamp(6, java.sql.Timestamp.valueOf(cr.getCreatedAt()));
+            pre.setTimestamp(7, java.sql.Timestamp.valueOf(cr.getUpdatedAt()));
+            pre.setInt(8, cr.getCourseMajorId());
             return pre.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return false;
     }
+
     public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course ORDER BY title";
@@ -88,7 +92,7 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
 
-                Course course = new Course(id, title, description, managerId, mentorId, courseMajorId, status);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId);
                 listCourse.add(course);
             }
             result.close();
@@ -98,11 +102,19 @@ public class DAOCourse extends DBConnection {
         }
         return listCourse;
     }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourse1 = dao.getAllCourse();
-        System.out.println(listCourse1);
-        
+//        List<Course> listCourse1 = dao.getAllCourse();
+//        System.out.println(listCourse1);
+        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
+
+        boolean result = dao.createCourse(newCourse);
+        if (result) {
+            System.out.println("Create course successfully");
+        } else {
+            System.out.println("Create failed!");
+        }
     }
 }

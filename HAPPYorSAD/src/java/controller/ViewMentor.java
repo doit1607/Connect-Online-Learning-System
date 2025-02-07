@@ -4,16 +4,14 @@ import model.DAOMentor;
 import entity.Mentor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.List;
+import model.DBConnection;
 
 @WebServlet("/viewMentors")
-public class ViewMentor extends HttpServlet {
+public class ViewMentor extends DBConnection {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -21,8 +19,6 @@ public class ViewMentor extends HttpServlet {
         if (search == null) search = "";
 
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming", "sa", "123456");
 
             DAOMentor DAOmentor = new DAOMentor();
             List<Mentor> mentors = DAOmentor.getMentors(search);

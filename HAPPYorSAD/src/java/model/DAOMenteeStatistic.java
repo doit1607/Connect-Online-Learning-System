@@ -4,7 +4,6 @@
  */
 package model;
 
-import entity.Course;
 import entity.Mentee;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +27,8 @@ public class DAOMenteeStatistic extends DBConnection {
                 + "      ,[email]\n"
                 + "      ,[goals]\n"
                 + "      ,[created_at]\n"
-                + "  FROM [SWP1].[dbo].[Mentee]";
+                + "  FROM [SWP1].[dbo].[Mentee]"
+                + "order by [name]";
         try {
             PreparedStatement connect = conn.prepareStatement(sql);
             ResultSet rs = connect.executeQuery();
@@ -36,7 +36,7 @@ public class DAOMenteeStatistic extends DBConnection {
                 int id = rs.getInt("id");
                 int user_id = rs.getInt("user_id");
                 String name = rs.getString("name");
-                String is_deleted = rs.getString("is_deleted");
+                int is_deleted = rs.getInt("is_deleted");
                 String email = rs.getString("email");
                 String goals = rs.getString("goals");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
