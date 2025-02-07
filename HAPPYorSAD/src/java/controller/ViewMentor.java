@@ -12,7 +12,7 @@ import model.DBConnection;
 
 @WebServlet("/viewMentors")
 public class ViewMentor extends DBConnection {
-    @Override
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String search = request.getParameter("search");

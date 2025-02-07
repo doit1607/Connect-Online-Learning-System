@@ -1,12 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -14,75 +14,39 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import model.DAOuser;
 
-/**
- *
- * @author admin
- */
-@WebServlet(name = "ChangePassController", urlPatterns = {"/LoginUser"})
+import utils.EmailUtil;
+
+@WebServlet(name = "LoginUserController", urlPatterns = {"/LoginUser"})
 public class LoginUserController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            doPost(request, response);
-        }
+        doPost(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
-
         String service = request.getParameter("service");
 
         if ("login".equals(service)) {
-            String usernameLogin = request.getParameter("usernameLogin");
-            String passwordLogin = request.getParameter("passwordLogin");
+            String username = request.getParameter("usernameLogin");
+            String password = request.getParameter("passwordLogin");
             String rememberMe = request.getParameter("rememberMe");
 
-            if (userDAO.loginUser(usernameLogin, passwordLogin)) {
+            if (userDAO.loginUser(username, password)) {
                 if ("on".equals(rememberMe)) {
-                    Cookie c = new Cookie("usernameUser_cookie", usernameLogin);
+                    Cookie c = new Cookie("usernameUser_cookie", username);
                     c.setMaxAge(3600);
                     response.addCookie(c);
                 } else {
@@ -90,8 +54,8 @@ public class LoginUserController extends HttpServlet {
                     c.setMaxAge(0);
                     response.addCookie(c);
                 }
-                session.setAttribute("usernameUser", usernameLogin);
-                request.getRequestDispatcher("/sourcesHome/homeDetail.jsp").forward(request, response);
+                session.setAttribute("usernameUser", username);
+                response.sendRedirect("ShowAllCourse");
             } else {
                 request.setAttribute("error", "Wrong username or password!!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
@@ -101,41 +65,74 @@ public class LoginUserController extends HttpServlet {
 
         if ("logout".equals(service)) {
             session.invalidate();
-            response.sendRedirect("/view/LoginUser.jsp");
+            response.sendRedirect("view/LoginUser.jsp");
             return;
         }
 
         if ("register".equals(service)) {
-            String usernameRegis = request.getParameter("usernameRegis");
-            String passwordRegis = request.getParameter("passwordRegis");
-            String emailRegis = request.getParameter("emailRegis");
-            String phoneRegis = request.getParameter("phoneRegis");
-            String genderRegis = request.getParameter("genderRegis");
-            String addressRegis = request.getParameter("addressRegis");
-            String fullnameRegis = request.getParameter("fullnameRegis");
+            EmailUtil em = new EmailUtil();
+            String username = request.getParameter("usernameRegis");
+            String password = request.getParameter("passwordRegis");
+            String email = request.getParameter("emailRegis");
+            String phone = request.getParameter("phoneRegis");
+            String gender = request.getParameter("genderRegis");
+            String address = request.getParameter("addressRegis");
+            String fullname = request.getParameter("fullnameRegis");
 
             Date dateOfBirth = null;
             try {
-                String dateString = request.getParameter("dobRegis");
+                String dob = request.getParameter("dobRegis");
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date utilDate = formatter.parse(dateString);
-                dateOfBirth = new Date(utilDate.getTime());
+                dateOfBirth = formatter.parse(dob);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            String avatar_path = null;
+            if (!userDAO.checkUsernameExist(username)) {
+                if (!userDAO.checkEmailExist(email)) {
 
-            if (!userDAO.checkUsernameExist(usernameRegis)) {
-                User newUser = new User(avatar_path, usernameRegis, fullnameRegis, passwordRegis, "Active", emailRegis, phoneRegis, emailRegis, dateOfBirth, new Date(), genderRegis, "mentee", false);
-                userDAO.addUser(newUser);
-                request.setAttribute("msg", "Register Successfully!!");
-                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = sdf.format(new Date());
+                    java.sql.Timestamp createdAt = java.sql.Timestamp.valueOf(formattedDate);
+                    User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, "mentee", false);
+                    userDAO.addUser(newUser);
+
+                    String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
+                    em.sendVerificationEmail(email, username, verificationLink);
+
+                    request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                } else {
+                    String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
+                    em.sendVerificationEmail(email, username, verificationLink);
+                    request.setAttribute("msgemail", "The email already exists but has not been activated. Please check your email to activate your account!");
+                    request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+
+                }
+
             } else {
-                request.setAttribute("msg", "Username Already Exist!!");
+                request.setAttribute("msgusername", "Username already exists!");
                 request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
             }
             return;
+        }
+
+        if ("activate".equals(service)) {
+            String email = request.getParameter("email");
+            if (!userDAO.isActivationExpired(email)) {
+                if (userDAO.activateUser(email)) {
+                    request.setAttribute("msg", "Account verified successfully! You can now log in.");
+                } else {
+                    request.setAttribute("error", "Invalid or expired verification link!");
+                }
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                return;
+            } else {
+                userDAO.deleteUserByEmail(email);
+                request.setAttribute("error", "Invalid or expired verification link!");
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+            }
+
         }
 
         if ("changepass".equals(service)) {
@@ -144,7 +141,7 @@ public class LoginUserController extends HttpServlet {
             String newPassword = request.getParameter("newPassword");
 
             if (userDAO.loginUser(username, oldPassword)) {
-                userDAO.UpdatePassword(username, newPassword);
+                userDAO.updatePassword(username, newPassword);
                 request.setAttribute("msg", "Password changed successfully!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {
@@ -153,15 +150,5 @@ public class LoginUserController extends HttpServlet {
             }
         }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

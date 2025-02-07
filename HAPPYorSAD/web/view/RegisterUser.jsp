@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -161,34 +162,37 @@
             <div class="form-container">
                 <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                 <h2>Sign up</h2>
-                <form action="/HAPPYorSAD/LoginUser" method="POST" enctype="multipart/form-data">
+                <form action="/HAPPYorSAD/LoginUser" method="POST">
                     <input type="hidden" name="service" value="register">
                     <div class="input-group">
-                        <label for="username">User Name</label>
-                        <input type="text" id="usernameRegis" required>
+                        <label for="usernameRegis">User Name</label>
+                        <input type="text" name="usernameRegis" id="usernameRegis" required>
                     </div>
-                    <c:if test="${requestScope.msg != null}">
-                        ${requestScope.msg}
+                    <c:if test="${requestScope.msgusername != null}">
+                        ${requestScope.msgusername}
                     </c:if>
                     <div class="input-group">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" id="fullnameRegis" required>
+                        <label for="fullnameRegis">Full Name</label>
+                        <input type="text" name="fullnameRegis" id="fullnameRegis" required>
                     </div>
                     <div class="input-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="emailRegis" required>
+                        <label for="emailRegis">Email</label>
+                        <input type="email" name="emailRegis" id="emailRegis" required>
+                    </div>
+                    <c:if test="${requestScope.msgemail != null}">
+                        ${requestScope.msgemail}
+                    </c:if>
+                    <div class="input-group">
+                        <label for="phoneRegis">Phone Number</label>
+                        <input type="tel" name="phoneRegis" id="phoneRegis" required>
                     </div>
                     <div class="input-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phoneRegis" required>
+                        <label for="dobRegis">Date of Birth</label>
+                        <input type="date" name="dobRegis" id="dobRegis" required>
                     </div>
                     <div class="input-group">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" id="dobRegis" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="gender">Sex</label>
-                        <select id="genderRegis" required>
+                        <label for="genderRegis">Sex</label>
+                        <select name="genderRegis" id="genderRegis" required>
                             <option value="">Choose Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -197,27 +201,26 @@
                     </div>
                     <div class="input-group">
                         <label for="addressRegis">Address</label>
-                        <input type="text" id="addressRegis" required>
+                        <input type="text" name="addressRegis" id="addressRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="passwordRegis">Password</label>
-                        <input type="password" id="passwordRegis" required>
+                        <input type="password" name="passwordRegis" id="passwordRegis" required>
                     </div>
                     <div class="input-group">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" required>
+                        <input type="password" name="confirmPassword" id="confirmPassword" required>
                     </div>
-                    <!-- Avatar selection section -->
-
 
                     <div class="terms">
-                        <input type="checkbox" id="terms" required>
+                        <input type="checkbox" name="terms" id="terms" required>
                         <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
                     </div>
                     <button type="submit" class="submit-btn">Create Account</button>
 
                     <p>Already have an account? <a href="/HAPPYorSAD/view/LoginUser.jsp">Sign in</a></p>
                 </form>
+
             </div>
         </div>
 
