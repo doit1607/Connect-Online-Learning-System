@@ -27,12 +27,13 @@
                 <div class="search-bar">
                     <div class="search-container">
                         <input type="text" placeholder="Search Course, Mentor, School, etc">
-                        <select>
+                        <select name="category">
                             <option value="">Category</option>
-                            <option value="technology">Technology</option>
-                            <option value="business">Business</option>
-                            <option value="design">Design</option>
+                            <c:forEach var="category" items="${sessionScope.listMajor}">
+                                <option value="${category.id}">${category.name}</option>
+                            </c:forEach>
                         </select>
+
                         <button><i class="fas fa-arrow-right"></i></button>
                     </div>
                 </div>
@@ -48,7 +49,7 @@
             </div>
 
             <div class="hero-image">
-                <img src="../images/student.jpg" alt="Student holding a book">
+                <img src="images/student.jpg" alt="Student holding a book">
             </div>
         </section>
 

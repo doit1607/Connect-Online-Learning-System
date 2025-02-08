@@ -53,15 +53,16 @@ public class Mentor {
         this.is_deleted = is_deleted;
     }
 
-    public Mentor(int id, String name, String email, double rating, String reviews) {
-        this.id = id;
-
+    public Mentor(String name, double rating, double pricePerSlot, String expertise, String image, String username) {
         this.name = name;
-        this.email = email;
         this.rating = rating;
-        this.reviews = reviews;
-
+        this.pricePerSlot = pricePerSlot;
+        this.expertise = expertise;
+        this.image = image;
+        this.username = username;
     }
+
+   
 
     public Mentor(String name, double rating, String expertise, String image, int total_mentees, int rating_count) {
         this.name = name;

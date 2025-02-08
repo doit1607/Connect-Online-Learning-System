@@ -47,21 +47,19 @@ public class DAOMentor extends DBConnection {
 
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "Select u.avatar_path, m.name, u.username, "
-                + "m.expertise, m.email, m.reviews, m.rating, "
-                + "m.price_per_slot\n"
-                + "from Mentor m \n"
-                + "join Users u on u.id = m.user_id";
+        String sql = "select m.name,m.expertise, "
+                + "m.image,m.price_per_slot,"
+                + " m.rating,u.username\n"
+                + "from Mentor m join Users u"
+                + " on m.user_id = u.id";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new Mentor(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getDouble("rating"),
-                        rs.getString("reviews")
-                ));
+                list.add(new Mentor(rs.getString("name"),
+                        rs.getDouble("rating"), rs.getDouble("price_per_slot"),
+                        rs.getString("expertise"), rs.getString("image"),
+                        rs.getString("username"))
+                );
             }
 
         } catch (SQLException e) {
@@ -106,7 +104,7 @@ public class DAOMentor extends DBConnection {
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentors();
+        List<Mentor> list = dao.getMentorsSuggestion();
         System.out.println(list);
 
     }
