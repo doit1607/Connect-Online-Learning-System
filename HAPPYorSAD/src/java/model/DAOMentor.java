@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import entity.Mentor;
@@ -21,34 +17,30 @@ import java.util.Date;
  */
 public class DAOMentor extends DBConnection {
 
-    public List<Mentor> getMentors(String search) throws SQLException {
+    public List<Mentor> getMentors() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "SELECT * FROM Mentor WHERE name LIKE ? OR email LIKE ?";
+        String sql = "SELECT \n"
+                + "	m.id,\n"
+                + "    u.fullname AS mentor_name,\n"
+                + "	u.username as username,\n"
+                + "    m.expertise,\n"
+                + "    COALESCE(AVG(r.rating), 0) AS average_rating\n"
+                + "FROM Mentor m\n"
+                + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id\n"
+                + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee'\n"
+                + "GROUP BY u.fullname, m.expertise, u.username, m.id";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + search + "%");
-            stmt.setString(2, "%" + search + "%");
-
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Mentor(
-                            rs.getInt("id"),
-                            rs.getInt("mentorId"),
-                            rs.getInt("userId"),
-                            rs.getString("name"),
-                            rs.getString("email"),
-                            rs.getDouble("rating"),
-                            rs.getString("reviews"),
-                            rs.getDouble("pricePerSlot"),
-                            rs.getString("expertise"),
-                            rs.getString("bio"),
-                            rs.getTimestamp("createdAt").toLocalDateTime(),
-                            rs.getDouble("baseRate"),
-                            rs.getDouble("multiplier"),
-                            rs.getBoolean("is_deleted")
+                    list.add(new Mentor(rs.getInt("id"),
+                            rs.getString("mentor_name"),
+                            rs.getDouble("average_rating"), rs.getString("username"), rs.getString("expertise")
                     ));
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -114,7 +106,7 @@ public class DAOMentor extends DBConnection {
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentorsHome();
+        List<Mentor> list = dao.getMentors();
         System.out.println(list);
 
     }

@@ -15,13 +15,10 @@ public class ViewMentor extends DBConnection {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String search = request.getParameter("search");
-        if (search == null) search = "";
-
         try {
 
             DAOMentor DAOmentor = new DAOMentor();
-            List<Mentor> mentors = DAOmentor.getMentors(search);
+            List<Mentor> mentors = DAOmentor.getMentors();
 
             request.setAttribute("mentors", mentors);
             request.getRequestDispatcher("view/ViewMentor.jsp").forward(request, response);

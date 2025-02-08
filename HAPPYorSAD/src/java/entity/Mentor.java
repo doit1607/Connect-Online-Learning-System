@@ -14,13 +14,13 @@ public class Mentor {
 
     private int id;
     private int mentorId;
-    private int userId; // Assuming mentor_id and userID are related
+    private int userId;
     private String name;
     private String email;
     private double rating;
     private String reviews;
     private double pricePerSlot;
-    private String expertise;
+    private String expertise; // profression
     private String bio;
     private LocalDateTime createdAt;
     private double baseRate;
@@ -29,6 +29,9 @@ public class Mentor {
     private String image;
     private int total_mentees;
     private int rating_count;
+    private String username;  // join Users
+    private int CurentlyRequests;
+    private int completed;
 
     // Constructor
     public Mentor(int id, int mentorId, int userId, String name, String email, double rating, String reviews,
@@ -60,13 +63,45 @@ public class Mentor {
 
     }
 
-    public Mentor(String name, double rating, String expertise, String image,int total_mentees, int rating_count ) {
+    public Mentor(String name, double rating, String expertise, String image, int total_mentees, int rating_count) {
         this.name = name;
         this.rating = rating;
         this.expertise = expertise;
         this.image = image;
-        this.total_mentees=total_mentees;
+        this.total_mentees = total_mentees;
         this.rating_count = rating_count;
+    }
+
+    public Mentor(int id, String name, double rating, String username, String expertise) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.username = username;
+        this.expertise = expertise;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getCurentlyRequests() {
+        return CurentlyRequests;
+    }
+
+    public void setCurentlyRequests(int CurentlyRequests) {
+        this.CurentlyRequests = CurentlyRequests;
+    }
+
+    public int getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(int completed) {
+        this.completed = completed;
     }
 
     public String getImage() {
@@ -92,8 +127,6 @@ public class Mentor {
     public void setRating_count(int rating_count) {
         this.rating_count = rating_count;
     }
-    
-    
 
     // Getters and Setters
     public int getId() {
@@ -207,6 +240,7 @@ public class Mentor {
     public void setIs_deleted(boolean is_deleted) {
         this.is_deleted = is_deleted;
     }
+
     public double calculateFinalPrice() {
         return baseRate * multiplier;
     }
@@ -215,7 +249,5 @@ public class Mentor {
     public String toString() {
         return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + '}';
     }
-
-    
 
 }

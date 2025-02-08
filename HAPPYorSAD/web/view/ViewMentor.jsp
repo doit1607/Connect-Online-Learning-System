@@ -3,93 +3,103 @@
     Created on : Feb 5, 2025, 12:26:05 PM
     Author     : Dell
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Management</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            text-align: center;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mentor Management</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                text-align: center;
+            }
 
-        h2 {
-            margin-bottom: 20px;
-        }
+            h2 {
+                margin-bottom: 20px;
+            }
 
-        .search-container {
-            margin-bottom: 20px;
-        }
+            .search-container {
+                margin-bottom: 20px;
+            }
 
-        input {
-            padding: 8px;
-            width: 250px;
-        }
+            input {
+                padding: 8px;
+                width: 250px;
+            }
 
-        button {
-            padding: 8px 15px;
-            margin-left: 5px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
+            button {
+                padding: 8px 15px;
+                margin-left: 5px;
+                cursor: pointer;
+                background-color: #007bff;
+                color: white;
+                border: none;
+            }
 
-        table {
-            width: 90%;
-            margin: auto;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+            table {
+                width: 90%;
+                margin: auto;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
 
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
+            table, th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
 
-        th {
-            background-color: #007bff;
-            color: white;
-        }
+            th {
+                background-color: #007bff;
+                color: white;
+            }
 
-        .pagination {
-            margin-top: 10px;
-        }
+            .pagination {
+                margin-top: 10px;
+            }
 
-        button:hover {
-            opacity: 0.8;
-        }
-    </style>
-</head>
-<body>
+            button:hover {
+                opacity: 0.8;
+            }
+        </style>
+    </head>
+    <body>
 
-    <h2>Mentor Management</h2>
+        <h2>Mentor Management</h2>
 
-    <div class="search-container">
-        <input type="text" id="search-box" placeholder="Search mentor...">
-        <button onclick="searchMentor()">Search</button>
-    </div>
+        <div class="search-container">
+            <input type="text" id="search-box" placeholder="Search mentor...">
+            <button onclick="searchMentor()">Search</button>
+        </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th>ID</th>
-                <th>Full Name</th>
-                <th>Username</th>
-                <th>Expertise</th>
-                <th>Current Requestn</th>
-                <th>Completion % </th>
-                <th>? Rating</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody id="mentor-table-body">
-            <!-- D? li?u s? ???c thêm b?ng JavaScript -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Expertise</th>
+                    <th>Currently Requests</th>
+                    <th>Completion % </th>
+                    <th>?Rating</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="mentor-table-body">
+            <c:forEach var="mentor" items="${sessionScope.listMentor}">
+                <tr>
+                    <td>${mentor.id}</td>
+                    <td>${mentor.name}</td>
+                    <td>${mentor.username}</td>
+                    <td>${mentor.expertise}</td>
+                    <td>Hello</td>
+                    <td>Bye Bye</td>
+                    <td>${user.rating}</td>
+                    <td>${user.reviews}</td>
+                </tr>
+            </c:forEach>
         </tbody>
     </table>
 
@@ -110,12 +120,12 @@
 
         function loadMentors() {
             fetch("http://localhost:8080/api/mentors") // Backend API
-                .then(response => response.json())
-                .then(data => {
-                    mentors = data;
-                    displayTable();
-                })
-                .catch(error => console.error("L?i t?i d? li?u:", error));
+                    .then(response => response.json())
+                    .then(data => {
+                        mentors = data;
+                        displayTable();
+                    })
+                    .catch(error => console.error("L?i t?i d? li?u:", error));
         }
 
         function displayTable() {
@@ -163,8 +173,8 @@
         function searchMentor() {
             let query = document.getElementById("search-box").value.toLowerCase();
             let filteredMentors = mentors.filter(mentor =>
-                mentor.name.toLowerCase().includes(query) || 
-                mentor.accountName.toLowerCase().includes(query)
+                mentor.name.toLowerCase().includes(query) ||
+                        mentor.accountName.toLowerCase().includes(query)
             );
 
             mentors = filteredMentors;

@@ -32,6 +32,10 @@
         <servlet-name>CreateCourses</servlet-name>
         <servlet-class>controller.CreateCourses</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>controller.test</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -59,5 +63,9 @@
     <servlet-mapping>
         <servlet-name>CreateCourses</servlet-name>
         <url-pattern>/CreateCourses</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test</url-pattern>
     </servlet-mapping>
 </web-app>
