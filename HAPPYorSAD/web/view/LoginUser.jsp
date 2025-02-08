@@ -191,13 +191,13 @@
                     <h1><span class="logo-highlight">Dreams</span>HOS</h1>
 
 
-                    <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
+                    <div class="back-home"><a href="/HAPPYorSAD/Home">Back to Home</a></div>
                     <div class="signin-box">
 
                         <form action="/HAPPYorSAD/LoginUser" method="POST">
                             <input type="hidden" name="service" value="login">
                             <label for="username">Username</label>
-                            <input type="text" name="usernameLogin" value ="${cookie.usernameUser_cookie.value}"placeholder="Enter your username" required>
+                            <input type="text" name="usernameLogin" value ="${cookie.usernameUser_cookie.value}" placeholder="Enter your username" required>
                             <label for="password">Password</label>
                             <input type="password" name="passwordLogin" placeholder="Enter your password" required>
                             <div class="remember-me">
@@ -213,10 +213,10 @@
                             <c:if test="${requestScope.msg != null}">
                                 ${requestScope.msg}
                             </c:if>
-                            
+
                             <button type="submit" name="login" value="login" class="signin-btn">Sign In</button>
                         </form>
-                        
+
                         <div class="signup-link">
                             <p>Don't have an account? <a href="/HAPPYorSAD/view/RegisterUser.jsp">Sign up</a></p>
 

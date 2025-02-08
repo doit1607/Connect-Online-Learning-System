@@ -14,14 +14,6 @@
         <link rel="stylesheet" href="css/cssHome/homeHeader.css">
         <title>JSP Page</title>
     </head>
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>HAPPYorSAD Navbar</title>
-            <link rel="stylesheet" href="styles.css">
-        </head>
         <body>
             <header class="navbar">
                 <div class="logo">
@@ -29,8 +21,8 @@
                     <span>HAPPYor<strong>SAD</strong></span>
                 </div>
                 <ul class="menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Instructor</a></li>
+                    <li><a href="Home">Home</a></li>
+                    <li><a href="ViewMentor_Mentee">Instructor</a></li>
                     <li><a href="#">Student</a></li>
                     <li><a href="#">Pages</a></li>
                     <li><a href="#">Blog</a></li>
@@ -61,7 +53,3 @@
             </script>
         </body>
     </html>
-
-
-
-</html>
