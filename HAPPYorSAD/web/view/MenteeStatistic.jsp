@@ -43,9 +43,17 @@
                 </tbody>
             </table>
             <div class="pagination">
-                <c:forEach begin="1" end="${endPage}" var="i">
-                    <a class="${tag == i?"active":""}" href="menteestatistic?index=${i}">${i}</a>
-                </c:forEach>
+                <c:if test="${tag > 1}">
+                    <li class="page-item"><a href="menteestatistic?index=${tag-1}">Previous</a></li>
+                </c:if>
+                
+                    <c:forEach begin="1" end="${endPage}" var="i">
+                        <a class="${tag == i?"active":""}" href="menteestatistic?index=${i}">${i}</a>
+                    </c:forEach>
+                <c:if test="${tag < endPage}">
+                    <li class="page-item"><a href="menteestatistic?index=${tag+1}">Next</a></li>
+                </c:if>
+                
             </div>
         </form>
         <%@include file="../sourcesHome/homeFooter.jsp" %>

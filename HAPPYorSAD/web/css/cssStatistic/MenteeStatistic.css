@@ -58,38 +58,49 @@ tr:hover {
     margin-top: 20px;
 }
 
-/* Phân trang */
+/* Pagination Container */
 .pagination {
     display: flex;
-    justify-content: center; /* Căn giữa */
-    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    list-style: none;
 }
 
-/* Các số trang */
+/* Pagination Links */
 .pagination a {
-    display: inline-block;
-    padding: 10px 15px;
-    margin: 5px;
     text-decoration: none;
-    color: #007bff;
-    font-size: 16px;
-    font-weight: bold;
-    border: 2px solid #007bff;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    transition: 0.3s ease-in-out;
+    color: #333;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
-/* Khi hover vào số trang */
-.pagination a:hover {
-    background: #007bff;
-    color: white;
-}
-
-/* Số trang được chọn */
+/* Active Page */
 .pagination a.active {
-    background: #0056b3;
+    background-color: #007bff;
     color: white;
-    border: none;
-    box-shadow: 0 0 10px rgba(0, 91, 187, 0.8);
+    font-weight: bold;
+}
+
+/* Hover Effect */
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Previous & Next Buttons */
+.pagination .page-item a {
+    font-weight: bold;
+}
+
+/* Disabled State */
+.pagination .page-item.disabled a {
+    color: #aaa;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
 }
 

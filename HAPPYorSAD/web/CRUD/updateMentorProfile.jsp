@@ -22,29 +22,29 @@
             <form action="/HAPPYorSAD/updatementorprofile" method="post">
                 <input type="hidden" name="id" value="${mentor.id}">
                 
-                <label for="avatar">Avatar (URL):</label>
+                <label for="avatar">Avatar (URL) <span class="required">*</span></label>
                 <input type="text" id="avatar" name="avatar" value="${mentor.avatarPath}" required>
 
-                <label for="username">Account Name:</label>
+                <label for="username">Account Name <span class="required">*</span></label>
                 <input type="text" id="username" name="username" value="${mentor.username}" required>
 
-                <label for="fullname">Full Name:</label>
+                <label for="fullname">Full Name <span class="required">*</span></label>
                 <input type="text" id="fullname" name="fullname" value="${mentor.fullname}" required>
 
-                <label for="dateOfBirth">Date of Birth:</label>
+                <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
                 <input type="date" id="dateOfBirth" name="dateOfBirth" value="${mentor.dateOfBirth}" required>
 
-                <label for="email">Email (Read-Only):</label>
+                <label for="email">Email (Read-Only)</label>
                 <input type="email" id="email" name="email" value="${mentor.email}" readonly>
 
-                <label for="gender">Gender:</label>
+                <label for="gender">Gender <span class="required">*</span></label>
                 <select id="gender" name="gender">
                     <option value="Male" ${mentor.gender == 'Male' ? 'selected' : ''}>Male</option>
                     <option value="Female" ${mentor.gender == 'Female' ? 'selected' : ''}>Female</option>
                     <option value="Other" ${mentor.gender == 'Other' ? 'selected' : ''}>Other</option>
                 </select>
 
-                <label for="address">Address:</label>
+                <label for="address">Address <span class="required">*</span></label>
                 <input type="text" id="address" name="address" value="${mentor.address}" required>
 
                 <button type="submit">OK</button>

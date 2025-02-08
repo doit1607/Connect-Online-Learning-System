@@ -67,7 +67,7 @@ public class DAOMenteeStatistic extends DBConnection {
     public List<Mentee> pagingMentee(int index) {
         List<Mentee> list = new ArrayList<>();
         String sql = "select * from Mentee\n"
-                + "order by id\n"
+                + "order by [name]\n"
                 + "offset ? rows fetch next 2 rows only";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);

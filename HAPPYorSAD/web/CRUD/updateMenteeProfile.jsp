@@ -22,29 +22,29 @@
             <form action="/HAPPYorSAD/updatementeeprofile" method="post">
                 <input type="hidden" name="id" value="${mentee.id}">
                 
-                <label for="avatar">Avatar (URL):</label>
+                <label for="avatar">Avatar (URL) <span class="required">*</span></label>
                 <input type="text" id="avatar" name="avatar" value="${mentee.avatarPath}" required>
 
-                <label for="username">Account Name:</label>
+                <label for="username">Account Name <span class="required">*</span></label>
                 <input type="text" id="username" name="username" value="${mentee.username}" required>
 
-                <label for="fullname">Full Name:</label>
+                <label for="fullname">Full Name <span class="required">*</span></label>
                 <input type="text" id="fullname" name="fullname" value="${mentee.fullname}" required>
 
-                <label for="dateOfBirth">Date of Birth:</label>
+                <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
                 <input type="date" id="dateOfBirth" name="dateOfBirth" value="${mentee.dateOfBirth}" required>
 
-                <label for="email">Email (Read-Only):</label>
+                <label for="email">Email (Read-Only)</label>
                 <input type="email" id="email" name="email" value="${mentee.email}" readonly>
 
-                <label for="gender">Gender:</label>
+                <label for="gender">Gender <span class="required">*</span></label>
                 <select id="gender" name="gender">
                     <option value="Male" ${mentee.gender == 'Male' ? 'selected' : ''}>Male</option>
                     <option value="Female" ${mentee.gender == 'Female' ? 'selected' : ''}>Female</option>
                     <option value="Other" ${mentee.gender == 'Other' ? 'selected' : ''}>Other</option>
                 </select>
 
-                <label for="address">Address:</label>
+                <label for="address">Address <span class="required">*</span></label>
                 <input type="text" id="address" name="address" value="${mentee.address}" required>
 
                 <button type="submit">OK</button>

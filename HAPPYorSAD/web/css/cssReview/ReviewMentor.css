@@ -122,4 +122,10 @@ button[type="submit"]:hover {
     color: white;
 }
 
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+
 

@@ -35,7 +35,7 @@
                     <input type="radio" id="star5" name="rating" value="5"><label for="star5">&#9733;</label>
                 </div>
 
-                <label for="comment">Comment:</label>
+                <label for="comment">Comment <span class="required">*</span></label>
                 <input name="comment" required>
 
                 <input type="hidden" name="mentorId" value="${mentorId}">

@@ -25,11 +25,11 @@
         <div class="form-container">
             <h1>Create Course</h1>
             <form>
-                <label for="title">Course Name:</label>
+                <label for="title">Course Name <span class="required">*</span></label>
                 <input type="text" name="title" id="title" required>
 
-                <label for="description">Description:</label>
-                <input type="text" name="description" id="description">
+                <label for="description">Description <span class="required">*</span></label>
+                <input type="text" name="description" id="description" required="">
 
                 <input type="hidden" name="status" value="active">
 
