@@ -91,7 +91,8 @@
             <h2>Change Password</h2>
             <form action="LoginUser" method="post">
                 <input type="hidden" name="service" value="changepass">
-                <div class="form-group"><form action="LoginUser?register=out" method="post">
+
+                <div class="form-group">
                     <label for="currentPassword">Current Password:</label>
                     <input type="password" id="currentPassword" name="currentpassword" placeholder="Enter current password" required>
                 </div>
@@ -105,10 +106,35 @@
                 </div>
                 <button type="submit" class="btn">Change Password</button>
             </form>
-                <c:if test="${requestScope.error != null}">
-                    ${requestScope.error}
-                </c:if>
+            <c:if test="${requestScope.error != null}">
+                ${requestScope.error}
+            </c:if>
 
         </div>
+        <script>
+            document.getElementById("newPassword").addEventListener("input", checkPasswords);
+            document.getElementById("confirmPassword").addEventListener("input", checkPasswords);
+
+            function checkPasswords() {
+                let password = document.getElementById("newPassword").value;
+                let confirmPassword = document.getElementById("confirmPassword").value;
+                let message = document.getElementById("passwordMessage");
+
+                if (password !== confirmPassword) {
+                    if (!message) {
+                        message = document.createElement("p");
+                        message.id = "passwordMessage";
+                        message.style.color = "red";
+                        message.style.textAlign = "center";
+                        message.textContent = "New password and confirm password do not match!";
+                        document.getElementById("confirmPassword").after(message);
+                    }
+                } else {
+                    if (message) {
+                        message.remove();
+                    }
+                }
+            }
+        </script>
     </body>
 </html>

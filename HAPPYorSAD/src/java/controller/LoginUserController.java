@@ -45,17 +45,24 @@ public class LoginUserController extends HttpServlet {
             String rememberMe = request.getParameter("rememberMe");
 
             if (userDAO.loginUser(username, password)) {
-                if ("on".equals(rememberMe)) {
-                    Cookie c = new Cookie("usernameUser_cookie", username);
-                    c.setMaxAge(3600);
-                    response.addCookie(c);
-                } else {
-                    Cookie c = new Cookie("usernameUser_cookie", "");
-                    c.setMaxAge(0);
-                    response.addCookie(c);
+                if (userDAO.checkUserActive(username)) {
+                    if ("on".equals(rememberMe)) {
+                        Cookie c = new Cookie("usernameUser_cookie", username);
+                        c.setMaxAge(3600);
+                        response.addCookie(c);
+                    } else {
+                        Cookie c = new Cookie("usernameUser_cookie", "");
+                        c.setMaxAge(0);
+                        response.addCookie(c);
+                    }
+                    session.setAttribute("usernameUser", username);
+                    response.sendRedirect("ShowAllCourse");
                 }
-                session.setAttribute("usernameUser", username);
-                response.sendRedirect("ShowAllCourse");
+                else{
+                    request.setAttribute("error", "Your account hasn't been activated yet. Please check your email!");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                }
+
             } else {
                 request.setAttribute("error", "Wrong username or password!!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
@@ -99,7 +106,6 @@ public class LoginUserController extends HttpServlet {
 
                     String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
                     em.sendVerificationEmail(email, username, verificationLink);
-
                     request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
                 } else {
@@ -136,7 +142,7 @@ public class LoginUserController extends HttpServlet {
         }
 
         if ("changepass".equals(service)) {
-            String username = request.getParameter("username");
+            String username = (String)session.getAttribute("usernameUser");
             String oldPassword = request.getParameter("oldPassword");
             String newPassword = request.getParameter("newPassword");
 

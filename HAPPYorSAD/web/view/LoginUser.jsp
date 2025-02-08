@@ -57,8 +57,8 @@
             .remember-me {
                 margin-bottom: 20px;
                 align-items: center;
-                gap: 10px; 
-                justify-content: flex-start; 
+                gap: 10px;
+                justify-content: flex-start;
             }
 
 
@@ -156,6 +156,22 @@
             .back-home a:hover {
                 text-decoration: underline;
             }
+            .remember-me {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 20px;
+                text-align: left;
+                justify-content: flex-start;
+            }
+
+            .remember-me input {
+                width: 16px;
+                height: 16px;
+                margin: 0;
+                cursor: pointer;
+            }
+
 
         </style>
     </head>
@@ -177,13 +193,17 @@
 
                     <div class="back-home"><a href="/HAPPYorSAD/Home/HomePage.jsp">Back to Home</a></div>
                     <div class="signin-box">
-                       
+
                         <form action="/HAPPYorSAD/LoginUser" method="POST">
                             <input type="hidden" name="service" value="login">
                             <label for="username">Username</label>
-                            <input type="text" name="usernameLogin" placeholder="Enter your username" required>
+                            <input type="text" name="usernameLogin" value ="${cookie.usernameUser_cookie.value}"placeholder="Enter your username" required>
                             <label for="password">Password</label>
                             <input type="password" name="passwordLogin" placeholder="Enter your password" required>
+                            <div class="remember-me">
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
+                                <label for="rememberMe">Remember me</label>
+                            </div>
                             <div class="forgot-password">
                                 <a href="forgotPassword.jsp">Forgot Password?</a>
                             </div>
@@ -193,13 +213,10 @@
                             <c:if test="${requestScope.msg != null}">
                                 ${requestScope.msg}
                             </c:if>
+                            
                             <button type="submit" name="login" value="login" class="signin-btn">Sign In</button>
                         </form>
-                        <div class="or-signin">
-                            <p>Or sign in with</p>
-                            <button class="google-btn">Sign In using Google</button>
-                            <button class="facebook-btn">Sign In using Facebook</button>
-                        </div>
+                        
                         <div class="signup-link">
                             <p>Don't have an account? <a href="/HAPPYorSAD/view/RegisterUser.jsp">Sign up</a></p>
 

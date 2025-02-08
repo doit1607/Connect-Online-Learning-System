@@ -31,7 +31,7 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
-
+    
     public void addUser(User u) {
         try {
             String sql = "INSERT INTO [dbo].Users "
@@ -81,6 +81,21 @@ public class DAOuser extends DBConnection {
     public boolean checkUsernameExist(String username) {
         try {
             String sql = "Select * from Users where username = ? ";
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean checkUserActive(String username) {
+        try {
+            String sql = "Select * from Users where username = ? and status = 'Active";
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
             ResultSet rs = state.executeQuery();

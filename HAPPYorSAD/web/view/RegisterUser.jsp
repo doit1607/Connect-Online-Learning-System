@@ -248,16 +248,7 @@
                 }
             }
 
-            function previewAvatar(event) {
-                const previewContainer = document.getElementById("avatarPreview");
-                previewContainer.innerHTML = "";
-                const file = event.target.files[0];
-                if (file) {
-                    const img = document.createElement("img");
-                    img.src = URL.createObjectURL(file);
-                    previewContainer.appendChild(img);
-                }
-            }
+
         </script>
 
 
