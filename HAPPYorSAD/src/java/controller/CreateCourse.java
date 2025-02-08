@@ -85,7 +85,7 @@ public class CreateCourse extends HttpServlet {
             request.setAttribute("message", "Error adding course.");
         }
 
-        request.getRequestDispatcher("/CRUD/CreateCourses.jsp").forward(request, response);
+        request.getRequestDispatcher("/CRUD/createCourses.jsp").forward(request, response);
 
     }
 

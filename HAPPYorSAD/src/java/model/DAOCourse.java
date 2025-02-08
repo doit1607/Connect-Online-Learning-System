@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author Acer
  */
 public class DAOCourse extends DBConnection {
 
-     public List<Course> getAllCourse() {
+    public List<Course> getAllCourse() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course";
         try {
@@ -56,7 +55,7 @@ public class DAOCourse extends DBConnection {
                 + "           ,[status]\n"
                 + "           ,[course_major_id])\n"
                 + "     VALUES(?, ?, ?, ?, ?, ?)";
-        
+
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, cr.getTitle());
@@ -71,6 +70,7 @@ public class DAOCourse extends DBConnection {
         }
         return false;
     }
+
     public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course ORDER BY title";
@@ -98,11 +98,79 @@ public class DAOCourse extends DBConnection {
         }
         return listCourse;
     }
+
+    public List<Course> getAllCourseHome() {
+        ArrayList<Course> listCourseHome = new ArrayList<>();
+        String query = "SELECT \n"
+                + "    c.title,\n"
+                + "	c.image,\n"
+                + "    cm.name as CourseMajor,\n"
+                + "    COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
+                + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
+                + "FROM Course c\n"
+                + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN Users u_mentor ON c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
+                + "LEFT JOIN Users u_mentee ON c.mentor_id = u_mentee.id AND u_mentee.role = 'mentee'\n"
+                + "GROUP BY c.title, c.image, cm.name";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            ResultSet result = connect.executeQuery();
+            while (result.next()) {
+                String title = result.getString("title");
+                String courseMajor = result.getString("CourseMajor");
+                int total_Mentor = result.getInt("total_Mentor");
+                int total_Mentee = result.getInt("total_Mentee");
+                String image = result.getString("image");
+                Course course = new Course(title, courseMajor, total_Mentor, total_Mentee, image);
+                listCourseHome.add(course);
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCourseHome;
+    }
+    
+    public List<Course> getAllCourseHome2() {
+        ArrayList<Course> listCourseHome = new ArrayList<>();
+        String query = "SELECT TOP 4\n"
+                + "    c.title,\n"
+                + "	c.image,\n"
+                + "    cm.name as CourseMajor,\n"
+                + "    COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
+                + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
+                + "FROM Course c\n"
+                + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN Users u_mentor ON c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
+                + "LEFT JOIN Users u_mentee ON c.mentor_id = u_mentee.id AND u_mentee.role = 'mentee'\n"
+                + "GROUP BY c.title, c.image, cm.name\n"
+                + "ORDER BY total_Mentee DESC;";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            ResultSet result = connect.executeQuery();
+            while (result.next()) {
+                String title = result.getString("title");
+                String courseMajor = result.getString("CourseMajor");
+                int total_Mentor = result.getInt("total_Mentor");
+                int total_Mentee = result.getInt("total_Mentee");
+                String image = result.getString("image");
+                Course course = new Course(title, courseMajor, total_Mentor, total_Mentee, image);
+                listCourseHome.add(course);
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCourseHome;
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourse1 = dao.getAllCourse();
-        System.out.println(listCourse1);
-        
+        List<Course> listCourseHome = dao.getAllCourseHome2();
+        System.out.println(listCourseHome);
+
     }
 }

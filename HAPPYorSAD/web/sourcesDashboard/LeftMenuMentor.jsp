@@ -26,10 +26,10 @@
             <nav>
                 <h4>Dashboard</h4>
                 <ul>
-                    <li><i class="fas fa-tachometer-alt"></i> <a href="../index.jsp?page=dashboard">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i> <a href="index.jsp?page=profile">My Profile</a></li>
+                    <li><i class="fas fa-tachometer-alt"></i> <a href="#">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i> <a href="/HAPPYorSAD/updatementeeprofile">My Profile</a></li>
                     <li><i class="fas fa-book"></i> <a href="index.jsp?page=enrolled_courses">Enrolled Courses</a></li>
-                    <li><i class="fas fa-star"></i> <a href="index.jsp?page=reviews">Reviews</a></li>
+                    <li><i class="fas fa-star"></i> <a href="/HAPPYorSAD/reviewmentor">Reviews</a></li>
                     <li><i class="fas fa-shopping-cart"></i> <a href="index.jsp?page=order_history">Order History</a></li>
                     <li><i class="fas fa-users"></i> <a href="index.jsp?page=referrals">Referrals</a></li>
                     <li><i class="fas fa-comment"></i> <a href="index.jsp?page=messages">Messages</a></li>

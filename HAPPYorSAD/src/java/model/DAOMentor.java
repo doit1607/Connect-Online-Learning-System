@@ -55,8 +55,11 @@ public class DAOMentor extends DBConnection {
 
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "SELECT id, name, email, rating, reviews FROM Mentor ";
-
+        String sql = "Select u.avatar_path, m.name, u.username, "
+                + "m.expertise, m.email, m.reviews, m.rating, "
+                + "m.price_per_slot\n"
+                + "from Mentor m \n"
+                + "join Users u on u.id = m.user_id";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -70,16 +73,48 @@ public class DAOMentor extends DBConnection {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
 
         return list;
     }
-    
-     public static void main(String[] args) {
+
+    public List<Mentor> getMentorsHome() {
+        List<Mentor> list = new ArrayList<>();
+        String sql = "SELECT "
+                + "    m.image, "
+                + "    m.name, "
+                + "    m.expertise, "
+                + "    m.rating, "
+                + "    COUNT(DISTINCT r.mentee_id) AS total_mentees, "
+                + "    COUNT(r.rating) AS rating_count "
+                + "FROM Mentor m "
+                + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id "
+                + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee' "
+                + "GROUP BY m.image, m.name, m.expertise, m.rating "
+                + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new Mentor(rs.getString("name"),
+                        rs.getDouble("rating"), rs.getString("expertise"),
+                        rs.getString("image"), rs.getInt("total_mentees"),
+                        rs.getInt("rating_count"))
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentorsSuggestion();
+        List<Mentor> list = dao.getMentorsHome();
         System.out.println(list);
 
     }

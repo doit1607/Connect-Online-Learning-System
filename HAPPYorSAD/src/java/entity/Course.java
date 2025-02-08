@@ -20,6 +20,9 @@ public class Course {
     private LocalDateTime updatedAt;
     private int courseMajorId;
     private String status;
+    private String courseMajor;
+    private int total_Mentor, total_Mentee;
+    private String image;
 
     public Course() {
     }
@@ -33,6 +36,51 @@ public class Course {
         this.courseMajorId = courseMajorId;
         this.status = status;
     }
+
+    public Course(String title,String CourseMajor, int total_Mentor, int total_Mentee, String imgage ) {
+        this.title = title;
+        this.total_Mentor = total_Mentor;
+        this.total_Mentee = total_Mentee;
+        this.courseMajor = CourseMajor;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
+
+    public String getCourseMajor() {
+        return courseMajor;
+    }
+
+    public void setCourseMajor(String CourseMajor) {
+        this.courseMajor = CourseMajor;
+    }
+
+    public int getTotal_Mentor() {
+        return total_Mentor;
+    }
+
+    public void setTotal_Mentor(int total_Mentor) {
+        this.total_Mentor = total_Mentor;
+    }
+
+    public int getTotal_Mentee() {
+        return total_Mentee;
+    }
+
+    public void setTotal_Mentee(int total_Mentee) {
+        this.total_Mentee = total_Mentee;
+    }
+    
+    
+    
+    
 
     public int getId() {
         return id;
@@ -105,5 +153,14 @@ public class Course {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    
+    @Override
+    public String toString() {
+        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", status=" + status + ", CourseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + '}';
+    }
+   
+    
+    
     
 }

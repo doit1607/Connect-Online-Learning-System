@@ -9,10 +9,12 @@ package entity;
  * @author admin
  */
 public class Major {
-    
-    private int id; 
-    private String name; 
+
     private String description;
+    private int id;
+    private String image;
+    private String name;
+    private int total_courses;
 
     public Major() {
     }
@@ -21,6 +23,28 @@ public class Major {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public Major(String name, String image, int total_courses) {
+        this.image = image;
+        this.name = name;
+        this.total_courses = total_courses;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getTotal_courses() {
+        return total_courses;
+    }
+
+    public void setTotal_courses(int total_courses) {
+        this.total_courses = total_courses;
     }
 
     public int getId() {
@@ -46,4 +70,10 @@ public class Major {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Major{" + "description=" + description + ", id=" + id + ", image=" + image + ", name=" + name + ", total_courses=" + total_courses + '}';
+    }
+
 }

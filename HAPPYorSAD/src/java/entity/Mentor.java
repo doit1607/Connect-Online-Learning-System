@@ -26,6 +26,9 @@ public class Mentor {
     private double baseRate;
     private double multiplier;
     private boolean is_deleted;
+    private String image;
+    private int total_mentees;
+    private int rating_count;
 
     // Constructor
     public Mentor(int id, int mentorId, int userId, String name, String email, double rating, String reviews,
@@ -56,6 +59,41 @@ public class Mentor {
         this.reviews = reviews;
 
     }
+
+    public Mentor(String name, double rating, String expertise, String image,int total_mentees, int rating_count ) {
+        this.name = name;
+        this.rating = rating;
+        this.expertise = expertise;
+        this.image = image;
+        this.total_mentees=total_mentees;
+        this.rating_count = rating_count;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getTotal_mentees() {
+        return total_mentees;
+    }
+
+    public void setTotal_mentees(int total_mentees) {
+        this.total_mentees = total_mentees;
+    }
+
+    public int getRating_count() {
+        return rating_count;
+    }
+
+    public void setRating_count(int rating_count) {
+        this.rating_count = rating_count;
+    }
+    
+    
 
     // Getters and Setters
     public int getId() {
@@ -175,9 +213,9 @@ public class Mentor {
 
     @Override
     public String toString() {
-        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + '}';
+        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + '}';
     }
-    
+
     
 
 }
