@@ -95,7 +95,7 @@ public class DAOuser extends DBConnection {
     }
     public boolean checkUserActive(String username) {
         try {
-            String sql = "Select * from Users where username = ? and status = 'Active";
+            String sql = "Select * from Users where username = ? and status = 'active'";
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
             ResultSet rs = state.executeQuery();
@@ -215,7 +215,7 @@ public class DAOuser extends DBConnection {
 
     public boolean activateUser(String email) {
         try {
-            String sql = "UPDATE Users SET status = 'Active' WHERE email = ?";
+            String sql = "UPDATE Users SET status = 'active' WHERE email = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             int rowsUpdated = ps.executeUpdate();

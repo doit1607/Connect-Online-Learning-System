@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
     Document   : homeHeader
     Created on : Jan 19, 2025, 4:17:41 PM
@@ -36,8 +37,15 @@
                 </ul>
                 <div class="auth-buttons">
                     <span class="theme-toggle">&#9788;</span> 
+                    <c:if test="${sessionScope.usernameUser == null}">
+                    
                     <button class="signin" onclick="redirectToLogin()">Sign in</button>
                     <button class="signup" onclick="redirectToSignup()">Sign up</button>
+                     </c:if>
+                     <c:if test="${sessionScope.usernameUser != null}">
+                    <span class="username">Welcome, ${sessionScope.usernameUser}!</span>
+                    <button class="logout" onclick="redirectToLogout()">Logout</button>
+                    </c:if>
                 </div>
             </header>
             <script>
@@ -45,7 +53,10 @@
                     window.location.href = "/HAPPYorSAD/view/RegisterUser.jsp";
                 }
                 function redirectToLogin() {
-                    window.location.href = "/HAPPYorSAD/LoginUser?service=login";
+                    window.location.href = "/HAPPYorSAD/view/LoginUser.jsp";
+                }
+                function redirectToLogout() {
+                    window.location.href = "/HAPPYorSAD/LoginUser?service=logout";
                 }
             </script>
         </body>

@@ -56,11 +56,12 @@ public class LoginUserController extends HttpServlet {
                         response.addCookie(c);
                     }
                     session.setAttribute("usernameUser", username);
-                    response.sendRedirect("ShowAllCourse");
+                    response.sendRedirect("Home");
                 }
                 else{
-                    request.setAttribute("error", "Your account hasn't been activated yet. Please check your email!");
+                    
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                    request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
                 }
 
             } else {
