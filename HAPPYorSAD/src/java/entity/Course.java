@@ -28,6 +28,21 @@ public class Course {
     public Course() {
     }
 
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String image) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.managerId = managerId;
+        this.mentorId = mentorId;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseMajorId = courseMajorId;
+        this.image = image;
+    }
+
+    
+    
     public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
         this.id = id;
         this.title = title;

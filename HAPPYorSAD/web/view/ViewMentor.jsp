@@ -94,8 +94,8 @@
                     <td>${mentor.name}</td>
                     <td>${mentor.username}</td>
                     <td>${mentor.expertise}</td>
-                    <td>Hello</td>
-                    <td>Bye Bye</td>
+                    <td>5</td>
+                    <td>70%</td>
                     <td>${user.rating}</td>
                     <td>${user.reviews}</td>
                 </tr>

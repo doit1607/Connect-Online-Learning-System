@@ -20,7 +20,17 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getAllCourse() {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course";
+        String query = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Course]";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
@@ -28,14 +38,15 @@ public class DAOCourse extends DBConnection {
                 int id = result.getInt("id");
                 String title = result.getString("title");
                 String description = result.getString("description");
-                int managerId = result.getInt("manager_id"); // Sửa lại tên cột cho đúng
+                int managerId = result.getInt("manager_id"); 
                 int mentorId = result.getInt("mentor_id");
                 LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
+                String image = result.getString("image");
 
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
                 listCourse.add(course);
             }
             result.close();
@@ -77,7 +88,18 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT id, title, description, manager_id, mentor_id, status, created_at, updated_at, course_major_id FROM Course ORDER BY title";
+        String query = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "  order by [title]";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
@@ -85,14 +107,15 @@ public class DAOCourse extends DBConnection {
                 int id = result.getInt("id");
                 String title = result.getString("title");
                 String description = result.getString("description");
-                int managerId = result.getInt("manager_id"); // Sửa lại tên cột cho đúng
+                int managerId = result.getInt("manager_id");
                 int mentorId = result.getInt("mentor_id");
                 LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
+                String image = result.getString("image");
 
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
                 listCourse.add(course);
             }
             result.close();
@@ -135,7 +158,7 @@ public class DAOCourse extends DBConnection {
         }
         return listCourseHome;
     }
-    
+
     public List<Course> getAllCourseHome2() {
         ArrayList<Course> listCourseHome = new ArrayList<>();
         String query = "SELECT TOP 4\n"
@@ -168,6 +191,11 @@ public class DAOCourse extends DBConnection {
             e.printStackTrace();
         }
         return listCourseHome;
+    }
+
+    public void updtaeCourse(int id, String title, String description,
+            int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
+
     }
 
     public static void main(String[] args) {

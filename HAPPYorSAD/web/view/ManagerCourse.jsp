@@ -33,7 +33,6 @@
                             <td>${o.id}</td>
                             <td>${o.title}</td>
                             <td>
-                                <!--                                <button id="toggleButton" class="toggle-btn" onclick="toggleState()">Enable</button>-->
                                 <button id="toggleButton${o.id}" class="toggle-btn" onclick="toggleState('${o.id}')">Enable</button>
                             </td>
                             <td>
