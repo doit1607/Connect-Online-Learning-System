@@ -15,7 +15,7 @@ public class Mentee {
     private int id;
     private int user_id;
     private String name;
-    private String is_deleted;
+    private int is_deleted;
     private String email;
     private String goals;
     private LocalDateTime createdAt;
@@ -23,7 +23,7 @@ public class Mentee {
     public Mentee() {
     }
 
-    public Mentee(int id, int user_id, String name, String is_deleted, String email, String goals, LocalDateTime createdAt) {
+    public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt) {
         this.id = id;
         this.user_id = user_id;
         this.name = name;
@@ -57,11 +57,11 @@ public class Mentee {
         this.name = name;
     }
 
-    public String getIs_deleted() {
+    public int getIs_deleted() {
         return is_deleted;
     }
 
-    public void setIs_deleted(String is_deleted) {
+    public void setIs_deleted(int is_deleted) {
         this.is_deleted = is_deleted;
     }
 

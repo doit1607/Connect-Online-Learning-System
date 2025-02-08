@@ -34,30 +34,22 @@ public class DAOuser extends DBConnection {
 
     public void addUser(User u) {
         try {
-            // The SQL query
-            String sql = "INSERT INTO [dbo].Users\n"
-                    + "           ([username]\n"
-                    + "           ,[fullname]\n"
-                    + "           ,[avatar_path]\n"
-                    + "           ,[password]\n"
-                    + "           ,[status]\n"
-                    + "           ,[email]\n"
-                    + "           ,[address]\n"
-                    + "           ,[phone_number]\n"
-                    + "           ,[date_of_birth]\n"
-                    + "           ,[gender]\n"
-                    + "           ,[created_at]\n"
-                    + "           ,[role]\n"
-                    + "           ,[is_guest]) "
+            String sql = "INSERT INTO [dbo].Users "
+                    + "([username], [fullname], [avatar_path], [password], [status], [email], "
+                    + "[address], [phone_number], [date_of_birth], [gender], [created_at], [role], [is_guest]) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            // Create a prepared statement
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            // Set the user properties
             stmt.setString(1, u.getUsername());
             stmt.setString(2, u.getFullname());
-            stmt.setString(3, u.getAvatarPath());
+
+            if (u.getAvatarPath() != null) {
+                stmt.setString(3, u.getAvatarPath());
+            } else {
+                stmt.setNull(3, java.sql.Types.VARCHAR);
+            }
+
             stmt.setString(4, u.getPassword());
             stmt.setString(5, u.getStatus());
             stmt.setString(6, u.getEmail());
@@ -67,17 +59,22 @@ public class DAOuser extends DBConnection {
             if (u.getDateOfBirth() != null) {
                 stmt.setDate(9, new java.sql.Date(u.getDateOfBirth().getTime()));
             } else {
-                stmt.setDate(9, null);  // Or set a default date
+                stmt.setNull(9, java.sql.Types.DATE);
             }
 
             stmt.setString(10, u.getGender());
-            stmt.setDate(11, new java.sql.Date(u.getCreatedAt().getTime()));
+            if (u.getCreatedAt() != null) {
+                stmt.setTimestamp(11, new java.sql.Timestamp(u.getCreatedAt().getTime()));
+            } else {
+                stmt.setNull(11, java.sql.Types.TIMESTAMP);
+            }
+
             stmt.setString(12, u.getRole());
             stmt.setBoolean(13, false);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -86,6 +83,66 @@ public class DAOuser extends DBConnection {
             String sql = "Select * from Users where username = ? ";
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void deleteUserByEmail(String email) {
+        String sql = "DELETE FROM Users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isActivationExpired(String email) {
+        String sql = "SELECT created_at FROM Users WHERE email = ? AND status = 'Inactive'";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
+                java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
+
+                long diffInMinutes = (now.getTime() - createdAt.getTime()) / (60*1000); 
+                return diffInMinutes > 15; 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true; 
+    }
+
+    public boolean checkEmailExist(String email) {
+        try {
+            String sql = "Select * from Users where email = ? ";
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, email);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkEmailActive(String email) {
+        try {
+            String sql = "Select * from Users where email = ? and status = 'Inactive";
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, email);
             ResultSet rs = state.executeQuery();
             if (rs.next()) {
                 return true;
@@ -115,7 +172,7 @@ public class DAOuser extends DBConnection {
         return null;
     }
 
-    public void UpdatePassword(String username, String password) {
+    public void updatePassword(String username, String password) {
         try {
             String Sql = "UPDATE Users SET password = ? WHERE username = ?";
             PreparedStatement st = conn.prepareStatement(Sql);
@@ -128,31 +185,34 @@ public class DAOuser extends DBConnection {
         }
     }
 
-    // fetch Mentee by id
-    public User getMenteeById(int id) {
-        User mentee = null;
-        String sql = "Select * from Users where id = ? and role = 'mentee'";
+    public boolean checkActiveExpire(String email) {
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, id);
-            try (ResultSet rs = pre.executeQuery()) {
-                if (rs.next()) {
-                    mentee = new User();
-                    mentee.setUsername(rs.getString("username"));
-                    mentee.setAvatarPath(rs.getString("avatar_path"));
-                    mentee.setFullname(rs.getString("fullname"));
-                    mentee.setEmail(rs.getString("email"));
-                    mentee.setPhoneNumber(rs.getString("phone_number"));
-                    mentee.setAddress(rs.getString("address"));
-                    mentee.setDateOfBirth(rs.getDate("date_of_birth"));
-                    mentee.setGender(rs.getString("gender"));
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            String sql = "UPDATE Users SET status = 'Active' WHERE email = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mentee;
+        return false;
     }
+
+    public boolean activateUser(String email) {
+        try {
+            String sql = "UPDATE Users SET status = 'Active' WHERE email = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
 
     // Update Mentee profile
     public boolean updateMenteeProfile(User mentee) {
@@ -175,6 +235,31 @@ public class DAOuser extends DBConnection {
             ex.printStackTrace();
         }
         return isUpdate;
+    }
+
+    public User getMenteeById(int id) {
+        User mentor = null;
+        String sql = "Select * from Users where id = ? and role = 'mentee'";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new User();
+                    mentor.setUsername(rs.getString("username"));
+                    mentor.setAvatarPath(rs.getString("avatar_path"));
+                    mentor.setFullname(rs.getString("fullname"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setPhoneNumber(rs.getString("phone_number"));
+                    mentor.setAddress(rs.getString("address"));
+                    mentor.setDateOfBirth(rs.getDate("date_of_birth"));
+                    mentor.setGender(rs.getString("gender"));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return mentor;
     }
 
     // fetch Mentor by id

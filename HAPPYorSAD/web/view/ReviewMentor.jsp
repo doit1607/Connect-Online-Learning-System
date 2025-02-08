@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/cssReview/ReviewMentor.css">
+        <link rel="stylesheet" href="../css/cssReview/ReviewMentor.css">
         <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
         <link rel="stylesheet" href="css/cssHome/homeFooter.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
 
 
             <!-- Rating Form -->
-            <form action="reviewmentor" method="post">
+            <form action="/HAPPYorSAD/reviewmentor" method="get">
                 <input type="hidden" name="mentorId" value="${param.mentorId}">
                 <input type="hidden" name="menteeId" value="1"> <!-- Replace with dynamic user session -->
 
@@ -36,7 +36,7 @@
                 </div>
 
                 <label for="comment">Comment:</label>
-                <textarea name="comment" required></textarea>
+                <input name="comment" required>
 
                 <input type="hidden" name="mentorId" value="${mentorId}">
                 <input type="hidden" name="menteeId" value="${menteeId}">

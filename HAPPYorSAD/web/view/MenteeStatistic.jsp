@@ -31,17 +31,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="mentee" items="${sessionScope.listAllMentee}" varStatus="status">
-                    <tr>
-                        <td>${status.index + 1}</td>
-                        <td>${mentee.id}</td>
-                        <td>${mentee.name}</td>
-                        <td>${mentee.email}</td>
-                        <td>${mentee.goals}</td>                        
-                    </tr>
-                </c:forEach>
+                    <c:forEach var="mentee" items="${listM}" varStatus="status">
+                        <tr>
+                            <td>${status.index + 1}</td>
+                            <td>${mentee.id}</td>
+                            <td>${mentee.name}</td>
+                            <td>${mentee.email}</td>
+                            <td>${mentee.goals}</td>                        
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
+            <div class="pagination">
+                <c:forEach begin="1" end="${endPage}" var="i">
+                    <a class="${tag == i?"active":""}" href="menteestatistic?index=${i}">${i}</a>
+                </c:forEach>
+            </div>
         </form>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>

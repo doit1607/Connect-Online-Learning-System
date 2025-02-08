@@ -34,11 +34,27 @@ public class MenteeStatistic extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+        
         DAOMenteeStatistic dao = new DAOMenteeStatistic();
-        List<Mentee> list = dao.getMentee();
-
-        HttpSession session = request.getSession();
-        session.setAttribute("listAllMentee", list);
+//        List<Mentee> list = dao.getMentee();
+        int count = dao.getTotalMentee();
+        int endPage = count/2;
+        if (count % 2 != 0) {
+            endPage++;
+        }
+        
+        List<Mentee> lMen = dao.pagingMentee(index);
+        
+//        HttpSession session = request.getSession();
+//        session.setAttribute("listAllMentee", list);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("tag", index);
+        request.setAttribute("listM", lMen);
 
         request.getRequestDispatcher("view/MenteeStatistic.jsp").forward(request, response);
     }

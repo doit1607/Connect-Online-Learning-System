@@ -11,20 +11,33 @@ package entity;
 import java.time.LocalDateTime;
 
 public class Course {
+
     private int id;
     private String title;
     private String description;
     private int managerId;
     private int mentorId;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int courseMajorId;
-    private String status;
     private String courseMajor;
     private int total_Mentor, total_Mentee;
     private String image;
 
     public Course() {
+    }
+
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.managerId = managerId;
+        this.mentorId = mentorId;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseMajorId = courseMajorId;
     }
 
     public Course(int id, String title, String description, int managerId, int mentorId, int courseMajorId, String status) {
@@ -33,11 +46,11 @@ public class Course {
         this.description = description;
         this.managerId = managerId;
         this.mentorId = mentorId;
-        this.courseMajorId = courseMajorId;
         this.status = status;
+        this.courseMajorId = courseMajorId;
     }
 
-    public Course(String title,String CourseMajor, int total_Mentor, int total_Mentee, String imgage ) {
+    public Course(String title, String CourseMajor, int total_Mentor, int total_Mentee, String imgage) {
         this.title = title;
         this.total_Mentor = total_Mentor;
         this.total_Mentee = total_Mentee;
@@ -52,7 +65,6 @@ public class Course {
     public void setImage(String image) {
         this.image = image;
     }
-    
 
     public String getCourseMajor() {
         return courseMajor;
@@ -77,10 +89,6 @@ public class Course {
     public void setTotal_Mentee(int total_Mentee) {
         this.total_Mentee = total_Mentee;
     }
-    
-    
-    
-    
 
     public int getId() {
         return id;
@@ -122,6 +130,14 @@ public class Course {
         this.mentorId = mentorId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -146,21 +162,9 @@ public class Course {
         this.courseMajorId = courseMajorId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    
     @Override
     public String toString() {
         return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", status=" + status + ", CourseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + '}';
     }
-   
-    
-    
-    
+
 }
