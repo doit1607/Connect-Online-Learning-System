@@ -9,22 +9,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .course-container {
     display: flex;
     flex-wrap: wrap;
-    
+
 }
 
 .course-card {
     display: flex;
     flex-direction: column;
     height: 100%;
-     background: linear-gradient(to right, #fadede, #e5f4fd)
+    background: linear-gradient(to right, #fadede, #e5f4fd)
 }
 
 .course-card img {
-    width: 100%;
-    height: 100%; /* Hoặc auto nếu muốn ảnh không bị méo */
-    object-fit: cover; /* Giữ ảnh không bị méo khi co giãn */
+    width: 80%;
+    height: 100%;
+    margin-left: 40px;
+    object-fit: cover;
 }
-
 .course-card .card-body {
     flex-grow: 1; /* Giúp nội dung kéo giãn chiều cao bằng nhau */
     display: flex;
