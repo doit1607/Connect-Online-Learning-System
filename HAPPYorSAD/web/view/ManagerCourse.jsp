@@ -14,7 +14,7 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <div class="container">
             <h1>Course List</h1>
-            <button class="btn-add" onclick="">Add New</button>
+            <button class="btn-add" ><a href="createcourse">Add New</a> </button>
             <table>
                 <thead>
                     <tr>
