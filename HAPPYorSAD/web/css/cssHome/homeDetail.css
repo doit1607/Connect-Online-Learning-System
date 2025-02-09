@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif
+    font-family: Arial, sans-serif;
+    text-decoration: none
 }
 
 body {
@@ -241,6 +242,7 @@ body {
     border: 2px solid #7d7dff;
     background: 0 0;
     color: #7d7dff;
+    text-decoration: none;
     font-weight: 700;
     border-radius: 20px;
     cursor: pointer;
@@ -252,6 +254,23 @@ body {
     background: #7d7dff;
     color: #fff
 }
+
+.all-categories-btn-details {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 4px solid #ffe8e8;
+    border-radius: 104px;
+    color: #ff4a3d;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.all-categories-btn-details:hover {
+    background: #ffe8e8;
+    color: #fff;
+}
+
 
 .top-category .categories-grid {
     display: grid;
@@ -269,14 +288,18 @@ body {
     transition: transform .3s
 }
 
+
 .top-category .category-card:hover {
     transform: translateY(-5px)
 }
 
 .top-category .category-card img {
-    max-width: 80px;
-    margin-bottom: 10px
+    max-width: 222PX;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 150px;
 }
+
 
 .top-category .category-card h3 {
     font-size: 1.2rem;
@@ -291,23 +314,6 @@ body {
 .top-category .pagination {
     margin-top: 20px
 }
-
-.top-category .dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    background-color: #ddd;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer
-}
-
-.top-category .dot.active {
-    background-color: #ff6b6b;
-    width: 20px;
-    border-radius: 5px
-}
-
 .container {
     padding: 50px;
     background: linear-gradient(to bottom, #eaf4fc, #fff)
@@ -639,7 +645,7 @@ h2 {
 }
 
 .logos img {
-    max-height: 50px;
+    max-height: 100%;
     width: auto;
     filter: grayscale(100%);
     transition: filter .3s ease
@@ -766,7 +772,7 @@ h2 {
 }
 
 .logos img {
-    width: 120px;
+    width: 130px;
     margin: 10px
 }
 
@@ -790,6 +796,8 @@ h2 {
     width: 300px;
     border-radius: 10px
 }
+
+
 
 .mentor-text {
     text-align: left;
@@ -882,7 +890,7 @@ h2 {
     justify-content: center;
     gap: 20px;
     padding: 50px;
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -924,7 +932,7 @@ h2 {
 
 .education-image img,
 .instructor-image img {
-    width: 120px
+    width: 190px
 }
 
 .stats-section {
@@ -996,7 +1004,7 @@ h2 {
 }
 
 .rating span.active {
-    color: gold; 
+    color: gold;
 }
 
 .rating span:last-child {
@@ -1015,9 +1023,9 @@ h2 {
     font-size: 20px;
 }
 .fa-star:hover {
-    color: orange; 
+    color: orange;
 }
 
 .fa-star.active {
-    color: yellow; 
+    color: yellow;
 }

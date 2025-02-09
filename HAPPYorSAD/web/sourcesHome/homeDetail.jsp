@@ -58,10 +58,10 @@
             <div class="header">
                 <div class="text-content">
                     <span class="highlight">Favourite Course</span>
-                    <h2>Top Category</h2>
+                    <h2>Top Major</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida.</p>
                 </div>
-                <button class="all-categories-btn">All Categories</button>
+                <a href="ShowAllCourse" class="all-categories-btn">All Course</a>
             </div>
 
             <div class="categories-grid">
@@ -79,6 +79,7 @@
         </section>
         <!-- Các khóa học -->
 
+
         <section id="categories" class="container top-category">
             <div class="header">
                 <div class="text-content">
@@ -86,7 +87,7 @@
                     <h2>Featured Courses</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida.</p>
                 </div>
-                <button class="all-categories-btn">All Course</button>
+                <a href="ShowAllCourse" class="all-categories-btn">All Course</a>
             </div>
 
 
@@ -101,7 +102,7 @@
                                 <span>${course.total_Mentee} Mentee</span>
                                 <span>${course.total_Mentor} Mentor</span>
                             </div>
-                            <button class="all-categories-btn-details">More Details</button>
+                            <a href="ShowAllCourse" class="all-categories-btn-details">More Details</a>
                         </div>
                     </c:if>
                 </c:forEach>
@@ -118,7 +119,7 @@
                     <h2>Top Courses</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida.</p>
                 </div>
-                <button class="all-categories-btn">All Course</button>
+                <a href="ShowAllCourse" class="all-categories-btn">All Course</a>
             </div>
 
             <div class="categories-grid">
@@ -132,7 +133,7 @@
                             <span>${course.total_Mentee} Mentee</span>
                             <span>${course.total_Mentor} Mentor</span>
                         </div>
-                        <button class="all-categories-btn-details">More Details</button>
+                        <a href="ShowAllCourse" class="all-categories-btn-details">More Details</a>
                     </div>
                 </c:forEach>
             </div>
@@ -143,6 +144,8 @@
             <h2>Featured Mentor</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida maecenas augue
                 elementum et neque. Suspendisse imperdiet.</p>
+
+
 
             <div class="mentor-container">
                 <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
@@ -185,6 +188,8 @@
                             </div>
                         </div></c:if>
                 </c:forEach>
+
+
             </div>
 
         </section>
@@ -194,9 +199,9 @@
             <p class="trusted-text">Trusted By</p>
             <h2>500+ Leading Universities And Companies</h2>
             <div class="logos">
-                <img src="google.png" alt="Google">
-                <img src="colruyt.png" alt="Colruyt">
-                <img src="oxford.png" alt="Oxford">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/640px-Google_%22G%22_logo.svg.png" alt="Google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Colruyt.svg/2560px-Logo_Colruyt.svg.png" alt="Colruyt">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Oxford-University-Circlet.svg/1636px-Oxford-University-Circlet.svg.png" alt="Oxford">
             </div>
         </section>
 
@@ -204,7 +209,7 @@
         <section class="mentor-call">
             <div class="mentor-content">
                 <div class="mentor-image">
-                    <img src="illustration.png" alt="Mentor Illustration">
+                    <img src="https://st3.depositphotos.com/2801893/13369/v/450/depositphotos_133699472-stock-illustration-mentoring-and-coaching.jpg" alt="Mentor Illustration">
                 </div>
                 <div class="mentor-text">
                     <h2>Want to share your knowledge?<br>Join us a Mentor</h2>
@@ -221,12 +226,12 @@
         <section class="testimonial">
             <h2>Users-love-us Don't take it from us.</h2>
             <div class="testimonial-container">
-                <p class="testimonial-quote">“Lorem Ipsum is simply dummy text of the printing and typesetting industry.”
+                <p class="testimonial-quote">“Everyone needs a coach. It doesn't matter whether you're a basketball player, a tennis player, a gymnast, or a bridge player.”
                 </p>
-                <div class="mentor-image">
-                    <img src="illustration.png" alt="Mentor Illustration">
+                <div class="mentor-image" style="max-width: 100%">
+                    <img src="https://cdn.tgdd.vn/Files/2022/02/21/1416573/bill-gates-la-ai_1280x860-800-resize.jpg" alt="Mentor Illustration">
                 </div>
-                <p class="testimonial-author">John Smith, Founder of Awesomeux Technology</p>
+                <p class="testimonial-author">Bill Gates, The co-founder and former chairman of Microsoft</p>
                 <div class="testimonial-navigation">
                     <button>← Prev</button>
                     <button>Next →</button>
@@ -237,11 +242,11 @@
         <section class="instructor-education">
             <div class="instructor-box">
                 <div class="instructor-text">
-                    <h3>Become An Instructor</h3>
-                    <p>Top instructors from around the world teach millions of students on Mentoring.</p>
+                    <h3>Become An Mentor</h3>
+                    <p>Top Mentors from around the world teach millions of mentees on Mentoring.</p>
                 </div>
                 <div class="instructor-image">
-                    <img src="instructor.png" alt="Instructor Illustration">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/become-02.svg" alt="Instructor Illustration">
                 </div>
             </div>
             <div class="education-box">
@@ -250,7 +255,7 @@
                     <p>Create an account to receive our newsletter, course recommendations and promotions.</p>
                 </div>
                 <div class="education-image">
-                    <img src="education.png" alt="Education Illustration">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/become-01.svg" alt="Education Illustration">
                 </div>
             </div>
         </section>
@@ -263,7 +268,8 @@
             <div class="stats-container">
                 <div class="stat-box">
                     <div class="stat-icon">
-                        <img src="student-icon.png" alt="Students Enrolled">
+                        <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-07.svg
+                             " alt="Students Enrolled">
                     </div>
                     <div class="stat-info">
                         <h3>48,086</h3>
@@ -272,7 +278,7 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-icon">
-                        <img src="courses-icon.png" alt="Total Courses">
+                        <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-08.svg" alt="Total Courses">
                     </div>
                     <div class="stat-info">
                         <h3>227</h3>
@@ -281,7 +287,7 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-icon">
-                        <img src="countries-icon.png" alt="Countries">
+                        <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-09.svg" alt="Countries">
                     </div>
                     <div class="stat-info">
                         <h3>24</h3>
@@ -290,13 +296,13 @@
                 </div>
             </div>
             <div class="stats-description">
-                <h2>Unlimited access to 360+ courses and 1,600+ hands-on labs</h2>
+                <h2>Enjoy unlimited access to more than 360 courses and over 1,600 hands-on labs.</h2>
                 <div class="stats-logos">
-                    <img src="tech1.png" alt="Tech Logo 1">
-                    <img src="tech2.png" alt="Tech Logo 2">
-                    <img src="tech3.png" alt="Tech Logo 3">
-                    <img src="tech4.png" alt="Tech Logo 4">
-                    <img src="tech5.png" alt="Tech Logo 5">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-13.svg" alt="Tech Logo 1">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-14.svg" alt="Tech Logo 2">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-17.svg" alt="Tech Logo 3">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-15.svg" alt="Tech Logo 4">
+                    <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-16.svg" alt="Tech Logo 5">
                 </div>
             </div>
         </section>

@@ -65,13 +65,14 @@ public class Course {
         this.courseMajorId = courseMajorId;
     }
 
-    public Course(String title, String CourseMajor, int total_Mentor, int total_Mentee, String imgage) {
+    public Course(String title, String CourseMajor, int total_Mentor, int total_Mentee, String image) {
         this.title = title;
         this.total_Mentor = total_Mentor;
         this.total_Mentee = total_Mentee;
         this.courseMajor = CourseMajor;
         this.image = image;
     }
+    
 
     public String getImage() {
         return image;
@@ -179,7 +180,10 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", status=" + status + ", CourseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + '}';
+        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + '}';
     }
+
+  
+    
 
 }

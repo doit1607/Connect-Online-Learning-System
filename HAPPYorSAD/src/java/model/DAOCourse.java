@@ -115,15 +115,12 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getAllCourseHome() {
         ArrayList<Course> listCourseHome = new ArrayList<>();
-        String query = "SELECT \n"
-                + "    c.title,\n"
-                + "	c.image,\n"
-                + "    cm.name as CourseMajor,\n"
-                + "    COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
-                + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
-                + "FROM Course c\n"
-                + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "LEFT JOIN Users u_mentor ON c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
+        String query = "Select  c.title, cm.name as CourseMajor,c.image,\n"
+                + "COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
+                + "COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
+                + "From Course c\n"
+                + "Join CourseMajor cm on c.course_major_id = cm.id\n"
+                + "left join Users u_mentor on c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
                 + "LEFT JOIN Users u_mentee ON c.mentor_id = u_mentee.id AND u_mentee.role = 'mentee'\n"
                 + "GROUP BY c.title, c.image, cm.name";
         try {
@@ -200,18 +197,21 @@ public class DAOCourse extends DBConnection {
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourseHome = dao.getAllCourseHome2();
-        System.out.println(listCourseHome);
+        List<Course> listCourseHome = dao.getAllCourseHome();
+
+        for (Course course : listCourseHome) {
+            System.out.println(listCourseHome);
+        }
 
 //        List<Course> listCourse1 = dao.getAllCourse();
 //        System.out.println(listCourse1);
-        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
-
-        boolean result = dao.createCourse("Java", "Basic");
-        if (result) {
-            System.out.println("Create course successfully");
-        } else {
-            System.out.println("Create failed!");
-        }
+//        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
+//
+//        boolean result = dao.createCourse("Java", "Basic");
+//        if (result) {
+//            System.out.println("Create course successfully");
+//        } else {
+//            System.out.println("Create failed!");
+//        }
     }
 }
