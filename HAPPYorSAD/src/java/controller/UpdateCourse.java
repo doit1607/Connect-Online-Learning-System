@@ -4,11 +4,15 @@
  */
 package controller;
 
+import entity.Course;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import model.DAOCourse;
             
 
 
@@ -27,10 +31,23 @@ public class UpdateCourse extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String title = request.getParameter("title");
+        String status = request.getParameter("status");
         
-        
+        DAOCourse courseDAO = new DAOCourse();
+        boolean success = courseDAO.updateCourse(id, title, status);
+
+        if (success) {
+            HttpSession session = request.getSession();
+            List<Course> updatedList = courseDAO.getAllCourse(); // Load lại danh sách khóa học
+            session.setAttribute("listAllCourse", updatedList);
+            response.sendRedirect("CourseManager");
+        } else {
+            response.sendRedirect("CourseManager?error=update_failed");
+        }
     }
 
      // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

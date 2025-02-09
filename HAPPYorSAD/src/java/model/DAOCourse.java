@@ -193,10 +193,23 @@ public class DAOCourse extends DBConnection {
         return listCourseHome;
     }
 
-    public void updtaeCourse(int id, String title, String description,
-            int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
+    public boolean updateCourse(int id, String title, String status) {
+    String query = "UPDATE Course SET title = ?, status = ? WHERE id = ?";
+    
+    try (PreparedStatement connect = conn.prepareStatement(query)) {
+        connect.setString(1, title);
+        connect.setString(2, status);
+        connect.setInt(3, id);
+        
+        int rowsUpdated = connect.executeUpdate();
+        return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
 
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false;
+}
+
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();

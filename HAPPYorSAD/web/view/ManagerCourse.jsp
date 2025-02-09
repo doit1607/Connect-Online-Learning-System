@@ -5,14 +5,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Course Manager</title>
-
-        <link rel="stylesheet" href="css/cssCourseManager/CourseManager.css">
+        <<link rel="stylesheet" href="css/cssCourseManager/CourseManager.css"/>
         <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
         <link rel="stylesheet" href="css/cssHome/homeFooter.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
     <body>
-         <%@include file="../sourcesHome/homeHeader.jsp" %>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <div class="container">
             <h1>Course List</h1>
             <button class="btn-add" onclick="">Add New</button>
@@ -29,18 +28,21 @@
                 <tbody>
                     <c:forEach items="${sessionScope.listAllCourse}" var="o" varStatus="status1">
                         <tr>
-                            <td>${status1.index + 1}</td>
+                            <td><div class="STT text-center"> <h6>${status1.index + 1}</h6></div></td>
                             <td>${o.id}</td>
                             <td>${o.title}</td>
-                            <td>
-                                <button id="toggleButton${o.id}" class="toggle-btn" onclick="toggleState('${o.id}')">Enable</button>
+                            <td class="${o.status == 'active' ? 'status-active' : 'status-Inactive'}">
+                                <button id="toggleButton${o.id}" class="toggle-btn ${o.status == 'active' ? 'active' : 'Inactive'}">
+                                    ${o.status}
+                                </button>
                             </td>
                             <td>
-                                <button class="btn-edit" onclick="showEditForm('${o.title}')">Edit</button>
+                                <button class="btn-edit" onclick="showEditForm('${o.id}', '${o.title}', '${o.status}')">Edit</button>
                             </td>
                         </tr>
                     </c:forEach>
-                        
+
+
                 </tbody>
             </table>
         </div>
@@ -49,15 +51,19 @@
         <div class="overlay" id="editFormOverlay" style="display: none;">
             <div class="form-container">
                 <h3>Edit Course</h3>
-                <form>
-                    <label for="editName">Title</label>
-                    <input type="text" id="editName" name="name" placeholder="Course Name" required>
+                <form action="UpdateCourse" method="post">
+                    <input type="hidden" id="editId" name="id">
 
-                    <label for="status">Status</label>
-                    <select id="status" class="status-select">
-                        <option value="enable">Enable</option>
-                        <option value="disable">Disable</option>
+                    <label for="editName">Title</label>
+                    <input value="${o.title}"type="text" id="editName" name="title" placeholder="Course Name" required>
+
+                    <select id="editStatus" name="status"> 
+                        <option value="active" ${o.status == 'active' ? 'selected' : ''}>Active</option>
+                        <option value="Inactive" ${o.status == 'Inactive' ? 'selected' : ''}>Inactive</option>
                     </select>
+
+
+
 
                     <button type="submit" class="btn-save">OK</button>
                     <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
@@ -67,17 +73,18 @@
 
         <script>
 
-            function showEditForm(name) {
-
+            function showEditForm(id, name, status) {
                 document.getElementById("editFormOverlay").style.display = "flex";
                 document.body.classList.add("overlay-active");
 
-
+                document.getElementById("editId").value = id;
                 document.getElementById("editName").value = name;
-                const statusSelect = document.getElementById("status");
-                statusSelect.value = status;
 
+                let statusSelect = document.getElementById("editStatus");
+                statusSelect.value = status.toLowerCase();
             }
+
+
 
             function hideEditForm() {
                 document.getElementById("editFormOverlay").style.display = "none";
@@ -85,16 +92,16 @@
             }
             function toggleState(courseId) {
                 var button = document.getElementById("toggleButton" + courseId);
-                if (button.innerText === "Enable") {
-                    button.innerText = "Disable";
-                    button.classList.add("disabled");
+                if (button.innerText === "active") {
+                    button.innerText = "Inactive";
+                    button.classList.add("Inactive");
                 } else {
-                    button.innerText = "Enable";
-                    button.classList.remove("disabled");
+                    button.innerText = "active";
+                    button.classList.remove("Inactive");
                 }
             }
 
         </script>
-         <%@include file="../sourcesHome/homeFooter.jsp" %>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
 </html>
