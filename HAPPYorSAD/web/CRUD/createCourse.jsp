@@ -10,8 +10,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../css/cssCRUD/createCourse.css">
-        
+        <link rel="stylesheet" href="css/cssCRUD/createCourse.css">
+
         <title>Create Course</title>
     </head>
     <body>
@@ -26,19 +26,26 @@
             <h1>Create Course</h1>
             <form>
                 <label for="title">Course Name <span class="required">*</span></label>
-                <input type="text" name="title" id="title" required>
+                <input type="text" name="title" id="title" placeholder="Enter name" required>
 
                 <label for="description">Description <span class="required">*</span></label>
-                <input type="text" name="description" id="description" required="">
+                <input type="text" name="description" id="description" placeholder="Enter description" required="">
 
                 <input type="hidden" name="status" value="active">
 
                 <div class="button-group">
                     <button type="submit">Create Course</button>
                     <button type="reset">Clear</button>
+                    <button type="button" onclick="goBack()">Back</button>
                 </div>
+
             </form>
         </div>  
+        <script>
+            function goBack() {
+                window.location.href = "<%= request.getContextPath() %>/CourseManager";
+            }
+        </script>
 
     </body>
 </html>

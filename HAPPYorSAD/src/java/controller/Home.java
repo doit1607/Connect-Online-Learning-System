@@ -48,13 +48,13 @@ public class Home extends HttpServlet {
         DAOCourse daoC = new DAOCourse();
         List<Course> listC = daoC.getAllCourseHome();
         List<Course> listT = daoC.getAllCourseHome2();
-         List<Mentor> listMe = daoMe.getMentorsHome();
+        List<Mentor> listMe = daoMe.getMentorsHome();
 
         session.setAttribute("listFCourse", listC);;
         session.setAttribute("listTCourse", listT);;
         System.out.println("Check1");
         session.setAttribute("listMentor", listMe);;
-System.out.println("Check2");
+        System.out.println("Check2");
         request.getRequestDispatcher("Home/HomePage.jsp").forward(request, response);
 
     }

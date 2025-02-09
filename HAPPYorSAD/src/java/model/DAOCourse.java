@@ -38,7 +38,7 @@ public class DAOCourse extends DBConnection {
                 int id = result.getInt("id");
                 String title = result.getString("title");
                 String description = result.getString("description");
-                int managerId = result.getInt("manager_id"); 
+                int managerId = result.getInt("manager_id");
                 int mentorId = result.getInt("mentor_id");
                 LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
@@ -57,28 +57,15 @@ public class DAOCourse extends DBConnection {
         return listCourse;
     }
 
-    public boolean createCourse(Course cr) {
-        String sql = "INSERT INTO [dbo].[Course]\n"
-                + "           ([title]\n"
-                + "           ,[description]\n"
-                + "           ,[manager_id]\n"
-                + "           ,[mentor_id]\n"
-                + "           ,[status]\n"
-                + "           ,[created_at]\n"
-                + "           ,[updated_at]\n"
-                + "           ,[course_major_id])\n"
-                + "     VALUES(?, ?, ?, ?, ?, ?)";
+    public boolean createCourse(String title, String description) {
+        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status]) "
+                + "VALUES (?, ?, ?)";
 
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, cr.getTitle());
-            pre.setString(2, cr.getDescription());
-            pre.setInt(3, cr.getManagerId());
-            pre.setInt(4, cr.getMentorId());
-            pre.setString(5, "Active");
-            pre.setTimestamp(6, java.sql.Timestamp.valueOf(cr.getCreatedAt()));
-            pre.setTimestamp(7, java.sql.Timestamp.valueOf(cr.getUpdatedAt()));
-            pre.setInt(8, cr.getCourseMajorId());
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setString(1, title);
+            pre.setString(2, description);
+            pre.setString(3, "Active"); // Trạng thái mặc định
+
             return pre.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -194,22 +181,21 @@ public class DAOCourse extends DBConnection {
     }
 
     public boolean updateCourse(int id, String title, String status) {
-    String query = "UPDATE Course SET title = ?, status = ? WHERE id = ?";
-    
-    try (PreparedStatement connect = conn.prepareStatement(query)) {
-        connect.setString(1, title);
-        connect.setString(2, status);
-        connect.setInt(3, id);
-        
-        int rowsUpdated = connect.executeUpdate();
-        return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
+        String query = "UPDATE Course SET title = ?, status = ? WHERE id = ?";
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        try (PreparedStatement connect = conn.prepareStatement(query)) {
+            connect.setString(1, title);
+            connect.setString(2, status);
+            connect.setInt(3, id);
+
+            int rowsUpdated = connect.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
-
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
@@ -221,7 +207,7 @@ public class DAOCourse extends DBConnection {
 //        System.out.println(listCourse1);
         Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
 
-        boolean result = dao.createCourse(newCourse);
+        boolean result = dao.createCourse("Java", "Basic");
         if (result) {
             System.out.println("Create course successfully");
         } else {

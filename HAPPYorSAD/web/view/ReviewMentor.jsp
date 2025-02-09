@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/cssReview/ReviewMentor.css">
         <link rel="stylesheet" href="../css/cssReview/ReviewMentor.css">
         <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
         <link rel="stylesheet" href="css/cssHome/homeFooter.css">
@@ -20,7 +21,6 @@
         <div class="container">
             <%@include file="../sourcesHome/homeHeader.jsp" %>
             <h1>Rate & Comment Mentor</h1>
-
 
             <!-- Rating Form -->
             <form action="/HAPPYorSAD/reviewmentor" method="get">
