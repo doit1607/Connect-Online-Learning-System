@@ -165,7 +165,7 @@
                 <form action="/HAPPYorSAD/LoginUser" method="POST">
                     <input type="hidden" name="service" value="register">
                     <div class="input-group">
-                        <label for="usernameRegis">User Name</label>
+                        <label for="usernameRegis">Username</label>
                         <input type="text" name="usernameRegis" id="usernameRegis" required>
                     </div>
                     <c:if test="${requestScope.msgusername != null}">
