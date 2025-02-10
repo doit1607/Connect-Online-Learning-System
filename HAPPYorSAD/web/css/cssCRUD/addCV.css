@@ -1,0 +1,97 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jan 22, 2025, 5:36:03 PM
+    Author     : admin
+*/
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+form {
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px; 
+    box-sizing: border-box;
+}
+
+form caption {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: block;
+    color: #333;
+    text-align: center;
+}
+
+form table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+form td {
+    padding: 10px 0;
+}
+
+form label {
+    font-size: 14px;
+    color: #333;
+}
+
+form input[type="text"] {
+    width: 100%; 
+    padding: 8px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    transition: all 0.3s ease; 
+}
+
+form input[type="text"]:focus {
+    border-color: #007bff; 
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); 
+}
+
+form input[type="submit"],
+form input[type="reset"] {
+    background-color: #007bff;
+    color: #fff; 
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 4px; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+}
+
+form input[type="reset"] {
+    background-color: #dc3545;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3; 
+}
+
+form input[type="reset"]:hover {
+    background-color: #c82333; 
+}
+
+form td input {
+    margin-right: 10px;
+}
+

@@ -1,0 +1,145 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* Error / Success message */
+.alert-message {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Success message */
+.alert-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+/* Error message */
+.alert-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+/* Form container */
+.form-container {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Form title */
+.form-container h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-size: 16px;
+    margin: 10px 0 5px;
+    text-align: left;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Input fields */
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Required field indicator */
+.required {
+    color: red;
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Buttons */
+button {
+    flex: 1;
+    padding: 12px;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Create button */
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Reset button */
+button[type="reset"] {
+    background-color: #ffc107;
+    color: black;
+}
+
+button[type="reset"]:hover {
+    background-color: #e0a800;
+}
+
+/* Back button */
+button[type="button"] {
+    background-color: #007bff;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .form-container {
+        width: 90%;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
