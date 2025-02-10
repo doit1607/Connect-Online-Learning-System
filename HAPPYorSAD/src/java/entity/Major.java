@@ -19,6 +19,12 @@ public class Major {
     public Major() {
     }
 
+    public Major(String image, String name) {
+        this.image = image;
+        this.name = name;
+    }
+
+    
     public Major(int id, String name, String description) {
         this.id = id;
         this.name = name;

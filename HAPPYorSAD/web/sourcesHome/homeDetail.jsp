@@ -61,7 +61,7 @@
                     <h2>Top Major</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida.</p>
                 </div>
-                <a href="ShowAllCourse" class="all-categories-btn">All Course</a>
+                <a href="ShowAllCourse" class="all-categories-btn">All Major Courses</a>
             </div>
 
             <div class="categories-grid">
@@ -272,8 +272,10 @@
                              " alt="Students Enrolled">
                     </div>
                     <div class="stat-info">
-                        <h3>48,086</h3>
-                        <p>STUDENTS ENROLLED</p>
+                        <c:forEach var="count" items="${sessionScope.listCountC}">
+                            <h3>${count.total_Mentee}</h3>
+                        </c:forEach>
+                        <p>MENTEES ENROLLED</p>
                     </div>
                 </div>
                 <div class="stat-box">
@@ -281,7 +283,9 @@
                         <img src="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-08.svg" alt="Total Courses">
                     </div>
                     <div class="stat-info">
-                        <h3>227</h3>
+                        <c:forEach var="count" items="${sessionScope.listCountC}">
+                            <h3>${count.total_Courses}</h3>
+                        </c:forEach>
                         <p>TOTAL COURSES</p>
                     </div>
                 </div>

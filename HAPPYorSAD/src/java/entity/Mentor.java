@@ -20,7 +20,7 @@ public class Mentor {
     private double rating;
     private String reviews;
     private double pricePerSlot;
-    private String expertise; // profression
+    private String expertise; 
     private String bio;
     private LocalDateTime createdAt;
     private double baseRate;
@@ -29,7 +29,8 @@ public class Mentor {
     private String image;
     private int total_mentees;
     private int rating_count;
-    private String username;  // join Users
+    private int total_reviews;
+    private String username;  
     private int CurentlyRequests;
     private int completed;
 
@@ -53,13 +54,15 @@ public class Mentor {
         this.is_deleted = is_deleted;
     }
 
-    public Mentor(String name, double rating, double pricePerSlot, String expertise, String image, String username) {
+    public Mentor(String name, double rating, double pricePerSlot, String expertise, String image, String username, int total_mentees, int total_reviews) {
         this.name = name;
         this.rating = rating;
         this.pricePerSlot = pricePerSlot;
         this.expertise = expertise;
         this.image = image;
         this.username = username;
+        this.total_mentees =total_mentees;
+        this.total_reviews = total_reviews;
     }
 
    
@@ -246,9 +249,20 @@ public class Mentor {
         return baseRate * multiplier;
     }
 
+    public int getTotal_reviews() {
+        return total_reviews;
+    }
+
+    public void setTotal_reviews(int total_reviews) {
+        this.total_reviews = total_reviews;
+    }
+
     @Override
     public String toString() {
-        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + '}';
+        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + ", total_reviews=" + total_reviews + ", username=" + username + ", CurentlyRequests=" + CurentlyRequests + ", completed=" + completed + '}';
     }
+    
+    
+
 
 }

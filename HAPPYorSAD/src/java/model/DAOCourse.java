@@ -177,6 +177,30 @@ public class DAOCourse extends DBConnection {
         return listCourseHome;
     }
 
+    public List<Course> getCountCourseHome() {
+        ArrayList<Course> list = new ArrayList<>();
+        String query = "SELECT \n"
+                + "    COUNT(DISTINCT c.id) AS total_Courses,\n"
+                + "    COUNT(DISTINCT m.id) AS total_Mentee\n"
+                + "FROM Course c\n"
+                + "LEFT JOIN Mentee m ON m.user_id IN (\n"
+                + "    SELECT id FROM Users WHERE role = 'mentee'\n"
+                + ");";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            ResultSet rs = connect.executeQuery();
+            while (rs.next()) {
+                list.add(new Course(rs.getInt("total_Mentee"), rs.getInt("total_Courses"))
+                );
+            }
+            rs.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public boolean updateCourse(int id, String title, String status) {
         String query = "UPDATE Course SET title = ?, status = ? WHERE id = ?";
 

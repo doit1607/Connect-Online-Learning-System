@@ -47,18 +47,26 @@ public class DAOMentor extends DBConnection {
 
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "select m.name,m.expertise, "
-                + "m.image,m.price_per_slot,"
-                + " m.rating,u.username\n"
-                + "from Mentor m join Users u"
-                + " on m.user_id = u.id";
+        String sql = "SELECT \n"
+                + "    u.fullname,\n"
+                + "    u.username,\n"
+                + "    m.expertise,\n"
+                + "	m.image,\n"
+                + "    COUNT(DISTINCT mr.mentee_id) AS total_mentees,\n"
+                + "    m.rating AS mentor_rating,\n"
+                + "    COUNT(mr.id) AS total_reviews,\n"
+                + "    m.price_per_slot\n"
+                + "FROM Mentor m\n"
+                + "JOIN Users u ON m.user_id = u.id\n"
+                + "LEFT JOIN mentor_reviews mr ON m.id = mr.mentor_id\n"
+                + "GROUP BY u.fullname, u.username, m.expertise, m.rating, m.price_per_slot, m.image;";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new Mentor(rs.getString("name"),
-                        rs.getDouble("rating"), rs.getDouble("price_per_slot"),
+                list.add(new Mentor(rs.getString("fullname"),
+                        rs.getDouble("mentor_rating"), rs.getDouble("price_per_slot"),
                         rs.getString("expertise"), rs.getString("image"),
-                        rs.getString("username"))
+                        rs.getString("username"), rs.getInt("total_mentees"), rs.getInt("total_reviews"))
                 );
             }
 
@@ -105,7 +113,10 @@ public class DAOMentor extends DBConnection {
         DAOMentor dao = new DAOMentor();
 
         List<Mentor> list = dao.getMentorsSuggestion();
-        System.out.println(list);
+
+        for (Mentor mentor : list) {
+            System.out.println(mentor);
+        }
 
     }
 

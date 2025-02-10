@@ -24,6 +24,7 @@ public class Course {
     private String courseMajor;
     private int total_Mentor, total_Mentee;
     private String image;
+    private int total_Courses;
 
     public Course() {
     }
@@ -40,6 +41,23 @@ public class Course {
         this.courseMajorId = courseMajorId;
         this.image = image;
     }
+
+    public Course(int total_Mentee, int total_Courses) {
+        this.total_Mentee = total_Mentee;
+        this.total_Courses = total_Courses;
+    }
+
+    public int getTotal_Courses() {
+        return total_Courses;
+    }
+
+    public void setTotal_Courses(int total_Courses) {
+        this.total_Courses = total_Courses;
+    }
+    
+    
+    
+    
 
     
     
@@ -180,10 +198,8 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + '}';
+        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + ", total_Courses=" + total_Courses + '}';
     }
 
   
-    
-
 }

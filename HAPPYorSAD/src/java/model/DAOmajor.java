@@ -47,8 +47,7 @@ public class DAOmajor extends DBConnection {
         }
         return l;
     }
-    
-    
+
 
     public static void main(String[] args) {
         DAOmajor dao = new DAOmajor();

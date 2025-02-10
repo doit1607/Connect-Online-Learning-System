@@ -169,8 +169,6 @@
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
-
-
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
         <div class="mentor-list">
@@ -187,11 +185,11 @@
                         <div class="mentor-details">
 
                             <div class="mentor-stats">
-                                <span><i class="fas fa-users"></i> 50 Requests</span>
+                                <span><i class="fas fa-users"> <c:out value="${mentor.total_mentees}"/> </i> Requests</span>
                                 <span class="rating">
 
                                     <c:set var="ratingValue" value="${mentor.rating}"/>
-                                    <c:set var="numReviews" value="15"/> 
+                                    <c:set var="numReviews" value="${mentor.total_reviews}"/> 
                                     <c:set var="fullStars" value="${ratingValue}"/>
                                     <c:set var="decimalPart" value="${ratingValue - fullStars}"/>
                                     <c:forEach begin="1" end="${fullStars}" varStatus="loop">
@@ -208,9 +206,9 @@
                             </div>
                         </div>
                         <div class="skill-tags">
-                            <c:forEach var="skill" items="${listAllMentorSuggestion}">
-                                <span class="skill-tag"><c:out value="${skill.expertise}"/></span> 
-                            </c:forEach>
+
+                            <span class="skill-tag"><c:out value="${mentor.expertise}"/></span> 
+
                         </div>
                         <p class="price-per-slot">
                             $<c:out value="${mentor.pricePerSlot}"/>/slot
