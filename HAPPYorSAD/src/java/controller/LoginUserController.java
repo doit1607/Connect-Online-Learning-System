@@ -143,17 +143,17 @@ public class LoginUserController extends HttpServlet {
         }
 
         if ("changepass".equals(service)) {
-            String username = (String)session.getAttribute("usernameUser");
-            String oldPassword = request.getParameter("oldPassword");
-            String newPassword = request.getParameter("newPassword");
+            String username = request.getParameter("currentusername");
+            String currentpassword = request.getParameter("currentpassword");
+            String newPassword = request.getParameter("newpassword");
 
-            if (userDAO.loginUser(username, oldPassword)) {
+            if (userDAO.loginUser(username, currentpassword)) {
                 userDAO.updatePassword(username, newPassword);
                 request.setAttribute("msg", "Password changed successfully!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Incorrect old password!");
-                request.getRequestDispatcher("/view/changePassword.jsp").forward(request, response);
+                request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
             }
         }
     }

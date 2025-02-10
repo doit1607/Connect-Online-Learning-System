@@ -89,9 +89,12 @@
     <body>
         <div class="container">
             <h2>Change Password</h2>
-            <form action="LoginUser" method="post">
+            <form action="/HAPPYorSAD/LoginUser" method="post">
                 <input type="hidden" name="service" value="changepass">
-
+                <div class="form-group">
+                    <label for="usernameUser">Current Username:</label>
+                    <input type="text" id="currentusername" name="currentusername" value = "${sessionScope.usernameUser}"placeholder="Enter current username" required>
+                </div>
                 <div class="form-group">
                     <label for="currentPassword">Current Password:</label>
                     <input type="password" id="currentPassword" name="currentpassword" placeholder="Enter current password" required>
@@ -104,11 +107,12 @@
                     <label for="confirmPassword">Confirm New Password:</label>
                     <input type="password" id="confirmPassword" name="confirmpassword" placeholder="Re-enter new password" required>
                 </div>
+                <c:if test="${requestScope.error != null}">
+                    ${requestScope.error}
+                </c:if>
                 <button type="submit" class="btn">Change Password</button>
             </form>
-            <c:if test="${requestScope.error != null}">
-                ${requestScope.error}
-            </c:if>
+
 
         </div>
         <script>
