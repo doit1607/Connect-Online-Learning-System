@@ -32,7 +32,8 @@
                             <td>${o.id}</td>
                             <td>${o.title}</td>
                             <td class="${o.status == 'active' ? 'status-active' : 'status-Inactive'}">
-                                <button id="toggleButton${o.id}" class="toggle-btn ${o.status == 'active' ? 'active' : 'Inactive'}">
+                                <button id="toggleButton${o.id}" class="toggle-btn ${o.status == 'active' ? 'active' : 'Inactive'}" 
+                                        onclick="showEditForm1('${o.id}', '${o.title}', '${o.status}')">
                                     ${o.status}
                                 </button>
                             </td>
@@ -55,22 +56,38 @@
                     <input type="hidden" id="editId" name="id">
 
                     <label for="editName">Title</label>
-                    <input value="${o.title}"type="text" id="editName" name="title" placeholder="Course Name" required>
+                    <input type="text" id="editName" name="title" placeholder="Course Name" required>
 
                     <select id="editStatus" name="status"> 
-                        <option value="active" ${o.status == 'active' ? 'selected' : ''}>Active</option>
-                        <option value="Inactive" ${o.status == 'Inactive' ? 'selected' : ''}>Inactive</option>
+                        <option value="active" selected>Active</option>
+                        <option value="Inactive" selected>Inactive</option>
                     </select>
+                    <button type="submit" class="btn-save">OK</button>
+                    <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
+        <!-- Overlay for Edit Form -->
+        <div class="overlay" id="editFormOverlay1" style="display: none;">
+            <div class="form-container">
+                <h3>Edit Course</h3>
+                <form action="UpdateCourse" method="post">
+                    <input type="hidden" id="editId1" name="id">
+
+                    <label for="editName">Title</label>
+                    <input type="text" id="editName1" name="title" placeholder="Course Name" required readonly>
 
 
-
+                    <select id="editStatus1" name="status"> 
+                        <option value="active" selected>Active</option>
+                        <option value="Inactive" selected>Inactive</option>
+                    </select>
 
                     <button type="submit" class="btn-save">OK</button>
                     <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
                 </form>
             </div>
         </div>
-
         <script>
 
             function showEditForm(id, name, status) {
@@ -84,7 +101,16 @@
                 statusSelect.value = status.toLowerCase();
             }
 
+            function showEditForm1(id, name, status) {
+                document.getElementById("editFormOverlay1").style.display = "flex";
+                document.body.classList.add("overlay-active");
 
+                document.getElementById("editId1").value = id;
+                document.getElementById("editName1").value = name;
+
+                let statusSelect = document.getElementById("editStatus1");
+                statusSelect.value = status.toLowerCase();
+            }
 
             function hideEditForm() {
                 document.getElementById("editFormOverlay").style.display = "none";
