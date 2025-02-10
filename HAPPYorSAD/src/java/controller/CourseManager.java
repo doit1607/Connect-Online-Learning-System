@@ -33,7 +33,7 @@ public class CourseManager extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         DAOCourse dao = new DAOCourse();
+        DAOCourse dao = new DAOCourse();
         List<Course> list = dao.getAllCourse();
 
         HttpSession session = request.getSession();

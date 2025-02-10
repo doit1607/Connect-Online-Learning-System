@@ -24,7 +24,7 @@
                             <div class="STT text-center"> <h6>STT: ${status1.index + 1}</h6></div>
                             <img class="card-img-top" src="${o.image}" >
                             <div class="card-body text-center">
-                                        <div class="card-title"><a href="courses.html">${o.title}</a></div>
+                                        <div class="card-title">${o.title}</div>
                                         <div class="card-text">Course ID: ${o.id}</div>
 
                             </div>
