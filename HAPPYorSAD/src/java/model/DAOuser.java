@@ -295,8 +295,6 @@ public class DAOuser extends DBConnection {
                     mentor.setAddress(rs.getString("address"));
                     mentor.setDateOfBirth(rs.getDate("date_of_birth"));
                     mentor.setGender(rs.getString("gender"));
-                    mentor.setStatus(rs.getString("status"));
-                    
                 }
             }
         } catch (SQLException ex) {
