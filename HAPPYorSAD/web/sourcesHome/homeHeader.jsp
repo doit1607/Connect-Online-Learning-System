@@ -39,6 +39,7 @@
                     <button class="changepass" onclick="redirectToChangepass()">Changepass</button>
                     <span class="username">Welcome, ${sessionScope.usernameUser}!</span>
                     <button class="logout" onclick="redirectToLogout()">Logout</button>
+                    <button class="logout" onclick="redirectToUpdateProfile()">Update Profile</button>
                 </c:if>
             </div>
         </header>
@@ -54,6 +55,9 @@
             }
             function redirectToChangepass() {
                 window.location.href = "/HAPPYorSAD/sourcesHome/ChangePass.jsp";
+            }
+            function redirectToUpdateProfile() {
+                window.location.href = "updatementeeprofile";
             }
         </script>
     </body>

@@ -49,31 +49,20 @@ public class ReviewMentor extends HttpServlet {
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
 
-        int mentorId = 0, menteeId = 0, rating = 0;
+        String mentorIdStr = request.getParameter("mentorId");
+        String menteeIdStr = request.getParameter("menteeId");
+        String ratingStr = request.getParameter("rating");
         String comment = request.getParameter("comment");
 
-        try {
-            String mentorIdParam = request.getParameter("mentorId");
-            String menteeIdParam = request.getParameter("menteeId");
-            String ratingParam = request.getParameter("rating");
-
-            if (mentorIdParam == null || mentorIdParam.trim().isEmpty()
-                    || menteeIdParam == null || menteeIdParam.trim().isEmpty()
-                    || ratingParam == null || ratingParam.trim().isEmpty()) {
-                request.setAttribute("error", "Mentor ID, Mentee ID, and Rating are required.");
-                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-                return;
-            }
-
-            mentorId = Integer.parseInt(mentorIdParam);
-            menteeId = Integer.parseInt(menteeIdParam);
-            rating = Integer.parseInt(ratingParam);
-
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid input! Please enter valid numbers.");
+        if (isEmpty(mentorIdStr) || isEmpty(menteeIdStr) || isEmpty(ratingStr)) {
+            request.setAttribute("error", "Missing required fields: mentorId, menteeId, or rating.");
             request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
             return;
         }
+
+        int mentorId = Integer.parseInt(mentorIdStr);
+        int menteeId = Integer.parseInt(menteeIdStr);
+        int rating = Integer.parseInt(ratingStr);
 
         boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
 
@@ -83,6 +72,11 @@ public class ReviewMentor extends HttpServlet {
             request.setAttribute("error", "Failed to submit review. Please try again.");
         }
         request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
+
+    }
+
+    private boolean isEmpty(String str) {
+        return str == null || str.trim().isEmpty();
     }
 
     /**

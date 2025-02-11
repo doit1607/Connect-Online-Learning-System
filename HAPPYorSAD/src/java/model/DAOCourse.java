@@ -64,7 +64,7 @@ public class DAOCourse extends DBConnection {
         try (PreparedStatement pre = conn.prepareStatement(sql)) {
             pre.setString(1, title);
             pre.setString(2, description);
-            pre.setString(3, "Active"); // Trạng thái mặc định
+            pre.setString(3, "active");
 
             return pre.executeUpdate() > 0;
         } catch (SQLException ex) {

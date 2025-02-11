@@ -28,27 +28,6 @@ public class CreateCourses extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String idStr = request.getParameter("id");
-//        String managerIdStr = request.getParameter("managerId");
-//        String mentorIdStr = request.getParameter("mentorId");
-//        String courseMajorIdStr = request.getParameter("courseMajorId");
-//        String createdAtStr = request.getParameter("createdAt");
-//        String updatedAtStr = request.getParameter("updatedAt");
-//
-//        int id = (idStr != null && !idStr.isEmpty()) ? Integer.parseInt(idStr) : 0;
-//        int managerId = (managerIdStr != null && !managerIdStr.isEmpty()) ? Integer.parseInt(managerIdStr) : 0;
-//        int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
-//        int courseMajorId = (courseMajorIdStr != null && !courseMajorIdStr.isEmpty()) ? Integer.parseInt(courseMajorIdStr) : 0;
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-//
-//        LocalDateTime createdAt = (createdAtStr != null && !createdAtStr.isEmpty())
-//                ? LocalDateTime.parse(createdAtStr, formatter)
-//                : LocalDateTime.now();
-//
-//        LocalDateTime updatedAt = (updatedAtStr != null && !updatedAtStr.isEmpty())
-//                ? LocalDateTime.parse(updatedAtStr, formatter)
-//                : LocalDateTime.now();
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");

@@ -25,7 +25,7 @@
             <!-- Rating Form -->
             <form action="/HAPPYorSAD/reviewmentor" method="get">
                 <input type="hidden" name="mentorId" value="${param.mentorId}">
-                <input type="hidden" name="menteeId" value="1"> <!-- Replace with dynamic user session -->
+                <input type="hidden" name="menteeId" value="${param.menteeId}">
 
                 <div class="rating">
                     <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>

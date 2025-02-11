@@ -230,7 +230,7 @@ public class DAOuser extends DBConnection {
 
 
     // Update Mentee profile
-    public boolean updateMenteeProfile(User mentee) {
+    public boolean updateMenteeProfile(User mentee) { //(String avatar, String fullname, String username, String phone, Date dob, String address, String gender)
         boolean isUpdate = false;
         String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
