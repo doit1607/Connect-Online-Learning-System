@@ -32,7 +32,7 @@ public class DBConnection {
     }
 
     public DBConnection() {
-        this("jdbc:sqlserver://localhost:1433;databaseName=SWP1;trustServerCertificate=true",
+        this("jdbc:sqlserver://localhost:1433;databaseName=SWP1",
                 "sa", "123456");
     }
 
