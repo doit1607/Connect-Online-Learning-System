@@ -59,9 +59,9 @@ public class LoginUserController extends HttpServlet {
                     response.sendRedirect("Home");
                 }
                 else{
-                    
-                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                    
                 }
 
             } else {

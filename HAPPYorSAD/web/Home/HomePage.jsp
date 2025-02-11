@@ -13,7 +13,7 @@
          <link rel="stylesheet" href="../css/cssHome/homeDetail.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-        <title>JSP Page</title>
+        <title>HAPPYorSAD</title>
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
