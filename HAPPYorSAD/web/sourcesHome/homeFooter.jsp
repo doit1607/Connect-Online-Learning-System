@@ -28,9 +28,9 @@
                         <h4>For Instructor</h4>
                         <ul>
                             <li><a href="#">Profile</a></li>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Register</a></li>
-                            <li><a href="#">Instructor</a></li>
+                            <li><a href="view/LoginUser.jsp">Login</a></li>
+                            <li><a href="view/RegisterUser.jsp">Register</a></li>
+                            <li><a href="ViewMentor_Mentee">Mentor</a></li>
                             <li><a href="#">Dashboard</a></li>
                         </ul>
                     </div>
@@ -38,9 +38,9 @@
                         <h4>For Student</h4>
                         <ul>
                             <li><a href="#">Profile</a></li>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Register</a></li>
-                            <li><a href="#">Student</a></li>
+                            <li><a href="view/LoginUser.jsp">Login</a></li>
+                            <li><a href="view/RegisterUser.jsp">Register</a></li>
+                            <li><a href="menteestatistic">Mentee</a></li>
                             <li><a href="#">Dashboard</a></li>
                         </ul>
                     </div>

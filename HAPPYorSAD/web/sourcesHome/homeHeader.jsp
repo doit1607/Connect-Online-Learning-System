@@ -22,8 +22,8 @@
             </div>
             <ul class="menu">
                 <li><a href="Home">Home</a></li>
-                <li><a href="ViewMentor_Mentee">Instructor</a></li>
-                <li><a href="#">Student</a></li>
+                <li><a href="ViewMentor_Mentee">Mentor</a></li>
+                <li><a href="#">Mentee</a></li>
                 <li><a href="#">Pages</a></li>
                 <li><a href="#">Blog</a></li>
             </ul>
