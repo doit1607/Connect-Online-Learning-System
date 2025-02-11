@@ -36,7 +36,7 @@
                 </div>
 
                 <label for="comment">Comment <span class="required">*</span></label>
-                <input name="comment" required>
+                <input type="text" name="comment" required>
 
                 <input type="hidden" name="mentorId" value="${mentorId}">
                 <input type="hidden" name="menteeId" value="${menteeId}">

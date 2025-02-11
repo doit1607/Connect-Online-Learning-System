@@ -19,7 +19,7 @@
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
-            <form action="/HAPPYorSAD/updatementorprofile" method="post">
+            <form action="/HAPPYorSAD/updatementorprofile" method="get">
                 <input type="hidden" name="id" value="${mentor.id}">
                 
                 <label for="avatar">Avatar (URL) <span class="required">*</span></label>

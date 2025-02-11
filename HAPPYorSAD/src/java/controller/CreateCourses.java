@@ -57,9 +57,11 @@ public class CreateCourses extends HttpServlet {
 
         boolean isSuccess = dao.createCourse(title, description);
         if (isSuccess) {
-            request.setAttribute("message", "Course added successfully!");
+            request.setAttribute("message", "Course added successfully.");
+            request.setAttribute("messageType", "success");
         } else {
-            request.setAttribute("message", "Error adding course.");
+            request.setAttribute("message", "Please enter as required!");
+            request.setAttribute("messageType", "error");
         }
 
         request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);

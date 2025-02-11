@@ -277,7 +277,6 @@ public class DAOuser extends DBConnection {
         return mentor;
     }
 
-    // fetch Mentor by id
     public User getMentorById(int id) {
         User mentor = null;
         String sql = "Select * from Users where id = ? and role = 'mentor'";

@@ -11,15 +11,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/cssCRUD/createCourse.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
         <title>Create Course</title>
     </head>
     <body>
-        <% String message = (String) request.getAttribute("message"); %>
+        <% 
+            String message = (String) request.getAttribute("message"); 
+            String messageType = (String) request.getAttribute("messageType"); 
+        %>
+
         <% if (message != null) { %>
-        <div class="alert-message">
-            <p><%= message %></p>
-        </div>
+            <div class="alert-message <%= messageType %>">
+                <p><%= message %></p>
+            </div>
         <% } %>
 
         <div class="form-container">
@@ -41,6 +46,7 @@
 
             </form>
         </div>  
+
         <script>
             function goBack() {
                 window.location.href = "<%= request.getContextPath() %>/CourseManager";

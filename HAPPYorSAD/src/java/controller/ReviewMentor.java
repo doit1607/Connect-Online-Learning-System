@@ -49,60 +49,39 @@ public class ReviewMentor extends HttpServlet {
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
 
-        // Kiểm tra phương thức HTTP
-        String method = request.getMethod();
+        int mentorId = 0, menteeId = 0, rating = 0;
+        String comment = request.getParameter("comment");
 
-        // Nếu là POST -> Xử lý đánh giá mentor
-        if ("POST".equalsIgnoreCase(method)) {
-            int mentorId = 0, menteeId = 0, rating = 0;
-            String comment = request.getParameter("comment");
+        try {
+            String mentorIdParam = request.getParameter("mentorId");
+            String menteeIdParam = request.getParameter("menteeId");
+            String ratingParam = request.getParameter("rating");
 
-            try {
-                mentorId = Integer.parseInt(request.getParameter("mentorId"));
-                menteeId = Integer.parseInt(request.getParameter("menteeId"));
-                rating = Integer.parseInt(request.getParameter("rating"));
-            } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid input! Please enter valid numbers.");
+            if (mentorIdParam == null || mentorIdParam.trim().isEmpty()
+                    || menteeIdParam == null || menteeIdParam.trim().isEmpty()
+                    || ratingParam == null || ratingParam.trim().isEmpty()) {
+                request.setAttribute("error", "Mentor ID, Mentee ID, and Rating are required.");
                 request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
                 return;
             }
 
-            if (rating < 1 || rating > 5) {
-                request.setAttribute("error", "Rating should be between 1 and 5.");
-                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-                return;
-            }
+            mentorId = Integer.parseInt(mentorIdParam);
+            menteeId = Integer.parseInt(menteeIdParam);
+            rating = Integer.parseInt(ratingParam);
 
-            boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
-
-            if (isSuccess) {
-                request.setAttribute("success", "Rating submitted successfully!");
-            } else {
-                request.setAttribute("error", "Failed to submit rating. Please try again.");
-            }
-        }
-
-        // Xử lý hiển thị đánh giá của mentor
-        String idParam = request.getParameter("mentorId");
-        int mentorId = 0;
-
-        if (idParam != null && !idParam.trim().isEmpty()) {
-            try {
-                mentorId = Integer.parseInt(idParam);
-            } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid mentor ID format!");
-                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-                return;
-            }
-        } else {
-            request.setAttribute("error", "Mentor ID is missing!");
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid input! Please enter valid numbers.");
             request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
             return;
         }
 
-        List<MentorReview> reviews = dao.getReviewByMentorId(mentorId);
-        request.setAttribute("reviews", reviews);
-        request.setAttribute("mentorId", mentorId);
+        boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
+
+        if (isSuccess) {
+            request.setAttribute("success", "Your review has been submitted successfully!");
+        } else {
+            request.setAttribute("error", "Failed to submit review. Please try again.");
+        }
         request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
     }
 

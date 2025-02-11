@@ -48,11 +48,11 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
+
         // Get ID parameter
         String idParam = request.getParameter("id");
-
-        // Validate ID
         int id = 0;
+
         if (idParam != null && !idParam.trim().isEmpty()) {
             try {
                 id = Integer.parseInt(idParam);
@@ -67,27 +67,12 @@ public class UpdateMentorProfile extends HttpServlet {
             return;
         }
 
-        User mentor = mento.getMentorById(id);
-        request.setAttribute("mentor", mentor);
-        request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        DAOuser mento = new DAOuser();
-
-        // Retrieve ID parameter safely
-        String idParam = request.getParameter("id");
-        int id = 0;
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
+            User mentor = mento.getMentorById(id);
+            request.setAttribute("mentor", mentor);
+            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+            return;
+        }
 
         String avatar = request.getParameter("avatar");
         String username = request.getParameter("username");
@@ -100,8 +85,8 @@ public class UpdateMentorProfile extends HttpServlet {
         if (dob != null && !dob.isEmpty()) {
             DOB = java.sql.Date.valueOf(dob);
         } else {
-            request.setAttribute("error", "Date of birth can not empty!");
-            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
+            request.setAttribute("error", "Date of birth cannot be empty!");
+            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
             return;
         }
 
@@ -118,9 +103,23 @@ public class UpdateMentorProfile extends HttpServlet {
             request.setAttribute("successMessage", "Profile updated successfully!");
             request.getRequestDispatcher("/view/Course.jsp").forward(request, response);
         } else {
-            request.setAttribute("error", "Unable update profile!");
-            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
+            request.setAttribute("error", "Unable to update profile!");
+            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
         }
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
     }
 
     /**
