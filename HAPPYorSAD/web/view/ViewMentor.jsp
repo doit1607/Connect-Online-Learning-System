@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh sách Mentor</title>
+        <title>Mentor List</title>
 
         <!-- Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -60,13 +60,13 @@
     <body>
 
         <div class="container">
-            <h2 class="text-center mb-4">Danh Sách Mentor</h2>
+            <h2 class="text-center mb-4">Mentor List</h2>
 
             <!-- Search Form -->
             <form id="searchForm" action="viewMentor" method="GET" class="mb-4">
                 <div class="input-group">
                     <input type="text" id="searchInput" name="search" class="form-control" placeholder="Tìm kiếm mentor..." value="${param.search}">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Search</button>
                 </div>
             </form>
             <% 
@@ -94,16 +94,16 @@
                         <table class="table table-bordered">
                             <thead class="table-light">
                                 <tr>
-                                    <th>STT</th>
+                                    <th>Number</th>
                                     <th>ID</th>
-                                    <th>Họ và tên</th>
-                                    <th>Tên tài khoản</th>
-                                    <th>Nghề nghiệp</th>
-                                    <th>Yêu cầu chấp nhận</th>
-                                    <th>% Hoàn thành</th>
-                                    <th>Đánh giá</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
+                                    <th>Full Name</th>
+                                    <th>User name</th>
+                                    <th>Expertise</th>
+                                    <th>Current Request</th>
+                                    <th>% Completion</th>
+                                    <th>Rate</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,7 +121,7 @@
                                         </td>
                                         <td>
                                             <span class="${mentor.getUser().getStatus().equals('active') ? 'text-success' : 'text-danger'}">
-                                                ${mentor.getUser().getStatus().equals('active') ? 'Hoạt động' : 'Không hoạt động'}
+                                                ${mentor.getUser().getStatus().equals('active') ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
                                         <td>
@@ -130,12 +130,12 @@
 
                                                 <c:if test="${mentor.getUser().getStatus().equals('active')}">
                                                     <input type="hidden" name="status" value="inactive">
-                                                    <button type="submit" class="btn btn-sm btn-danger">Vô hiệu hóa</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger">Disable</button>
                                                 </c:if>
 
                                                 <c:if test="${!mentor.getUser().getStatus().equals('active')}">
                                                     <input type="hidden" name="status" value="active">
-                                                    <button type="submit" class="btn btn-sm btn-success">Kích hoạt</button>
+                                                    <button type="submit" class="btn btn-sm btn-success">Active</button>
                                                 </c:if>
                                             </form>
                                         </td>
@@ -148,7 +148,7 @@
                         </table>
                     </c:when>
                     <c:otherwise>
-                        <p class="text-center text-muted">Không tìm thấy Mentor nào.</p>
+                        <p class="text-center text-muted">Cannot find this mentor.</p>
                     </c:otherwise>
                 </c:choose>
             </div>
