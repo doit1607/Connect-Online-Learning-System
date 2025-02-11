@@ -57,11 +57,10 @@ public class LoginUserController extends HttpServlet {
                     }
                     session.setAttribute("usernameUser", username);
                     response.sendRedirect("Home");
-                }
-                else{
+                } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
-                    
+
                 }
 
             } else {
@@ -148,9 +147,16 @@ public class LoginUserController extends HttpServlet {
             String newPassword = request.getParameter("newpassword");
 
             if (userDAO.loginUser(username, currentpassword)) {
-                userDAO.updatePassword(username, newPassword);
-                request.setAttribute("msg", "Password changed successfully!");
-                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                if (!currentpassword.equals(newPassword)) {
+                    userDAO.updatePassword(username, newPassword);
+                    request.setAttribute("msg", "Password changed successfully!");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                }
+                else{
+                    request.setAttribute("error", "Old password same with new password.Please input again!");
+                    request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                }
+
             } else {
                 request.setAttribute("error", "Incorrect old password!");
                 request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
