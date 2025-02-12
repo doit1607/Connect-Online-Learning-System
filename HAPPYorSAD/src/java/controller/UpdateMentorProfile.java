@@ -53,6 +53,16 @@ public class UpdateMentorProfile extends HttpServlet {
         User u = mento.getMentorByUsername(username);
         request.setAttribute("mentor", u);
         request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+
+//        boolean isUpdated = mento.updateMentorProfile(u);
+//        if (isUpdated) {
+//            request.setAttribute("successMessage", "Profile updated successfully!");
+//            request.getRequestDispatcher("Home").forward(request, response);
+//        } else {
+//            request.setAttribute("error", "Unable to update profile!");
+//            request.setAttribute("mentor", u);
+//            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+//        }
     }
 
     /**

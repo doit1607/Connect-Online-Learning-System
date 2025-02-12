@@ -10,13 +10,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/cssCRUD/updateProfile.css">
-        <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
         <link rel="stylesheet" href="css/cssHome/homeFooter.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <title>Update Mentor Profile</title>
     </head>
     <body>
-        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <h1>Update Your Profile</h1>
         <div class="form-container">
             <form action="/HAPPYorSAD/updatementorprofile" method="get">
@@ -57,7 +55,7 @@
             // thông báo thành công
             <% if (request.getAttribute("successMessage") != null) { %>
                 alert("<%= request.getAttribute("successMessage") %>");
-                window.location.href = "Course.jsp"; // trở về trang Course
+                window.location.href = "Home";
             <% } %>
 
             // thông báo lỗi

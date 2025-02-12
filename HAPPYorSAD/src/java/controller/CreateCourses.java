@@ -4,12 +4,17 @@
  */
 package controller;
 
+import entity.Major;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import model.DAOCourse;
+import model.DAOhome;
+import model.DAOmajor;
 
 /**
  *
@@ -31,9 +36,14 @@ public class CreateCourses extends HttpServlet {
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-
+        
         DAOCourse dao = new DAOCourse();
-
+        DAOmajor dao1 = new DAOmajor();
+        
+        List<Major> list = dao1.getMajorHome();
+        
+        request.setAttribute("listMajor", list);
+        
         boolean isSuccess = dao.createCourse(title, description);
         if (isSuccess) {
             request.setAttribute("message", "Course added successfully.");

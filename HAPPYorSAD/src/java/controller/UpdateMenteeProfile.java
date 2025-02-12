@@ -52,7 +52,16 @@ public class UpdateMenteeProfile extends HttpServlet {
         User u = mente.getMenteeByUsername(username);
         request.setAttribute("mentee", u);
         request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-
+        
+//        boolean isUpdated = mente.updateMenteeProfile(u);
+//        if (isUpdated) {
+//            request.setAttribute("successMessage", "Profile updated successfully!");
+//            request.getRequestDispatcher("Home").forward(request, response);
+//        } else {
+//            request.setAttribute("error", "Unable to update profile!");
+//            request.setAttribute("mentee", u);
+//            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+//        }
     }
 
 
