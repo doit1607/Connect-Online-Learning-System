@@ -149,7 +149,7 @@ public class DAOCourse extends DBConnection {
                 + "    c.title,\n"
                 + "	c.image,\n"
                 + "    cm.name as CourseMajor,\n"
-                + "    COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
+                + "    COUNT(DISTINCT CASE WHEN u_mentor.status = 'active' THEN u_mentor.id END) AS total_Mentor,\n"
                 + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
                 + "FROM Course c\n"
                 + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
@@ -179,13 +179,14 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getCountCourseHome() {
         ArrayList<Course> list = new ArrayList<>();
-        String query = "SELECT \n"
-                + "    COUNT(DISTINCT c.id) AS total_Courses,\n"
-                + "    COUNT(DISTINCT m.id) AS total_Mentee\n"
-                + "FROM Course c\n"
-                + "LEFT JOIN Mentee m ON m.user_id IN (\n"
-                + "    SELECT id FROM Users WHERE role = 'mentee'\n"
-                + ");";
+        String query = "SELECT  \n"
+                + "    COUNT(DISTINCT c.id) AS total_Courses,  \n"
+                + "    COUNT(DISTINCT m.id) AS total_Mentee  \n"
+                + "FROM Course c  \n"
+                + "LEFT JOIN Mentee m ON m.user_id IN (  \n"
+                + "    SELECT id FROM Users WHERE role = 'mentee'  \n"
+                + ")  \n"
+                + "WHERE c.status = 'active'; ";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet rs = connect.executeQuery();
@@ -224,7 +225,7 @@ public class DAOCourse extends DBConnection {
         List<Course> listCourseHome = dao.getAllCourseHome();
 
         for (Course course : listCourseHome) {
-            System.out.println(listCourseHome);
+            System.out.println(course);
         }
 
 //        List<Course> listCourse1 = dao.getAllCourse();

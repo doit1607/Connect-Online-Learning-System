@@ -76,6 +76,27 @@ public class DAOMentor extends DBConnection {
 
         return list;
     }
+    
+     public List<Mentor> getCount() {
+        ArrayList<Mentor> count = new ArrayList<>();
+        String query = "SELECT COUNT(DISTINCT u_mentor.id) AS total_Mentor\n"
+                + "FROM Users u_mentor\n"
+                + "WHERE u_mentor.role = 'mentor' AND u_mentor.status = 'active';";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            ResultSet result = connect.executeQuery();
+            while (result.next()) {
+                int total_Mentor = result.getInt("total_Mentor");
+                Mentor m = new Mentor(total_Mentor);
+                count.add(m);
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
     public List<Mentor> getMentorsHome() {
         List<Mentor> list = new ArrayList<>();
@@ -112,7 +133,7 @@ public class DAOMentor extends DBConnection {
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentorsSuggestion();
+        List<Mentor> list = dao.getCount();
 
         for (Mentor mentor : list) {
             System.out.println(mentor);
