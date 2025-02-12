@@ -219,14 +219,55 @@ public class DAOCourse extends DBConnection {
         return false;
     }
 
+    public Course getCourseById(int id) {
+        String query = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "  Where [id] = ?";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            connect.setInt(1, id);
+            ResultSet result = connect.executeQuery();
+            
+            while (result.next()) {
+                id = result.getInt("id");
+                String title = result.getString("title");
+                String description = result.getString("description");
+                int managerId = result.getInt("manager_id");
+                int mentorId = result.getInt("mentor_id");
+                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
+                int courseMajorId = result.getInt("course_major_id");
+                String status = result.getString("status");
+                String image = result.getString("image");
+
+                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourseHome = dao.getAllCourseHome();
-
-        for (Course course : listCourseHome) {
-            System.out.println(course);
-        }
+//        List<Course> listCourseHome = dao.getAllCourseHome();
+//
+//        for (Course course : listCourseHome) {
+//            System.out.println(course);
+//        }
 
 //        List<Course> listCourse1 = dao.getAllCourse();
 //        System.out.println(listCourse1);
@@ -238,5 +279,7 @@ public class DAOCourse extends DBConnection {
 //        } else {
 //            System.out.println("Create failed!");
 //        }
+        Course course = dao.getCourseById(1);
+        System.out.println(course);
     }
 }

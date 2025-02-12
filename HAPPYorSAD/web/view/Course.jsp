@@ -538,15 +538,15 @@
                                         <div class="course-box course-design list-course d-flex">
                                             <div class="product">
                                                 <div class="product-img">
-                                                    <a href="course-details.html">
+                                                    <a href="CourseDetails?Cid=${o.id}">
                                                         <img class="img-fluid" alt="Img" src="${o.image}" ">
                                                     </a>
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="head-course-title">
-                                                        <h3 class="title"><a href="course-details.html">${o.title}</a></h3>
+                                                        <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>
                                                         <div class="all-btn all-category d-flex align-items-center">
-                                                            <a href="checkout.html" class="btn btn-primary">Course ID: ${o.id}</a>
+                                                            <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">Course ID: ${o.id}</a>
                                                         </div>
                                                     </div>
                                                     

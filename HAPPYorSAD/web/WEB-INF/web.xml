@@ -44,6 +44,18 @@
         <servlet-name>DashBoardMentor</servlet-name>
         <servlet-class>controller.DashBoardMentor</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CourseDetail</servlet-name>
+        <servlet-class>controller.CourseDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseDetail</servlet-name>
+        <servlet-class>controller.CourseDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CourseDetails</servlet-name>
+        <servlet-class>controller.CourseDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -83,5 +95,13 @@
     <servlet-mapping>
         <servlet-name>DashBoardMentor</servlet-name>
         <url-pattern>/dbMentor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseDetail</servlet-name>
+        <url-pattern>/CourseDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseDetails</servlet-name>
+        <url-pattern>/CourseDetails</url-pattern>
     </servlet-mapping>
 </web-app>
