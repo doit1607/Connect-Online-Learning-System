@@ -1,15 +1,9 @@
-<%-- 
-    Document   : test
-    Created on : Feb 12, 2025, 4:35:08 AM
-    Author     : Ann
---%>
+<!DOCTYPE html> 
+<html lang="en">
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
+    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:05:04 GMT -->
     <head>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Dreams LMS</title>
@@ -18,7 +12,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
 
         <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+        <script src="assets/js/theme-script.js" type="b11b5c5b2787092d89072727-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -31,333 +25,195 @@
         <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
         <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
 
-        <!-- Slick CSS -->
-        <link rel="stylesheet" href="assets/plugins/slick/slick.css">
-        <link rel="stylesheet" href="assets/plugins/slick/slick-theme.css">
-
-        <!-- Select2 CSS -->
-        <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-
-        <!-- Aos CSS -->
-        <link rel="stylesheet" href="../assets/plugins/aos/aos.css">
+        <!-- Feathericon CSS -->
+        <link rel="stylesheet" href="assets/plugins/feather/feather.css">
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="assets/css/style.css">
+
     </head>
-    <!-- Main Wrapper -->
-    <div class="main-wrapper">
+    <body>
 
-        <!-- Header -->
-        <header class="header">
-            <div class="header-fixed">
-                <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <a id="mobile_btn" href="javascript:void(0);">
-                                <span class="bar-icon">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </span>
-                            </a>
-                            <a href="index-2.html" class="navbar-brand logo">
-                                <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                            </a>
-                        </div>
-                        <div class="main-menu-wrapper">
-                            <div class="menu-header">
-                                <a href="index-2.html" class="menu-logo">
-                                    <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                                <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                            </div>
-                            <ul class="main-nav">
-                                <li class="has-submenu active">
-                                    <a class="" href="#">Home <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li class="active"><a href="index-2.html">Home</a></li>
-                                        <li><a href="index-two.html">Home Two</a></li>
-                                        <li><a href="index-three.html">Home Three</a></li>
-                                        <li><a href="index-four.html">Home Four</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href="#">Instructor <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li class="has-submenu">
-                                            <a href="instructor-list.html">Instructor</a>
-                                            <ul class="submenu">
-                                                <li><a href="instructor-list.html">List</a></li>
-                                                <li><a href="instructor-grid.html">Grid</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="instructor-dashboard.html">Dashboard</a></li>
-                                        <li><a href="instructor-profile.html">My Profile</a></li>
-                                        <li><a href="instructor-course.html">My Course</a></li>
-                                        <li><a href="instructor-wishlist.html">Wishlist</a></li>
-                                        <li><a href="instructor-reviews.html">Reviews</a></li>
-                                        <li><a href="instructor-quiz.html">My Quiz Attempts</a></li>
-                                        <li><a href="instructor-orders.html">Orders</a></li>
-                                        <li><a href="instructor-qa.html">Question & Answer</a></li>
-                                        <li><a href="instructor-referral.html">Referrals</a></li>
-                                        <li><a href="instructor-chat.html">Messages</a></li>
-                                        <li><a href="instructor-tickets.html">Support Ticket</a></li>
-                                        <li><a href="instructor-notifications.html">Notifications</a></li>
-                                        <li><a href="instructor-settings.html">Settings</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href="#">Student <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu first-submenu">
-                                        <li class="has-submenu">
-                                            <a href="students-list.html">Student</a>
-                                            <ul class="submenu">
-                                                <li><a href="students-list.html">List</a></li>
-                                                <li><a href="students-grid.html">Grid</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="student-dashboard.html">Student Dashboard</a></li>
-                                        <li><a href="student-profile.html">My Profile</a></li>
-                                        <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                        <li><a href="student-wishlist.html">Wishlist</a></li>
-                                        <li><a href="student-reviews.html">Reviews</a></li>
-                                        <li><a href="student-quiz.html">My Quiz Attempts</a></li>
-                                        <li><a href="student-order-history.html">Orders</a></li>
-                                        <li><a href="student-qa.html">Question & Answer</a></li>
-                                        <li><a href="student-referral.html">Referrals</a></li>
-                                        <li><a href="student-messages.html">Messages</a></li>
-                                        <li><a href="student-tickets.html">Support Ticket</a></li>
-                                        <li><a href="student-settings.html">Settings</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="notifications.html">Notification</a></li>
-                                        <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li class="has-submenu">
-                                            <a href="course-list.html">Course</a>
-                                            <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
-                                                <li><a href="course-list.html">Course List</a></li>
-                                                <li><a href="course-grid.html">Course Grid</a></li>
-                                                <li><a href="course-details.html">Course Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-submenu">
-                                            <a href="come-soon.html">Error</a>
-                                            <ul class="submenu">
-                                                <li><a href="come-soon.html">Coming Soon</a></li>
-                                                <li><a href="error-404.html">404</a></li>
-                                                <li><a href="error-500.html">500</a></li>
-                                                <li><a href="under-construction.html">Under Construction</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="support.html">Support</a></li>
-                                        <li><a href="job-category.html">Category</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="forgot-password.html">Forgot Password</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu">
-                                    <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="submenu">
-                                        <li><a href="blog-list.html">Blog List</a></li>
-                                        <li><a href="blog-grid.html">Blog Grid</a></li>
-                                        <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                        <li><a href="blog-modern.html">Blog Modern</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li class="login-link">
-                                    <a href="login.html">Login / Signup</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <ul class="nav header-navbar-rht">
-                            <li class="nav-item">
-                                <div>
-                                    <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                        <i class="fa-solid fa-moon"></i>
-                                    </a>
-                                    <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                        <i class="fa-solid fa-sun"></i>
-                                    </a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link header-sign" href="login.html">Signin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link header-login" href="register.html">Signup</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </header>
-        <!-- /Header -->
+        <!-- Main Wrapper -->
+        <div class="main-wrapper log-wrap">
 
-    
-
-<!-- Footer -->
-<footer class="footer">
-
-    <!-- Footer Top -->
-    <div class="footer-top aos" data-aos="fade-up">
-        <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6">
 
-                    <!-- Footer Widget -->
-                    <div class="footer-widget footer-about">
-                        <div class="footer-logo">
-                            <img src="assets/img/logo.svg" alt="logo">
+                <!-- Login Banner -->
+                <div class="col-md-6 login-bg">
+                    <div class="owl-carousel login-slide owl-theme">
+                        <div class="welcome-login">
+                            <div class="login-banner">
+                                <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+                            </div>
+                            <div class="mentor-course text-center">
+                                <h2>Welcome to <br>DreamsLMS Courses.</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                            </div>
                         </div>
-                        <div class="footer-about-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
+                        <div class="welcome-login">
+                            <div class="login-banner">
+                                <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+                            </div>
+                            <div class="mentor-course text-center">
+                                <h2>Welcome to <br>DreamsLMS Courses.</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                            </div>
+                        </div>
+                        <div class="welcome-login">
+                            <div class="login-banner">
+                                <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+                            </div>
+                            <div class="mentor-course text-center">
+                                <h2>Welcome to <br>DreamsLMS Courses.</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                            </div>
                         </div>
                     </div>
-                    <!-- /Footer Widget -->
-
                 </div>
+                <!-- /Login Banner -->
 
-                <div class="col-lg-2 col-md-6">
+                <div class="col-md-6 login-wrap-bg">		
 
-                    <!-- Footer Widget -->
-                    <div class="footer-widget footer-menu">
-                        <h2 class="footer-title">For Instructor</h2>
-                        <ul>
-                            <li><a href="instructor-profile.html">Profile</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="register.html">Register</a></li>
-                            <li><a href="instructor-list.html">Instructor</a></li>
-                            <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                        </ul>
-                    </div>
-                    <!-- /Footer Widget -->
+                    <!-- Login -->
+                    <div class="login-wrapper">
+                        <div class="loginbox">
+                            <div class="img-logo">
+                                <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+                                <div class="back-home">
+                                    <a href="index-2.html">Back to Home</a>
+                                </div>
+                            </div>
+                            <h1>Sign up</h1>
+                            <form action="H">
+                                <input type="hidden" name="service" value="register">
+                                <div class="input-block">
+                                    <label class="form-control-label">Username</label>
+                                    <input type="text" name="usernameRegis"  class="form-control" placeholder="Enter your username">
+                                </div>
 
-                </div>
+                                <div class="input-block">
+                                    <label class="form-control-label">Full Name</label>
+                                    <input type="text" name="fullnameRegis" class="form-control" placeholder="Enter your Full Name">
+                                </div>
 
-                <div class="col-lg-2 col-md-6">
+                                <div class="input-block">
+                                    <label class="form-control-label">Email</label>
+                                    <input type="email" name = "emailRegis" class="form-control" placeholder="Enter your email address">
+                                </div>
 
-                    <!-- Footer Widget -->
-                    <div class="footer-widget footer-menu">
-                        <h2 class="footer-title">For Student</h2>
-                        <ul>
-                            <li><a href="student-profile.html">Profile</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="register.html">Register</a></li>
-                            <li><a href="students-list.html">Student</a></li>
-                            <li><a href="student-dashboard.html"> Dashboard</a></li>
-                        </ul>
-                    </div>
-                    <!-- /Footer Widget -->
-
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-
-                    <!-- Footer Widget -->
-                    <div class="footer-widget footer-contact">
-                        <h2 class="footer-title">News letter</h2>
-                        <div class="news-letter">
-                            <form>
-                                <input type="text" class="form-control" placeholder="Enter your email address"
-                                       name="email">
+                                <div class="input-block">
+                                    <label class="form-control-label">Phone Number</label>
+                                    <input type="text" name = "phoneRegis" class="form-control" placeholder="Enter your phone number">
+                                </div>
+                                <div class="input-block">
+                                    <label class="form-control-label">Date of birth</label>
+                                    <input type="date" name = "dobRegis" class="form-control">
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-label">Gender</label>
+                                    <select name="genderRegis" id="genderRegis" required>
+                                        <option value="">Choose Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <span>&nbsp;</span>
+                                <div class="input-block">
+                                    <label class="form-control-label">Password</label>
+                                    <div class="pass-group" id="passwordInput">																	
+                                        <input type="password" name = "passwordRegis" id = "passwordRegis"class="form-control pass-input" placeholder="Enter your password">
+                                        <span class="toggle-password feather-eye"></span>
+                                        <span class="pass-checked"><i class="feather-check"></i></span>
+                                    </div>
+                                <span>&nbsp;</span>
+                                <div class="input-block">
+                                    <label class="form-control-label">Confirm Password</label>
+                                    <div class="pass-group" id="passwordInput">																	
+                                        <input type="password" name = "confirmpassword" id="confirmPassword"class="form-control pass-input" placeholder="Enter your confirm password">
+                                        <span class="toggle-password feather-eye"></span>
+                                        <span class="pass-checked"><i class="feather-check"></i></span>
+                                    </div>    
+                                    <div id="passwordInfo"></div>	
+                                </div>
+                                    
+                                <div class="form-check remember-me">
+                                    <label class="form-check-label mb-0">
+                                        <input class="form-check-input" type="checkbox" name="remember"> I agree to the <a href="term-condition.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy.</a>
+                                    </label>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-start" type="submit">Create Account</button>
+                                </div>
                             </form>
                         </div>
-                        <div class="footer-contact-info">
-                            <div class="footer-address">
-                                <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+<!--                        <div class="google-bg text-center">
+                            <span><a href="#">Or sign in with</a></span>
+                            <div class="sign-google">
+                                <ul>
+                                    <li><a href="#"><img src="assets/img/net-icon-01.png" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
+                                    <li><a href="#"><img src="assets/img/net-icon-02.png" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
+                                </ul>
                             </div>
-                            <p>
-                                <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="41253324202c322d2c32012439202c312d246f222e2c">[email&#160;protected]</a>
-                            </p>
-                            <p class="mb-0">
-                                <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                +19 123-456-7890
-                            </p>
-                        </div>
+                            <p class="mb-0">Already have an account? <a href="login.html">Sign in</a></p>
+                        </div>-->
                     </div>
-                    <!-- /Footer Widget -->
+                    <!-- /Login -->
 
                 </div>
 
             </div>
-        </div>
-    </div>
-    <!-- /Footer Top -->
-
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-        <div class="container">
-
-            <!-- Copyright -->
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="privacy-policy">
-                            <ul>
-                                <li><a href="term-condition.html">Terms</a></li>
-                                <li><a href="privacy-policy.html">Privacy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="copyright-text">
-                            <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Copyright -->
 
         </div>
-    </div>
-    <!-- /Footer Bottom -->
+        <!-- /Main Wrapper -->
 
-</footer>
-<!-- /Footer -->
+        <!-- jQuery -->
+        <script src="assets/js/jquery-3.7.1.min.js" type="b11b5c5b2787092d89072727-text/javascript"></script>
 
-</div>
-<!-- /Main Wrapper -->
+        <!-- Bootstrap Core JS -->
+        <script src="assets/js/bootstrap.bundle.min.js" type="b11b5c5b2787092d89072727-text/javascript"></script>
 
-<!-- jQuery -->
-<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+        <!-- Owl Carousel -->
+        <script src="assets/js/owl.carousel.min.js" type="b11b5c5b2787092d89072727-text/javascript"></script>	
 
-<!-- Bootstrap Core JS -->
-<script src="assets/js/bootstrap.bundle.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+        <!-- Validation-->
+        <script src="assets/js/validation.js" type="b11b5c5b2787092d89072727-text/javascript"></script>	
 
-<!-- counterup JS -->
-<script src="assets/js/jquery.waypoints.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-<script src="assets/js/jquery.counterup.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+        <!-- Custom JS -->
+        <script src="assets/js/script.js" type="b11b5c5b2787092d89072727-text/javascript"></script>
 
-<!-- Select2 JS -->
-<script src="assets/plugins/select2/js/select2.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
 
-<!-- Owl Carousel -->
-<script src="assets/js/owl.carousel.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+        
+        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b11b5c5b2787092d89072727-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074479e8f5e2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        
+        <script>
+            document.getElementById("passwordRegis").addEventListener("input", checkPasswords);
+            document.getElementById("confirmPassword").addEventListener("input", checkPasswords);
 
-<!-- Slick Slider -->
-<script src="assets/plugins/slick/slick.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+            function checkPasswords() {
+                let password = document.getElementById("passwordRegis").value;
+                let confirmPassword = document.getElementById("confirmPassword").value;
+                let message = document.getElementById("passwordMessage");
 
-<!-- Aos -->
-<script src="assets/plugins/aos/aos.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
+                if (password !== confirmPassword) {
+                    if (!message) {
+                        message = document.createElement("p");
+                        message.id = "passwordMessage";
+                        message.style.color = "red";
+                        message.textContent = "Passwords do not match!";
+                        document.getElementById("confirmPassword").after(message);
+                    }
+                } else {
+                    if (message) {
+                        message.remove();
+                    }
+                }
+            }
 
-<!-- Custom JS -->
-<script src="assets/js/script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
 
-<script src="cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1d433aff6b2b8dd82abe2a72-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910743f1baeee2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-</body>
+        </script>
+    </body>
+
+    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:05:05 GMT -->
 </html>
