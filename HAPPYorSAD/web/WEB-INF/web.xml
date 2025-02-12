@@ -40,6 +40,10 @@
         <servlet-name>Dashboard</servlet-name>
         <servlet-class>controller.Dashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashBoardMentor</servlet-name>
+        <servlet-class>controller.DashBoardMentor</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -75,5 +79,9 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashBoardMentor</servlet-name>
+        <url-pattern>/dbMentor</url-pattern>
     </servlet-mapping>
 </web-app>
