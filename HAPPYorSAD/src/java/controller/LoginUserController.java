@@ -78,6 +78,7 @@ public class LoginUserController extends HttpServlet {
 
         if ("register".equals(service)) {
             EmailUtil em = new EmailUtil();
+
             String username = request.getParameter("usernameRegis");
             String password = request.getParameter("passwordRegis");
             String email = request.getParameter("emailRegis");
@@ -85,6 +86,8 @@ public class LoginUserController extends HttpServlet {
             String gender = request.getParameter("genderRegis");
             String address = request.getParameter("addressRegis");
             String fullname = request.getParameter("fullnameRegis");
+
+            
 
             Date dateOfBirth = null;
             try {
@@ -151,8 +154,7 @@ public class LoginUserController extends HttpServlet {
                     userDAO.updatePassword(username, newPassword);
                     request.setAttribute("msg", "Password changed successfully!");
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
-                }
-                else{
+                } else {
                     request.setAttribute("error", "Old password same with new password.Please input again!");
                     request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
                 }

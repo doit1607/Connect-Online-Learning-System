@@ -47,68 +47,14 @@ public class UpdateMenteeProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
-
-//        // Get ID parameter
-//        String idParam = request.getParameter("id");
-//        int id = 0;
-//
-//        if (idParam != null && !idParam.trim().isEmpty()) {
-//            try {
-//                id = Integer.parseInt(idParam);
-//            } catch (NumberFormatException e) {
-//                request.setAttribute("error", "Invalid ID format!");
-//                request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-//                return;
-//            }
-//        } else {
-//            request.setAttribute("error", "ID parameter is missing!");
-//            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-//            return;
-//        }
-//
-        int id = Integer.parseInt(request.getParameter("id"));
-        if ("GET".equalsIgnoreCase(request.getMethod())) {
-            User mentee = mente.getMenteeById(id);
-            request.setAttribute("mentee", mentee);
-            request.setAttribute("email", mentee.getEmail());
-            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-            return;
-        }
-//
-        String avatar = request.getParameter("avatar");
         String username = request.getParameter("username");
-        String fullname = request.getParameter("fullname");
-        String dob = request.getParameter("dateOfBirth");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-//
-        java.sql.Date DOB = java.sql.Date.valueOf(dob);
-//        if (dob != null && !dob.isEmpty()) {
-//            DOB = java.sql.Date.valueOf(dob);
-//        } else {
-//            request.setAttribute("error", "Date of birth cannot be empty!");
-//            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-//            return;
-//        }
-
-        User mentee = new User();
-        mentee.setAvatarPath(avatar);
-        mentee.setUsername(username);
-        mentee.setFullname(fullname);
-        mentee.setDateOfBirth(DOB);
-        mentee.setGender(gender);
-        mentee.setAddress(address);
-
-        boolean isUpdated = mente.updateMenteeProfile(mentee);
-        if (isUpdated) {
-            request.setAttribute("successMessage", "Profile updated successfully!");
-            request.getRequestDispatcher("/view/Course.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Unable to update profile!");
-            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-        }
+        
+        User u = mente.getMenteeByUsername(username);
+        request.setAttribute("mentee", u);
+        request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
 
     }
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -121,7 +67,7 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     /**

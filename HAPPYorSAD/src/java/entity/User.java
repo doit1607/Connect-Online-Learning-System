@@ -133,7 +133,7 @@ public class User {
         this.role = role;
     }
 
-    public boolean getIsGuest() {
+    public boolean isIsGuest() {
         return isGuest;
     }
 
@@ -141,9 +141,6 @@ public class User {
         this.isGuest = isGuest;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "avatarPath=" + avatarPath + ", username=" + username + ", fullname=" + fullname + ", password=" + password + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", createdAt=" + createdAt + ", gender=" + gender + ", role=" + role + ", isGuest=" + isGuest + '}';
-    }
+    
 
 }

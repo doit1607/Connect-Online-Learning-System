@@ -34,7 +34,7 @@
                 <input type="text" name="title" id="title" placeholder="Enter name" required>
 
                 <label for="description">Description <span class="required">*</span></label>
-                <input type="text" name="description" id="description" placeholder="Enter description" required="">
+                <textarea type="text" name="description" id="description" placeholder="Enter description" required=""></textarea>
 
                 <input type="hidden" name="status" value="active">
 

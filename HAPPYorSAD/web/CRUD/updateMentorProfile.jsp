@@ -20,7 +20,7 @@
         <h1>Update Your Profile</h1>
         <div class="form-container">
             <form action="/HAPPYorSAD/updatementorprofile" method="get">
-                <input type="hidden" name="id" value="${mentor.id}">
+                <input type="hidden" name="username" value="${mentor.username}">
                 
                 <label for="avatar">Avatar (URL) <span class="required">*</span></label>
                 <input type="text" id="avatar" name="avatar" value="${mentor.avatarPath}" required>

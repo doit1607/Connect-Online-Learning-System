@@ -20,7 +20,7 @@
         <h1>Update Your Profile</h1>
         <div class="form-container">
             <form action="/HAPPYorSAD/updatementeeprofile" method="get">
-                <input type="hidden" name="id" value="${mentee.id}">
+                <input type="hidden" name="username" value="${mentee.username}">
                 
                 <label for="avatar">Avatar (URL) <span class="required">*</span></label>
                 <input type="text" id="avatar" name="avatar" value="${mentee.avatarPath}" required>

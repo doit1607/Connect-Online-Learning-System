@@ -58,7 +58,7 @@ body {
 label {
     display: block;
     font-size: 16px;
-    margin: 10px 0 10px;
+    margin: 10  px 0 10px;
     text-align: left;
     font-weight: bold;
     color: #444;
@@ -67,11 +67,34 @@ label {
 /* Input Fields */
 input[type="text"] {
     width: 100%;
-    padding: 12px;
+    padding: 9px 0;
     margin-bottom: 15px;
     border: 2px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
+}
+
+textarea {
+    width: 100%;
+    padding: 9px 0;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border 0.3s ease-in-out;
+}
+
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+    line-height: 1.5;
 }
 
 /* Required Indicator */

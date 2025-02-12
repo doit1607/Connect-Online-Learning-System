@@ -57,7 +57,7 @@
                 window.location.href = "/HAPPYorSAD/sourcesHome/ChangePass.jsp";
             }
             function redirectToUpdateProfile() {
-                window.location.href = "updatementeeprofile";
+                window.location.href = "/HAPPYorSAD/updatementeeprofile?username=john_doe";
             }
         </script>
     </body>
