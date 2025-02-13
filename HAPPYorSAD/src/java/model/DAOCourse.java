@@ -57,20 +57,36 @@ public class DAOCourse extends DBConnection {
         return listCourse;
     }
 
-    public boolean createCourse(String title, String description) {
-        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status]) "
-                + "VALUES (?, ?, ?)";
-
-        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+//    public boolean createCourse(String title, String description, String image) {
+//        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [image]) "
+//                + "VALUES (?, ?, ?, ?)";
+//
+//        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+//            pre.setString(1, title);
+//            pre.setString(2, description);
+//            pre.setString(3, "active");
+//            pre.setString(4, image);
+//
+//            return pre.executeUpdate() > 0;
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }
+//        return false;
+//    }
+    
+    public void createCourse(String title, String description, int majorId, String image) {
+        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image]) "
+                + "VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, title);
             pre.setString(2, description);
             pre.setString(3, "active");
-
-            return pre.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            pre.setInt(4, majorId);
+            pre.setString(5, image);
+            pre.executeUpdate();
+        } catch (Exception e) {
         }
-        return false;
     }
 
     public List<Course> getAllCourseOrderByName() {

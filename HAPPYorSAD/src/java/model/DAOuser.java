@@ -8,6 +8,7 @@ import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -228,26 +229,23 @@ public class DAOuser extends DBConnection {
     }
 
     // Update Mentee profile
-    public boolean updateMenteeProfile(User mentee) { //(String avatar, String fullname, String username, String phone, Date dob, String address, String gender)
-        boolean isUpdate = false;
-        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
+    public void updateMenteeProfile(String username, String avatar, String fullname, String address,
+            Date dob, String gender) {
+        String sql = "Update Users set avatar_path = ?, fullname = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, mentee.getAvatarPath());
-            pre.setString(2, mentee.getFullname());
-            pre.setString(3, mentee.getPhoneNumber());
-            pre.setString(4, mentee.getAddress());
-            pre.setDate(5, new java.sql.Date(mentee.getDateOfBirth().getTime()));
-            pre.setString(6, mentee.getGender());
-            pre.setString(7, mentee.getUsername());
+            pre.setString(1, avatar);
+            pre.setString(2, fullname);
+            pre.setString(3, address);
+            pre.setDate(4, new java.sql.Date(dob.getTime()));
+            pre.setString(5, gender);
+            pre.setString(6, username);
 
-            int rowsAffected = pre.executeUpdate();
-            isUpdate = rowsAffected > 0;
+            pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return isUpdate;
     }
 
     public User getMenteeByUsername(String username) {
@@ -301,26 +299,23 @@ public class DAOuser extends DBConnection {
     }
 
     // Update Mentor profile
-    public boolean updateMentorProfile(User mentor) {
-        boolean isUpdate = false;
-        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
+    public void updateMentorProfile(String username, String avatar, String fullname, String address,
+            Date dob, String gender) {
+        String sql = "Update Users set avatar_path = ?, fullname = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, mentor.getAvatarPath());
-            pre.setString(2, mentor.getFullname());
-            pre.setString(3, mentor.getPhoneNumber());
-            pre.setString(4, mentor.getAddress());
-            pre.setDate(5, new java.sql.Date(mentor.getDateOfBirth().getTime()));
-            pre.setString(6, mentor.getGender());
-            pre.setString(7, mentor.getUsername());
+            pre.setString(1, avatar);
+            pre.setString(2, fullname);
+            pre.setString(3, address);
+            pre.setDate(4, new java.sql.Date(dob.getTime()));
+            pre.setString(5, gender);
+            pre.setString(6, username);
 
-            int rowsAffected = pre.executeUpdate();
-            isUpdate = rowsAffected > 0;
+            pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return isUpdate;
     }
 
 //    public static void main(String[] args) {

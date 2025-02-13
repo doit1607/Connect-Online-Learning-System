@@ -12,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import model.DAOuser;
 
 /**
@@ -76,7 +78,22 @@ public class UpdateMentorProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        DAOuser mento = new DAOuser();
+        String username = request.getParameter("username");
+        String avatar = request.getParameter("avatar");
+        String fullname = request.getParameter("fullname");
+        String address = request.getParameter("address");
+        String gender = request.getParameter("gender");
+        Date dateOfBirth = null;
+        try {
+            String dob = request.getParameter("dateOfBirth");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            dateOfBirth = formatter.parse(dob);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mento.updateMentorProfile(username, avatar, fullname, address, dateOfBirth, gender);
+        response.sendRedirect("updatementorprofile");
     }
 
     /**

@@ -6,55 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
-<!--<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/cssCRUD/createCourse.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-        <title>Create Course</title>
-    </head>
-    <body>
-<% 
-    String message = (String) request.getAttribute("message"); 
-    String messageType = (String) request.getAttribute("messageType"); 
-%>
-
-<% if (message != null) { %>
-    <div class="alert-message <%= messageType %>">
-        <p><%= message %></p>
-    </div>
-<% } %>
-
-<div class="form-container">
-    <h1>Create Course</h1>
-    <form>
-        <label for="title">Course Name <span class="required">*</span></label>
-        <input type="text" name="title" id="title" placeholder="Enter name" required>
-
-        <label for="description">Description <span class="required">*</span></label>
-        <textarea type="text" name="description" id="description" placeholder="Enter description" required=""></textarea>
-
-        <input type="hidden" name="status" value="active">
-
-        <div class="button-group">
-            <button type="submit">Create Course</button>
-            <button type="reset">Clear</button>
-            <button type="button" onclick="goBack()">Back</button>
-        </div>
-
-    </form>
-</div>  
-
-<script>
-    function goBack() {
-        window.location.href = "<%= request.getContextPath() %>/CourseManager";
-    }
-</script>
-
-</body>
-</html>-->
 <html lang="en">
 
     <head>
@@ -109,13 +62,13 @@
                                     </span>
                                 </a>
                                 <a href="index-2.html" class="navbar-brand logo">
-                                    <img src="/HAPPYorSAD//HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
+                                    <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
                                 </a>
                             </div>
                             <div class="main-menu-wrapper">
                                 <div class="menu-header">
                                     <a href="index-2.html" class="menu-logo">
-                                        <img src="/HAPPYorSAD//HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
+                                        <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
                                     </a>
                                     <a id="menu_close" class="menu-close" href="javascript:void(0);">
                                         <i class="fas fa-times"></i>
@@ -271,6 +224,8 @@
             <!-- /Header -->	
 
             <!-- New Course -->
+            <% ResultSet rsMajor = (ResultSet) request.getAttribute("rsMajor");%>
+
             <section class="page-content course-sec">
                 <div class="container">
                     <div class="row align-items-center">
@@ -300,11 +255,12 @@
                                             <li class="progress-active">
                                                 <p><span></span> Basic Information</p>                                              
                                             </li>
-                                            <li>
-                                                <p><span></span> Courses Media</p>
-                                            </li>                                            
+
                                         </ul>
                                     </div>
+                                    <c:if test="${param.success == 'true'}">
+                                        <div class="alert alert-success">Course created successfully!</div>
+                                    </c:if>
                                     <div class="widget-content multistep-form">
                                         <fieldset id="first">
                                             <div class="add-course-info">
@@ -314,16 +270,25 @@
                                                 <div class="add-course-form">
                                                     <form action="CreateCourses" method="get" id="createCourseForm">
                                                         <div class="input-block">
+                                                            <label class="add-course-label">Course cover image</label>
+                                                            <div class="relative-form">
+                                                                <span id="file-name">No File Selected</span>
+                                                                <label class="relative-file-upload">
+                                                                    Upload File <input type="file" name="image" id="image-upload" onchange="previewImage(event)">
+                                                                </label>
+                                                            </div>
+                                                            <img id="image-preview" src="#" alt="Image Preview" class="img-fluid" style="display:none; margin-top: 10px; max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
+                                                        </div>
+                                                        <div class="input-block">
                                                             <label class="add-course-label">Course Name</label>
                                                             <input type="text" name="title" id="title" class="form-control" placeholder="Course Title" required>
                                                         </div>
                                                         <div class="input-block">
                                                             <label class="add-course-label">Major Name</label>                                                                                                                        
-                                                            <select class="form-control select" required>
-                                                                <option value="">Select Major</option>
-                                                                <c:forEach var="category" items="${listMajor}">
-                                                                    <option value="${category.id}">${category.name}</option>
-                                                                </c:forEach>
+                                                            <select class="form-control" name="majorID" id="majorID">
+                                                                <%while(rsMajor.next()){%>
+                                                                <option value="<%=rsMajor.getInt(1)%>"><%=rsMajor.getString(2)%></option>
+                                                                <%}%>
                                                             </select>
                                                         </div>
 
@@ -333,43 +298,8 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div class="widget-btn">
-                                                    <a class="btn btn-black">Back</a>
-                                                    <a class="btn btn-info-light next_btn">Continue</a>
-                                                </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset class="field-card">
-                                            <div class="add-course-info">
-                                                <div class="add-course-inner-header">
-                                                    <h4>Courses Media</h4>
-                                                </div>
-                                                <div class="add-course-form">
-                                                    <form action="#">
-                                                        <div class="input-block">
-                                                            <label class="add-course-label">Course cover image</label>
-                                                            <div class="relative-form">
-                                                                <span>No File Selected</span>
-                                                                <label class="relative-file-upload">
-                                                                    Upload File <input type="file">
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="input-block">
-                                                            <div class="add-image-box">
-                                                                <a href="javascript:void(0);">
-                                                                    <i class="far fa-image"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="widget-btn">
-                                                    <a class="btn btn-black prev_btn">Previous</a>
-                                                    <a class="btn btn-info-light next_btn">Continue</a>
-                                                </div>
-                                            </div>
-                                        </fieldset>                                        
                                     </div>
                                 </div>
                                 <!-- /Course Wizard -->
@@ -382,8 +312,25 @@
 
             <!-- /New Course -->
 
+            <script>
+                function previewImage(event) {
+                    var input = event.target;
+                    var reader = new FileReader();
 
-        <footer class="footer">
+                    reader.onload = function () {
+                        var imagePreview = document.getElementById('image-preview');
+                        imagePreview.src = reader.result;
+                        imagePreview.style.display = 'block';
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+
+                    // Display the file name
+                    document.getElementById('file-name').textContent = input.files[0].name;
+                }
+            </script>
+
+            <footer class="footer">
 
                 <!-- Footer Top -->
                 <div class="footer-top aos" data-aos="fade-up">

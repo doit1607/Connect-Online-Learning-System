@@ -1,131 +1,23 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Feb 4, 2025, 11:31:02 PM
-    Author     : admin
-*/
-/* Global Styles */
-/* General body and container styles */
-/* General body and container styles */
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #fadede, #e5f4fd);
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    width: 100%;
-    margin: auto;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-
-/* Header styling */
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* Rating Stars */
 .rating {
-    display: flex;
+    direction: rtl;
+    display: inline-flex;
+    font-size: 30px;
     justify-content: center;
-    flex-direction: row-reverse; /* Reverse order */
-    gap: 5px;
-    margin: 15px 0;
 }
 
 .rating input {
-    display: none; /* Hide default radio button */
-}
-
-.rating label {
-    font-size: 30px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-/* Star Hover & Checked Effect (Left to Right) */
-.rating label:hover,
-.rating label:hover ~ label,
-.rating input:checked ~ label {
-    color: gold;
-}
-
-input[name="comment"] {
-    width: 95%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 10px;
-    font-size: 16px;
-    margin-bottom: 50px;
-}
-
-/* Submit button styling */
-button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Hover effect for submit button */
-button[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Optional: Responsiveness for smaller screens */
-@media (max-width: 768px) {
-    .container {
-        width: 80%;
-    }
-
-    .rating {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .rating label {
-        font-size: 1.5rem;
-    }
-}
-#messageBox {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
     display: none;
 }
 
-.success {
-    background-color: #4CAF50;
-    color: white;
+.rating label {
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
-.error {
-    background-color: #f44336;
-    color: white;
+.rating input:checked ~ label,
+.rating input:hover ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffc107;
 }
-
-.required {
-    color: red;
-    font-weight: bold;
-}
-
-
-

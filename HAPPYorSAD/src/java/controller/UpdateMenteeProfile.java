@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import model.DAOuser;
 
 /**
@@ -48,11 +50,12 @@ public class UpdateMenteeProfile extends HttpServlet {
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
         String username = request.getParameter("username");
-        
+
         User u = mente.getMenteeByUsername(username);
+
         request.setAttribute("mentee", u);
         request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-        
+
 //        boolean isUpdated = mente.updateMenteeProfile(u);
 //        if (isUpdated) {
 //            request.setAttribute("successMessage", "Profile updated successfully!");
@@ -63,7 +66,6 @@ public class UpdateMenteeProfile extends HttpServlet {
 //            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
 //        }
     }
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -76,7 +78,22 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        DAOuser mente = new DAOuser();
+        String username = request.getParameter("username");
+        String avatar = request.getParameter("avatar");
+        String fullname = request.getParameter("fullname");
+        String address = request.getParameter("address");
+        String gender = request.getParameter("gender");
+        Date dateOfBirth = null;
+        try {
+            String dob = request.getParameter("dateOfBirth");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            dateOfBirth = formatter.parse(dob);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mente.updateMenteeProfile(username, avatar, fullname, address, dateOfBirth, gender);
+        response.sendRedirect("updatementeeprofile");
     }
 
     /**

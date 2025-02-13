@@ -10,7 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.sql.ResultSet;
 import java.util.List;
 import model.DAOCourse;
 import model.DAOmajor;
@@ -33,27 +33,37 @@ public class CreateCourses extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        
         DAOCourse dao = new DAOCourse();
         DAOmajor dao1 = new DAOmajor();
-        
-        List<Major> list = dao1.getMajorHome();
-        
-        request.setAttribute("listMajor", list);
-        
-        boolean isSuccess = dao.createCourse(title, description);
-        if (isSuccess) {
-            request.setAttribute("message", "Course added successfully.");
-            request.setAttribute("messageType", "success");
-        } else {
-            request.setAttribute("message", "Please enter as required!");
-            request.setAttribute("messageType", "error");
+
+        ResultSet rsMajor = dao.getData("select id, name from CourseMajor");
+        request.setAttribute("rsMajor", rsMajor);
+
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String image = request.getParameter("image");
+        String majorStr = request.getParameter("majorID");
+
+        if (isEmpty(majorStr)) {
+            request.setAttribute("error", "Missing required fields: majorID.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
         }
 
-        request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+        int majorId = Integer.parseInt(majorStr);
 
+        List<Major> list = dao1.getMajorHome();
+
+        request.setAttribute("listMajor", list);
+
+        dao.createCourse(title, description, majorId, image);
+
+        request.setAttribute("successMessage", "Course created successfully!");
+        response.sendRedirect("CreateCourses?success=true");
+    }
+    
+    private boolean isEmpty(String str) {
+        return str == null || str.trim().isEmpty();
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
