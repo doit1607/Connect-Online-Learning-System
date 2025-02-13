@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    public Connection conn = null;
+    public static Connection conn = null;
 
     public DBConnection(String URL, String userName, String pass) {
         try {
@@ -45,6 +45,9 @@ public class DBConnection {
             ex.printStackTrace();
         }
         return rs;
+    }
+    public static Connection getConnection(){
+        return conn;
     }
 
     public static void main(String[] args) {

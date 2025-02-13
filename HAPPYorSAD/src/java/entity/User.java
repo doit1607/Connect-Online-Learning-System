@@ -141,6 +141,4 @@ public class User {
         this.isGuest = isGuest;
     }
 
-    
-
 }

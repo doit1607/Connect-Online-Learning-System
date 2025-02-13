@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.DAOCourse;
-import model.DAOhome;
 import model.DAOmajor;
 
 /**
