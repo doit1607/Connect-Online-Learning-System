@@ -2,6 +2,7 @@
 package model;
 
 import entity.Mentor;
+import entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,128 +19,175 @@ import java.util.Date;
  */
 public class DAOMentor extends DBConnection {
 
-    public List<Mentor> getMentors() {
+    public static DAOuser userDao = new DAOuser();
+
+    public List<Mentor> getAllMentors(String search, int pageNumber, int pageSize) {
         List<Mentor> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "	m.id,\n"
-                + "    u.fullname AS mentor_name,\n"
-                + "	u.username as username,\n"
-                + "    m.expertise,\n"
-                + "    COALESCE(AVG(r.rating), 0) AS average_rating\n"
-                + "FROM Mentor m\n"
-                + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id\n"
-                + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee'\n"
-                + "GROUP BY u.fullname, m.expertise, u.username, m.id";
+
+        if (pageSize <= 0) {
+            pageSize = 10;
+        }
+
+        int offset = (pageNumber - 1) * pageSize; // Tính toán offset
+
+        String sql = "SELECT m.id, m.name, m.email, m.rating, m.is_deleted, "
+                + "m.reviews, m.price_per_slot, m.expertise, m.bio, m.created_at, m.base_rate, m.multiplier, m.user_id "
+                + "FROM Mentor m "
+                + "JOIN Users u ON m.user_id = u.id "
+                + "WHERE (LOWER(m.name) LIKE LOWER(?) OR LOWER(m.email) LIKE LOWER(?) OR LOWER(m.expertise) LIKE LOWER(?)) "
+                + "ORDER BY m.id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchParam = "%" + search.toLowerCase() + "%";
+            stmt.setString(1, searchParam);
+            stmt.setString(2, searchParam);
+            stmt.setString(3, searchParam);
+            stmt.setInt(4, offset);
+            stmt.setInt(5, pageSize);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Mentor(rs.getInt("id"),
-                            rs.getString("mentor_name"),
-                            rs.getDouble("average_rating"), rs.getString("username"), rs.getString("expertise")
-                    ));
+                    Mentor mentor = new Mentor();
+                    mentor.setId(rs.getInt("id"));
+                    mentor.setName(rs.getString("name"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setRating(rs.getDouble("rating"));
+                    mentor.setIsDeleted(rs.getBoolean("is_deleted"));
+                    mentor.setReviews(rs.getString("reviews"));
+                    mentor.setPricePerSlot(rs.getDouble("price_per_slot"));
+                    mentor.setExpertise(rs.getString("expertise"));
+                    mentor.setBio(rs.getString("bio"));
+                    mentor.setCreatedAt(rs.getDate("created_at"));
+                    mentor.setBaseRate(rs.getDouble("base_rate"));
+                    mentor.setMultiplier(rs.getDouble("multiplier"));
+
+                    User user = userDao.getMentorById(rs.getInt("user_id"));
+                    mentor.setUser(user);
+
+                    list.add(mentor);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return list;
+    }
+
+    public int getTotalMentors(String search) {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM Mentor WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) OR LOWER(expertise) LIKE LOWER(?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchParam = "%" + search.toLowerCase() + "%";
+            stmt.setString(1, searchParam);
+            stmt.setString(2, searchParam);
+            stmt.setString(3, searchParam);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return total;
     }
 
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    u.fullname,\n"
-                + "    u.username,\n"
-                + "    m.expertise,\n"
-                + "	m.image,\n"
-                + "    COUNT(DISTINCT mr.mentee_id) AS total_mentees,\n"
-                + "    m.rating AS mentor_rating,\n"
-                + "    COUNT(mr.id) AS total_reviews,\n"
-                + "    m.price_per_slot\n"
-                + "FROM Mentor m\n"
-                + "JOIN Users u ON m.user_id = u.id\n"
-                + "LEFT JOIN mentor_reviews mr ON m.id = mr.mentor_id\n"
-                + "GROUP BY u.fullname, u.username, m.expertise, m.rating, m.price_per_slot, m.image;";
+        String sql = "SELECT * "
+                + "FROM Mentor m "
+                + "JOIN Users u ON m.user_id = u.id";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new Mentor(rs.getString("fullname"),
-                        rs.getDouble("mentor_rating"), rs.getDouble("price_per_slot"),
-                        rs.getString("expertise"), rs.getString("image"),
-                        rs.getString("username"), rs.getInt("total_mentees"), rs.getInt("total_reviews"))
-                );
+                Mentor mentor = new Mentor();
+                mentor.setName(rs.getString("name"));
+                mentor.setExpertise(rs.getString("expertise"));
+                mentor.setPricePerSlot(rs.getDouble("price_per_slot"));
+                mentor.setRating(rs.getDouble("rating"));
+                User user = userDao.getMentorById(rs.getInt("user_id"));
+                mentor.setUser(user);
+
+                list.add(mentor);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return list;
     }
-    
-     public List<Mentor> getCount() {
-        ArrayList<Mentor> count = new ArrayList<>();
-        String query = "SELECT COUNT(DISTINCT u_mentor.id) AS total_Mentor\n"
-                + "FROM Users u_mentor\n"
-                + "WHERE u_mentor.role = 'mentor' AND u_mentor.status = 'active';";
-        try {
-            PreparedStatement connect = conn.prepareStatement(query);
-            ResultSet result = connect.executeQuery();
-            while (result.next()) {
-                int total_Mentor = result.getInt("total_Mentor");
-                Mentor m = new Mentor(total_Mentor);
-                count.add(m);
-            }
-            result.close();
-            connect.close();
+
+    public void toggleMentorStatus(String userName, String newStatus) {
+        String sql = "UPDATE Users SET status = ? WHERE username = ?";
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newStatus);
+            ps.setString(2, userName);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count;
     }
 
     public List<Mentor> getMentorsHome() {
         List<Mentor> list = new ArrayList<>();
-        String sql = "SELECT "
-                + "    m.image, "
-                + "    m.name, "
-                + "    m.expertise, "
-                + "    m.rating, "
-                + "    COUNT(DISTINCT r.mentee_id) AS total_mentees, "
-                + "    COUNT(r.rating) AS rating_count "
+        String sql = "SELECT m.id, m.name, m.expertise, m.rating, "
+                + "COUNT(DISTINCT r.mentee_id) AS total_mentees, "
+                + "COUNT(r.rating) AS rating_count "
                 + "FROM Mentor m "
                 + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id "
-                + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee' "
-                + "GROUP BY m.image, m.name, m.expertise, m.rating "
-                + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
+                + "GROUP BY m.id, m.name, m.expertise, m.rating "
+                + "ORDER BY total_mentees DESC, rating_count DESC, m.rating DESC";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new Mentor(rs.getString("name"),
-                        rs.getDouble("rating"), rs.getString("expertise"),
-                        rs.getString("image"), rs.getInt("total_mentees"),
-                        rs.getInt("rating_count"))
-                );
+
+                Mentor mentor = new Mentor();
+
+                mentor.setId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentor.setExpertise(rs.getString("expertise"));
+                mentor.setRating(rs.getDouble("rating"));
+                mentor.setTotalMentees(rs.getInt("total_mentees"));
+                mentor.setRatingCount(rs.getInt("rating_count"));
+
+                list.add(mentor);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return list;
+        return list; // Return the list of mentors
     }
 
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getCount();
+        String searchQuery = ""; //
+        int pageNumber = 1;
+        int pageSize = 5;
 
-        for (Mentor mentor : list) {
-            System.out.println(mentor);
+        if (pageSize <= 0) {
+            System.out.println("Page size must be greater than zero.");
+            return;
         }
 
-    }
+        List<Mentor> mentors = dao.getAllMentors(searchQuery, pageNumber, pageSize);
 
+        if (mentors.isEmpty()) {
+            System.out.println("No mentors found.");
+        } else {
+            System.out.println("Mentors found on page " + pageNumber + ":");
+            for (Mentor mentor : mentors) {
+                System.out.println(mentor);
+            }
+        }
+    }
 }

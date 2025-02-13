@@ -12,8 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import model.DAOuser;
 
 /**
@@ -50,21 +48,28 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
-        String username = request.getParameter("username");
-        
-        User u = mento.getMentorByUsername(username);
-        request.setAttribute("mentor", u);
-        request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+        // Get ID parameter
+        String idParam = request.getParameter("id");
 
-//        boolean isUpdated = mento.updateMentorProfile(u);
-//        if (isUpdated) {
-//            request.setAttribute("successMessage", "Profile updated successfully!");
-//            request.getRequestDispatcher("Home").forward(request, response);
-//        } else {
-//            request.setAttribute("error", "Unable to update profile!");
-//            request.setAttribute("mentor", u);
-//            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
-//        }
+        // Validate ID
+        int id = 0;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                id = Integer.parseInt(idParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid ID format!");
+                request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            request.setAttribute("error", "ID parameter is missing!");
+            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
+            return;
+        }
+
+        User mentor = mento.getMentorById(id);
+        request.setAttribute("mentor", mentor);
+        request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
     }
 
     /**
@@ -79,21 +84,43 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
-        String username = request.getParameter("username");
+
+        // Retrieve ID parameter safely
+        String idParam = request.getParameter("id");
+        int id = 0;
+
         String avatar = request.getParameter("avatar");
+        String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
-        String address = request.getParameter("address");
+        String dob = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
-        Date dateOfBirth = null;
-        try {
-            String dob = request.getParameter("dateOfBirth");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            dateOfBirth = formatter.parse(dob);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String address = request.getParameter("address");
+
+        java.sql.Date DOB = null;
+        if (dob != null && !dob.isEmpty()) {
+            DOB = java.sql.Date.valueOf(dob);
+        } else {
+            request.setAttribute("error", "Date of birth can not empty!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
+            return;
         }
-        mento.updateMentorProfile(username, avatar, fullname, address, dateOfBirth, gender);
-        response.sendRedirect("updatementorprofile");
+
+        User mentor = new User();
+        mentor.setAvatarPath(avatar);
+        mentor.setUsername(username);
+        mentor.setFullname(fullname);
+        mentor.setDateOfBirth(DOB);
+        mentor.setGender(gender);
+        mentor.setAddress(address);
+
+        boolean isUpdated = mento.updateMentorProfile(mentor);
+        if (isUpdated) {
+            request.setAttribute("successMessage", "Profile updated successfully!");
+            request.getRequestDispatcher("/view/Course.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "Unable update profile!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMentorProfile.jsp").forward(request, response);
+        }
     }
 
     /**

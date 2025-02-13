@@ -10,7 +10,6 @@ import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 /**
  *
@@ -34,7 +33,7 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
-
+    
     public void addUser(User u) {
         try {
             String sql = "INSERT INTO [dbo].Users "
@@ -96,7 +95,6 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
-
     public boolean checkUserActive(String username) {
         try {
             String sql = "Select * from Users where username = ? and status = 'active'";
@@ -132,13 +130,13 @@ public class DAOuser extends DBConnection {
                 java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
                 java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
 
-                long diffInMinutes = (now.getTime() - createdAt.getTime()) / (60 * 1000);
-                return diffInMinutes > 15;
+                long diffInMinutes = (now.getTime() - createdAt.getTime()) / (60*1000); 
+                return diffInMinutes > 15; 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return true; 
     }
 
     public boolean checkEmailExist(String email) {
@@ -230,99 +228,105 @@ public class DAOuser extends DBConnection {
         return false;
     }
 
+
+
+
     // Update Mentee profile
-    public void updateMenteeProfile(String username, String avatar, String fullname, String address,
-            Date dob, String gender) {
-        String sql = "Update Users set avatar_path = ?, fullname = ?,"
+    public boolean updateMenteeProfile(User mentee) {
+        boolean isUpdate = false;
+        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, avatar);
-            pre.setString(2, fullname);
-            pre.setString(3, address);
-            pre.setDate(4, new java.sql.Date(dob.getTime()));
-            pre.setString(5, gender);
-            pre.setString(6, username);
+            pre.setString(1, mentee.getAvatarPath());
+            pre.setString(2, mentee.getFullname());
+            pre.setString(3, mentee.getPhoneNumber());
+            pre.setString(4, mentee.getAddress());
+            pre.setDate(5, new java.sql.Date(mentee.getDateOfBirth().getTime()));
+            pre.setString(6, mentee.getGender());
+            pre.setString(7, mentee.getUsername());
 
-            pre.executeUpdate();
+            int rowsAffected = pre.executeUpdate();
+            isUpdate = rowsAffected > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return isUpdate;
     }
 
-    public User getMenteeByUsername(String username) {
-
-        String sql = "Select * from Users where username = ?";
+    public User getMenteeById(int id) {
+        User mentor = null;
+        String sql = "Select * from Users where id = ? and role = 'mentee'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, username);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                return new User(rs.getString(4), rs.getString(2), rs.getString(3),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9),
-                        rs.getString(8), rs.getDate(10), rs.getDate(12), rs.getString(11),
-                        rs.getString(13), true);
-            }
-//            try {
-//                if (rs.next()) {
-//                    mentor = new User();
-//                    mentor.setUsername(rs.getString("username"));
-//                    mentor.setAvatarPath(rs.getString("avatar_path"));
-//                    mentor.setFullname(rs.getString("fullname"));
-//                    mentor.setEmail(rs.getString("email"));
-//                    mentor.setPhoneNumber(rs.getString("phone_number"));
-//                    mentor.setAddress(rs.getString("address"));
-//                    mentor.setDateOfBirth(rs.getDate("date_of_birth"));
-//                    mentor.setGender(rs.getString("gender"));
-//                }
-//            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public User getMentorByUsername(String username) {
-        String sql = "Select * from Users where username = ?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, username);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                return new User(rs.getString(4), rs.getString(2), rs.getString(3),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9),
-                        rs.getString(8), rs.getDate(10), rs.getDate(12), rs.getString(11),
-                        rs.getString(13), true);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new User();
+                    mentor.setUsername(rs.getString("username"));
+                    mentor.setAvatarPath(rs.getString("avatar_path"));
+                    mentor.setFullname(rs.getString("fullname"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setPhoneNumber(rs.getString("phone_number"));
+                    mentor.setAddress(rs.getString("address"));
+                    mentor.setDateOfBirth(rs.getDate("date_of_birth"));
+                    mentor.setGender(rs.getString("gender"));
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return null;
+        return mentor;
+    }
+
+    // fetch Mentor by id
+    public User getMentorById(int id) {
+        User mentor = null;
+        String sql = "Select * from Users where id = ? and role = 'mentor'";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new User();
+                    mentor.setUsername(rs.getString("username"));
+                    mentor.setAvatarPath(rs.getString("avatar_path"));
+                    mentor.setFullname(rs.getString("fullname"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setPhoneNumber(rs.getString("phone_number"));
+                    mentor.setAddress(rs.getString("address"));
+                    mentor.setDateOfBirth(rs.getDate("date_of_birth"));
+                    mentor.setGender(rs.getString("gender"));
+                    mentor.setStatus(rs.getString("status"));
+                    
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return mentor;
     }
 
     // Update Mentor profile
-    public void updateMentorProfile(String username, String avatar, String fullname, String address,
-            Date dob, String gender) {
-        String sql = "Update Users set avatar_path = ?, fullname = ?,"
+    public boolean updateMentorProfile(User mentor) {
+        boolean isUpdate = false;
+        String sql = "Update Users set avatar_path = ?, fullname = ?, phone_number = ?,"
                 + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, avatar);
-            pre.setString(2, fullname);
-            pre.setString(3, address);
-            pre.setDate(4, new java.sql.Date(dob.getTime()));
-            pre.setString(5, gender);
-            pre.setString(6, username);
+            pre.setString(1, mentor.getAvatarPath());
+            pre.setString(2, mentor.getFullname());
+            pre.setString(3, mentor.getPhoneNumber());
+            pre.setString(4, mentor.getAddress());
+            pre.setDate(5, new java.sql.Date(mentor.getDateOfBirth().getTime()));
+            pre.setString(6, mentor.getGender());
+            pre.setString(7, mentor.getUsername());
 
-            pre.executeUpdate();
+            int rowsAffected = pre.executeUpdate();
+            isUpdate = rowsAffected > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return isUpdate;
     }
-
-//    public static void main(String[] args) {
-//        DAOuser dao = new DAOuser();
-//        User s = dao.getMenteeById(5);
-//        System.out.println(s);
-//    }
 }

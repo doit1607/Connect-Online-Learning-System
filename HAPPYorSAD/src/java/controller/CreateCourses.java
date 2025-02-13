@@ -4,16 +4,12 @@
  */
 package controller;
 
-import entity.Major;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.ResultSet;
-import java.util.List;
 import model.DAOCourse;
-import model.DAOmajor;
 
 /**
  *
@@ -32,38 +28,42 @@ public class CreateCourses extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        DAOCourse dao = new DAOCourse();
-        DAOmajor dao1 = new DAOmajor();
-
-        ResultSet rsMajor = dao.getData("select id, name from CourseMajor");
-        request.setAttribute("rsMajor", rsMajor);
+//        String idStr = request.getParameter("id");
+//        String managerIdStr = request.getParameter("managerId");
+//        String mentorIdStr = request.getParameter("mentorId");
+//        String courseMajorIdStr = request.getParameter("courseMajorId");
+//        String createdAtStr = request.getParameter("createdAt");
+//        String updatedAtStr = request.getParameter("updatedAt");
+//
+//        int id = (idStr != null && !idStr.isEmpty()) ? Integer.parseInt(idStr) : 0;
+//        int managerId = (managerIdStr != null && !managerIdStr.isEmpty()) ? Integer.parseInt(managerIdStr) : 0;
+//        int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
+//        int courseMajorId = (courseMajorIdStr != null && !courseMajorIdStr.isEmpty()) ? Integer.parseInt(courseMajorIdStr) : 0;
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+//
+//        LocalDateTime createdAt = (createdAtStr != null && !createdAtStr.isEmpty())
+//                ? LocalDateTime.parse(createdAtStr, formatter)
+//                : LocalDateTime.now();
+//
+//        LocalDateTime updatedAt = (updatedAtStr != null && !updatedAtStr.isEmpty())
+//                ? LocalDateTime.parse(updatedAtStr, formatter)
+//                : LocalDateTime.now();
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        String majorStr = request.getParameter("majorID");
 
-        if (isEmpty(majorStr)) {
-            request.setAttribute("error", "Missing required fields: majorID.");
-            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
-            return;
+        DAOCourse dao = new DAOCourse();
+
+        boolean isSuccess = dao.createCourse(title, description);
+        if (isSuccess) {
+            request.setAttribute("message", "Course added successfully!");
+        } else {
+            request.setAttribute("message", "Error adding course.");
         }
 
-        int majorId = Integer.parseInt(majorStr);
+        request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
 
-        List<Major> list = dao1.getMajorHome();
-
-        request.setAttribute("listMajor", list);
-
-        dao.createCourse(title, description, majorId, image);
-
-        request.setAttribute("successMessage", "Course created successfully!");
-        response.sendRedirect("CreateCourses?success=true");
-    }
-    
-    private boolean isEmpty(String str) {
-        return str == null || str.trim().isEmpty();
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -25,7 +25,7 @@ public class DAOmajor extends DBConnection {
         String query = "SELECT \n"
                 + "    m.name,\n"
                 + "	m.image,\n"
-                + "    COUNT(CASE WHEN c.status = 'active' THEN c.id END) AS total_courses\n"
+                + "    COUNT(c.id) AS total_courses\n"
                 + "FROM CourseMajor m\n"
                 + "LEFT JOIN Course c ON m.id = c.course_major_id\n"
                 + "GROUP BY m.name, m.image";

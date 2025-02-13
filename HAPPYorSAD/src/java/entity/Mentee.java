@@ -19,7 +19,6 @@ public class Mentee {
     private String email;
     private String goals;
     private LocalDateTime createdAt;
-    private int total_Mentee;
 
     public Mentee() {
     }
@@ -34,20 +33,6 @@ public class Mentee {
         this.createdAt = createdAt;
     }
 
-    public Mentee(int total_Mentee) {
-        this.total_Mentee = total_Mentee;
-    }
-    
-
-    public int getTotal_Mentee() {
-        return total_Mentee;
-    }
-
-    public void setTotal_Mentee(int total_Mentee) {
-        this.total_Mentee = total_Mentee;
-    }
-
-    
     public int getId() {
         return id;
     }

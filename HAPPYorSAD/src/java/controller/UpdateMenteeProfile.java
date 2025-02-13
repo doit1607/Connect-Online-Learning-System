@@ -11,8 +11,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import model.DAOuser;
 
 /**
@@ -49,22 +47,29 @@ public class UpdateMenteeProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
-        String username = request.getParameter("username");
+        // Get ID parameter
+        String idParam = request.getParameter("id");
 
-        User u = mente.getMenteeByUsername(username);
+        // Validate ID
+        int id = 0;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                id = Integer.parseInt(idParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid ID format!");
+                request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            request.setAttribute("error", "ID parameter is missing!");
+            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
+            return;
+        }
 
-        request.setAttribute("mentee", u);
+        User mentee = mente.getMenteeById(id);
+        request.setAttribute("mentee", mentee);
         request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
 
-//        boolean isUpdated = mente.updateMenteeProfile(u);
-//        if (isUpdated) {
-//            request.setAttribute("successMessage", "Profile updated successfully!");
-//            request.getRequestDispatcher("Home").forward(request, response);
-//        } else {
-//            request.setAttribute("error", "Unable to update profile!");
-//            request.setAttribute("mentee", u);
-//            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-//        }
     }
 
     /**
@@ -79,21 +84,40 @@ public class UpdateMenteeProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
-        String username = request.getParameter("username");
         String avatar = request.getParameter("avatar");
+        String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
-        String address = request.getParameter("address");
+        String dob = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
-        Date dateOfBirth = null;
-        try {
-            String dob = request.getParameter("dateOfBirth");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            dateOfBirth = formatter.parse(dob);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String address = request.getParameter("address");
+
+        java.sql.Date DOB = null;
+        if (dob != null && !dob.isEmpty()) {
+            DOB = java.sql.Date.valueOf(dob);
+        } else {
+            request.setAttribute("error", "Date of birth can not empty!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMenteeProfile.jsp").forward(request, response);
+            return;
         }
-        mente.updateMenteeProfile(username, avatar, fullname, address, dateOfBirth, gender);
-        response.sendRedirect("updatementeeprofile");
+
+        User mentee = new User();
+        mentee.setAvatarPath(avatar);
+        mentee.setUsername(username);
+        mentee.setFullname(fullname);
+        mentee.setDateOfBirth(DOB);
+        mentee.setGender(gender);
+        mentee.setAddress(address);
+
+        boolean isUpdated = mente.updateMenteeProfile(mentee);
+        // update thành công và trở về trang home
+        if (isUpdated) {
+            request.setAttribute("successMessage", "Profile updated successfully!");
+            request.getRequestDispatcher("/view/Course.jsp").forward(request, response);
+
+        } else {
+            request.setAttribute("error", "Unable update profile!");
+            request.getRequestDispatcher("/HAPPYorSAD/CRUD/updateMenteeProfile.jsp").forward(request, response);
+        }
     }
 
     /**

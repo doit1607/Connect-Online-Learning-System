@@ -4,7 +4,7 @@
  */
 package entity;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 /**
  *
@@ -13,137 +13,24 @@ import java.time.LocalDateTime;
 public class Mentor {
 
     private int id;
-    private int mentorId;
-    private int userId;
+    private User user;
     private String name;
     private String email;
     private double rating;
+    private boolean isDeleted;
     private String reviews;
     private double pricePerSlot;
     private String expertise;
     private String bio;
-    private LocalDateTime createdAt;
+    private Date createdAt;
     private double baseRate;
     private double multiplier;
-    private boolean is_deleted;
-    private String image;
-    private int total_mentees;
-    private int rating_count;
-    private int total_reviews;
-    private String username;
-    private int CurentlyRequests;
-    private int completed;
-    private int total_Mentor;
+    private int totalMentees;
+    private int ratingCount;
 
-    // Constructor
-    public Mentor(int id, int mentorId, int userId, String name, String email, double rating, String reviews,
-            double pricePerSlot, String expertise, String bio, LocalDateTime createdAt,
-            double baseRate, double multiplier, boolean is_deleted) {
-        this.id = id;
-        this.mentorId = mentorId;
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
-        this.rating = rating;
-        this.reviews = reviews;
-        this.pricePerSlot = pricePerSlot;
-        this.expertise = expertise;
-        this.bio = bio;
-        this.createdAt = createdAt;
-        this.baseRate = baseRate;
-        this.multiplier = multiplier;
-        this.is_deleted = is_deleted;
+    public Mentor() {
     }
 
-    public Mentor(int total_Mentor) {
-        this.total_Mentor = total_Mentor;
-    }
-
-    public Mentor(String name, double rating, double pricePerSlot, String expertise, String image, String username, int total_mentees, int total_reviews) {
-        this.name = name;
-        this.rating = rating;
-        this.pricePerSlot = pricePerSlot;
-        this.expertise = expertise;
-        this.image = image;
-        this.username = username;
-        this.total_mentees = total_mentees;
-        this.total_reviews = total_reviews;
-    }
-
-    public Mentor(String name, double rating, String expertise, String image, int total_mentees, int rating_count) {
-        this.name = name;
-        this.rating = rating;
-        this.expertise = expertise;
-        this.image = image;
-        this.total_mentees = total_mentees;
-        this.rating_count = rating_count;
-    }
-
-    public Mentor(int id, String name, double rating, String username, String expertise) {
-        this.id = id;
-        this.name = name;
-        this.rating = rating;
-        this.username = username;
-        this.expertise = expertise;
-    }
-
-    public int getTotal_Mentor() {
-        return total_Mentor;
-    }
-
-    public void setTotal_Mentor(int total_Mentor) {
-        this.total_Mentor = total_Mentor;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getCurentlyRequests() {
-        return CurentlyRequests;
-    }
-
-    public void setCurentlyRequests(int CurentlyRequests) {
-        this.CurentlyRequests = CurentlyRequests;
-    }
-
-    public int getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(int completed) {
-        this.completed = completed;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getTotal_mentees() {
-        return total_mentees;
-    }
-
-    public void setTotal_mentees(int total_mentees) {
-        this.total_mentees = total_mentees;
-    }
-
-    public int getRating_count() {
-        return rating_count;
-    }
-
-    public void setRating_count(int rating_count) {
-        this.rating_count = rating_count;
-    }
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -152,20 +39,12 @@ public class Mentor {
         this.id = id;
     }
 
-    public int getMentorId() {
-        return mentorId;
+    public User getUser() {
+        return user;
     }
 
-    public void setMentorId(int mentorId) {
-        this.mentorId = mentorId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -190,6 +69,14 @@ public class Mentor {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getReviews() {
@@ -224,11 +111,11 @@ public class Mentor {
         this.bio = bio;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -248,29 +135,47 @@ public class Mentor {
         this.multiplier = multiplier;
     }
 
-    public boolean isIs_deleted() {
-        return is_deleted;
+    public int getTotalMentees() {
+        return totalMentees;
     }
 
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setTotalMentees(int totalMentees) {
+        this.totalMentees = totalMentees;
     }
 
-    public double calculateFinalPrice() {
-        return baseRate * multiplier;
+    public int getRatingCount() {
+        return ratingCount;
     }
 
-    public int getTotal_reviews() {
-        return total_reviews;
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
+    
 
-    public void setTotal_reviews(int total_reviews) {
-        this.total_reviews = total_reviews;
+    public Mentor(int id, User user, String name, String email, double rating, boolean isDeleted, String reviews, double pricePerSlot, String expertise, String bio, Date createdAt, double baseRate, double multiplier, int totalMentees, int ratingCount) {
+        this.id = id;
+        this.user = user;
+        this.name = name;
+        this.email = email;
+        this.rating = rating;
+        this.isDeleted = isDeleted;
+        this.reviews = reviews;
+        this.pricePerSlot = pricePerSlot;
+        this.expertise = expertise;
+        this.bio = bio;
+        this.createdAt = createdAt;
+        this.baseRate = baseRate;
+        this.multiplier = multiplier;
+        this.totalMentees = totalMentees;
+        this.ratingCount = ratingCount;
     }
 
     @Override
     public String toString() {
-        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + ", total_reviews=" + total_reviews + ", username=" + username + ", CurentlyRequests=" + CurentlyRequests + ", completed=" + completed + ", total_Mentor=" + total_Mentor + '}';
+        return "Mentor{" + "id=" + id + ", user=" + user + ", name=" + name + ", email=" + email + ", rating=" + rating + ", isDeleted=" + isDeleted + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", totalMentees=" + totalMentees + ", ratingCount=" + ratingCount + '}';
     }
+
+    
+   
 
 }

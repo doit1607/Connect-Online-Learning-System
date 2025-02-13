@@ -1,596 +1,69 @@
-<!DOCTYPE html> 
-<html lang="en">
+<%-- 
+    Document   : updateMentorProfile
+    Created on : Jan 30, 2025, 3:18:48 PM
+    Author     : admin
+--%>
 
-    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentor-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:22 GMT -->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
     <head>
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Dreams LMS</title>
-
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
-
-        <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
-        <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-        <!-- Feather CSS -->
-        <link rel="stylesheet" href="assets/css/feather.css">
-
-        <!-- Select2 CSS -->
-        <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-
-        <!-- Dropzone -->
-        <link rel="stylesheet" href="assets/plugins/dropzone/dropzone.min.css">
-
-        <!-- Boxioons CSS -->
-        <link rel="stylesheet" href="assets/plugins/boxicons/css/boxicons.min.css">
-
-        <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
-
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/cssCRUD/updateProfile.css">
+        <link rel="stylesheet" href="css/cssHome/homeHeader.css">       
+        <link rel="stylesheet" href="css/cssHome/homeFooter.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <title>Update Mentor Profile</title>
     </head>
     <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
+        <h1>Update Your Profile</h1>
+        <div class="form-container">
+            <form action="/HAPPYorSAD/updatementorprofile" method="post">
+                <input type="hidden" name="id" value="${mentor.id}">
+                
+                <label for="avatar">Avatar (URL) <span class="required">*</span></label>
+                <input type="text" id="avatar" name="avatar" value="${mentor.avatarPath}" required>
 
-        <!-- Main Wrapper -->
-        <div class="main-wrapper">
+                <label for="username">Account Name <span class="required">*</span></label>
+                <input type="text" id="username" name="username" value="${mentor.username}" required>
 
-            <!-- Header -->
-            <header class="header header-page">
-                <div class="header-fixed">
-                    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <a id="mobile_btn" href="javascript:void(0);">
-                                    <span class="bar-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </span>
-                                </a>
-                                <a href="index-2.html" class="navbar-brand logo">
-                                    <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                            </div>
-                            <div class="main-menu-wrapper">
-                                <div class="menu-header">
-                                    <a href="index-2.html" class="menu-logo">
-                                        <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                    </a>
-                                    <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </div>
-                                <ul class="main-nav">
-                                    <li class="has-submenu">
-                                        <a href="#">Home <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="index-2.html">Home</a></li>
-                                            <li><a href="index-two.html">Home Two</a></li>
-                                            <li><a href="index-three.html">Home Three</a></li>
-                                            <li><a href="index-four.html">Home Four</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Instructor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li class="has-submenu">
-                                                <a href="instructor-list.html">Instructor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="instructor-list.html">List</a></li>
-                                                    <li><a href="instructor-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="instructor-dashboard.html">Dashboard</a></li>
-                                            <li><a href="instructor-profile.html">My Profile</a></li>
-                                            <li><a href="instructor-course.html">My Course</a></li>
-                                            <li><a href="instructor-wishlist.html">Wishlist</a></li>
-                                            <li><a href="instructor-reviews.html">Reviews</a></li>
-                                            <li><a href="instructor-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="instructor-orders.html">Orders</a></li>
-                                            <li><a href="instructor-qa.html">Question & Answer</a></li>
-                                            <li><a href="instructor-referral.html">Referrals</a></li>
-                                            <li><a href="instructor-chat.html">Messages</a></li>
-                                            <li><a href="instructor-tickets.html">Support Ticket</a></li>
-                                            <li><a href="instructor-notifications.html">Notifications</a></li>
-                                            <li><a href="instructor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu active">
-                                        <a href="#">Mentor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu first-submenu">
-                                            <li class="has-submenu">
-                                                <a href="mentors-list.html">Mentor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="mentors-list.html">List</a></li>
-                                                    <li><a href="mentors-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="mentor-dashboard.html">Mentor Dashboard</a></li>
-                                            <li><a href="mentor-profile.html">My Profile</a></li>
-                                            <li><a href="mentor-courses.html">Enrolled Courses</a></li>
-                                            <li><a href="mentor-wishlist.html">Wishlist</a></li>
-                                            <li><a href="mentor-reviews.html">Reviews</a></li>
-                                            <li><a href="mentor-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="mentor-order-history.html">Orders</a></li>
-                                            <li><a href="mentor-qa.html">Question & Answer</a></li>
-                                            <li><a href="mentor-referral.html">Referrals</a></li>
-                                            <li><a href="mentor-messages.html">Messages</a></li>
-                                            <li><a href="mentor-tickets.html">Support Ticket</a></li>
-                                            <li class="active"><a href="mentor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu">
-                                        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="notifications.html">Notification</a></li>
-                                            <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li class="has-submenu">
-                                                <a href="course-list.html">Course</a>
-                                                <ul class="submenu">
-                                                    <li><a href="add-course.html">Add Course</a></li>
-                                                    <li><a href="course-list.html">Course List</a></li>
-                                                    <li><a href="course-grid.html">Course Grid</a></li>
-                                                    <li><a href="course-details.html">Course Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="has-submenu">
-                                                <a href="come-soon.html">Error</a>
-                                                <ul class="submenu">
-                                                    <li><a href="come-soon.html">Coming Soon</a></li>
-                                                    <li><a href="error-404.html">404</a></li>
-                                                    <li><a href="error-500.html">500</a></li>
-                                                    <li><a href="under-construction.html">Under Construction</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                            <li><a href="support.html">Support</a></li>
-                                            <li><a href="job-category.html">Category</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="login.html">Login</a></li>
-                                            <li><a href="register.html">Register</a></li>
-                                            <li><a href="forgot-password.html">Forgot Password</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="blog-list.html">Blog List</a></li>
-                                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                                            <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                            <li><a href="blog-modern.html">Blog Modern</a></li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="login-link">
-                                        <a href="login.html">Login / Signup</a>
-                                    </li>
-                                </ul>		 
-                            </div>
-                            <ul class="nav header-navbar-rht">
-                                <li class="nav-item user-nav">
-                                    <div>
-                                        <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                            <i class="fa-solid fa-moon"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                            <i class="fa-solid fa-sun"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="nav-item user-nav">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <span class="user-img">
-                                            <img src="assets/img/user/user16.jpg" alt="Img">
-                                            <span class="status online"></span>
-                                        </span>
-                                    </a>
-                                    <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end" >
-                                        <div class="user-header">
-                                            <div class="avatar avatar-sm">
-                                                <img src="assets/img/user/user16.jpg" alt="User Image" class="avatar-img rounded-circle">
-                                            </div>
-                                            <div class="user-text">
-                                                <h6>Rolands R</h6>
-                                                <p class="text-muted mb-0">Mentor</p>
-                                            </div>
-                                        </div>
-                                        <a class="dropdown-item" href="mentor-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
-                                        <a class="dropdown-item" href="mentor-settings.html"><i class="feather-user me-1"></i> Profile</a>
-                                        <a class="dropdown-item" href="setting-mentor-subscription.html"><i class="feather-star me-1"></i> Subscription</a>
+                <label for="fullname">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullname" name="fullname" value="${mentor.fullname}" required>
 
-                                        <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-            <!-- /Header -->
+                <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" value="${mentor.dateOfBirth}" required>
 
-            <!-- Breadcrumb -->
-            <div class="breadcrumb-bar breadcrumb-bar-info">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-12">
-                            <div class="breadcrumb-list">
-                                <h2 class="breadcrumb-title">Settings</h2>
-                                <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
-                                    </ol>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Breadcrumb -->	
+                <label for="email">Email (Read-Only)</label>
+                <input type="email" id="email" name="email" value="${mentor.email}" readonly>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                <div class="container">
-                    <div class="row">
+                <label for="gender">Gender <span class="required">*</span></label>
+                <select id="gender" name="gender">
+                    <option value="Male" ${mentor.gender == 'Male' ? 'selected' : ''}>Male</option>
+                    <option value="Female" ${mentor.gender == 'Female' ? 'selected' : ''}>Female</option>
+                    <option value="Other" ${mentor.gender == 'Other' ? 'selected' : ''}>Other</option>
+                </select>
 
-                        <!-- sidebar -->
-                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
-                                <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <div class="profile-img">
-                                            <img id="avatarPreview" src="assets/img/user/user16.jpg" alt="Avatar" class="img-fluid">
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="mentor-profile.html">Rolands Richard</a></h4>
-                                            <p>Mentor</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="settings-widget account-settings">
-                                <div class="settings-menu">
-                                    <h3>Dashboard</h3>
-                                    <ul>
-                                        <li class="nav-item ">
-                                            <a href="mentor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-profile.html" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-courses.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Enrolled Courses
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-reviews.html" class="nav-link">
-                                                <i class="bx bxs-star"></i>Reviews
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-quiz.html" class="nav-link">
-                                                <i class="bx bxs-shapes"></i>My Quiz Attempts
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-order-history.html" class="nav-link">
-                                                <i class="bx bxs-cart"></i>Order History
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-qa.html" class="nav-link">
-                                                <i class="bx bxs-bookmark-alt"></i>Question & Answer
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-messages.html" class="nav-link">
-                                                <i class="bx bxs-chat"></i>Messages
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="mentor-tickets.html" class="nav-link">
-                                                <i class="bx bxs-coupon"></i>Support Tickets
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <h3>Account Settings</h3>
-                                    <ul>
-                                        <li class="nav-item active">
-                                            <a href="mentor-settings.html" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="index-2.html" class="nav-link">
-                                                <i class="bx bxs-log-out"></i>Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>			
-                        </div>
-                        <!-- /Sidebar -->
+                <label for="address">Address <span class="required">*</span></label>
+                <input type="text" id="address" name="address" value="${mentor.address}" required>
 
-                        <!-- Mentor Settings -->
-                        <div class="col-xl-9 col-lg-9">	
-
-                            <div class="settings-widget card-details">
-                                <div class="settings-menu p-0">
-                                    <div class="profile-heading">
-                                        <h3>Settings</h3>
-                                        <p>You have full control to manage your own account settings</p>
-                                    </div>
-                                    <div class="settings-page-head">
-                                        <ul class="settings-pg-links">
-                                            <li><a href="mentor-settings.html" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
-                                            <li><a href="mentor-change-password.html"><i class="bx bx-lock"></i>Change Password</a></li>
-                                            <li><a href="mentor-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
-                                            <li><a href="mentor-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
-                                            <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
-                                        </ul>
-                                    </div>
-                                    <form action="/HAPPYorSAD/updatementorprofile" method="post" class="checkout-form settings-wrap">
-                                        
-                                        <div class="checkout-form settings-wrap">
-                                            <div class="edit-profile-info">
-                                                <h2>Update Your Profile</h2>
-                                                <p>Edit your personal information</p>
-                                            </div>
-
-                                            <input type="hidden" name="username" value="${mentor.username}">
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Avatar <span class="required">*</span></label>
-                                                        <input type="file" id="avatarUpload" accept="image/*">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Account Name</label>
-                                                        <input type="text" class="form-control" id="username" name="username" value="${mentor.username}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Full Name <span class="required">*</span></label>
-                                                        <input type="text" class="form-control" id="fullname" name="fullname" value="${mentor.fullname}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Date of Birth <span class="required">*</span></label>
-                                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="${mentor.dateOfBirth}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Email (Read-Only)</label>
-                                                        <input type="email" class="form-control" id="email" name="email" value="${mentor.email}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Gender <span class="required">*</span></label>
-                                                        <select class="form-control" id="gender" name="gender">
-                                                            <option value="Male" ${mentor.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                            <option value="Female" ${mentor.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                            <option value="Other" ${mentor.gender == 'Other' ? 'selected' : ''}>Other</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="input-block">
-                                                        <label class="form-label">Address <span class="required">*</span></label>
-                                                        <input type="text" class="form-control" id="address" name="address" value="${mentor.address}" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <button class="btn btn-primary" type="submit">Update Profile</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </form>								
-                                </div>
-                            </div>
-                        </div>	
-                        <!-- /Mentor Settings -->
-
-                    </div>
-                </div>
-            </div>	
-            <!-- /Page Content -->
-
-            <script>
-                document.getElementById('avatarUpload').addEventListener('change', function (event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            document.getElementById('avatarPreview').src = e.target.result;
-                        }
-                        reader.readAsDataURL(file);
-                    }
-                });
-            </script>
-            
-            <!-- Footer -->
-            <footer class="footer">
-
-                <!-- Footer Top -->
-                <div class="footer-top">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-about">
-                                    <div class="footer-logo">
-                                        <img src="assets/img/logo.svg" alt="logo">
-                                    </div>
-                                    <div class="footer-about-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Instructor</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="instructor-list.html">Instructor</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Mentor</h2>
-                                    <ul>
-                                        <li><a href="mentor-profile.html">Profile</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="mentors-list.html">Mentor</a></li>
-                                        <li><a href="mentor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-contact">
-                                    <h2 class="footer-title">News letter</h2>
-                                    <div class="news-letter">
-                                        <form>
-                                            <input type="text" class="form-control" placeholder="Enter your email address" name="email">
-                                        </form>
-                                    </div>
-                                    <div class="footer-contact-info">
-                                        <div class="footer-address">
-                                            <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                            <p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                        </div>
-                                        <p>
-                                            <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                            <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9cddbccc8c4dac5c4dae9ccd1c8c4d9c5cc87cac6c4">[email&#160;protected]</a>
-                                        </p>
-                                        <p class="mb-0">
-                                            <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                            +19 123-456-7890
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /Footer Top -->
-
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
-                    <div class="container">
-
-                        <!-- Copyright -->
-                        <div class="copyright">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="privacy-policy">
-                                        <ul>
-                                            <li><a href="term-condition.html">Terms</a></li>
-                                            <li><a href="privacy-policy.html">Privacy</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="copyright-text">
-                                        <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Copyright -->
-
-                    </div>
-                </div>
-                <!-- /Footer Bottom -->
-
-            </footer>
-            <!-- /Footer -->
-
+                <button type="submit">OK</button>
+            </form>
         </div>
-        <!-- /Main Wrapper -->
-
-        <!-- jQuery -->
-        <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Ckeditor JS -->
-        <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Dropzone JS -->
-        <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Sticky Sidebar JS -->
-        <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-        <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
     </body>
+    <script>
+        window.onload = function() {
+            // thông báo thành công
+            <% if (request.getAttribute("successMessage") != null) { %>
+                alert("<%= request.getAttribute("successMessage") %>");
+                window.location.href = "Course.jsp"; // trở về trang Course
+            <% } %>
 
-    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentor-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
+            // thông báo lỗi
+            <% if (request.getAttribute("error") != null) { %>
+                alert("<%= request.getAttribute("error") %>");
+            <% } %>
+        };
+    </script>
 </html>

@@ -133,12 +133,17 @@ public class User {
         this.role = role;
     }
 
-    public boolean isIsGuest() {
+    public boolean getIsGuest() {
         return isGuest;
     }
 
     public void setIsGuest(boolean isGuest) {
         this.isGuest = isGuest;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "avatarPath=" + avatarPath + ", username=" + username + ", fullname=" + fullname + ", password=" + password + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", createdAt=" + createdAt + ", gender=" + gender + ", role=" + role + ", isGuest=" + isGuest + '}';
     }
 
 }

@@ -6,7 +6,6 @@ package controller;
 
 import entity.Course;
 import entity.Major;
-import entity.Mentee;
 import entity.Mentor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.DAOCourse;
-import model.DAOMenteeStatistic;
 import model.DAOMentor;
 import model.DAOmajor;
 import model.DAOMentor;
@@ -42,7 +40,6 @@ public class Home extends HttpServlet {
         // Category course
         DAOmajor daoM = new DAOmajor();
         DAOMentor daoMe = new DAOMentor();
-        DAOMenteeStatistic daoMentee = new DAOMenteeStatistic();
         List<Major> listM = daoM.getMajorHome();
         HttpSession session = request.getSession();
         session.setAttribute("listMajor", listM);
@@ -53,17 +50,14 @@ public class Home extends HttpServlet {
         List<Course> listT = daoC.getAllCourseHome2();
         List<Mentor> listMe = daoMe.getMentorsHome();
         List<Course> listCountC = daoC.getCountCourseHome();
-        List<Mentor> listCountMentor = daoMe.getCount();
-        List<Mentee> listCountMentee = daoMentee.getCount();
         //Count course and menteees
+        
 
         session.setAttribute("listFCourse", listC);
         session.setAttribute("listTCourse", listT);
         System.out.println("Check1");
         session.setAttribute("listMentor", listMe);
         session.setAttribute("listCountC", listCountC);
-        session.setAttribute("listCountMentor", listCountMentor);
-        session.setAttribute("listCountMentee", listCountMentee);
         request.getRequestDispatcher("Home/HomePage.jsp").forward(request, response);
 
     }

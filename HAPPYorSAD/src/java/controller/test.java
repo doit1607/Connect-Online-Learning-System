@@ -33,17 +33,10 @@ public class test extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOMentor dao = new DAOMentor();
-<<<<<<< HEAD
         //List<Mentor> list = dao.getMentors();
 
         HttpSession session = request.getSession();
         //session.setAttribute("listMentor", list);
-=======
-        List<Mentor> list = dao.getMentors();
-
-        HttpSession session = request.getSession();
-        session.setAttribute("listMentor", list);
->>>>>>> 31769565b00d063ad4b528560148867133299d69
 
         request.getRequestDispatcher("view/ViewMentor.jsp").forward(request, response);
     }

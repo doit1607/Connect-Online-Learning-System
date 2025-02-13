@@ -57,36 +57,20 @@ public class DAOCourse extends DBConnection {
         return listCourse;
     }
 
-//    public boolean createCourse(String title, String description, String image) {
-//        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [image]) "
-//                + "VALUES (?, ?, ?, ?)";
-//
-//        try (PreparedStatement pre = conn.prepareStatement(sql)) {
-//            pre.setString(1, title);
-//            pre.setString(2, description);
-//            pre.setString(3, "active");
-//            pre.setString(4, image);
-//
-//            return pre.executeUpdate() > 0;
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return false;
-//    }
-    
-    public void createCourse(String title, String description, int majorId, String image) {
-        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image]) "
-                + "VALUES (?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+    public boolean createCourse(String title, String description) {
+        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status]) "
+                + "VALUES (?, ?, ?)";
+
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
             pre.setString(1, title);
             pre.setString(2, description);
-            pre.setString(3, "active");
-            pre.setInt(4, majorId);
-            pre.setString(5, image);
-            pre.executeUpdate();
-        } catch (Exception e) {
+            pre.setString(3, "Active"); // Trạng thái mặc định
+
+            return pre.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+        return false;
     }
 
     public List<Course> getAllCourseOrderByName() {
@@ -165,7 +149,7 @@ public class DAOCourse extends DBConnection {
                 + "    c.title,\n"
                 + "	c.image,\n"
                 + "    cm.name as CourseMajor,\n"
-                + "    COUNT(DISTINCT CASE WHEN u_mentor.status = 'active' THEN u_mentor.id END) AS total_Mentor,\n"
+                + "    COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
                 + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
                 + "FROM Course c\n"
                 + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
@@ -195,14 +179,13 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getCountCourseHome() {
         ArrayList<Course> list = new ArrayList<>();
-        String query = "SELECT  \n"
-                + "    COUNT(DISTINCT c.id) AS total_Courses,  \n"
-                + "    COUNT(DISTINCT m.id) AS total_Mentee  \n"
-                + "FROM Course c  \n"
-                + "LEFT JOIN Mentee m ON m.user_id IN (  \n"
-                + "    SELECT id FROM Users WHERE role = 'mentee'  \n"
-                + ")  \n"
-                + "WHERE c.status = 'active'; ";
+        String query = "SELECT \n"
+                + "    COUNT(DISTINCT c.id) AS total_Courses,\n"
+                + "    COUNT(DISTINCT m.id) AS total_Mentee\n"
+                + "FROM Course c\n"
+                + "LEFT JOIN Mentee m ON m.user_id IN (\n"
+                + "    SELECT id FROM Users WHERE role = 'mentee'\n"
+                + ");";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet rs = connect.executeQuery();
@@ -235,55 +218,14 @@ public class DAOCourse extends DBConnection {
         return false;
     }
 
-    public Course getCourseById(int id) {
-        String query = "SELECT [id]\n"
-                + "      ,[title]\n"
-                + "      ,[description]\n"
-                + "      ,[manager_id]\n"
-                + "      ,[mentor_id]\n"
-                + "      ,[status]\n"
-                + "      ,[created_at]\n"
-                + "      ,[updated_at]\n"
-                + "      ,[course_major_id]\n"
-                + "      ,[image]\n"
-                + "  FROM [SWP1].[dbo].[Course]\n"
-                + "  Where [id] = ?";
-        try {
-            PreparedStatement connect = conn.prepareStatement(query);
-            connect.setInt(1, id);
-            ResultSet result = connect.executeQuery();
-            
-            while (result.next()) {
-                id = result.getInt("id");
-                String title = result.getString("title");
-                String description = result.getString("description");
-                int managerId = result.getInt("manager_id");
-                int mentorId = result.getInt("mentor_id");
-                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
-                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
-                int courseMajorId = result.getInt("course_major_id");
-                String status = result.getString("status");
-                String image = result.getString("image");
-
-                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
-
-            }
-            result.close();
-            connect.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-//        List<Course> listCourseHome = dao.getAllCourseHome();
-//
-//        for (Course course : listCourseHome) {
-//            System.out.println(course);
-//        }
+        List<Course> listCourseHome = dao.getAllCourseHome();
+
+        for (Course course : listCourseHome) {
+            System.out.println(listCourseHome);
+        }
 
 //        List<Course> listCourse1 = dao.getAllCourse();
 //        System.out.println(listCourse1);
@@ -295,7 +237,5 @@ public class DAOCourse extends DBConnection {
 //        } else {
 //            System.out.println("Create failed!");
 //        }
-        Course course = dao.getCourseById(1);
-        System.out.println(course);
     }
 }

@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <filter>
-        <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>controller.AuthorizationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/*GUEST</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/*MANAGER</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/*MENTOR</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/*MENTEE</url-pattern>
-    </filter-mapping>
     <servlet>
         <servlet-name>ShowAllCourse</servlet-name>
         <servlet-class>controller.ShowAllCourse</servlet-class>
@@ -60,22 +40,6 @@
         <servlet-name>Dashboard</servlet-name>
         <servlet-class>controller.Dashboard</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>DashBoardMentor</servlet-name>
-        <servlet-class>controller.DashBoardMentor</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CourseDetail</servlet-name>
-        <servlet-class>controller.CourseDetail</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CourseDetail</servlet-name>
-        <servlet-class>controller.CourseDetail</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CourseDetails</servlet-name>
-        <servlet-class>controller.CourseDetails</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -111,17 +75,5 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DashBoardMentor</servlet-name>
-        <url-pattern>/dbMentor</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CourseDetail</servlet-name>
-        <url-pattern>/CourseDetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CourseDetails</servlet-name>
-        <url-pattern>/CourseDetails</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -47,6 +47,7 @@ public class DAOMenteeStatistic extends DBConnection {
 //        }
 //        return listMentee;
 //    }
+
     // dem so luong mentee trong db
     public int getTotalMentee() {
         String sql = "select count(*) from Mentee";
@@ -61,27 +62,6 @@ public class DAOMenteeStatistic extends DBConnection {
         return 0;
     }
 
-    public List<Mentee> getCount() {
-        ArrayList<Mentee> count = new ArrayList<>();
-        String query = "SELECT COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
-                + "FROM Users u_mentee\n"
-                + "WHERE u_mentee.role = 'mentee' AND u_mentee.status = 'active';";
-        try {
-            PreparedStatement connect = conn.prepareStatement(query);
-            ResultSet result = connect.executeQuery();
-            while (result.next()) {
-                int total_Mentee = result.getInt("total_Mentee");
-                Mentee m = new Mentee(total_Mentee);
-                count.add(m);
-            }
-            result.close();
-            connect.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
     public List<Mentee> pagingMentee(int index) {
         List<Mentee> list = new ArrayList<>();
         String sql = "select * from Mentee\n"
@@ -91,14 +71,15 @@ public class DAOMenteeStatistic extends DBConnection {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, (index - 1) * 2);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            while (rs.next())
+            {
                 list.add(new Mentee(rs.getInt(1),
-                        rs.getInt(2),
-                        rs.getString(3),
-                        rs.getInt(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getTimestamp(7).toLocalDateTime()));
+                rs.getInt(2),
+                rs.getString(3),
+                rs.getInt(4),
+                rs.getString(5),
+                rs.getString(6),
+                rs.getTimestamp(7).toLocalDateTime()));
             }
         } catch (Exception e) {
         }
@@ -108,9 +89,10 @@ public class DAOMenteeStatistic extends DBConnection {
     public static void main(String[] args) {
         DAOMenteeStatistic dao = new DAOMenteeStatistic();
 
-        List<Mentee> listMentee1 = dao.getCount();
-        for (Mentee mentee : listMentee1) {
-            System.out.println(mentee);
-        }
+        List<Mentee> listMentee1 = dao.pagingMentee(0);
+        System.out.println(listMentee1);
+
+        int count = dao.getTotalMentee();
+        System.out.println(count);
     }
 }
