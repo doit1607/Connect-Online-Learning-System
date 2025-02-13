@@ -45,11 +45,11 @@
     <body>
 
         <div class="main-wrapper">
-            <%@include file="../sourcesHome/homeHeader.jsp" %>
+
             <div class="all-container">
                 <%@include file="../sourcesHome/homeDetail.jsp" %>
             </div>
-            <%@include file="../sourcesHome/homeFooter.jsp" %>
+
         </div>
     </body>
 
