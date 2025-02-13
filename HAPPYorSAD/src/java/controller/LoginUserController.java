@@ -55,13 +55,26 @@ public class LoginUserController extends HttpServlet {
                         c.setMaxAge(0);
                         response.addCookie(c);
                     }
-                    session.setAttribute("usernameUser", username);
-                    response.sendRedirect("Home");
-                }
-                else{
-                    
-                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                    String role = userDAO.getRole(username);
+                    if (role.equalsIgnoreCase("Mentor")) {
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Home");
+                    }
+                    if (role.equalsIgnoreCase("Mentee")) {
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Home");
+                    }
+                    if(role.equalsIgnoreCase("Manager")){
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Manager");
+                    }
+                } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+
                 }
 
             } else {
@@ -79,6 +92,7 @@ public class LoginUserController extends HttpServlet {
 
         if ("register".equals(service)) {
             EmailUtil em = new EmailUtil();
+
             String username = request.getParameter("usernameRegis");
             String password = request.getParameter("passwordRegis");
             String email = request.getParameter("emailRegis");
@@ -86,7 +100,8 @@ public class LoginUserController extends HttpServlet {
             String gender = request.getParameter("genderRegis");
             String address = request.getParameter("addressRegis");
             String fullname = request.getParameter("fullnameRegis");
-
+            String role = request.getParameter("roleRegis");
+            System.out.println(role);
             Date dateOfBirth = null;
             try {
                 String dob = request.getParameter("dobRegis");
@@ -102,9 +117,9 @@ public class LoginUserController extends HttpServlet {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String formattedDate = sdf.format(new Date());
                     java.sql.Timestamp createdAt = java.sql.Timestamp.valueOf(formattedDate);
-                    User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, "mentee", false);
+                    User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, role, false);
                     userDAO.addUser(newUser);
-
+                    
                     String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
                     em.sendVerificationEmail(email, username, verificationLink);
                     request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
@@ -148,9 +163,15 @@ public class LoginUserController extends HttpServlet {
             String newPassword = request.getParameter("newpassword");
 
             if (userDAO.loginUser(username, currentpassword)) {
-                userDAO.updatePassword(username, newPassword);
-                request.setAttribute("msg", "Password changed successfully!");
-                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                if (!currentpassword.equals(newPassword)) {
+                    userDAO.updatePassword(username, newPassword);
+                    request.setAttribute("msg", "Password changed successfully!");
+                    request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("error", "Old password same with new password.Please input again!");
+                    request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                }
+
             } else {
                 request.setAttribute("error", "Incorrect old password!");
                 request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);

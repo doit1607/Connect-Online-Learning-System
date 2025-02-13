@@ -21,7 +21,6 @@ import java.util.List;
  *
  * @author Dell
  */
-@WebServlet(name = "ViewMentors", urlPatterns = {"/viewMentor"})
 public class ViewMentors extends HttpServlet {
 
     /**
@@ -35,7 +34,13 @@ public class ViewMentors extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DAOMentor dao = new DAOMentor();
+        List<Mentor> list = dao.getMentors();
 
+        HttpSession session = request.getSession();
+        session.setAttribute("listMentor", list);
+
+        request.getRequestDispatcher("view/ViewMentor.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,47 +55,7 @@ public class ViewMentors extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String search = request.getParameter("search");
-        if (search == null) {
-            search = "";
-        }
-
-        int limit = 4; // Số mentor hiển thị trên mỗi trang
-        int page = 1;  // Trang mặc định là 1
-
-        try {
-            String pageParam = request.getParameter("page");
-            String limitParam = request.getParameter("limit");
-
-            if (limitParam != null && !limitParam.isEmpty()) {
-                limit = Integer.parseInt(limitParam);
-                if (limit <= 0) {
-                    limit = 5; // Nếu limit <= 0, đặt lại giá trị mặc định
-                }
-            }
-
-            if (pageParam != null && !pageParam.isEmpty()) {
-                page = Integer.parseInt(pageParam);
-                if (page < 1) {
-                    page = 1; // Nếu page < 1, đặt lại giá trị mặc định
-                }
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Lỗi khi chuyển đổi page/limit: " + e.getMessage());
-        }
-
-        DAOMentor dao = new DAOMentor();
-        List<Mentor> list = dao.getAllMentors(search, page, limit);
-        int totalMentors = dao.getTotalMentors(search); // Lấy tổng số mentor
-        int totalPages = (int) Math.ceil((double) totalMentors / limit); // Tính tổng số trang
-
-        HttpSession session = request.getSession();
-        session.setAttribute("listMentor", list);
-        session.setAttribute("currentPage", page);
-        session.setAttribute("limit", limit);
-        session.setAttribute("totalPages", totalPages); // Gửi tổng số trang đến session
-
-        request.getRequestDispatcher("view/ViewMentor.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -104,27 +69,7 @@ public class ViewMentors extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorUserName = request.getParameter("username");
-        String newStatus = request.getParameter("status");
-
-        if (mentorUserName != null && !mentorUserName.isEmpty() && newStatus != null) {
-            try {
-               
-                DAOMentor dao = new DAOMentor();
-
-                dao.toggleMentorStatus(mentorUserName, newStatus);
-
-                request.getSession().setAttribute("message", "Cập nhật trạng thái mentor thành công.");
-                response.sendRedirect("viewMentor");
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                request.getSession().setAttribute("error", "ID mentor không hợp lệ.");
-                response.sendRedirect("mentorList.jsp");
-            }
-        } else {
-            request.getSession().setAttribute("error", "Thiếu ID mentor hoặc trạng thái.");
-            response.sendRedirect("mentorList.jsp");
-        }
+        processRequest(request, response);
     }
 
     /**

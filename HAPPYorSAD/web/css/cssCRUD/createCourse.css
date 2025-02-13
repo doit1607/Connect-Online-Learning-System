@@ -1,43 +1,43 @@
-/* Global styles */
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     margin: 0;
-    flex-direction: column;
+    background: linear-gradient(to right, #fadede, #e5f4fd);
 }
 
-/* Error / Success message */
+/* Alert Messages */
 .alert-message {
     width: 90%;
     max-width: 400px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-bottom: 15px;
     border-radius: 8px;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Success message */
+/* Success */
 .alert-message.success {
     background-color: #d4edda;
     color: #155724;
     border: 2px solid #c3e6cb;
 }
 
-/* Error message */
+/* Error */
 .alert-message.error {
     background-color: #f8d7da;
-    color: #721c24;
+    color: red;
     border: 2px solid #f5c6cb;
 }
 
-/* Form container */
+/* Form Container */
 .form-container {
     background: white;
     padding: 30px;
@@ -47,7 +47,7 @@ body {
     text-align: center;
 }
 
-/* Form title */
+/* Form Title */
 .form-container h1 {
     font-size: 26px;
     margin-bottom: 20px;
@@ -58,28 +58,51 @@ body {
 label {
     display: block;
     font-size: 16px;
-    margin: 10px 0 5px;
+    margin: 10  px 0 10px;
     text-align: left;
     font-weight: bold;
     color: #444;
 }
 
-/* Input fields */
+/* Input Fields */
 input[type="text"] {
     width: 100%;
-    padding: 12px;
+    padding: 9px 0;
     margin-bottom: 15px;
     border: 2px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
 }
 
-/* Required field indicator */
+textarea {
+    width: 100%;
+    padding: 9px 0;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border 0.3s ease-in-out;
+}
+
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Required Indicator */
 .required {
     color: red;
 }
 
-/* Button group */
+/* Button Group */
 .button-group {
     display: flex;
     justify-content: space-between;
@@ -99,7 +122,7 @@ button {
     transition: all 0.3s ease;
 }
 
-/* Create button */
+/* Submit Button */
 button[type="submit"] {
     background-color: #28a745;
     color: white;
@@ -109,7 +132,7 @@ button[type="submit"]:hover {
     background-color: #218838;
 }
 
-/* Reset button */
+/* Reset Button */
 button[type="reset"] {
     background-color: #ffc107;
     color: black;
@@ -119,7 +142,7 @@ button[type="reset"]:hover {
     background-color: #e0a800;
 }
 
-/* Back button */
+/* Back Button */
 button[type="button"] {
     background-color: #007bff;
     color: white;

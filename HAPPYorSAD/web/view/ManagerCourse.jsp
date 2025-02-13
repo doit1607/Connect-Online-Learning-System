@@ -77,6 +77,32 @@
                     <label for="editName">Title</label>
                     <input type="text" id="editName1" name="title" placeholder="Course Name" required readonly>
 
+<<<<<<< HEAD
+
+                    <select id="editStatus1" name="status"> 
+                        <option value="active" selected>Active</option>
+                        <option value="Inactive" selected>Inactive</option>
+                    </select>
+
+=======
+>>>>>>> 31769565b00d063ad4b528560148867133299d69
+                    <button type="submit" class="btn-save">OK</button>
+                    <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
+<<<<<<< HEAD
+=======
+        <!-- Overlay for Edit Form -->
+        <div class="overlay" id="editFormOverlay1" style="display: none;">
+            <div class="form-container">
+                <h3>Edit Course</h3>
+                <form action="UpdateCourse" method="post">
+                    <input type="hidden" id="editId1" name="id">
+
+                    <label for="editName">Title</label>
+                    <input type="text" id="editName1" name="title" placeholder="Course Name" required readonly>
+
 
                     <select id="editStatus1" name="status"> 
                         <option value="active" selected>Active</option>
@@ -88,6 +114,7 @@
                 </form>
             </div>
         </div>
+>>>>>>> 31769565b00d063ad4b528560148867133299d69
         <script>
 
             function showEditForm(id, name, status) {
