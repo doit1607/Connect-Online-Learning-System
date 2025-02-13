@@ -64,7 +64,7 @@
                                     <input type="hidden" name="service" value="login">                                     
                                     <div class="input-block">                                         
                                         <label class="form-control-label">Username</label>                                         
-                                        <input type="text" class="form-control" name="usernameLogin" value ="${cookie.usernameUser_cookie.value}" placeholder="Enter your email address">                                     
+                                        <input type="text" class="form-control" name="usernameLogin" value ="${cookie.usernameUser_cookie.value}" placeholder="Enter your username">                                     
                                     </div>                                     
                                     <div class="input-block">                                         
                                         <label class="form-control-label">Password</label>                                         

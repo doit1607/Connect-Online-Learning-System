@@ -3,6 +3,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html> 
 <html lang="en">
+    <style>
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .toggle-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid #ff6677;
+            cursor: pointer;
+            background: white;
+            color: #ff6677;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .toggle-buttons button.active {
+            background: #ff6677;
+            color: white;
+            border: none;
+        }
+    </style>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:05:04 GMT -->
     <head>
@@ -70,13 +92,19 @@
                                 </div>
                             </div>
                             <h1>Sign up</h1>
+
                             <form action="/../HAPPYorSAD/LoginUser" method = "post">
                                 <input type="hidden" name="service" value="register">
+                                <input type="hidden" id="roleRegis" name="roleRegis" value="mentor">                               
+                                <div class="toggle-buttons">
+                                    <button id="tutorBtn" type="button" class="active">Mentor</button>
+                                    <button id="studentBtn" type="button">Mentee</button>
+                                </div>
                                 <div class="input-block">
                                     <label class="form-control-label">Username</label>
                                     <input type="text" name="usernameRegis"  class="form-control" placeholder="Enter your username">
                                     <c:if test="${requestScope.msgusername != null}">                                             
-                                            ${requestScope.msgusername}                                         
+                                        ${requestScope.msgusername}                                         
                                     </c:if> 
                                 </div>
 
@@ -89,13 +117,16 @@
                                     <label class="form-control-label">Email</label>
                                     <input type="email" name = "emailRegis" class="form-control" placeholder="Enter your email address">
                                     <c:if test="${requestScope.msgemail != null}">                                             
-                                            ${requestScope.msgemail}                                         
+                                        ${requestScope.msgemail}                                         
                                     </c:if> 
                                 </div>
-
-                                <div class="input-block">
+                                <div class="input-block">  
                                     <label class="form-control-label">Phone Number</label>
                                     <input type="text" name = "phoneRegis" class="form-control" placeholder="Enter your phone number">
+                                </div>
+                                <div class="input-block">
+                                    <label class="form-control-label">Address</label>
+                                    <input type="text" name = "addressRegis" class="form-control" placeholder="Enter your address">
                                 </div>
                                 <div class="input-block">
                                     <label class="form-control-label">Date of birth</label>
@@ -110,6 +141,8 @@
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
+
+
                                 <span>&nbsp;</span>
                                 <div class="input-block">
                                     <label class="form-control-label">Password</label>
@@ -118,37 +151,37 @@
                                         <span class="toggle-password feather-eye"></span>
                                         <span class="pass-checked"><i class="feather-check"></i></span>
                                     </div>
-                                <span>&nbsp;</span>
-                                <div class="input-block">
-                                    <label class="form-control-label">Confirm Password</label>
-                                    <div class="pass-group" id="passwordInput">																	
-                                        <input type="password" name = "confirmpassword" id="confirmPassword"class="form-control pass-input" placeholder="Enter your confirm password">
-                                        <span class="toggle-password feather-eye"></span>
-                                        <span class="pass-checked"><i class="feather-check"></i></span>
-                                    </div>    
-                                    <div id="passwordInfo"></div>	
-                                </div>
-                                    
-                                <div class="form-check remember-me">
-                                    <label class="form-check-label mb-0">
-                                        <input class="form-check-input" type="checkbox" name="remember"> I agree to the <a href="term-condition.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy.</a>
-                                    </label>
-                                </div>
-                                <div class="d-grid">
-                                    <button class="btn btn-primary btn-start" type="submit">Create Account</button>
-                                </div>
+                                    <span>&nbsp;</span>
+                                    <div class="input-block">
+                                        <label class="form-control-label">Confirm Password</label>
+                                        <div class="pass-group" id="passwordInput">																	
+                                            <input type="password" name = "confirmpassword" id="confirmPassword"class="form-control pass-input" placeholder="Enter your confirm password">
+                                            <span class="toggle-password feather-eye"></span>
+                                            <span class="pass-checked"><i class="feather-check"></i></span>
+                                        </div>    
+                                        <div id="passwordInfo"></div>	
+                                    </div>
+
+                                    <div class="form-check remember-me">
+                                        <label class="form-check-label mb-0">
+                                            <input class="form-check-input" type="checkbox" name="remember"> I agree to the <a href="term-condition.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy.</a>
+                                        </label>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-primary btn-start" type="submit">Create Account</button>
+                                    </div>
                             </form>
                         </div>
-<!--                        <div class="google-bg text-center">
-                            <span><a href="#">Or sign in with</a></span>
-                            <div class="sign-google">
-                                <ul>
-                                    <li><a href="#"><img src="assets/img/net-icon-01.png" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
-                                    <li><a href="#"><img src="assets/img/net-icon-02.png" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
-                                </ul>
-                            </div>
-                            <p class="mb-0">Already have an account? <a href="login.html">Sign in</a></p>
-                        </div>-->
+                        <!--                        <div class="google-bg text-center">
+                                                    <span><a href="#">Or sign in with</a></span>
+                                                    <div class="sign-google">
+                                                        <ul>
+                                                            <li><a href="#"><img src="assets/img/net-icon-01.png" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
+                                                            <li><a href="#"><img src="assets/img/net-icon-02.png" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <p class="mb-0">Already have an account? <a href="login.html">Sign in</a></p>
+                                                </div>-->
                     </div>
                     <!-- /Login -->
 
@@ -175,9 +208,9 @@
         <script src="/HAPPYorSAD/assets/js/script.js" type="b11b5c5b2787092d89072727-text/javascript"></script>
 
 
-        
+
         <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b11b5c5b2787092d89072727-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074479e8f5e2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-        
+
         <script>
             document.getElementById("passwordRegis").addEventListener("input", checkPasswords);
             document.getElementById("confirmPassword").addEventListener("input", checkPasswords);
@@ -201,6 +234,38 @@
                     }
                 }
             }
+            document.addEventListener("DOMContentLoaded", function () {
+                const roleInput = document.getElementById("roleRegis");
+                const tutorBtn = document.getElementById("tutorBtn");
+                const studentBtn = document.getElementById("studentBtn");
+
+                let selectedRole = "mentor"; 
+                roleInput.value = selectedRole;
+
+                tutorBtn.addEventListener("click", function () {
+                    if (selectedRole !== "mentor") {
+                        selectedRole = "mentor";
+                        roleInput.value = "mentor";
+
+                        tutorBtn.classList.add("active");
+                        studentBtn.classList.remove("active");
+                    }
+                });
+
+                studentBtn.addEventListener("click", function () {
+                    if (selectedRole !== "mentee") {
+                        selectedRole = "mentee";
+                        roleInput.value = "mentee";
+
+                        studentBtn.classList.add("active");
+                        tutorBtn.classList.remove("active");
+                    }
+                });
+            });
+
+
+
+
 
 
         </script>
