@@ -7,50 +7,38 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
-
-        <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
-        <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-        <!-- Owl Carousel CSS -->
-        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-
-        <!-- Slick CSS -->
-        <link rel="stylesheet" href="assets/plugins/slick/slick.css">
-        <link rel="stylesheet" href="assets/plugins/slick/slick-theme.css">
-
-        <!-- Select2 CSS -->
-        <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-
-        <!-- Aos CSS -->
-        <link rel="stylesheet" href="../assets/plugins/aos/aos.css">
-
-        <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
-
         <title>HAPPYorSAD</title>
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
     </head>
     <body>
 
         <div class="main-wrapper">
-
             <div class="all-container">
+                <%@include file="../sourcesHome/homeHeader.jsp" %>
                 <%@include file="../sourcesHome/homeDetail.jsp" %>
+                <%@include file="../sourcesHome/homeFooter.jsp" %>
             </div>
-
         </div>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js"></script>
     </body>
 
 </html>
