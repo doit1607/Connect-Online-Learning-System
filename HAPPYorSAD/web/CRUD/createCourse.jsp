@@ -11,7 +11,6 @@
 <html lang="en">
 
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Dreams LMS</title>
@@ -43,8 +42,8 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
     </head>
-    <body>
-        <%@include file="../sourcesHome/homeHeader.jsp" %>
+    <body>        
+        <%@include file="../sourcesHome/homeHeader.jsp" %>  
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <!-- New Course -->
