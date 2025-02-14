@@ -304,10 +304,12 @@ public class DAOuser extends DBConnection {
             pre.setString(1, username);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                return new User(rs.getString(4), rs.getString(2), rs.getString(3),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9),
-                        rs.getString(8), rs.getDate(10), rs.getDate(12), rs.getString(11),
-                        rs.getString(13), true);
+                return new User(rs.getString("avatar_path"), rs.getString("username"), rs.getString("fullname"),
+                        rs.getString("password"), rs.getString("status"), rs.getString("email"), 
+                        rs.getString("phone_number"),
+                        rs.getString("address"), rs.getDate("date_of_birth"), rs.getDate("created_at"), 
+                        rs.getString("gender"),
+                        rs.getString("role"), true);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -335,9 +337,9 @@ public class DAOuser extends DBConnection {
         }
     }
 
-//    public static void main(String[] args) {
-//        DAOuser dao = new DAOuser();
-//        User s = dao.getMenteeById(5);
-//        System.out.println(s);
-//    }
+    public static void main(String[] args) {
+        DAOuser dao = new DAOuser();
+        User s = dao.getMentorByUsername("john_doe");
+        System.out.println(s);
+    }
 }

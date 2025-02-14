@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.DAOuser;
@@ -49,7 +50,8 @@ public class UpdateMenteeProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mente = new DAOuser();
-        String username = request.getParameter("username");
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
 
         User u = mente.getMenteeByUsername(username);
 
@@ -93,6 +95,7 @@ public class UpdateMenteeProfile extends HttpServlet {
             e.printStackTrace();
         }
         mente.updateMenteeProfile(username, avatar, fullname, address, dateOfBirth, gender);
+        request.getSession().setAttribute("successMessage", "Profile updated successfully!");
         response.sendRedirect("updatementeeprofile");
     }
 
