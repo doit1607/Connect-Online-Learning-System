@@ -15,6 +15,32 @@ import java.util.Date;
  * @author Ann
  */
 public class DAOuser extends DBConnection {
+     public User getMentorById(int id) {
+        User mentor = null;
+        String sql = "Select * from Users where id = ? and role = 'mentor'";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new User();
+                    mentor.setUsername(rs.getString("username"));
+                    mentor.setAvatarPath(rs.getString("avatar_path"));
+                    mentor.setFullname(rs.getString("fullname"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setPhoneNumber(rs.getString("phone_number"));
+                    mentor.setAddress(rs.getString("address"));
+                    mentor.setDateOfBirth(rs.getDate("date_of_birth"));
+                    mentor.setGender(rs.getString("gender"));
+                     mentor.setStatus(rs.getString("status"));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return mentor;
+    }
+
 
     public boolean loginUser(String username, String password) {
         try {

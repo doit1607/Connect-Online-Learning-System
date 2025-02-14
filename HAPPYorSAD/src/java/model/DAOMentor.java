@@ -1,6 +1,8 @@
 package model;
 
 import entity.Mentor;
+import entity.Mentor1;
+import entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,98 @@ import java.util.Date;
  * @author Dell
  */
 public class DAOMentor extends DBConnection {
+     public static DAOuser userDao = new DAOuser();
+
+    public List<Mentor1> getAllMentors(String search, int pageNumber, int pageSize) {
+        List<Mentor1> list = new ArrayList<>();
+
+        if (pageSize <= 0) {
+            pageSize = 10;
+        }
+
+        int offset = (pageNumber - 1) * pageSize; // Tính toán offset
+
+        String sql = "SELECT m.id, m.name, m.email, m.rating, m.is_deleted, "
+                + "m.reviews, m.price_per_slot, m.expertise, m.bio, m.created_at, m.base_rate, m.multiplier,m.image, m.user_id "
+                + "FROM Mentor m "
+                + "JOIN Users u ON m.user_id = u.id "
+                + "WHERE (LOWER(m.name) LIKE LOWER(?) OR LOWER(m.email) LIKE LOWER(?) OR LOWER(m.expertise) LIKE LOWER(?)) "
+                + "ORDER BY m.id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchParam = "%" + search.toLowerCase() + "%";
+            stmt.setString(1, searchParam);
+            stmt.setString(2, searchParam);
+            stmt.setString(3, searchParam);
+            stmt.setInt(4, offset);
+            stmt.setInt(5, pageSize);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Mentor1 mentor = new Mentor1();
+                    mentor.setId(rs.getInt("id"));
+                    mentor.setName(rs.getString("name"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setRating(rs.getDouble("rating"));
+                    mentor.setIsDeleted(rs.getBoolean("is_deleted"));
+                    mentor.setReviews(rs.getString("reviews"));
+                    mentor.setPricePerSlot(rs.getDouble("price_per_slot"));
+                    mentor.setExpertise(rs.getString("expertise"));
+                    mentor.setBio(rs.getString("bio"));
+                    mentor.setCreatedAt(rs.getDate("created_at"));
+                    mentor.setBaseRate(rs.getDouble("base_rate"));
+                    mentor.setMultiplier(rs.getDouble("multiplier"));
+                    mentor.setImage(rs.getString("image"));
+                    
+
+                    User user = userDao.getMentorById(rs.getInt("user_id"));
+                    mentor.setUser(user);
+
+                    list.add(mentor);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+
+    public int getTotalMentors(String search) {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM Mentor WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) OR LOWER(expertise) LIKE LOWER(?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchParam = "%" + search.toLowerCase() + "%";
+            stmt.setString(1, searchParam);
+            stmt.setString(2, searchParam);
+            stmt.setString(3, searchParam);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return total;
+    }
+
+    public void toggleMentorStatus(String userName, String newStatus) {
+        String sql = "UPDATE Users SET status = ? WHERE username = ?";
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newStatus);
+            ps.setString(2, userName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public List<Mentor> getMentors() {
         List<Mentor> list = new ArrayList<>();

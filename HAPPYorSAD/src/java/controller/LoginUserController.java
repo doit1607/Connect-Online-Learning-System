@@ -55,22 +55,22 @@ public class LoginUserController extends HttpServlet {
                         c.setMaxAge(0);
                         response.addCookie(c);
                     }
-                    String role = userDAO.getRole(username);
-                    if (role.equalsIgnoreCase("Mentor")) {
-                        session.setAttribute("usernameUser", username);
-                        session.setAttribute("usernameRole", role);
-                        response.sendRedirect("Home");
-                    }
-                    if (role.equalsIgnoreCase("Mentee")) {
-                        session.setAttribute("usernameUser", username);
-                        session.setAttribute("usernameRole", role);
-                        response.sendRedirect("Home");
-                    }
-                    if(role.equalsIgnoreCase("Manager")){
-                        session.setAttribute("usernameUser", username);
-                        session.setAttribute("usernameRole", role);
-                        response.sendRedirect("Manager");
-                    }
+//                    String role = userDAO.getRole(username);
+//                    if (role.equalsIgnoreCase("Mentor")) {
+//                        session.setAttribute("usernameUser", username);
+//                        session.setAttribute("usernameRole", role);
+//                        response.sendRedirect("Home");
+//                    }
+//                    if (role.equalsIgnoreCase("Mentee")) {
+//                        session.setAttribute("usernameUser", username);
+//                        session.setAttribute("usernameRole", role);
+//                        response.sendRedirect("Home");
+//                    }
+//                    if(role.equalsIgnoreCase("Manager")){
+//                        session.setAttribute("usernameUser", username);
+//                        session.setAttribute("usernameRole", role);
+//                        response.sendRedirect("Manager");
+//                    }
                 } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
