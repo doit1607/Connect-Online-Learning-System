@@ -8,70 +8,78 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Dreams LMS</title>
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
+
+        <!-- Theme Settings Js -->
+        <script src="assets/js/theme-script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+
+        <!-- Feather CSS -->
+        <link rel="stylesheet" href="assets/css/feather.css">
+
+        <!-- Select2 CSS -->
+        <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="assets/plugins/boxicons/css/boxicons.min.css">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="assets/css/style.css">
+
         <title>Create CV - Update CV of Mentor</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            body {
-                background-color: #f4f4f9;
-            }
-            .cv-container {
-                background: #fff;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-            .cv-container h2 {
-                color: #333;
-            }
-            .input-block {
-                margin-bottom: 20px;
-            }
-            .input-block label {
-                font-weight: bold;
-            }
-            .input-block input, .input-block textarea, .input-block select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        </style>
+        <link href="css/cssCRUD/createCV.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>  
         <div class="container mt-5">
             <div class="cv-container">
                 <h2>Create CV of Mentor</h2>
                 <form action="CreateCV" method="get">
                     <!-- Personal Information -->
-                    <div class="input-block">
-                        <label>Account Name:</label>
-                        <input type="text" name="accountName" readonly value="${sessionScope.usernameUser}">
-                    </div>
-                    <div class="input-block">
-                        <label>Full Name:</label>
-                        <input type="text" name="fullname" value="${mentor.fullname}" required>
-                    </div>
-                    <div class="input-block">
-                        <label>Date of Birth:</label>
-                        <input type="date" name="dateOfBirth" value="${mentor.dateOfBirth}" required>
-                    </div>
-                    <div class="input-block">
-                        <label>Email:</label>
-                        <input type="email" name="email" value="${mentor.email}" readonly>
-                    </div>
-                    <div class="input-block">
-                        <label>Gender:</label>
-                        <select name="gender" value="${mentor.gender}">
-                            <option value="Male" ${mentor.gender == 'Male' ? 'selected' : ''}>Male</option>
-                            <option value="Female" ${mentor.gender == 'Female' ? 'selected' : ''}>Female</option>
-                            <option value="Other" ${mentor.gender == 'Other' ? 'selected' : ''}>Other</option>
-                        </select>
-                    </div>
-                    <div class="input-block">
-                        <label>Address:</label>
-                        <input type="text" name="address" value="${mentor.address}" required>
+                    <div class="contact-info">
+                        <h3>Information</h3>
+                        <hr>
+                        <ul>
+                            <li>
+                                <span class="icon">Account name 👤:</span>
+                                <span class="text">${sessionScope.usernameUser}</span>
+                            </li>
+                            <li>
+                                <span class="icon">Full name 📛:</span>
+                                <span class="text">${mentor.fullname}</span>
+                            </li>
+                            <li>
+                                <span class="icon">Date of Birth 🎂:</span>
+                                <span class="text">${mentor.dateOfBirth}</span>
+                            </li>
+                            <li>
+                                <span class="icon">Gmail 📧:</span>
+                                <span class="text">${mentor.email}</span>
+                            </li>
+                            <li>
+                                <span class="icon">Gender ⚧:</span>
+                                <span class="text">${mentor.gender}</span>
+                            </li>
+                            <li>
+                                <span class="icon">Address 📍:</span>
+                                <span class="text">${mentor.address}</span>
+                            </li>
+                        </ul>
                     </div>
                     <!-- Profession and Courses -->
                     <div class="input-block">
@@ -85,16 +93,37 @@
                     <div class="input-block">
                         <label>Courses you can teach:</label>
                         <div>
-                            <input type="checkbox" name="courses" value="Computer Science"> Computer Science
-                            <input type="checkbox" name="courses" value="Data Science"> Data Science
-                            <input type="checkbox" name="courses" value="Cybersecurity"> Cybersecurity
-                            <input type="checkbox" name="courses" value="Computer Cloud"> Computer Cloud
-                            <input type="checkbox" name="courses" value="Business Administration"> Business Administration
-                            <input type="checkbox" name="courses" value="Mechanical Engineering"> Mechanical Engineering
-                            <input type="checkbox" name="courses" value="Psychology"> Psychology
-                            <input type="checkbox" name="courses" value="Graphic Design"> Graphic Design
+                            <input type="checkbox" id="course1" name="courses" value="Computer Science">
+                            <label for="course1">Computer Science</label>
+
+                            <input type="checkbox" id="course2" name="courses" value="Data Science">
+                            <label for="course2">Data Science</label>
+
+                            <input type="checkbox" id="course3" name="courses" value="Cybersecurity">
+                            <label for="course3">Cybersecurity</label>
+
+                            <input type="checkbox" id="course4" name="courses" value="Computer Cloud">
+                            <label for="course4">Computer Cloud</label>
+
+                            <input type="checkbox" id="course5" name="courses" value="Business Administration">
+                            <label for="course5">Business Administration</label>
+
+                            <input type="checkbox" id="course6" name="courses" value="Mechanical Engineering">
+                            <label for="course6">Mechanical Engineering</label>
+
+                            <input type="checkbox" id="course7" name="courses" value="Psychology">
+                            <label for="course7">Psychology</label>
+
+                            <input type="checkbox" id="course8" name="courses" value="Graphic Design">
+                            <label for="course8">Graphic Design</label>
+
+                            <input type="checkbox" id="course9" name="courses" value="Other" onclick="toggleOtherInput()">
+                            <label for="course9">Other</label>
+                            <input type="text" id="otherCourseInput" name="otherCourse" placeholder="Please specify" style="display: none; margin-top: 5px;">
+
                         </div>
                     </div>
+
                     <div class="input-block">
                         <label>Service Description:</label>
                         <textarea name="serviceDescription" rows="3"></textarea>
@@ -107,5 +136,52 @@
                 </form>
             </div>
         </div>
-    </body>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
+        <script>
+            function toggleOtherInput() {
+                var otherCheckbox = document.getElementById("course9");
+                var otherInput = document.getElementById("otherCourseInput");
+
+                if (otherCheckbox.checked) {
+                    otherInput.style.display = "block";
+                    otherInput.required = true;
+                } else {
+                    otherInput.style.display = "none";
+                    otherInput.required = false;
+                    otherInput.value = "";
+                }
+            }
+        </script>
+
+    </footer>
+    <!-- /Footer -->
+
+</div>
+<!-- /Main Wrapper -->
+
+<!-- jQuery -->
+<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Bootstrap Core JS -->
+<script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Select2 JS -->
+<script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Ckeditor JS -->
+<script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Dropzone JS -->
+<script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Sticky Sidebar JS -->
+<script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+<script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<!-- Custom JS -->
+<script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+<script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+
+</body>
 </html>
