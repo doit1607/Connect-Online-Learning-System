@@ -4,91 +4,75 @@
  */
 package entity;
 
-import java.time.LocalDate;
+import java.util.List;
+
 
 public class CV {
-    private int id, userId;
-    private String filePath, status;
-    private LocalDate validFrom, validUntil, createdAt, updatedAt;
+    public String username;
+    public String profession;
+    public String professionIntro;
+    public String serviceDescription;
+    public String achievementDescription;
+    public List<String> courses;
 
     public CV() {
     }
 
-    public CV(int id, int userId, String filePath, String status, LocalDate validFrom, LocalDate validUntil, LocalDate createdAt, LocalDate updatedAt) {
-        this.id = id;
-        this.userId = userId;
-        this.filePath = filePath;
-        this.status = status;
-        this.validFrom = validFrom;
-        this.validUntil = validUntil;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public CV(String username, String profession, String professionIntro, String serviceDescription, String achievementDescription, List<String> courses) {
+        this.username = username;
+        this.profession = profession;
+        this.professionIntro = professionIntro;
+        this.serviceDescription = serviceDescription;
+        this.achievementDescription = achievementDescription;
+        this.courses = courses;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getProfession() {
+        return profession;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getProfessionIntro() {
+        return professionIntro;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setProfessionIntro(String professionIntro) {
+        this.professionIntro = professionIntro;
     }
 
-    public String getStatus() {
-        return status;
+    public String getServiceDescription() {
+        return serviceDescription;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 
-    public LocalDate getValidFrom() {
-        return validFrom;
+    public String getAchievementDescription() {
+        return achievementDescription;
     }
 
-    public void setValidFrom(LocalDate validFrom) {
-        this.validFrom = validFrom;
+    public void setAchievementDescription(String achievementDescription) {
+        this.achievementDescription = achievementDescription;
     }
 
-    public LocalDate getValidUntil() {
-        return validUntil;
+    public List<String> getCourses() {
+        return courses;
     }
 
-    public void setValidUntil(LocalDate validUntil) {
-        this.validUntil = validUntil;
+    public void setCourses(List<String> courses) {
+        this.courses = courses;
     }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    
     
 }

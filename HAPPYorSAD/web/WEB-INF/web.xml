@@ -64,6 +64,10 @@
         <servlet-name>CourseDetails</servlet-name>
         <servlet-class>controller.CourseDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateCV</servlet-name>
+        <servlet-class>controller.CreateCV</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -111,5 +115,9 @@
     <servlet-mapping>
         <servlet-name>CourseDetails</servlet-name>
         <url-pattern>/CourseDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCV</servlet-name>
+        <url-pattern>/CreateCV</url-pattern>
     </servlet-mapping>
 </web-app>

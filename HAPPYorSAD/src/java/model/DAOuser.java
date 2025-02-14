@@ -267,7 +267,7 @@ public class DAOuser extends DBConnection {
 
     public User getMenteeByUsername(String username) {
 
-        String sql = "Select * from Users where username = ?";
+        String sql = "Select * from Users where username = ? and role = 'mentee'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -298,7 +298,7 @@ public class DAOuser extends DBConnection {
     }
 
     public User getMentorByUsername(String username) {
-        String sql = "Select * from Users where username = ?";
+        String sql = "Select * from Users where username = ? and role = 'mentor'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);

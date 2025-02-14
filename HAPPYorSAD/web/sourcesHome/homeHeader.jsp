@@ -79,8 +79,9 @@
                                         <li class="has-submenu">
                                             <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
+                                                <li><a href="CreateCourses">Add Course</a></li>
                                                 <li><a href="course-list.html">Course List</a></li>
+                                                <li><a href="CreateCV">Create CV</a></li>
                                             </ul>
                                         </li>
 
@@ -117,7 +118,7 @@
                                             </div>
                                             <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
                                             <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-star me-1"></i> Wallet</a>
-                                            <a class="dropdown-item" href="updatementorprofile?username=${mentor.username}"><i class="feather-star me-1"></i> Edit Profile</a>
+                                            <a class="dropdown-item" href="updatementorprofile?username=${sessionScope.usernameUser}"><i class="feather-star me-1"></i> Edit Profile</a>
                                             <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
