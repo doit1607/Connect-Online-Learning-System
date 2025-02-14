@@ -79,6 +79,23 @@ public class DAOuser extends DBConnection {
         }
     }
 
+    public String getRole(String username) {
+        String sql = "Select role from Users where username = ?";
+        String role = null;
+        try {
+
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                role = rs.getString("role");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return role;
+    }
+
     public boolean checkUsernameExist(String username) {
         try {
             String sql = "Select * from Users where username = ? ";

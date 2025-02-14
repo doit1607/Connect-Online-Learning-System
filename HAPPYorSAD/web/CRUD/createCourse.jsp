@@ -44,204 +44,19 @@
 
     </head>
     <body>
-
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
         <div class="main-wrapper">
-
-            <!-- Header -->
-            <header class="header header-page">
-                <div class="header-fixed">
-                    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                        <div class="container ">
-                            <div class="navbar-header">
-                                <a id="mobile_btn" href="javascript:void(0);">
-                                    <span class="bar-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </span>
-                                </a>
-                                <a href="index-2.html" class="navbar-brand logo">
-                                    <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                            </div>
-                            <div class="main-menu-wrapper">
-                                <div class="menu-header">
-                                    <a href="index-2.html" class="menu-logo">
-                                        <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                    </a>
-                                    <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </div>
-                                <ul class="main-nav">
-                                    <li class="has-submenu">
-                                        <a href="#">Home <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="index-2.html">Home</a></li>
-                                            <li><a href="index-two.html">Home Two</a></li>
-                                            <li><a href="index-three.html">Home Three</a></li>
-                                            <li><a href="index-four.html">Home Four</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu active">
-                                        <a href="#">Instructor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li class="has-submenu">
-                                                <a href="instructor-list.html">Instructor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="instructor-list.html">List</a></li>
-                                                    <li><a href="instructor-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="active"><a href="instructor-dashboard.html">Dashboard</a></li>
-                                            <li><a href="instructor-profile.html">My Profile</a></li>
-                                            <li><a href="instructor-course.html">My Course</a></li>
-                                            <li><a href="instructor-wishlist.html">Wishlist</a></li>
-                                            <li><a href="instructor-reviews.html">Reviews</a></li>
-                                            <li><a href="instructor-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="instructor-orders.html">Orders</a></li>
-                                            <li><a href="instructor-qa.html">Question & Answer</a></li>
-                                            <li><a href="instructor-referral.html">Referrals</a></li>
-                                            <li><a href="instructor-chat.html">Messages</a></li>
-                                            <li><a href="instructor-tickets.html">Support Ticket</a></li>
-                                            <li><a href="instructor-notifications.html">Notifications</a></li>
-                                            <li><a href="instructor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu">
-                                        <a href="#">Student <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu first-submenu">
-                                            <li class="has-submenu ">
-                                                <a href="students-list.html">Student</a>
-                                                <ul class="submenu">
-                                                    <li><a href="students-list.html">List</a></li>
-                                                    <li><a href="students-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="student-dashboard.html">Student Dashboard</a></li>
-                                            <li><a href="student-profile.html">My Profile</a></li>
-                                            <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                            <li><a href="student-wishlist.html">Wishlist</a></li>
-                                            <li><a href="student-reviews.html">Reviews</a></li>
-                                            <li><a href="student-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="student-order-history.html">Orders</a></li>
-                                            <li><a href="student-qa.html">Question & Answer</a></li>
-                                            <li><a href="student-referral.html">Referrals</a></li>
-                                            <li><a href="student-messages.html">Messages</a></li>
-                                            <li><a href="student-tickets.html">Support Ticket</a></li>
-                                            <li><a href="student-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu">
-                                        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="notifications.html">Notification</a></li>
-                                            <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li class="has-submenu">
-                                                <a href="course-list.html">Course</a>
-                                                <ul class="submenu">
-                                                    <li><a href="add-course.html">Add Course</a></li>
-                                                    <li><a href="course-list.html">Course List</a></li>
-                                                    <li><a href="course-grid.html">Course Grid</a></li>
-                                                    <li><a href="course-details.html">Course Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="has-submenu">
-                                                <a href="come-soon.html">Error</a>
-                                                <ul class="submenu">
-                                                    <li><a href="come-soon.html">Coming Soon</a></li>
-                                                    <li><a href="error-404.html">404</a></li>
-                                                    <li><a href="error-500.html">500</a></li>
-                                                    <li><a href="under-construction.html">Under Construction</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                            <li><a href="support.html">Support</a></li>
-                                            <li><a href="job-category.html">Category</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="login.html">Login</a></li>
-                                            <li><a href="register.html">Register</a></li>
-                                            <li><a href="forgot-password.html">Forgot Password</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="blog-list.html">Blog List</a></li>
-                                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                                            <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                            <li><a href="blog-modern.html">Blog Modern</a></li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="login-link">
-                                        <a href="login.html">Login / Signup</a>
-                                    </li>
-                                </ul>		 
-                            </div>	 
-                            <ul class="nav header-navbar-rht">			
-                                <li class="nav-item">
-                                    <div>
-                                        <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                            <i class="fa-solid fa-moon"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                            <i class="fa-solid fa-sun"></i>
-                                        </a>
-                                    </div>
-                                </li>					
-                                <li class="nav-item user-nav">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <span class="user-img">
-                                            <img src="/HAPPYorSAD/assets/img/user/user-17.jpg" alt="Img">
-                                            <span class="status online"></span>
-                                        </span>
-                                    </a>
-                                    <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end" >
-                                        <div class="user-header">
-                                            <div class="avatar avatar-sm">
-                                                <img src="/HAPPYorSAD/assets/img/user/user-17.jpg" alt="User Image" class="avatar-img rounded-circle">
-                                            </div>
-                                            <div class="user-text">
-                                                <h6>Eugene Andre</h6>
-                                                <p class="text-muted mb-0">Instructor</p>
-                                            </div>
-                                        </div>
-                                        <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
-                                        <a class="dropdown-item" href="instructor-settings.html"><i class="feather-star me-1"></i> Edit Profile</a>
-
-                                        <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-            <!-- /Header -->	
-
             <!-- New Course -->
             <% ResultSet rsMajor = (ResultSet) request.getAttribute("rsMajor");%>
 
             <section class="page-content course-sec">
+
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="add-course-header">
-                                <h2>Add New Course</h2>
-                                <div class="add-course-btns">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="instructor-dashboard.html" class="btn btn-black">Back to Course</a>
-                                        </li>
-                                        <li>
-                                            <button type="submit" form="createCourseForm" class="btn btn-success-dark">Save</button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <h1>Add New Course</h1>
                             </div>
                         </div>
                     </div>
@@ -296,6 +111,16 @@
                                                             <label class="add-course-label">Course Description</label>
                                                             <textarea name="description" id="description" class="form-control" placeholder="Course Description" required></textarea>
                                                         </div>
+                                                        <div class="add-course-btns">
+                                                            <ul class="nav">
+                                                                <li>
+                                                                    <a href="instructor-dashboard.html" class="btn btn-black">Back to Course</a>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="submit" form="createCourseForm" class="btn btn-success-dark">Save</button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
@@ -331,124 +156,7 @@
             </script>
 
             <footer class="footer">
-
-                <!-- Footer Top -->
-                <div class="footer-top aos" data-aos="fade-up">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-about">
-                                    <div class="footer-logo">
-                                        <img src="/HAPPYorSAD/assets/img/logo.svg" alt="logo">
-                                    </div>
-                                    <div class="footer-about-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Instructor</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="ViewMentor_Mentee">Mentor</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Student</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="#">Mentee</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-contact">
-                                    <h2 class="footer-title">News letter</h2>
-                                    <div class="news-letter">
-                                        <form>
-                                            <input type="text" class="form-control" placeholder="Enter your email address"
-                                                   name="email">
-                                        </form>
-                                    </div>
-                                    <div class="footer-contact-info">
-                                        <div class="footer-address">
-                                            <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                            <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                        </div>
-                                        <p>
-                                            <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                            <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="41253324202c322d2c32012439202c312d246f222e2c">[email&#160;protected]</a>
-                                        </p>
-                                        <p class="mb-0">
-                                            <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                            +19 123-456-7890
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /Footer Top -->
-
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
-                    <div class="container">
-
-                        <!-- Copyright -->
-                        <div class="copyright">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="privacy-policy">
-                                        <ul>
-                                            <li><a href="term-condition.html">Terms</a></li>
-                                            <li><a href="privacy-policy.html">Privacy</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="copyright-text">
-                                        <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Copyright -->
-
-                    </div>
-                </div>
-                <!-- /Footer Bottom -->
-
+                <%@include file="../sourcesHome/homeFooter.jsp" %>
             </footer>
             <!-- /Footer -->
         </div>

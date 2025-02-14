@@ -9,1178 +9,672 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">         
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">         
-        <title>Dreams LMS</title>          
+        <head>
+            <meta charset="utf-8">         
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">         
+            <title>Dreams LMS</title>          
 
-        <!-- Favicon -->         
-        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">          
+            <!-- Favicon -->         
+            <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">          
 
-        <!-- Theme Settings Js -->         
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>          
+            <!-- Theme Settings Js -->         
+            <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>          
 
-        <!-- Bootstrap CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">          
+            <!-- Bootstrap CSS -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">          
 
-        <!-- Fontawesome CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">          
+            <!-- Fontawesome CSS -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">          
 
-        <!-- Owl Carousel CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">          
+            <!-- Owl Carousel CSS -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">          
 
-        <!-- Feathericon CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/feather/feather.css">          
+            <!-- Feathericon CSS -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/feather/feather.css">          
 
-        <!-- Main CSS  -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css"> 
-    </head>
-    <body>
-        <div class="main-wrapper">
-            <header class="header">
-                <div class="header-fixed">
-                    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <a id="mobile_btn" href="javascript:void(0);">
-                                    <span class="bar-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </span>
-                                </a>
-                                <a href="Home" class="navbar-brand logo">
-                                    <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                            </div>
-                            <div class="main-menu-wrapper">
-                                <div class="menu-header">
-                                    <a href="index-2.html" class="menu-logo">
-                                        <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                    </a>
-                                    <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </div>
-                                <ul class="main-nav">
-                                    <li class="has-submenu ">
-                                        <a class="" href="Home">Home <i class="fas fa-chevron-down"></i></a>
-
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="ViewMentor_Mentee">Instructor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li class="has-submenu">
-                                                <a href="ViewMentor_Mentee">Instructor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="ViewMentor_Mentee">List</a></li>
-                                                    <li><a href="ViewMentor_Mentee">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="instructor-dashboard.html">Dashboard</a></li>
-                                            <li><a href="instructor-profile.html">My Profile</a></li>
-                                            <li><a href="instructor-course.html">My Course</a></li>
-                                            <li><a href="instructor-reviews.html">Reviews</a></li>
-                                            <li><a href="instructor-referral.html">Wallet</a></li>
-                                            <li><a href="instructor-notifications.html">Notifications</a></li>
-                                            <li><a href="instructor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Student <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu first-submenu">
-                                            <li class="has-submenu">
-                                                <a href="students-list.html">Mentees</a>
-                                                <ul class="submenu">
-                                                    <li><a href="students-list.html">List</a></li>
-                                                    <li><a href="students-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="student-dashboard.html">Dashboard</a></li>
-                                            <li><a href="student-profile.html">My Profile</a></li>
-                                            <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                            <li><a href="student-reviews.html">Reviews</a></li>
-                                            <li><a href="student-order-history.html">Orders</a></li>
-                                            <li><a href="student-referral.html">Wallet</a></li>
-                                            <li><a href="student-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="notifications.html">Notification</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li class="has-submenu">
-                                                <a href="course-list.html">Course</a>
-                                                <ul class="submenu">
-                                                    <li><a href="CreateCourses">Add Course</a></li>
-                                                    <li><a href="ShowAllCourse">Course List</a></li>
-                                                    <li><a href="ShowAllCourse">Course Grid</a></li>
-                                                    <!--                                                    <li><a href="course-details.html">Course Details</a></li>-->
-                                                </ul>
-                                            </li>
-                                            <li class="has-submenu">
-                                                <a href="come-soon.html">Error</a>
-                                                <ul class="submenu">
-                                                    <li><a href="come-soon.html">Coming Soon</a></li>
-                                                    <li><a href="error-404.html">404</a></li>
-                                                    <li><a href="error-500.html">500</a></li>
-                                                    <li><a href="under-construction.html">Under Construction</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                            <li><a href="support.html">Support</a></li>
-                                            <li><a href="job-category.html">Major</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                            <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                            <li><a href="#">Forgot Password</a></li>
-                                        </ul>
-                                    </li>
-                                    <!--                                    <li class="has-submenu">
-                                                                            <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                                                            <ul class="submenu">
-                                                                                <li><a href="blog-list.html">Blog List</a></li>
-                                                                                <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                                                <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                                                                <li><a href="blog-modern.html">Blog Modern</a></li>
-                                                                                <li><a href="blog-details.html">Blog Details</a></li>
-                                                                            </ul>
-                                                                        </li>-->
-                                    <li class="login-link">
-                                        <a href="/HAPPYorSAD/view/LoginUser.jsp">Login / Signup</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <ul class="nav header-navbar-rht">
-                                <li class="nav-item">
-                                    <div>
-                                        <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                            <i class="fa-solid fa-moon"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                            <i class="fa-solid fa-sun"></i>
-                                        </a>
+            <!-- Main CSS  -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css"> 
+        </head>
+        <body>
+                <section class="home-slide d-flex align-items-center">
+                    <div class="container">
+                        <div class="row ">
+                            <div class="col-md-7">
+                                <div class="home-slide-face aos" data-aos="fade-up">
+                                    <div class="home-slide-text ">
+                                        <h5>The Leader in Online Learning</h5>
+                                        <h1>Engaging & Accessible Online Courses For All</h1>
+                                        <p>Own your future learning new skills online</p>
                                     </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link header-sign" href="/HAPPYorSAD/view/LoginUser.jsp">Signin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link header-login" href="/HAPPYorSAD/view/RegisterUser.jsp">Signup</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-            <!-- /Header -->
-
-            <section class="home-slide d-flex align-items-center">
-                <div class="container">
-                    <div class="row ">
-                        <div class="col-md-7">
-                            <div class="home-slide-face aos" data-aos="fade-up">
-                                <div class="home-slide-text ">
-                                    <h5>The Leader in Online Learning</h5>
-                                    <h1>Engaging & Accessible Online Courses For All</h1>
-                                    <p>Own your future learning new skills online</p>
-                                </div>
-                                <div class="banner-content">
-                                    <form class="form" action="https://dreamslms.dreamstechnologies.com/html/course-list.html">
-                                        <div class="form-inner">
-                                            <div class="input-group">
-                                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                                <input type="email" class="form-control"
-                                                       placeholder="Search School, Online eductional centers, etc">
-                                                <span class="drop-detail"> 
-                                                    <select class="form-select select">
-                                                        <option>Category</option>
-                                                        <c:forEach var="category" items="${sessionScope.listMajor}">
-                                                            <option value="${category.id}">${category.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </span>
-                                                <button class="btn btn-primary sub-btn" type="submit"><i
-                                                        class="fas fa-arrow-right"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="trust-user">
-                                    <p>Trusted by over 15K Users <br>worldwide since 2024</p>
-                                    <div class="trust-rating d-flex align-items-center">
-                                        <div class="rate-head">
-                                            <h2><span>1000</span>+</h2>
-                                        </div>
-                                        <div class="rating d-flex align-items-center">
-                                            <h2 class="d-inline-block average-rating">4.4</h2>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5 d-flex align-items-center">
-                            <div class="girl-slide-img aos" data-aos="fade-up">
-                                <img src="assets/img/object.png" alt="Img">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="section student-course">
-                <div class="container">
-                    <div class="course-widget">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6">
-                                <div class="course-full-width">
-                                    <div class="blur-border course-radius align-items-center aos" data-aos="fade-up">
-                                        <div class="online-course d-flex align-items-center">
-                                            <div class="course-img">
-                                                <img src="assets/img/pencil-icon.svg" alt="Img">
-                                            </div>
-                                            <div class="course-inner-content">
-                                                <c:forEach var="count" items="${sessionScope.listCountC}">
-                                                    <h4>${count.total_Courses}</h4>
-                                                </c:forEach>
-
-                                                <p>Online Courses</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 d-flex">
-                                <div class="course-full-width">
-                                    <div class="blur-border course-radius aos" data-aos="fade-up">
-                                        <div class="online-course d-flex align-items-center">
-                                            <div class="course-img">
-                                                <img src="assets/img/cources-icon.svg" alt="Img">
-                                            </div>
-                                            <div class="course-inner-content">
-                                                <c:forEach var="count" items="${sessionScope.listCountMentor}">
-                                                    <h4>${count.total_Mentor}</h4>
-                                                </c:forEach>
-                                                <p>Expert Tutors</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 d-flex">
-                                <div class="course-full-width">
-                                    <div class="blur-border course-radius aos" data-aos="fade-up">
-                                        <div class="online-course d-flex align-items-center">
-                                            <div class="course-img">
-                                                <img src="assets/img/certificate-icon.svg" alt="Img">
-                                            </div>
-                                            <div class="course-inner-content">
-                                                <h4><span>6</span>K+</h4>
-                                                <p>Ceritified Courses</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 d-flex">
-                                <div class="course-full-width">
-                                    <div class="blur-border course-radius aos" data-aos="fade-up">
-                                        <div class="online-course d-flex align-items-center">
-                                            <div class="course-img">
-                                                <img src="assets/img/gratuate-icon.svg" alt="Img">
-                                            </div>
-                                            <div class="course-inner-content">
-                                                <c:forEach var="count" items="${sessionScope.listCountMentee}">
-                                                    <h4>${count.total_Mentee}</h4>
-                                                </c:forEach>
-                                                <p>Online Mentees</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-
-            <!-- Danh mục khóa học -->
-            <!-- Top Categories -->
-            <section class="section how-it-works">
-                <div class="container">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head">
-                            <span>Favourite Course</span>
-                            <h2>Top Category</h2>
-                        </div>
-                        <div class="all-btn all-category d-flex align-items-center">
-                            <a href="job-category.html" class="btn btn-primary">All Categories</a>
-                        </div>
-                    </div>
-                    <div class="section-text aos" data-aos="fade-up">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida
-                            maecenas augue elementum et neque. Suspendisse imperdiet.</p>
-                    </div>
-                    <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
-                        <c:forEach var="category" items="${sessionScope.listMajor}" >
-                            <div class="feature-box text-center ">
-                                <div class="feature-bg">
-                                    <div class="feature-header">
-                                        <div class="feature-icon">
-                                            <img src="${category.image}" alt="${category.name}">
-                                        </div>
-                                        <div class="feature-cont">
-                                            <div class="feature-text">${category.name}</div>
-                                        </div>
-                                    </div>
-                                    <p>${category.total_courses} Courses</p>
-                                </div>
-                            </div>                     
-                        </c:forEach>
-
-
-                    </div>
-                </div>
-            </section>
-            <!-- /Top Categories -->
-
-
-            <!-- Các khóa học -->
-
-
-            <!-- Feature Course -->
-            <section class="section new-course">
-                <div class="container">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head">
-                            <span>What’s New</span>
-                            <h2>Featured Courses</h2>
-                        </div>
-                        <div class="all-btn all-category d-flex align-items-center">
-                            <a href="course-list.html" class="btn btn-primary">All Courses</a>
-                        </div>
-                    </div>
-                    <div class="section-text aos" data-aos="fade-up">
-                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
-                            bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
-                    </div>
-                    <div class="course-feature">
-                        <div class="row">
-                            <c:forEach var="course" items="${sessionScope.listFCourse}" varStatus="loop">
-                                <c:if test="${loop.index < 6}">
-                                    <div class="col-lg-4 col-md-6 d-flex">
-                                        <div class="course-box d-flex aos" data-aos="fade-up">
-                                            <div class="product">
-                                                <div class="product-img">
-                                                    <a href="course-details.html">
-                                                        <img class="img-fluid" src="${course.image}" alt="${course.title}">
-                                                    </a>
-                                                    <!--                                                <div class="price">
-                                                                                                        <h3>$300 <span>$99.00</span></h3>
-                                                                                                    </div>-->
+                                    <div class="banner-content">
+                                        <form class="form" action="https://dreamslms.dreamstechnologies.com/html/course-list.html">
+                                            <div class="form-inner">
+                                                <div class="input-group">
+                                                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                                    <input type="email" class="form-control"
+                                                           placeholder="Search School, Online eductional centers, etc">
+                                                    <span class="drop-detail"> 
+                                                        <select class="form-select select">
+                                                            <option>Category</option>
+                                                            <c:forEach var="category" items="${sessionScope.listMajor}">
+                                                                <option value="${category.id}">${category.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </span>
+                                                    <button class="btn btn-primary sub-btn" type="submit"><i
+                                                            class="fas fa-arrow-right"></i></button>
                                                 </div>
-                                                <div class="product-content">
-                                                    <div class="course-group d-flex">
-                                                        <!--                                                    <div class="course-group-img d-flex">
-                                                                                                                <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg"
-                                                                                                                                                       alt="Img" class="img-fluid"></a>
-                                                                                                                <div class="course-name">
-                                                                                                                    <h4><a href="instructor-profile.html">Nicole Brown</a></h4>
-                                                                                                                    <p>Instructor</p>
-                                                                                                                </div>
-                                                                                                            </div>-->
-                                                        <div class="course-share d-flex align-items-center justify-content-center">
-                                                            <a href="#"><i class="fa-regular fa-heart"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <h3 class="title instructor-text"><a href="course-details.html">${course.title}</a></h3>
-                                                    <div class="course-info d-flex align-items-center">
-                                                        <div class="rating-img d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                                            <p>12+ Lesson</p>
-                                                        </div>
-                                                        <div class="course-view d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-02.svg" alt="Img">
-                                                            <p>9hr 30min</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="trust-user">
+                                        <p>Trusted by over 15K Users <br>worldwide since 2024</p>
+                                        <div class="trust-rating d-flex align-items-center">
+                                            <div class="rate-head">
+                                                <h2><span>1000</span>+</h2>
+                                            </div>
+                                            <div class="rating d-flex align-items-center">
+                                                <h2 class="d-inline-block average-rating">4.4</h2>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 d-flex align-items-center">
+                                <div class="girl-slide-img aos" data-aos="fade-up">
+                                    <img src="/HAPPYorSAD/assets/img/object.png" alt="Img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section student-course">
+                    <div class="container">
+                        <div class="course-widget">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="course-full-width">
+                                        <div class="blur-border course-radius align-items-center aos" data-aos="fade-up">
+                                            <div class="online-course d-flex align-items-center">
+                                                <div class="course-img">
+                                                    <img src="/HAPPYorSAD/assets/img/pencil-icon.svg" alt="Img">
+                                                </div>
+                                                <div class="course-inner-content">
+                                                    <c:forEach var="count" items="${sessionScope.listCountC}">
+                                                        <h4>${count.total_Courses}</h4>
+                                                    </c:forEach>
 
-                                                        <div class="all-btn all-category d-flex align-items-center">
-                                                            <a href="checkout.html" class="btn btn-primary">Request</a>
-                                                        </div>
-                                                    </div>
+                                                    <p>Online Courses</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Feature Course -->
-
-
-            <!-- Master Skill -->
-            <section class="section master-skill">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-7 col-md-12">
-                            <div class="section-header aos" data-aos="fade-up">
-                                <div class="section-sub-head">
-                                    <span>What’s New</span>
-                                    <h2>Master the skills to drive your career</h2>
                                 </div>
-                            </div>
-                            <div class="section-text aos" data-aos="fade-up">
-                                <p>Get certified, master modern tech skills, and level up your career — whether you’re
-                                    starting out or a seasoned pro. 95% of eLearning learners report our hands-on content
-                                    directly helped their careers.</p>
-                            </div>
-                            <div class="career-group aos" data-aos="fade-up">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 d-flex">
-                                        <div class="certified-group blur-border d-flex">
-                                            <div class="get-certified d-flex align-items-center">
-                                                <div class="blur-box">
-                                                    <div class="certified-img ">
-                                                        <img src="assets/img/icon/icon-1.svg" alt="Img" class="img-fluid">
-                                                    </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="course-full-width">
+                                        <div class="blur-border course-radius aos" data-aos="fade-up">
+                                            <div class="online-course d-flex align-items-center">
+                                                <div class="course-img">
+                                                    <img src="/HAPPYorSAD/assets/img/cources-icon.svg" alt="Img">
                                                 </div>
-                                                <p>Stay motivated with engaging instructors</p>
+                                                <div class="course-inner-content">
+                                                    <c:forEach var="count" items="${sessionScope.listCountMentor}">
+                                                        <h4>${count.total_Mentor}</h4>
+                                                    </c:forEach>
+                                                    <p>Expert Tutors</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 d-flex">
-                                        <div class="certified-group blur-border d-flex">
-                                            <div class="get-certified d-flex align-items-center">
-                                                <div class="blur-box">
-                                                    <div class="certified-img ">
-                                                        <img src="assets/img/icon/icon-2.svg" alt="Img" class="img-fluid">
-                                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="course-full-width">
+                                        <div class="blur-border course-radius aos" data-aos="fade-up">
+                                            <div class="online-course d-flex align-items-center">
+                                                <div class="course-img">
+                                                    <img src="/HAPPYorSAD/assets/img/certificate-icon.svg" alt="Img">
                                                 </div>
-                                                <p>Keep up with in the latest in cloud</p>
+                                                <div class="course-inner-content">
+                                                    <h4><span>6</span>K+</h4>
+                                                    <p>Ceritified Courses</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 d-flex">
-                                        <div class="certified-group blur-border d-flex">
-                                            <div class="get-certified d-flex align-items-center">
-                                                <div class="blur-box">
-                                                    <div class="certified-img ">
-                                                        <img src="assets/img/icon/icon-3.svg" alt="Img" class="img-fluid">
-                                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex">
+                                    <div class="course-full-width">
+                                        <div class="blur-border course-radius aos" data-aos="fade-up">
+                                            <div class="online-course d-flex align-items-center">
+                                                <div class="course-img">
+                                                    <img src="/HAPPYorSAD/assets/img/gratuate-icon.svg" alt="Img">
                                                 </div>
-                                                <p>Get certified with 100+ certification courses</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 d-flex">
-                                        <div class="certified-group blur-border d-flex">
-                                            <div class="get-certified d-flex align-items-center">
-                                                <div class="blur-box">
-                                                    <div class="certified-img ">
-                                                        <img src="assets/img/icon/icon-4.svg" alt="Img" class="img-fluid">
-                                                    </div>
+                                                <div class="course-inner-content">
+                                                    <c:forEach var="count" items="${sessionScope.listCountMentee}">
+                                                        <h4>${count.total_Mentee}</h4>
+                                                    </c:forEach>
+                                                    <p>Online Mentees</p>
                                                 </div>
-                                                <p>Build skills your way, from labs to courses</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-12 d-flex align-items-end">
-                            <div class="career-img aos" data-aos="fade-up">
-                                <img src="assets/img/join.png" alt="Img" class="img-fluid">
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </section>
-            <!-- /Master Skill -->
+                </section>
 
-            <!-- Trending Course -->
-            <section class="section trend-course">
-                <div class="container">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head">
-                            <span>What’s New</span>
-                            <h2>TRENDING COURSES</h2>
-                        </div>
-                        <div class="all-btn all-category d-flex align-items-center">
-                            <a href="course-list.html" class="btn btn-primary">All Courses</a>
-                        </div>
-                    </div>
-                    <div class="section-text aos" data-aos="fade-up">
-                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
-                            bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
-                    </div>
-                    <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
 
-                        <c:forEach var="course" items="${sessionScope.listTCourse}">
-                            <div class="course-box trend-box">
-                                <div class="product trend-product">
-                                    <div class="product-img">
-                                        <a href="course-details.html">
-                                            <img class="img-fluid" alt="Img" src="${course.image}">
-                                        </a>
-                                        <!--                                        <div class="price">
-                                                                                    <h3>$300 <span>$99.00</span></h3>
-                                                                                </div>-->
-                                    </div>
-                                    <div class="product-content">
 
-                                        <h3 class="title"><a href="course-details.html">${course.title}</a></h3>
-                                        <div class="course-info d-flex align-items-center">
-                                            <div class="rating-img d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-01.svg" alt="Img" class="img-fluid">
-                                                <p>10+ Lesson</p>
-                                            </div>
-                                            <div class="course-view d-flex align-items-center">
-                                                <img src="assets/img/icon/icon-02.svg" alt="Img" class="img-fluid">
-                                                <p>11hr 30min</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <!--                                            <div class="rating m-0">
-                                                                                            <i class="fas fa-star filled"></i>
-                                                                                            <i class="fas fa-star filled"></i>
-                                                                                            <i class="fas fa-star filled"></i>
-                                                                                            <i class="fas fa-star filled"></i>
-                                                                                            <i class="fas fa-star"></i>
-                                                                                            <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                                                                        </div>-->
-                                            <div class="all-btn all-category d-flex align-items-center">
-                                                <a href="checkout.html" class="btn btn-primary">Request</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="feature-instructors">
+                <!-- Danh mục khóa học -->
+                <!-- Top Categories -->
+                <section class="section how-it-works">
+                    <div class="container">
                         <div class="section-header aos" data-aos="fade-up">
-                            <div class="section-sub-head feature-head text-center">
-                                <h2>Featured Instructor</h2>
+                            <div class="section-sub-head">
+                                <span>Favourite Course</span>
+                                <h2>Top Category</h2>
+                            </div>
+                            <div class="all-btn all-category d-flex align-items-center">
+                                <a href="job-category.html" class="btn btn-primary">All Categories</a>
+                            </div>
+                        </div>
+                        <div class="section-text aos" data-aos="fade-up">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida
+                                maecenas augue elementum et neque. Suspendisse imperdiet.</p>
+                        </div>
+                        <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
+                            <c:forEach var="category" items="${sessionScope.listMajor}" >
+                                <div class="feature-box text-center ">
+                                    <div class="feature-bg">
+                                        <div class="feature-header">
+                                            <div class="feature-icon">
+                                                <img src="${category.image}" alt="${category.name}">
+                                            </div>
+                                            <div class="feature-cont">
+                                                <div class="feature-text">${category.name}</div>
+                                            </div>
+                                        </div>
+                                        <p>${category.total_courses} Courses</p>
+                                    </div>
+                                </div>                     
+                            </c:forEach>
+
+
+                        </div>
+                    </div>
+                </section>
+                <!-- /Top Categories -->
+
+
+                <!-- Các khóa học -->
+
+
+                <!-- Feature Course -->
+                <section class="section new-course">
+                    <div class="container">
+                        <div class="section-header aos" data-aos="fade-up">
+                            <div class="section-sub-head">
+                                <span>What’s New</span>
+                                <h2>Featured Courses</h2>
+                            </div>
+                            <div class="all-btn all-category d-flex align-items-center">
+                                <a href="course-list.html" class="btn btn-primary">All Courses</a>
+                            </div>
+                        </div>
+                        <div class="section-text aos" data-aos="fade-up">
+                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
+                                bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
+                        </div>
+                        <div class="course-feature">
+                            <div class="row">
+                                <c:forEach var="course" items="${sessionScope.listFCourse}" varStatus="loop">
+                                    <c:if test="${loop.index < 6}">
+                                        <div class="col-lg-4 col-md-6 d-flex">
+                                            <div class="course-box d-flex aos" data-aos="fade-up">
+                                                <div class="product">
+                                                    <div class="product-img">
+                                                        <a href="course-details.html">
+                                                            <img class="img-fluid" src="${course.image}" alt="${course.title}">
+                                                        </a>
+                                                        <!--                                                <div class="price">
+                                                                                                            <h3>$300 <span>$99.00</span></h3>
+                                                                                                        </div>-->
+                                                    </div>
+                                                    <div class="product-content">
+                                                        <div class="course-group d-flex">
+                                                            <!--                                                    <div class="course-group-img d-flex">
+                                                                                                                    <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user1.jpg"
+                                                                                                                                                           alt="Img" class="img-fluid"></a>
+                                                                                                                    <div class="course-name">
+                                                                                                                        <h4><a href="instructor-profile.html">Nicole Brown</a></h4>
+                                                                                                                        <p>Instructor</p>
+                                                                                                                    </div>
+                                                                                                                </div>-->
+                                                            <div class="course-share d-flex align-items-center justify-content-center">
+                                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <h3 class="title instructor-text"><a href="course-details.html">${course.title}</a></h3>
+                                                        <div class="course-info d-flex align-items-center">
+                                                            <div class="rating-img d-flex align-items-center">
+                                                                <img src="/HAPPYorSAD/assets/img/icon/icon-01.svg" alt="Img">
+                                                                <p>12+ Lesson</p>
+                                                            </div>
+                                                            <div class="course-view d-flex align-items-center">
+                                                                <img src="/HAPPYorSAD/assets/img/icon/icon-02.svg" alt="Img">
+                                                                <p>9hr 30min</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between">
+
+                                                            <div class="all-btn all-category d-flex align-items-center">
+                                                                <a href="checkout.html" class="btn btn-primary">Request</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /Feature Course -->
+
+
+                <!-- Master Skill -->
+                <section class="section master-skill">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-7 col-md-12">
+                                <div class="section-header aos" data-aos="fade-up">
+                                    <div class="section-sub-head">
+                                        <span>What’s New</span>
+                                        <h2>Master the skills to drive your career</h2>
+                                    </div>
+                                </div>
                                 <div class="section-text aos" data-aos="fade-up">
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
-                                        accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.
-                                    </p>
+                                    <p>Get certified, master modern tech skills, and level up your career — whether you’re
+                                        starting out or a seasoned pro. 95% of eLearning learners report our hands-on content
+                                        directly helped their careers.</p>
+                                </div>
+                                <div class="career-group aos" data-aos="fade-up">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 d-flex">
+                                            <div class="certified-group blur-border d-flex">
+                                                <div class="get-certified d-flex align-items-center">
+                                                    <div class="blur-box">
+                                                        <div class="certified-img ">
+                                                            <img src="/HAPPYorSAD/assets/img/icon/icon-1.svg" alt="Img" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <p>Stay motivated with engaging instructors</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 d-flex">
+                                            <div class="certified-group blur-border d-flex">
+                                                <div class="get-certified d-flex align-items-center">
+                                                    <div class="blur-box">
+                                                        <div class="certified-img ">
+                                                            <img src="/HAPPYorSAD/assets/img/icon/icon-2.svg" alt="Img" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <p>Keep up with in the latest in cloud</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 d-flex">
+                                            <div class="certified-group blur-border d-flex">
+                                                <div class="get-certified d-flex align-items-center">
+                                                    <div class="blur-box">
+                                                        <div class="certified-img ">
+                                                            <img src="/HAPPYorSAD/assets/img/icon/icon-3.svg" alt="Img" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <p>Get certified with 100+ certification courses</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 d-flex">
+                                            <div class="certified-group blur-border d-flex">
+                                                <div class="get-certified d-flex align-items-center">
+                                                    <div class="blur-box">
+                                                        <div class="certified-img ">
+                                                            <img src="/HAPPYorSAD/assets/img/icon/icon-4.svg" alt="Img" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <p>Build skills your way, from labs to courses</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-12 d-flex align-items-end">
+                                <div class="career-img aos" data-aos="fade-up">
+                                    <img src="/HAPPYorSAD/assets/img/join.png" alt="Img" class="img-fluid">
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
+                    </div>
+                </section>
+                <!-- /Master Skill -->
 
-                            <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
-                                <c:if test="${loop.index > 1}">
-                                    <div class="instructors-widget">
-                                        <div class="instructors-img ">
-                                            <a href="instructor-list.html">
-                                                <img class="img-fluid" alt="Img" src="${mentor.image}">
+                <!-- Trending Course -->
+                <section class="section trend-course">
+                    <div class="container">
+                        <div class="section-header aos" data-aos="fade-up">
+                            <div class="section-sub-head">
+                                <span>What’s New</span>
+                                <h2>TRENDING COURSES</h2>
+                            </div>
+                            <div class="all-btn all-category d-flex align-items-center">
+                                <a href="course-list.html" class="btn btn-primary">All Courses</a>
+                            </div>
+                        </div>
+                        <div class="section-text aos" data-aos="fade-up">
+                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
+                                bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
+                        </div>
+                        <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
+
+                            <c:forEach var="course" items="${sessionScope.listTCourse}">
+                                <div class="course-box trend-box">
+                                    <div class="product trend-product">
+                                        <div class="product-img">
+                                            <a href="course-details.html">
+                                                <img class="img-fluid" alt="Img" src="${course.image}">
                                             </a>
+                                            <!--                                        <div class="price">
+                                                                                        <h3>$300 <span>$99.00</span></h3>
+                                                                                    </div>-->
                                         </div>
-                                        <div class="instructors-content text-center">
-                                            <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
-                                            <p>${mentor.expertise}</p>
-                                            <div class="student-count d-flex justify-content-center">
-                                                <i class="fa-solid fa-user-group"></i>
-                                                <span>${mentor.total_mentees} Mentees</span>
+                                        <div class="product-content">
+
+                                            <h3 class="title"><a href="course-details.html">${course.title}</a></h3>
+                                            <div class="course-info d-flex align-items-center">
+                                                <div class="rating-img d-flex align-items-center">
+                                                    <img src="/HAPPYorSAD/assets/img/icon/icon-01.svg" alt="Img" class="img-fluid">
+                                                    <p>10+ Lesson</p>
+                                                </div>
+                                                <div class="course-view d-flex align-items-center">
+                                                    <img src="/HAPPYorSAD/assets/img/icon/icon-02.svg" alt="Img" class="img-fluid">
+                                                    <p>11hr 30min</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <!--                                            <div class="rating m-0">
+                                                                                                <i class="fas fa-star filled"></i>
+                                                                                                <i class="fas fa-star filled"></i>
+                                                                                                <i class="fas fa-star filled"></i>
+                                                                                                <i class="fas fa-star filled"></i>
+                                                                                                <i class="fas fa-star"></i>
+                                                                                                <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                                                                                            </div>-->
+                                                <div class="all-btn all-category d-flex align-items-center">
+                                                    <a href="checkout.html" class="btn btn-primary">Request</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div></c:if>
+                                    </div>
+                                </div>
                             </c:forEach>
+                        </div>
 
-                            <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
-                                <c:if test="${loop.index %2==0}">
-                                    <div class="instructors-widget">
-                                        <div class="instructors-img">
-                                            <a href="instructor-list.html">
-                                                <img class="img-fluid" alt="Img" src="${mentor.image}">
-                                            </a>
-                                        </div>
-                                        <div class="instructors-content text-center">
-                                            <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
-                                            <p>${mentor.expertise}</p>
-                                            <div class="student-count d-flex justify-content-center">
-                                                <i class="fa-solid fa-user-group yellow"></i>
-                                                <span>${mentor.total_mentees} Mentees</span>
-                                            </div>
-                                        </div>
-                                    </div></c:if>
-                            </c:forEach>
+                        <div class="feature-instructors">
+                            <div class="section-header aos" data-aos="fade-up">
+                                <div class="section-sub-head feature-head text-center">
+                                    <h2>Featured Instructor</h2>
+                                    <div class="section-text aos" data-aos="fade-up">
+                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
+                                            accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
 
-                            <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
-                                <c:if test="${loop.index % 3 ==0}">
-                                    <div class="instructors-widget">
-                                        <div class="instructors-img">
-                                            <a href="instructor-list.html">
-                                                <img class="img-fluid" alt="Img" src="${mentor.image}">
-                                            </a>
-                                        </div>
-                                        <div class="instructors-content text-center">
-                                            <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
-                                            <p>${mentor.expertise}</p>
-                                            <div class="student-count d-flex justify-content-center">
-                                                <i class="fa-solid fa-user-group violet"></i>
-                                                <span>${mentor.total_mentees} Mentees</span>
-                                            </div>
-                                        </div>
-                                    </div></c:if>
-                            </c:forEach>
-
-
-                            <div class="instructors-widget">
                                 <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
-                                    <c:if test="${loop.index % 5 ==0}">
-                                        <div class="instructors-img">
-                                            <a href="instructor-list.html">
-                                                <img class="img-fluid" alt="Img" src="${mentor.image}">
-                                            </a>
-                                        </div>
-                                        <div class="instructors-content text-center">
-                                            <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
-                                            <p>${mentor.expertise}</p>
-                                            <div class="student-count d-flex justify-content-center">
-                                                <i class="fa-solid fa-user-group orange"></i>
-                                                <span>${mentor.total_mentees} Mentees</span>
+                                    <c:if test="${loop.index > 1}">
+                                        <div class="instructors-widget">
+                                            <div class="instructors-img ">
+                                                <a href="instructor-list.html">
+                                                    <img class="img-fluid" alt="Img" src="${mentor.image}">
+                                                </a>
+                                            </div>
+                                            <div class="instructors-content text-center">
+                                                <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
+                                                <p>${mentor.expertise}</p>
+                                                <div class="student-count d-flex justify-content-center">
+                                                    <i class="fa-solid fa-user-group"></i>
+                                                    <span>${mentor.total_mentees} Mentees</span>
+                                                </div>
                                             </div>
                                         </div></c:if>
                                 </c:forEach>
 
+                                <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
+                                    <c:if test="${loop.index %2==0}">
+                                        <div class="instructors-widget">
+                                            <div class="instructors-img">
+                                                <a href="instructor-list.html">
+                                                    <img class="img-fluid" alt="Img" src="${mentor.image}">
+                                                </a>
+                                            </div>
+                                            <div class="instructors-content text-center">
+                                                <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
+                                                <p>${mentor.expertise}</p>
+                                                <div class="student-count d-flex justify-content-center">
+                                                    <i class="fa-solid fa-user-group yellow"></i>
+                                                    <span>${mentor.total_mentees} Mentees</span>
+                                                </div>
+                                            </div>
+                                        </div></c:if>
+                                </c:forEach>
+
+                                <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
+                                    <c:if test="${loop.index % 3 ==0}">
+                                        <div class="instructors-widget">
+                                            <div class="instructors-img">
+                                                <a href="instructor-list.html">
+                                                    <img class="img-fluid" alt="Img" src="${mentor.image}">
+                                                </a>
+                                            </div>
+                                            <div class="instructors-content text-center">
+                                                <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
+                                                <p>${mentor.expertise}</p>
+                                                <div class="student-count d-flex justify-content-center">
+                                                    <i class="fa-solid fa-user-group violet"></i>
+                                                    <span>${mentor.total_mentees} Mentees</span>
+                                                </div>
+                                            </div>
+                                        </div></c:if>
+                                </c:forEach>
+
+
+                                <div class="instructors-widget">
+                                    <c:forEach var="mentor" items="${sessionScope.listMentor}" varStatus="loop">
+                                        <c:if test="${loop.index % 5 ==0}">
+                                            <div class="instructors-img">
+                                                <a href="instructor-list.html">
+                                                    <img class="img-fluid" alt="Img" src="${mentor.image}">
+                                                </a>
+                                            </div>
+                                            <div class="instructors-content text-center">
+                                                <h5><a href="instructor-profile.html">${mentor.name}</a></h5>
+                                                <p>${mentor.expertise}</p>
+                                                <div class="student-count d-flex justify-content-center">
+                                                    <i class="fa-solid fa-user-group orange"></i>
+                                                    <span>${mentor.total_mentees} Mentees</span>
+                                                </div>
+                                            </div></c:if>
+                                    </c:forEach>
+
+                                </div>
+
+
+
                             </div>
-
-
-
                         </div>
                     </div>
-                </div>
-            </section>
-            <!-- /Trending Course -->
+                </section>
+                <!-- /Trending Course -->
 
-            <!-- Leading Companies -->
-            <section class="section lead-companies">
-                <div class="container">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head feature-head text-center">
-                            <span>Trusted By</span>
-                            <h2>500+ Leading Universities And Companies</h2>
-                        </div>
-                    </div>
-                    <div class="lead-group aos" data-aos="fade-up">
-                        <div class="lead-group-slider owl-carousel owl-theme">
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-01.png">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-02.png">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-03.png">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-04.png">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-05.png">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="lead-img">
-                                    <img class="img-fluid" alt="Img" src="assets/img/lead-06.png">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Leading Companies -->
-
-
-
-
-            <!-- Join as Mentor -->
-            <!--            <section class="trusted-by">
-                            <p class="trusted-text">Trusted By</p>
-                            <h2>500+ Leading Universities And Companies</h2>
-                            <div class="logos">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/640px-Google_%22G%22_logo.svg.png" alt="Google">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Colruyt.svg/2560px-Logo_Colruyt.svg.png" alt="Colruyt">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Oxford-University-Circlet.svg/1636px-Oxford-University-Circlet.svg.png" alt="Oxford">
-                            </div>
-                        </section>-->
-            <!-- Users Love -->
-            <section class="section user-love">
-                <div class="container">
-                    <div class="section-header white-header aos" data-aos="fade-up">
-                        <div class="section-sub-head feature-head text-center">
-                            <span>Check out these real reviews</span>
-                            <h2>Users-love-us Don't take it from us.</h2>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Users Love -->
-
-            <!-- Say testimonial Four -->
-            <section class="testimonial-four">
-                <div class="review">
+                <!-- Leading Companies -->
+                <section class="section lead-companies">
                     <div class="container">
-                        <div class="testi-quotes">
-                            <img src="assets/img/qute.png" alt="Img">
-                        </div>
-                        <div class="mentor-testimonial lazy slider aos" data-aos="fade-up" data-sizes="50vw ">
-                            <div class="d-flex justify-content-center">
-                                <div class="testimonial-all d-flex justify-content-center">
-                                    <div class="testimonial-two-head text-center align-items-center d-flex">
-                                        <div class="testimonial-four-saying ">
-                                            <div class="testi-right">
-                                                <img src="assets/img/qute-01.png" alt="Img">
-                                            </div>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book.</p>
-                                            <div class="four-testimonial-founder">
-                                                <div class="fount-about-img">
-                                                    <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg"
-                                                                                           alt="Img" class="img-fluid"></a>
-                                                </div>
-                                                <h3><a href="instructor-profile.html">Daziy Millar</a></h3>
-                                                <span>Founder of Awesomeux Technology</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="testimonial-all d-flex justify-content-center">
-                                    <div class="testimonial-two-head text-center align-items-center d-flex">
-                                        <div class="testimonial-four-saying ">
-                                            <div class="testi-right">
-                                                <img src="assets/img/qute-01.png" alt="Img">
-                                            </div>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book.</p>
-                                            <div class="four-testimonial-founder">
-                                                <div class="fount-about-img">
-                                                    <a href="instructor-profile.html"><img src="assets/img/user/user3.jpg"
-                                                                                           alt="Img" class="img-fluid"></a>
-                                                </div>
-                                                <h3><a href="instructor-profile.html">john smith</a></h3>
-                                                <span>Founder of Awesomeux Technology</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="testimonial-all d-flex justify-content-center">
-                                    <div class="testimonial-two-head text-center align-items-center d-flex">
-                                        <div class="testimonial-four-saying ">
-                                            <div class="testi-right">
-                                                <img src="assets/img/qute-01.png" alt="Img">
-                                            </div>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book.</p>
-                                            <div class="four-testimonial-founder">
-                                                <div class="fount-about-img">
-                                                    <a href="instructor-profile.html"><img src="assets/img/user/user2.jpg"
-                                                                                           alt="Img" class="img-fluid"></a>
-                                                </div>
-                                                <h3><a href="instructor-profile.html">David Lee</a></h3>
-                                                <span>Founder of Awesomeux Technology</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Say testimonial Four -->
-
-            <!-- Become An Instructor -->
-            <section class="section become-instructors aos" data-aos="fade-up">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 d-flex">
-                            <div class="student-mentor cube-instuctor ">
-                                <h4>Become An Instructor</h4>
-                                <div class="row">
-                                    <div class="col-lg-7 col-md-12">
-                                        <div class="top-instructors">
-                                            <p>Top instructors from around the world teach millions of students on
-                                                Mentoring.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5 col-md-12">
-                                        <div class="mentor-img">
-                                            <img class="img-fluid" alt="Img" src="assets/img/icon/become-02.svg">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 d-flex">
-                            <div class="student-mentor yellow-mentor">
-                                <h4>Transform Access To Education</h4>
-                                <div class="row">
-                                    <div class="col-lg-8 col-md-12">
-                                        <div class="top-instructors">
-                                            <p>Create an account to receive our newsletter, course recommendations and
-                                                promotions.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-12">
-                                        <div class="mentor-img">
-                                            <img class="img-fluid" alt="Img" src="assets/img/icon/become-01.svg">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Become An Instructor -->
-
-
-            <!-- Latest Blog -->
-            <section class="section latest-blog">
-                <div class="container">
-                    <div class="section-header aos" data-aos="fade-up">
-                        <div class="section-sub-head feature-head text-center mb-0">
-                            <h2>Latest Blogs</h2>
-                            <div class="section-text aos" data-aos="fade-up">
-                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
-                                    accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-carousel blogs-slide owl-theme aos" data-aos="fade-up">
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-01.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
-                                <p>Marketing</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>Jun 15, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-02.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
-                                <p>Sales Order</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>May 20, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-03.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                                <p>Design</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>May 25, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-04.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                                <p>Seo</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>Jul 15, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-02.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
-                                <p>Marketing</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>Sep 25, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-03.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                                <p>Marketing</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>May 25, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-04.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                                <p>Analysis</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>May 15, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-02.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
-                                <p>Development</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>Jun 20, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-03.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
-                                <p>Sales</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>May 25, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instructors-widget blog-widget">
-                            <div class="instructors-img">
-                                <a href="blog-list.html">
-                                    <img class="img-fluid" alt="Img" src="assets/img/blog/blog-04.jpg">
-                                </a>
-                            </div>
-                            <div class="instructors-content text-center">
-                                <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
-                                <p>Marketing</p>
-                                <div class="student-count d-flex justify-content-center">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>April 15, 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="enroll-group aos" data-aos="fade-up">
-                        <div class="row ">
-                            <div class="col-lg-4 col-md-6">
-                                <div class="total-course d-flex align-items-center">
-                                    <div class="blur-border">
-                                        <div class="enroll-img ">
-                                            <img src="assets/img/icon/icon-07.svg" alt="Img" class="img-fluid">
-                                        </div>
-                                    </div>
-                                    <div class="course-count">
-                                        <c:forEach var="count" items="${sessionScope.listCountC}">
-                                            <h3><span class="counterUp">${count.total_Mentee}</span></h3>
-                                            </c:forEach>
-
-                                        <p>STUDENTS ENROLLED</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="total-course d-flex align-items-center">
-                                    <div class="blur-border">
-                                        <div class="enroll-img ">
-                                            <img src="assets/img/icon/icon-08.svg" alt="Img" class="img-fluid">
-                                        </div>
-                                    </div>
-                                    <div class="course-count">
-                                        <c:forEach var="count" items="${sessionScope.listCountC}">
-                                            <h3><span class="counterUp">${count.total_Courses}</span></h3>
-                                            </c:forEach>
-
-                                        <p>TOTAL COURSES</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="total-course d-flex align-items-center">
-                                    <div class="blur-border">
-                                        <div class="enroll-img ">
-                                            <img src="assets/img/icon/icon-09.svg" alt="Img" class="img-fluid">
-                                        </div>
-                                    </div>
-                                    <div class="course-count">
-                                        <h3><span class="counterUp">127</span></h3>
-                                        <p>COUNTRIES</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lab-course">
                         <div class="section-header aos" data-aos="fade-up">
                             <div class="section-sub-head feature-head text-center">
-                                <h2>Unlimited access to 360+ courses <br>and 1,600+ hands-on labs</h2>
+                                <span>Trusted By</span>
+                                <h2>500+ Leading Universities And Companies</h2>
                             </div>
                         </div>
-                        <div class="icon-group aos" data-aos="fade-up">
-                            <div class="offset-lg-1 col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-09.svg" alt="Img" class="img-fluid">
+                        <div class="lead-group aos" data-aos="fade-up">
+                            <div class="lead-group-slider owl-carousel owl-theme">
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-01.png">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-02.png">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-03.png">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-04.png">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-05.png">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="lead-img">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/lead-06.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /Leading Companies -->
+
+
+
+
+                <!-- Join as Mentor -->
+                <!--            <section class="trusted-by">
+                                <p class="trusted-text">Trusted By</p>
+                                <h2>500+ Leading Universities And Companies</h2>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/640px-Google_%22G%22_logo.svg.png" alt="Google">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Colruyt.svg/2560px-Logo_Colruyt.svg.png" alt="Colruyt">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Oxford-University-Circlet.svg/1636px-Oxford-University-Circlet.svg.png" alt="Oxford">
+                                </div>
+                            </section>-->
+                <!-- Users Love -->
+                <section class="section user-love">
+                    <div class="container">
+                        <div class="section-header white-header aos" data-aos="fade-up">
+                            <div class="section-sub-head feature-head text-center">
+                                <span>Check out these real reviews</span>
+                                <h2>Users-love-us Don't take it from us.</h2>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /Users Love -->
+
+                <!-- Say testimonial Four -->
+                <section class="testimonial-four">
+                    <div class="review">
+                        <div class="container">
+                            <div class="testi-quotes">
+                                <img src="/HAPPYorSAD/assets/img/qute.png" alt="Img">
+                            </div>
+                            <div class="mentor-testimonial lazy slider aos" data-aos="fade-up" data-sizes="50vw ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="testimonial-all d-flex justify-content-center">
+                                        <div class="testimonial-two-head text-center align-items-center d-flex">
+                                            <div class="testimonial-four-saying ">
+                                                <div class="testi-right">
+                                                    <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
+                                                </div>
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                    Lorem Ipsum has been the industry's standard dummy text ever since the
+                                                    1500s, when an unknown printer took a galley of type and scrambled it to
+                                                    make a type specimen book.</p>
+                                                <div class="four-testimonial-founder">
+                                                    <div class="fount-about-img">
+                                                        <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user1.jpg"
+                                                                                               alt="Img" class="img-fluid"></a>
+                                                    </div>
+                                                    <h3><a href="instructor-profile.html">Daziy Millar</a></h3>
+                                                    <span>Founder of Awesomeux Technology</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-10.svg" alt="Img" class="img-fluid">
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="testimonial-all d-flex justify-content-center">
+                                        <div class="testimonial-two-head text-center align-items-center d-flex">
+                                            <div class="testimonial-four-saying ">
+                                                <div class="testi-right">
+                                                    <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
+                                                </div>
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                    Lorem Ipsum has been the industry's standard dummy text ever since the
+                                                    1500s, when an unknown printer took a galley of type and scrambled it to
+                                                    make a type specimen book.</p>
+                                                <div class="four-testimonial-founder">
+                                                    <div class="fount-about-img">
+                                                        <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user3.jpg"
+                                                                                               alt="Img" class="img-fluid"></a>
+                                                    </div>
+                                                    <h3><a href="instructor-profile.html">john smith</a></h3>
+                                                    <span>Founder of Awesomeux Technology</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-16.svg" alt="Img" class="img-fluid">
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="testimonial-all d-flex justify-content-center">
+                                        <div class="testimonial-two-head text-center align-items-center d-flex">
+                                            <div class="testimonial-four-saying ">
+                                                <div class="testi-right">
+                                                    <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-12.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-13.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-14.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-15.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-16.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-17.svg" alt="Img" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-3">
-                                        <div class="total-course d-flex align-items-center">
-                                            <div class="blur-border">
-                                                <div class="enroll-img ">
-                                                    <img src="assets/img/icon/icon-18.svg" alt="Img" class="img-fluid">
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                    Lorem Ipsum has been the industry's standard dummy text ever since the
+                                                    1500s, when an unknown printer took a galley of type and scrambled it to
+                                                    make a type specimen book.</p>
+                                                <div class="four-testimonial-founder">
+                                                    <div class="fount-about-img">
+                                                        <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user2.jpg"
+                                                                                               alt="Img" class="img-fluid"></a>
+                                                    </div>
+                                                    <h3><a href="instructor-profile.html">David Lee</a></h3>
+                                                    <span>Founder of Awesomeux Technology</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1189,162 +683,377 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-            <!-- /Latest Blog -->
+                </section>
+                <!-- /Say testimonial Four -->
 
-
-            <!-- Footer -->
-            <footer class="footer">
-
-                <!-- Footer Top -->
-                <div class="footer-top aos" data-aos="fade-up">
+                <!-- Become An Instructor -->
+                <section class="section become-instructors aos" data-aos="fade-up">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-about">
-                                    <div class="footer-logo">
-                                        <img src="/HAPPYorSAD/assets/img/logo.svg" alt="logo">
-                                    </div>
-                                    <div class="footer-about-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Instructor</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="ViewMentor_Mentee">Mentor</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Student</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="#">Mentee</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-contact">
-                                    <h2 class="footer-title">News letter</h2>
-                                    <div class="news-letter">
-                                        <form>
-                                            <input type="text" class="form-control" placeholder="Enter your email address"
-                                                   name="email">
-                                        </form>
-                                    </div>
-                                    <div class="footer-contact-info">
-                                        <div class="footer-address">
-                                            <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                            <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+                            <div class="col-lg-6 col-md-6 d-flex">
+                                <div class="student-mentor cube-instuctor ">
+                                    <h4>Become An Instructor</h4>
+                                    <div class="row">
+                                        <div class="col-lg-7 col-md-12">
+                                            <div class="top-instructors">
+                                                <p>Top instructors from around the world teach millions of students on
+                                                    Mentoring.</p>
+                                            </div>
                                         </div>
-                                        <p>
-                                            <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                            <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="41253324202c322d2c32012439202c312d246f222e2c">[email&#160;protected]</a>
-                                        </p>
-                                        <p class="mb-0">
-                                            <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                            +19 123-456-7890
-                                        </p>
+                                        <div class="col-lg-5 col-md-12">
+                                            <div class="mentor-img">
+                                                <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/icon/become-02.svg">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- /Footer Widget -->
-
                             </div>
-
+                            <div class="col-lg-6 col-md-6 d-flex">
+                                <div class="student-mentor yellow-mentor">
+                                    <h4>Transform Access To Education</h4>
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-12">
+                                            <div class="top-instructors">
+                                                <p>Create an account to receive our newsletter, course recommendations and
+                                                    promotions.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="mentor-img">
+                                                <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/icon/become-01.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- /Footer Top -->
+                </section>
+                <!-- /Become An Instructor -->
 
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
+
+                <!-- Latest Blog -->
+                <section class="section latest-blog">
                     <div class="container">
-
-                        <!-- Copyright -->
-                        <div class="copyright">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="privacy-policy">
-                                        <ul>
-                                            <li><a href="term-condition.html">Terms</a></li>
-                                            <li><a href="privacy-policy.html">Privacy</a></li>
-                                        </ul>
+                        <div class="section-header aos" data-aos="fade-up">
+                            <div class="section-sub-head feature-head text-center mb-0">
+                                <h2>Latest Blogs</h2>
+                                <div class="section-text aos" data-aos="fade-up">
+                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
+                                        accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-carousel blogs-slide owl-theme aos" data-aos="fade-up">
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-01.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
+                                    <p>Marketing</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>Jun 15, 2024</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="copyright-text">
-                                        <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-02.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
+                                    <p>Sales Order</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>May 20, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-03.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
+                                    <p>Design</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>May 25, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-04.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
+                                    <p>Seo</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>Jul 15, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-02.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">Attract More Attention Sales And Profits</a></h5>
+                                    <p>Marketing</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>Sep 25, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-03.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
+                                    <p>Marketing</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>May 25, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-04.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
+                                    <p>Analysis</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>May 15, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-02.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">11 Tips to Help You Get New Clients</a></h5>
+                                    <p>Development</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>Jun 20, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-03.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">An Overworked Newspaper Editor</a></h5>
+                                    <p>Sales</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>May 25, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="instructors-widget blog-widget">
+                                <div class="instructors-img">
+                                    <a href="blog-list.html">
+                                        <img class="img-fluid" alt="Img" src="/HAPPYorSAD/assets/img/blog/blog-04.jpg">
+                                    </a>
+                                </div>
+                                <div class="instructors-content text-center">
+                                    <h5><a href="blog-list.html">A Solution Built for Teachers</a></h5>
+                                    <p>Marketing</p>
+                                    <div class="student-count d-flex justify-content-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>April 15, 2024</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /Copyright -->
+                        <div class="enroll-group aos" data-aos="fade-up">
+                            <div class="row ">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="total-course d-flex align-items-center">
+                                        <div class="blur-border">
+                                            <div class="enroll-img ">
+                                                <img src="/HAPPYorSAD/assets/img/icon/icon-07.svg" alt="Img" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="course-count">
+                                            <c:forEach var="count" items="${sessionScope.listCountC}">
+                                                <h3><span class="counterUp">${count.total_Mentee}</span></h3>
+                                                </c:forEach>
 
+                                            <p>STUDENTS ENROLLED</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="total-course d-flex align-items-center">
+                                        <div class="blur-border">
+                                            <div class="enroll-img ">
+                                                <img src="/HAPPYorSAD/assets/img/icon/icon-08.svg" alt="Img" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="course-count">
+                                            <c:forEach var="count" items="${sessionScope.listCountC}">
+                                                <h3><span class="counterUp">${count.total_Courses}</span></h3>
+                                                </c:forEach>
+
+                                            <p>TOTAL COURSES</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="total-course d-flex align-items-center">
+                                        <div class="blur-border">
+                                            <div class="enroll-img ">
+                                                <img src="/HAPPYorSAD/assets/img/icon/icon-09.svg" alt="Img" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="course-count">
+                                            <h3><span class="counterUp">127</span></h3>
+                                            <p>COUNTRIES</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lab-course">
+                            <div class="section-header aos" data-aos="fade-up">
+                                <div class="section-sub-head feature-head text-center">
+                                    <h2>Unlimited access to 360+ courses <br>and 1,600+ hands-on labs</h2>
+                                </div>
+                            </div>
+                            <div class="icon-group aos" data-aos="fade-up">
+                                <div class="offset-lg-1 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-09.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-10.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-16.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-12.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-13.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-14.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-15.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-16.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-17.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-3">
+                                            <div class="total-course d-flex align-items-center">
+                                                <div class="blur-border">
+                                                    <div class="enroll-img ">
+                                                        <img src="/HAPPYorSAD/assets/img/icon/icon-18.svg" alt="Img" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- /Footer Bottom -->
+                </section>
+                <!-- /Latest Blog -->
+            </div>
 
-            </footer>
-            <!-- /Footer -->
-        </div>
-        <!-- jQuery -->
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- counterup JS -->
-        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Owl Carousel -->
-        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Slick Slider -->
-        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Aos -->
-        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1d433aff6b2b8dd82abe2a72-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910743f1baeee2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-    </body>
-
+        </body>
+    
 </html>
 
