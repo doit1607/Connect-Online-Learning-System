@@ -43,7 +43,7 @@ public class MentorByCourse extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("listAllMentorByCourse", list);
 
-        request.getRequestDispatcher("view/ViewMentor_Mentee.jsp").forward(request, response);
+        request.getRequestDispatcher("view/MentorByCourse.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

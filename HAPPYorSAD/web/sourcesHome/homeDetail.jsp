@@ -241,7 +241,7 @@
                                             <div class="course-box d-flex aos" data-aos="fade-up">
                                                 <div class="product">
                                                     <div class="product-img">
-                                                        <a href="listAllMentorByCourse?courseName=${course.title}">
+                                                        <a href="MentorByCourse?courseName=${course.title}">
                                                             <img class="img-fluid" src="${course.image}" alt="${course.title}">
                                                         </a>
                                                         

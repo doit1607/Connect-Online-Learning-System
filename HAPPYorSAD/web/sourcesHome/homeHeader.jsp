@@ -35,13 +35,13 @@
                                             <span></span>
                                         </span>
                                     </a>
-                                    <a href="index-2.html" class="navbar-brand logo">
+                                    <a href="/Home" class="navbar-brand logo">
                                         <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                     </a>
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="index-2.html" class="menu-logo">
+                                        <a href="Home" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -50,7 +50,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="#">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>

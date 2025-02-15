@@ -173,7 +173,7 @@ public class DAOMentor extends DBConnection {
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentorsByCourse("Intro to Programming 1");
+        List<Mentor> list = dao.getMentorsByCourse("Business Strategy and Management");
 
         for (Mentor mentor : list) {
             System.out.println(mentor);

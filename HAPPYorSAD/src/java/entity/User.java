@@ -26,6 +26,23 @@ public class User {
         this.id = id;
     }
 
+    public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, String gender, String role, boolean isGuest) {
+        this.avatarPath = avatarPath;
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
+        this.status = status;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.role = role;
+        this.isGuest = isGuest;
+    }
+        
+        
+
     public User(String username, String fullname, String email, String phoneNumber, Date createdAt, String bio) {
         this.username = username;
         this.fullname = fullname;
