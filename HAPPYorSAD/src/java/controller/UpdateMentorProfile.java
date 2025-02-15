@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.DAOuser;
@@ -50,21 +51,15 @@ public class UpdateMentorProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOuser mento = new DAOuser();
-        String username = request.getParameter("username");
-        
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+    
+
         User u = mento.getMentorByUsername(username);
+
         request.setAttribute("mentor", u);
         request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
 
-//        boolean isUpdated = mento.updateMentorProfile(u);
-//        if (isUpdated) {
-//            request.setAttribute("successMessage", "Profile updated successfully!");
-//            request.getRequestDispatcher("Home").forward(request, response);
-//        } else {
-//            request.setAttribute("error", "Unable to update profile!");
-//            request.setAttribute("mentor", u);
-//            request.getRequestDispatcher("/CRUD/updateMentorProfile.jsp").forward(request, response);
-//        }
     }
 
     /**
@@ -93,6 +88,7 @@ public class UpdateMentorProfile extends HttpServlet {
             e.printStackTrace();
         }
         mento.updateMentorProfile(username, avatar, fullname, address, dateOfBirth, gender);
+        request.getSession().setAttribute("successMessage", "Profile updated successfully!");
         response.sendRedirect("updatementorprofile");
     }
 

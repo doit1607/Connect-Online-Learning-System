@@ -8,7 +8,9 @@ import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
+import static model.DBConnection.conn;
 
 /**
  *
@@ -48,6 +50,22 @@ public class DAOuser extends DBConnection {
             PreparedStatement state = conn.prepareStatement(sql);
             state.setString(1, username);
             state.setString(2, password);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+     public boolean checkUsernameandEmail(String username, String email) {
+        try {
+            String sql = "Select * from Users where username = ? and email = ?";
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, username);
+            state.setString(2, email);
             ResultSet rs = state.executeQuery();
             if (rs.next()) {
                 return true;
@@ -293,7 +311,7 @@ public class DAOuser extends DBConnection {
 
     public User getMenteeByUsername(String username) {
 
-        String sql = "Select * from Users where username = ?";
+        String sql = "Select * from Users where username = ? and role = 'mentee'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -324,16 +342,18 @@ public class DAOuser extends DBConnection {
     }
 
     public User getMentorByUsername(String username) {
-        String sql = "Select * from Users where username = ?";
+        String sql = "Select * from Users where username = ? and role = 'mentor'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                return new User(rs.getString(4), rs.getString(2), rs.getString(3),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9),
-                        rs.getString(8), rs.getDate(10), rs.getDate(12), rs.getString(11),
-                        rs.getString(13), true);
+                return new User(rs.getString("avatar_path"), rs.getString("username"), rs.getString("fullname"),
+                        rs.getString("password"), rs.getString("status"), rs.getString("email"),
+                        rs.getString("phone_number"),
+                        rs.getString("address"), rs.getDate("date_of_birth"), rs.getDate("created_at"),
+                        rs.getString("gender"),
+                        rs.getString("role"), true);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -361,9 +381,61 @@ public class DAOuser extends DBConnection {
         }
     }
 
-//    public static void main(String[] args) {
-//        DAOuser dao = new DAOuser();
-//        User s = dao.getMenteeById(5);
-//        System.out.println(s);
-//    }
+    public User getUserProfile(int userId) {
+        String sql = "SELECT u.fullname, u.username, m.created_at, "
+                + "u.email, u.phone_number, m.bio "
+                + "FROM Users u "
+                + "JOIN Mentor m ON m.user_id = u.id "
+                + "WHERE u.id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, userId);  // Truyền tham số userId
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {  // Nếu có dữ liệu thì lấy
+                User user = new User(rs.getString("username"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        rs.getTimestamp("created_at"), // Sử dụng getTimestamp()
+                        rs.getString("bio"));
+                rs.close();
+                pre.close();
+                return user;
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getUserIdByUsername(String username) {
+        int userId = -1;
+        String sql = "SELECT id FROM Users WHERE username = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                userId = rs.getInt("id");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userId;
+    }
+
+    public static void main(String[] args) {
+        DAOuser dao = new DAOuser();
+        int id =1;
+
+        User u = dao.getUserProfile(id); 
+
+        System.out.println(u);
+    }
+
 }

@@ -35,13 +35,13 @@
                                             <span></span>
                                         </span>
                                     </a>
-                                    <a href="index-2.html" class="navbar-brand logo">
+                                    <a href="/Home" class="navbar-brand logo">
                                         <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                     </a>
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="index-2.html" class="menu-logo">
+                                        <a href="Home" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -50,14 +50,14 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="#">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
                                         <li class="has-submenu active">
-                                            <a href="#">Mentor <i class="fas fa-chevron-down"></i></a>
+                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="instructor-dashboard.html">Mentor List</a></li>
+                                                <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                 <li><a href="instructor-dashboard.html">Dashboard</a></li>
                                                 <li><a href="instructor-profile.html">My CV</a></li>
                                                 <li><a href="instructor-course.html">My Course</a></li>
@@ -79,8 +79,9 @@
                                         <li class="has-submenu">
                                             <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="add-course.html">Add Course</a></li>
+                                                <li><a href="CreateCourses">Add Course</a></li>
                                                 <li><a href="course-list.html">Course List</a></li>
+                                                <li><a href="CreateCV">Create CV</a></li>
                                             </ul>
                                         </li>
 
@@ -115,8 +116,8 @@
                                                     <p class="text-muted mb-0">${sessionScope.usernameRole}</p>
                                                 </div>
                                             </div>
-                                            <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-star me-1"></i> Wallet</a>
+                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
+                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
                                             <a class="dropdown-item" href="updatementorprofile?username=${mentor.username}"><i class="feather-star me-1"></i> Edit Profile</a>
                                             <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
@@ -175,7 +176,7 @@
                                             </ul>
                                         </li>
                                         <li class="has-submenu">
-                                            <a href="#">Mentor <i class="fas fa-chevron-down"></i></a>
+                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="course-list.html">Mentor List</a></li>
                                             </ul>

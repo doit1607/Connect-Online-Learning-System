@@ -17,9 +17,44 @@ public class User {
     private Date dateOfBirth, createdAt;
     private String gender, role;
     private boolean isGuest;
+    private String bio;
+    private int id;
 
     public User() {
     }
+        public User(int id) {
+        this.id = id;
+    }
+
+    public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, String gender, String role, boolean isGuest) {
+        this.avatarPath = avatarPath;
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
+        this.status = status;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.role = role;
+        this.isGuest = isGuest;
+    }
+        
+        
+
+    public User(String username, String fullname, String email, String phoneNumber, Date createdAt, String bio) {
+        this.username = username;
+        this.fullname = fullname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+        this.bio = bio;
+    }
+    
+    
+    
+    
 
     public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, Date createdAt, String gender, String role, boolean isGuest) {
         this.avatarPath = avatarPath;
@@ -36,6 +71,16 @@ public class User {
         this.role = role;
         this.isGuest = isGuest;
     }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+    
+    
 
     public String getAvatarPath() {
         return avatarPath;
@@ -141,4 +186,11 @@ public class User {
         this.isGuest = isGuest;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "avatarPath=" + avatarPath + ", username=" + username + ", fullname=" + fullname + ", password=" + password + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", createdAt=" + createdAt + ", gender=" + gender + ", role=" + role + ", isGuest=" + isGuest + ", bio=" + bio + ", id=" + id + '}';
+    }
+
+   
+    
 }

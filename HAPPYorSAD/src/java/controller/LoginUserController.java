@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.SecureRandom;
 import model.DAOuser;
 
 import utils.EmailUtil;
@@ -40,9 +41,12 @@ public class LoginUserController extends HttpServlet {
         String service = request.getParameter("service");
 
         if ("login".equals(service)) {
+
             String username = request.getParameter("usernameLogin");
             String password = request.getParameter("passwordLogin");
             String rememberMe = request.getParameter("rememberMe");
+            int userId = userDAO.getUserIdByUsername(username);
+            session.setAttribute("userId", userId);
 
             if (userDAO.loginUser(username, password)) {
                 if (userDAO.checkUserActive(username)) {
@@ -55,22 +59,22 @@ public class LoginUserController extends HttpServlet {
                         c.setMaxAge(0);
                         response.addCookie(c);
                     }
-//                    String role = userDAO.getRole(username);
-//                    if (role.equalsIgnoreCase("Mentor")) {
-//                        session.setAttribute("usernameUser", username);
-//                        session.setAttribute("usernameRole", role);
-//                        response.sendRedirect("Home");
-//                    }
-//                    if (role.equalsIgnoreCase("Mentee")) {
-//                        session.setAttribute("usernameUser", username);
-//                        session.setAttribute("usernameRole", role);
-//                        response.sendRedirect("Home");
-//                    }
-//                    if(role.equalsIgnoreCase("Manager")){
-//                        session.setAttribute("usernameUser", username);
-//                        session.setAttribute("usernameRole", role);
-//                        response.sendRedirect("Manager");
-//                    }
+                    String role = userDAO.getRole(username);
+                    if (role.equalsIgnoreCase("Mentor")) {
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Home");
+                    }
+                    if (role.equalsIgnoreCase("Mentee")) {
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Home");
+                    }
+                    if (role.equalsIgnoreCase("Manager")) {
+                        session.setAttribute("usernameUser", username);
+                        session.setAttribute("usernameRole", role);
+                        response.sendRedirect("Manager");
+                    }
                 } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
@@ -119,7 +123,7 @@ public class LoginUserController extends HttpServlet {
                     java.sql.Timestamp createdAt = java.sql.Timestamp.valueOf(formattedDate);
                     User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, role, false);
                     userDAO.addUser(newUser);
-                    
+
                     String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
                     em.sendVerificationEmail(email, username, verificationLink);
                     request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
@@ -177,6 +181,40 @@ public class LoginUserController extends HttpServlet {
                 request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
             }
         }
+
+        if ("resetpassword".equals(service)) {
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            if (userDAO.checkUsernameandEmail(username, email)) {
+                String newPassword = generateRandomPassword();
+                userDAO.updatePassword(username, newPassword);
+                EmailUtil em = new EmailUtil();
+                String subject = "Password Reset Request";
+                String message = "Hello " + username + ",\n\n"
+                        + "Your password has been reset. Your new password is: " + newPassword + "\n\n"
+                        + "For security reasons, please change your password after logging in.\n\n"
+                        + "Best regards,\nSupport Team";
+                em.sendVerificationEmail(email, subject, message);
+                request.setAttribute("msg", "A new password has been sent to your email.");
+                request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Invalid username or email!");
+                request.getRequestDispatcher("/view/ResetPassword.jsp").forward(request, response);
+            }
+        }
+    }
+
+    public String generateRandomPassword() {
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%";
+        int PASSWORD_LENGTH = 10;
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(PASSWORD_LENGTH);
+
+        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            password.append(CHARACTERS.charAt(index));
+        }
+        return password.toString();
     }
 
 }

@@ -43,179 +43,7 @@
         <div class="main-wrapper">
 
             <!-- Header -->
-            <header class="header header-page">
-                <div class="header-fixed">
-                    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <a id="mobile_btn" href="javascript:void(0);">
-                                    <span class="bar-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </span>
-                                </a>
-                                <a href="index-2.html" class="navbar-brand logo">
-                                    <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                            </div>
-                            <div class="main-menu-wrapper">
-                                <div class="menu-header">
-                                    <a href="index-2.html" class="menu-logo">
-                                        <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                    </a>
-                                    <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </div>
-                                <ul class="main-nav">
-                                    <li class="has-submenu">
-                                        <a href="#">Home <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="index-2.html">Home</a></li>
-                                            <li><a href="index-two.html">Home Two</a></li>
-                                            <li><a href="index-three.html">Home Three</a></li>
-                                            <li><a href="index-four.html">Home Four</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Instructor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li class="has-submenu">
-                                                <a href="instructor-list.html">Instructor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="instructor-list.html">List</a></li>
-                                                    <li><a href="instructor-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="instructor-dashboard.html">Dashboard</a></li>
-                                            <li><a href="instructor-profile.html">My Profile</a></li>
-                                            <li><a href="instructor-course.html">My Course</a></li>
-                                            <li><a href="instructor-wishlist.html">Wishlist</a></li>
-                                            <li><a href="instructor-reviews.html">Reviews</a></li>
-                                            <li><a href="instructor-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="instructor-orders.html">Orders</a></li>
-                                            <li><a href="instructor-qa.html">Question & Answer</a></li>
-                                            <li><a href="instructor-referral.html">Referrals</a></li>
-                                            <li><a href="instructor-chat.html">Messages</a></li>
-                                            <li><a href="instructor-tickets.html">Support Ticket</a></li>
-                                            <li><a href="instructor-notifications.html">Notifications</a></li>
-                                            <li><a href="instructor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu active">
-                                        <a href="#">Mentee <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu first-submenu">
-                                            <li class="has-submenu">
-                                                <a href="mentees-list.html">Mentee</a>
-                                                <ul class="submenu">
-                                                    <li><a href="mentees-list.html">List</a></li>
-                                                    <li><a href="mentees-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="mentee-dashboard.html">Mentee Dashboard</a></li>
-                                            <li><a href="mentee-profile.html">My Profile</a></li>
-                                            <li><a href="mentee-courses.html">Enrolled Courses</a></li>
-                                            <li><a href="mentee-wishlist.html">Wishlist</a></li>
-                                            <li><a href="mentee-reviews.html">Reviews</a></li>
-                                            <li><a href="mentee-quiz.html">My Quiz Attempts</a></li>
-                                            <li><a href="mentee-order-history.html">Orders</a></li>
-                                            <li><a href="mentee-qa.html">Question & Answer</a></li>
-                                            <li><a href="mentee-referral.html">Referrals</a></li>
-                                            <li><a href="mentee-messages.html">Messages</a></li>
-                                            <li><a href="mentee-tickets.html">Support Ticket</a></li>
-                                            <li class="active"><a href="mentee-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>	
-                                    <li class="has-submenu">
-                                        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="notifications.html">Notification</a></li>
-                                            <li><a href="pricing-plan.html">Pricing Plan</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li class="has-submenu">
-                                                <a href="course-list.html">Course</a>
-                                                <ul class="submenu">
-                                                    <li><a href="add-course.html">Add Course</a></li>
-                                                    <li><a href="course-list.html">Course List</a></li>
-                                                    <li><a href="course-grid.html">Course Grid</a></li>
-                                                    <li><a href="course-details.html">Course Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="has-submenu">
-                                                <a href="come-soon.html">Error</a>
-                                                <ul class="submenu">
-                                                    <li><a href="come-soon.html">Coming Soon</a></li>
-                                                    <li><a href="error-404.html">404</a></li>
-                                                    <li><a href="error-500.html">500</a></li>
-                                                    <li><a href="under-construction.html">Under Construction</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                            <li><a href="support.html">Support</a></li>
-                                            <li><a href="job-category.html">Category</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="login.html">Login</a></li>
-                                            <li><a href="register.html">Register</a></li>
-                                            <li><a href="forgot-password.html">Forgot Password</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="blog-list.html">Blog List</a></li>
-                                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                                            <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                            <li><a href="blog-modern.html">Blog Modern</a></li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="login-link">
-                                        <a href="login.html">Login / Signup</a>
-                                    </li>
-                                </ul>		 
-                            </div>
-                            <ul class="nav header-navbar-rht">
-                                <li class="nav-item user-nav">
-                                    <div>
-                                        <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                            <i class="fa-solid fa-moon"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                            <i class="fa-solid fa-sun"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="nav-item user-nav">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <span class="user-img">
-                                            <img src="assets/img/user/user16.jpg" alt="Img">
-                                            <span class="status online"></span>
-                                        </span>
-                                    </a>
-                                    <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end" >
-                                        <div class="user-header">
-                                            <div class="avatar avatar-sm">
-                                                <img src="assets/img/user/user16.jpg" alt="User Image" class="avatar-img rounded-circle">
-                                            </div>
-                                            <div class="user-text">
-                                                <h6>Rolands R</h6>
-                                                <p class="text-muted mb-0">Mentee</p>
-                                            </div>
-                                        </div>
-                                        <a class="dropdown-item" href="mentee-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
-                                        <a class="dropdown-item" href="mentee-settings.html"><i class="feather-user me-1"></i> Profile</a>
-                                        <a class="dropdown-item" href="setting-mentee-subscription.html"><i class="feather-star me-1"></i> Subscription</a>
-
-                                        <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
+            <%@include file="../sourcesHome/homeHeader.jsp" %>
             <!-- /Header -->
 
             <!-- Breadcrumb -->
@@ -228,7 +56,7 @@
                                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+                                        <li class="breadcrumb-item active" href="updatementeeprofile?username=${sessionScope.usernameUser}" aria-current="page">Edit Profile</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -245,24 +73,7 @@
 
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
-                                <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <!--<div class="profile-img">
-                                                <a href="mentee-profile.html"><img src="assets/img/user/user16.jpg" alt="Img"></a>
-                                            </div>-->
-                                        <div class="profile-img">
-                                            <img id="avatarPreview" src="assets/img/user/user16.jpg" alt="Avatar" class="img-fluid">
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="mentee-profile.html">Rolands Richard</a></h4>
-                                            <p>Mentee</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -352,22 +163,34 @@
                                     </div>
                                     <div class="settings-page-head">
                                         <ul class="settings-pg-links">
-                                            <li><a href="mentee-settings.html" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
+                                            <li><a href="updatementeeprofile?username=${mentor.username}" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
                                             <li><a href="mentee-change-password.html"><i class="bx bx-lock"></i>Change Password</a></li>
                                             <li><a href="mentee-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
                                             <li><a href="mentee-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
                                             <li><a href="mentee-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
                                         </ul>
                                     </div>
-                                    <form action="/HAPPYorSAD/updatementeeprofile" method="post" class="checkout-form settings-wrap">
-                                        
+                                    <form action="updatementeeprofile" method="post" class="checkout-form settings-wrap">
+
                                         <div class="checkout-form settings-wrap">
                                             <div class="edit-profile-info">
                                                 <h2>Update Your Profile</h2>
                                                 <p>Edit your personal information</p>
                                             </div>
 
-                                            <input type="hidden" name="username" value="${mentee.username}">
+                                            <% 
+                                                String successMessage = (String) session.getAttribute("successMessage");
+                                                if (successMessage != null) {
+                                            %>
+                                            <div class="alert alert-success">
+                                                <%= successMessage %>
+                                            </div>
+                                            <%
+                                                    session.removeAttribute("successMessage");
+                                                }
+                                            %>
+
+                                            <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -375,7 +198,7 @@
                                                         <label class="form-label">Avatar <span class="required">*</span></label>
                                                         <input type="file" id="avatarUpload" accept="image/*">
                                                     </div>
-                                                    
+
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block">
@@ -404,10 +227,10 @@
                                                 <div class="col-md-6">
                                                     <div class="input-block">
                                                         <label class="form-label">Gender <span class="required">*</span></label>
-                                                        <select class="form-control" id="gender" name="gender">
-                                                            <option value="Male" ${mentee.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                            <option value="Female" ${mentee.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                            <option value="Other" ${mentee.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                                        <select class="form-control" id="gender" name="gender" value="${mentee.gender}">
+                                                            <option value="male" ${mentee.gender == 'male' ? 'selected' : ''}>male</option>
+                                                            <option value="female" ${mentee.gender == 'female' ? 'selected' : ''}>female</option>
+                                                            <option value="other" ${mentee.gender == 'other' ? 'selected' : ''}>other</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -448,153 +271,49 @@
             </script>
 
             <!-- Footer -->
-            <footer class="footer">
+            <%@include file="../sourcesHome/homeFooter.jsp" %>
+            <!-- /Footer Top -->
 
-                <!-- Footer Top -->
-                <div class="footer-top">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6">
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="container">
 
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-about">
-                                    <div class="footer-logo">
-                                        <img src="assets/img/logo.svg" alt="logo">
-                                    </div>
-                                    <div class="footer-about-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
+                    
 
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Instructor</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="instructor-list.html">Instructor</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Mentee</h2>
-                                    <ul>
-                                        <li><a href="mentee-profile.html">Profile</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="mentees-list.html">Mentee</a></li>
-                                        <li><a href="mentee-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-contact">
-                                    <h2 class="footer-title">News letter</h2>
-                                    <div class="news-letter">
-                                        <form>
-                                            <input type="text" class="form-control" placeholder="Enter your email address" name="email">
-                                        </form>
-                                    </div>
-                                    <div class="footer-contact-info">
-                                        <div class="footer-address">
-                                            <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                            <p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                        </div>
-                                        <p>
-                                            <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                            <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9cddbccc8c4dac5c4dae9ccd1c8c4d9c5cc87cac6c4">[email&#160;protected]</a>
-                                        </p>
-                                        <p class="mb-0">
-                                            <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                            +19 123-456-7890
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
-                <!-- /Footer Top -->
+            </div>
+            <!-- /Footer Bottom -->
 
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
-                    <div class="container">
+        </footer>
+        <!-- /Footer -->
 
-                        <!-- Copyright -->
-                        <div class="copyright">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="privacy-policy">
-                                        <ul>
-                                            <li><a href="term-condition.html">Terms</a></li>
-                                            <li><a href="privacy-policy.html">Privacy</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="copyright-text">
-                                        <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Copyright -->
+    </div>
+    <!-- /Main Wrapper -->
 
-                    </div>
-                </div>
-                <!-- /Footer Bottom -->
+    <!-- jQuery -->
+    <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-            </footer>
-            <!-- /Footer -->
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        </div>
-        <!-- /Main Wrapper -->
+    <!-- Select2 JS -->
+    <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        <!-- jQuery -->
-        <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <!-- Ckeditor JS -->
+    <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        <!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <!-- Dropzone JS -->
+    <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        <!-- Select2 JS -->
-        <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <!-- Sticky Sidebar JS -->
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        <!-- Ckeditor JS -->
-        <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-        <!-- Dropzone JS -->
-        <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+</body>
 
-        <!-- Sticky Sidebar JS -->
-        <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-        <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-    </body>
-
-    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
+<!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
 </html>

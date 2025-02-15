@@ -241,23 +241,14 @@
                                             <div class="course-box d-flex aos" data-aos="fade-up">
                                                 <div class="product">
                                                     <div class="product-img">
-                                                        <a href="course-details.html">
+                                                        <a href="MentorByCourse?courseName=${course.title}">
                                                             <img class="img-fluid" src="${course.image}" alt="${course.title}">
                                                         </a>
-                                                        <!--                                                <div class="price">
-                                                                                                            <h3>$300 <span>$99.00</span></h3>
-                                                                                                        </div>-->
+                                                        
                                                     </div>
                                                     <div class="product-content">
                                                         <div class="course-group d-flex">
-                                                            <!--                                                    <div class="course-group-img d-flex">
-                                                                                                                    <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user1.jpg"
-                                                                                                                                                           alt="Img" class="img-fluid"></a>
-                                                                                                                    <div class="course-name">
-                                                                                                                        <h4><a href="instructor-profile.html">Nicole Brown</a></h4>
-                                                                                                                        <p>Instructor</p>
-                                                                                                                    </div>
-                                                                                                                </div>-->
+                                                           
                                                             <div class="course-share d-flex align-items-center justify-content-center">
                                                                 <a href="#"><i class="fa-regular fa-heart"></i></a>
                                                             </div>
