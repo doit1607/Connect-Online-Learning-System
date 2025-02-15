@@ -34,6 +34,22 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
+     public boolean checkUsernameandEmail(String username, String email) {
+        try {
+            String sql = "Select * from Users where username = ? and email = ?";
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, username);
+            state.setString(2, email);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public void addUser(User u) {
         try {

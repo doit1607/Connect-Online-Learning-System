@@ -128,8 +128,5 @@
         <servlet-name>MentorByCourse</servlet-name>
         <url-pattern>/MentorByCourse</url-pattern>
     </servlet-mapping>
-    <session-config>
-        <session-timeout>30</session-timeout>
-        <!-- 30 phút -->
-    </session-config>
+
 </web-app>

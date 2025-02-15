@@ -74,7 +74,7 @@
                                         </div>                                     
                                     </div>                                     
                                     <div class="forgot">                                         
-                                        <span><a class="forgot-link" href="/HAPPYorSAD/forgot-password.html">Forgot Password?</a></span>                                     
+                                        <span><a class="forgot-link" href="/HAPPYorSAD/view/ResetPassword.jsp">Reset Password?</a></span>                                     
                                     </div>                                     
                                     <div class="remember-me">                                         
                                         <label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> Remember me                                             
