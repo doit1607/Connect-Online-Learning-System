@@ -55,7 +55,7 @@
                                             </ul>
                                         </li>
                                         <li class="has-submenu active">
-                                            <a href="#">Mentor <i class="fas fa-chevron-down"></i></a>
+                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="instructor-dashboard.html">Mentor List</a></li>
                                                 <li><a href="instructor-dashboard.html">Dashboard</a></li>
@@ -116,9 +116,9 @@
                                                     <p class="text-muted mb-0">${sessionScope.usernameRole}</p>
                                                 </div>
                                             </div>
-                                            <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="instructor-dashboard.html"><i class="feather-star me-1"></i> Wallet</a>
-                                            <a class="dropdown-item" href="updatementorprofile?username=${sessionScope.usernameUser}"><i class="feather-star me-1"></i> Edit Profile</a>
+                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
+                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
+                                            <a class="dropdown-item" href="updatementorprofile?username=${mentor.username}"><i class="feather-star me-1"></i> Edit Profile</a>
                                             <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
@@ -176,7 +176,7 @@
                                             </ul>
                                         </li>
                                         <li class="has-submenu">
-                                            <a href="#">Mentor <i class="fas fa-chevron-down"></i></a>
+                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="course-list.html">Mentor List</a></li>
                                             </ul>
