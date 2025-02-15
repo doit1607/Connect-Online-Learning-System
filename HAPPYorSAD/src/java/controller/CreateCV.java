@@ -40,7 +40,6 @@ public class CreateCV extends HttpServlet {
         DAOuser mentor = new DAOuser();
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
-
         User u = mentor.getMentorByUsername(username);
 
         request.setAttribute("mentor", u);
@@ -53,7 +52,16 @@ public class CreateCV extends HttpServlet {
         List<String> courseList = (courses != null) ? Arrays.asList(courses) : new ArrayList<>();
 
         DaoCV dao = new DaoCV();
-        dao.createCV(profession, professionIntro, serviceDescription, achievementDescription, courseList);
+        if (profession != null && !profession.isEmpty()
+                && professionIntro != null && !professionIntro.isEmpty()
+                && serviceDescription != null && !serviceDescription.isEmpty()
+                && achievementDescription != null && !achievementDescription.isEmpty()) {
+            dao.createCV(profession, professionIntro, serviceDescription, achievementDescription, courseList, username);
+        }
+
+        String cvStatus = dao.getCVStatusByUsername(username);
+        session.setAttribute("cvStatus", cvStatus);
+
         request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
     }
 

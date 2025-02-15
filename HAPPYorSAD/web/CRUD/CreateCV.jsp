@@ -38,10 +38,8 @@
         <link rel="stylesheet" href="assets/plugins/boxicons/css/boxicons.min.css">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style.css"> 
 
-        <title>Create CV - Update CV of Mentor</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/cssCRUD/createCV.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
@@ -49,9 +47,15 @@
         <div class="container mt-5">
             <div class="cv-container">
                 <h2>Create CV of Mentor</h2>
+
                 <form action="CreateCV" method="get">
                     <!-- Personal Information -->
                     <div class="contact-info">
+                        <c:if test="${not empty successMessage}">
+                            <div class="alert alert-success">
+                            ${successMessage}
+                            </div>
+                        </c:if>
                         <h3>Information</h3>
                         <hr>
                         <ul>
@@ -132,12 +136,16 @@
                         <label>Achievements:</label>
                         <textarea name="achievementDescription" rows="3"></textarea>
                     </div>
+
+                    <input type="hidden" name="username" value="${sessionScope.usernameUser}">
+
                     <button type="submit" class="btn btn-primary">Create CV</button>
                 </form>
             </div>
         </div>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
         <script>
+
             function toggleOtherInput() {
                 var otherCheckbox = document.getElementById("course9");
                 var otherInput = document.getElementById("otherCourseInput");
