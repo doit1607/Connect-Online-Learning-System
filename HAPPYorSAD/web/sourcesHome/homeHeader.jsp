@@ -57,7 +57,7 @@
                                         <li class="has-submenu active">
                                             <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="instructor-dashboard.html">Mentor List</a></li>
+                                                <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                 <li><a href="instructor-dashboard.html">Dashboard</a></li>
                                                 <li><a href="instructor-profile.html">My CV</a></li>
                                                 <li><a href="instructor-course.html">My Course</a></li>

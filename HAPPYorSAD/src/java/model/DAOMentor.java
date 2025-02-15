@@ -76,8 +76,8 @@ public class DAOMentor extends DBConnection {
 
         return list;
     }
-    
-     public List<Mentor> getCount() {
+
+    public List<Mentor> getCount() {
         ArrayList<Mentor> count = new ArrayList<>();
         String query = "SELECT COUNT(DISTINCT u_mentor.id) AS total_Mentor\n"
                 + "FROM Users u_mentor\n"
@@ -130,10 +130,50 @@ public class DAOMentor extends DBConnection {
         return list;
     }
 
+    public List<Mentor> getMentorsByCourse(String title) {
+        List<Mentor> list = new ArrayList<>();
+        String sql = "SELECT\n"
+                + "    m.image,\n"
+                + "    m.name,\n"
+                + "    m.expertise,\n"
+                + "    m.rating,\n"
+                + "    COUNT(DISTINCT r.mentee_id) AS total_mentees,\n"
+                + "    COUNT(r.rating) AS rating_count\n"
+                + "FROM Mentor m\n"
+                + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id\n"
+                + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee'\n"
+                + "LEFT JOIN [MentorCourse] mc ON m.id = mc.mentor_id  \n"
+                + "LEFT JOIN Course c ON mc.course_id = c.id   \n"
+                + "WHERE 1=1  \n"
+                + "  AND (c.title = ?) \n"
+                + "GROUP BY m.image, m.name, m.expertise, m.rating\n"
+                + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, title);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Mentor(
+                            rs.getString("name"),
+                            rs.getDouble("rating"),
+                            rs.getString("expertise"),
+                            rs.getString("image"),
+                            rs.getInt("total_mentees"),
+                            rs.getInt("rating_count"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getCount();
+        List<Mentor> list = dao.getMentorsByCourse("Intro to Programming 1");
 
         for (Mentor mentor : list) {
             System.out.println(mentor);
