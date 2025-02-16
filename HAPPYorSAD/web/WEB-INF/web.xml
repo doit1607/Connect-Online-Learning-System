@@ -65,6 +65,10 @@
         <servlet-class>controller.CreateCV</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UpdateCV</servlet-name>
+        <servlet-class>controller.UpdateCV</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>controller.ProfileServlet</servlet-class>
     </servlet>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>CreateCV</servlet-name>
         <url-pattern>/CreateCV</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCV</servlet-name>
+        <url-pattern>/UpdateCV</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>

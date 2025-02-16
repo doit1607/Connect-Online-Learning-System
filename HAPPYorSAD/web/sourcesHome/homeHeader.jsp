@@ -50,7 +50,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
@@ -124,7 +124,7 @@
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                                                 <c:choose>
-                                                    <c:when test="${empty sessionScope.cvStatus}">
+                                                    <c:when test="${empty sessionScope.cvStatus || sessionScope.cvStatus eq 'rejected'}">
                                                         <a class="dropdown-item" href="CreateCV"><i class="feather-star me-1"></i> Create CV</a>
                                                     </c:when>
 
@@ -195,7 +195,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="#">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
