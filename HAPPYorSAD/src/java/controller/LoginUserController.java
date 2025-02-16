@@ -173,12 +173,12 @@ public class LoginUserController extends HttpServlet {
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", "Old password same with new password.Please input again!");
-                    request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                    request.getRequestDispatcher("/view/ChangePassword.jsp").forward(request, response);
                 }
 
             } else {
                 request.setAttribute("error", "Incorrect old password!");
-                request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/ChangePassword.jsp").forward(request, response);
             }
         }
 

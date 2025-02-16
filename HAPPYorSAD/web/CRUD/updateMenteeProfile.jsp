@@ -142,7 +142,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="index-2.html" class="nav-link">
+                                            <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
                                             </a>
                                         </li>
@@ -163,11 +163,11 @@
                                     </div>
                                     <div class="settings-page-head">
                                         <ul class="settings-pg-links">
-                                            <li><a href="updatementeeprofile?username=${mentor.username}" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
-                                            <li><a href="mentee-change-password.html"><i class="bx bx-lock"></i>Change Password</a></li>
-                                            <li><a href="mentee-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
-                                            <li><a href="mentee-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
-                                            <li><a href="mentee-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
+                                             <li><a href="updatementorprofile?username=${mentor.username}" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
+                                        <li><a href="/HAPPYorSAD/view/ChangePassword.jsp"><i class="bx bx-lock"></i>Change Password</a></li>
+                                        <li><a href="mentor-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
+                                        <li><a href="mentor-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
+                                        <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
                                         </ul>
                                     </div>
                                     <form action="updatementeeprofile" method="post" class="checkout-form settings-wrap">

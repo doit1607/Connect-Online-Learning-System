@@ -80,8 +80,8 @@
                                     </div>
                                     <div class="profile-group">
                                         <div class="profile-name text-center">
-                                            <h4><a href="instructor-profile.html">Eugene Andre</a></h4>
-                                            <p>Instructor</p>
+                                            <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
+                                            <p>Mentee</p>
                                             <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
                                         </div>
                                     </div>
@@ -131,45 +131,6 @@
                                         </li>
 
                                     </ul>
-                                    <h3>Instructor</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
-                                                <i class="bx bxs-rocket"></i>My Courses
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
-                                                <i class="bx bxs-rocket"></i>My Curriculum Vitae
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Inviting Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Statistic Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-announcements.html" class="nav-link">
-                                                <i class="bx bxs-volume-full"></i>Announcements
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-withdraw.html" class="nav-link ">
-                                                <i class="bx bxs-wallet"></i>Withdrawls
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-earnings.html" class="nav-link">
-                                                <i class="bx bxs-badge-dollar"></i>Earnings
-                                            </a>
-                                        </li>
-                                    </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
@@ -178,7 +139,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="index-2.html" class="nav-link">
+                                            <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
                                             </a>
                                         </li>
