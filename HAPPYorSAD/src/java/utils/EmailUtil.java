@@ -18,6 +18,15 @@ public class EmailUtil {
 
         sendEmail(recipientEmail, subject, message);
     }
+    public static void sendResetPassword(String recipientEmail, String username, String newPassword) {
+        String subject = "ResetPassword";
+       String message = "Hello " + username + ",\n\n"
+                        + "Your password has been reset. Your new password is: " + newPassword + "\n\n"
+                        + "For security reasons, please change your password after logging in.\n\n"
+                        + "Best regards,\nSupport Team";
+
+        sendEmail(recipientEmail, subject, message);
+    }
 
     private static void sendEmail(String recipientEmail, String subject, String message) {
         Properties properties = new Properties();
