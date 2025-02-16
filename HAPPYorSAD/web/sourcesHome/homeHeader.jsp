@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="/HAPPYorSAD/Home" class="menu-logo">
+                                        <a href="Home" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -50,7 +50,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="/HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
@@ -67,21 +67,24 @@
                                             </ul>
                                         </li>	
                                         <c:if test="${sessionScope.usernameRole eq 'mentee'}">
-                                        <li class="has-submenu">
-                                            <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu first-submenu">
-                                                <li><a href="student-dashboard.html">Student Dashboard</a></li>
-                                                <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                                <li><a href="student-settings.html">Settings</a></li>
-                                            </ul>
-                                        </li>	
+                                            <li class="has-submenu">
+                                                <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu first-submenu">
+                                                    <li><a href="student-dashboard.html">Student Dashboard</a></li>
+                                                    <li><a href="student-courses.html">Enrolled Courses</a></li>
+                                                    <li><a href="student-settings.html">Settings</a></li>
+                                                </ul>
+                                            </li>	
                                         </c:if>
                                         <li class="has-submenu">
                                             <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="CreateCourses">Add Course</a></li>
+                                                <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
+                                                    <li><a href="CreateCourses">Add Course</a></li>
+                                                </c:if>
+
                                                 <li><a href="course-list.html">Course List</a></li>
-                                                <li><a href="CreateCV">Create CV</a></li>
+
                                             </ul>
                                         </li>
 
@@ -117,8 +120,29 @@
                                                 </div>
                                             </div>
                                             <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="Schedule"><i class="feather-star me-1"></i> My Schedule</a>
-                                            <a class="dropdown-item" href="updatementorprofile?username=${mentor.username}"><i class="feather-star me-1"></i> Edit Profile</a>
+                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
+
+                                            <c:if test="${sessionScope.usernameRole eq 'mentor'}">
+                                                <c:choose>
+                                                    <c:when test="${empty sessionScope.cvStatus}">
+                                                        <a class="dropdown-item" href="CreateCV"><i class="feather-star me-1"></i> Create CV</a>
+                                                    </c:when>
+
+                                                    <c:when test="${sessionScope.cvStatus eq 'pending'}">
+                                                        <a class="dropdown-item" href="UpdateCV"><i class="feather-star me-1"></i> Update CV</a>
+                                                    </c:when>
+                                                </c:choose>
+                                            </c:if>
+                                            <a class="dropdown-item" href="<c:choose>
+                                                   <c:when test="${sessionScope.usernameRole == 'mentee'}">
+                                                       updatementeeprofile?username=${sessionScope.usernameUser}
+                                                   </c:when>
+                                                   <c:otherwise>
+                                                       updatementorprofile?username=${sessionScope.usernameUser}
+                                                   </c:otherwise>
+                                               </c:choose>">
+                                                <i class="feather-star me-1"></i> Edit Profile
+                                            </a>
                                             <a class="dropdown-item" href="LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
@@ -162,7 +186,7 @@
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="/HAPPYorSAD/Home" class="menu-logo">
+                                        <a href="index-2.html" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">

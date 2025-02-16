@@ -43,7 +43,7 @@ public class DaoCV extends DBConnection {
     }
 
     public String getCVStatusByUsername(String username) {
-        String sql = "SELECT status FROM CV WHERE username = ?";
+        String sql = "SELECT [status] FROM CV WHERE username = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -102,6 +102,9 @@ public class DaoCV extends DBConnection {
     public static void main(String[] args) {
         DaoCV dao = new DaoCV();
         //dao.createCV("hello", "hello", "hello", "hello", Arrays.asList("hello, hello, hello"), "pending");
-        dao.updateCV("vippro", "dang cap", "anh trai", "say hi", Arrays.asList("Business Administration"), "dungmtr");
+        //dao.updateCV("vippro", "dang cap", "anh trai", "say hi", Arrays.asList("Business Administration"), "dungmtr");
+        String s = dao.getCVStatusByUsername("emily_white");
+        System.out.println(s);
+        
     }
 }
