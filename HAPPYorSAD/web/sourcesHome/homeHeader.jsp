@@ -143,7 +143,7 @@
                                                </c:choose>">
                                                 <i class="feather-star me-1"></i> Edit Profile
                                             </a>
-                                            <a class="dropdown-item" href="LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
+                                            <a class="dropdown-item" href="/../HAPPYorSAD/LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
 

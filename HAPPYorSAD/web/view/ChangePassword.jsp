@@ -73,40 +73,7 @@
                     <div class="row">
                         <c:if test="${sessionScope.usernameRole eq 'mentee'}">
                             <!-- sidebar -->
-                            <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                                <div class="settings-widget dash-profile">
-                                    <div class="settings-menu">
-                                        <div class="profile-bg">
-                                            <div class="profile-img">
-                                                <a href="student-profile.html"><img src="/HAPPYorSAD/assets/img/user/user16.jpg" alt="Img"></a>
-                                            </div>
-                                        </div>
-                                        <div class="profile-group">
-                                            <div class="profile-name text-center">
-                                                <h4><a href="student-profile.html">${sessionScope.usernameUser}</a></h4>
-                                                <p>mentee</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                                    <div class="settings-widget dash-profile">
-                                        <div class="settings-menu">
-                                            <div class="profile-bg">
-                                                <div class="profile-img">
-                                                    <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user-17.jpg"
-                                                                                           alt="Img"></a>
-                                                </div>
-                                            </div>
-                                            <div class="profile-group">
-                                                <div class="profile-name text-center">
-                                                    <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
-                                                    <p>Mentee</p>
-                                                    <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="settings-widget account-settings">
                                         <div class="settings-menu">
                                             <h3>Dashboard</h3>
@@ -151,6 +118,45 @@
                                                 </li>
 
                                             </ul>
+                                            <h3>Instructor</h3>
+                                            <ul>
+                                                <li class="nav-item">
+                                                    <a href="instructor-course.html" class="nav-link ">
+                                                        <i class="bx bxs-rocket"></i>My Courses
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="instructor-course.html" class="nav-link ">
+                                                        <i class="bx bxs-rocket"></i>My Curriculum Vitae
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="instructor-enrolled-course.html" class="nav-link">
+                                                        <i class="bx bxs-graduation"></i>Inviting Request
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="instructor-referral.html" class="nav-link">
+                                                        <i class="bx bxs-user-plus"></i>Statistic Request
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="instructor-announcements.html" class="nav-link">
+                                                        <i class="bx bxs-volume-full"></i>Announcements
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="instructor-withdraw.html" class="nav-link ">
+                                                        <i class="bx bxs-wallet"></i>Withdrawls
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a href="instructor-earnings.html" class="nav-link">
+                                                        <i class="bx bxs-badge-dollar"></i>Earnings
+                                                    </a>
+                                                </li>
+                                            </ul>
                                             <h3>Account Settings</h3>
                                             <ul>
                                                 <li class="nav-item">
@@ -166,27 +172,10 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>      
+                                </div>
                             </c:if>
                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                                 <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                                    <div class="settings-widget dash-profile">
-                                        <div class="settings-menu">
-                                            <div class="profile-bg">
-                                                <div class="profile-img">
-                                                    <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user-17.jpg"
-                                                                                           alt="Img"></a>
-                                                </div>
-                                            </div>
-                                            <div class="profile-group">
-                                                <div class="profile-name text-center">
-                                                    <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
-                                                    <p>Mentor</p>
-                                                    <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="settings-widget account-settings">
                                         <div class="settings-menu">
                                             <h3>Dashboard</h3>
@@ -298,7 +287,12 @@
                                         </div>
                                         <div class="settings-page-head">
                                             <ul class="settings-pg-links">
-                                                <li><a href="updatementorprofile?username=${mentor.username}" ><i class="bx bx-edit"></i>Edit Profile</a></li>
+                                                <c:if test="${sessionScope.usernameRole eq 'mentor'}">
+                                                <li><a href="/../HAPPYorSAD/updatementorprofile?username=${sessionScope.usernameUser}" ><i class="bx bx-edit"></i>Edit Profile</a></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.usernameRole eq 'mentee'}">
+                                                <li><a href="/../HAPPYorSAD/updatementeeprofile?username=${sessionScope.usernameUser}" ><i class="bx bx-edit"></i>Edit Profile</a></li>
+                                                </c:if>
                                                 <li><a href="/HAPPYorSAD/view/ChangePassword.jsp" class="active" ><i class="bx bx-lock"></i>Change Password</a></li>
                                                 <li><a href="mentor-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
                                                 <li><a href="mentor-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
@@ -343,36 +337,7 @@
                         </div>
                     </div>
                 </div>	
-                <form id="changePasswordForm" action="/../HAPPYorSAD/LoginUser" method="POST">
-                    <div class="checkout-form settings-wrap">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-block">
-                                    <label class="form-label">Username</label>
-                                    <input type="text" name="currentusername" value="${sessionScope.usernameUser}" class="form-control">
-                                </div>
-                                <div class="input-block">
-                                    <input type="hidden" name="service" value="changepass">
-                                    <label class="form-label">Current Password</label>
-                                    <input type="password" name="currentpassword" class="form-control">
-                                    <c:if test="${requestScope.error != null}">
-                                        ${requestScope.error}
-                                    </c:if>
-                                </div>
-                                <div class="input-block">
-                                    <label class="form-label">New Password</label>
-                                    <input type="password" name="newpassword" id="newpassword" class="form-control">
-                                </div>
-                                <div class="input-block">
-                                    <label class="form-label">Re-type New Password</label>
-                                    <input type="password" id="retypepassword" class="form-control">
-                                    <small id="passwordError" style="color: red; display: none;">Passwords do not match!</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary" id="submitButton" disabled>Change Password</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                
 
                 <script>
                     document.getElementById("newpassword").addEventListener("input", validatePassword);
