@@ -11,21 +11,23 @@ import java.util.Date;
  * @author admin
  */
 public class Schedule {
-    
-    private int id, mentorId, slotId;
-    private String dayOfWeek;
-    private Date createdAt, updatedAt;
+
+    private int id;
+    private int mentorId;
+    private Date scheduleDate;
 
     public Schedule() {
     }
 
-    public Schedule(int id, int mentorId, int slotId, String dayOfWeek, Date createdAt, Date updatedAt) {
+    public Schedule(int id, int mentorId, Date scheduleDate) {
         this.id = id;
         this.mentorId = mentorId;
-        this.slotId = slotId;
-        this.dayOfWeek = dayOfWeek;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.scheduleDate = scheduleDate;
+    }
+
+    public Schedule(int mentorId, Date scheduleDate) {
+        this.mentorId = mentorId;
+        this.scheduleDate = scheduleDate;
     }
 
     public int getId() {
@@ -44,35 +46,17 @@ public class Schedule {
         this.mentorId = mentorId;
     }
 
-    public int getSlotId() {
-        return slotId;
+    public Date getScheduleDate() {
+        return scheduleDate;
     }
 
-    public void setSlotId(int slotId) {
-        this.slotId = slotId;
+    public void setScheduleDate(Date scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
+    @Override
+    public String toString() {
+        return "Schedule{" + "id=" + id + ", mentorId=" + mentorId + ", scheduleDate=" + scheduleDate + '}';
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

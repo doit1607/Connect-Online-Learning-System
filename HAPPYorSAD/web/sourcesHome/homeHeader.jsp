@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="Home" class="menu-logo">
+                                        <a href="/HAPPYorSAD/Home" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -50,7 +50,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
@@ -117,9 +117,9 @@
                                                 </div>
                                             </div>
                                             <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
+                                            <a class="dropdown-item" href="Schedule"><i class="feather-star me-1"></i> My Schedule</a>
                                             <a class="dropdown-item" href="updatementorprofile?username=${mentor.username}"><i class="feather-star me-1"></i> Edit Profile</a>
-                                            <a class="dropdown-item" href="index-2.html"><i class="feather-log-out me-1"></i> Logout</a>
+                                            <a class="dropdown-item" href="LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
 
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="index-2.html" class="menu-logo">
+                                        <a href="/HAPPYorSAD/Home" class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
