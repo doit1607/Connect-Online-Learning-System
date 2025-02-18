@@ -53,7 +53,7 @@
                             <h2 class="breadcrumb-title">Settings</h2>
                             <nav aria-label="breadcrumb" class="page-breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                    <li class="breadcrumb-item">Home</li>
                                     <li class="breadcrumb-item active" href="updatementorprofile?username=${sessionScope.usernameUser}" aria-current="page">Edit Profile</li>
                                 </ol>
                             </nav>
@@ -69,86 +69,174 @@
             <div class="container">
                 <div class="row">
 
-                    <!-- sidebar -->
-                    <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                    <c:if test="${sessionScope.usernameRole eq 'mentee'}">
+                        <!-- sidebar -->
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item active">
+                                            <a href="instructor-dashboard.html" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Dashboard
+                                            </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="instructor-profile.html" class="nav-link">
+                                                <i class="bx bxs-user"></i>My Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            </a>
+                                        </li>
 
-                        <div class="settings-widget account-settings">
-                            <div class="settings-menu">
-                                <h3>Dashboard</h3>
-                                <ul>
-                                    <li class="nav-item ">
-                                        <a href="mentor-dashboard.html" class="nav-link">
-                                            <i class="bx bxs-tachometer"></i>Dashboard
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-profile.html" class="nav-link">
-                                            <i class="bx bxs-user"></i>My Profile
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-courses.html" class="nav-link">
-                                            <i class="bx bxs-graduation"></i>Enrolled Courses
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-wishlist.html" class="nav-link">
-                                            <i class="bx bxs-heart"></i>Wishlist
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-reviews.html" class="nav-link">
-                                            <i class="bx bxs-star"></i>Reviews
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-quiz.html" class="nav-link">
-                                            <i class="bx bxs-shapes"></i>My Quiz Attempts
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-order-history.html" class="nav-link">
-                                            <i class="bx bxs-cart"></i>Order History
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-qa.html" class="nav-link">
-                                            <i class="bx bxs-bookmark-alt"></i>Question & Answer
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-referral.html" class="nav-link">
-                                            <i class="bx bxs-user-plus"></i>Referrals
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-messages.html" class="nav-link">
-                                            <i class="bx bxs-chat"></i>Messages
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="mentor-tickets.html" class="nav-link">
-                                            <i class="bx bxs-coupon"></i>Support Tickets
-                                        </a>
-                                    </li>
-                                </ul>
-                                <h3>Account Settings</h3>
-                                <ul>
-                                    <li class="nav-item active">
-                                        <a href="mentor-settings.html" class="nav-link ">
-                                            <i class="bx bxs-cog"></i>Settings
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="index-2.html" class="nav-link">
-                                            <i class="bx bxs-log-out"></i>Logout
-                                        </a>
-                                    </li>
-                                </ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-wishlist.html" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Wishlist
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-reviews.html" class="nav-link">
+                                                <i class="bx bxs-star"></i>Reviews
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-referral.html" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Referrals
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-notifications.html" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-settings.html" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>			
-                    </div>
-                    <!-- /Sidebar -->
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope.usernameRole eq 'mentor'}">
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item active">
+                                            <a href="instructor-dashboard.html" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Dashboard
+                                            </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="instructor-profile.html" class="nav-link">
+                                                <i class="bx bxs-user"></i>My Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-wishlist.html" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Wishlist
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-reviews.html" class="nav-link">
+                                                <i class="bx bxs-star"></i>Reviews
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-referral.html" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Referrals
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-notifications.html" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    <h3>Instructor</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-course.html" class="nav-link ">
+                                                <i class="bx bxs-rocket"></i>My Courses
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-course.html" class="nav-link ">
+                                                <i class="bx bxs-rocket"></i>My Curriculum Vitae
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Inviting Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-referral.html" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Statistic Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-announcements.html" class="nav-link">
+                                                <i class="bx bxs-volume-full"></i>Announcements
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-withdraw.html" class="nav-link ">
+                                                <i class="bx bxs-wallet"></i>Withdrawls
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-earnings.html" class="nav-link">
+                                                <i class="bx bxs-badge-dollar"></i>Earnings
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-settings.html" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Sidebar -->
+                    </c:if> 
 
                     <!-- Mentor Settings -->
                     <div class="col-xl-9 col-lg-9">	
@@ -162,7 +250,7 @@
                                 <div class="settings-page-head">
                                     <ul class="settings-pg-links">
                                         <li><a href="updatementorprofile?username=${mentor.username}" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
-                                        <li><a href="mentor-change-password.html"><i class="bx bx-lock"></i>Change Password</a></li>
+                                        <li><a href="/HAPPYorSAD/view/ChangePassword.jsp"><i class="bx bx-lock"></i>Change Password</a></li>
                                         <li><a href="mentor-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
                                         <li><a href="mentor-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
                                         <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>

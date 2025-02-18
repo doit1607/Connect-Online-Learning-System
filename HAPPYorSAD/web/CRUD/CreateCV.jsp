@@ -48,12 +48,19 @@
             <div class="cv-container">
                 <h2>Create CV of Mentor</h2>
 
-                <form action="CreateCV" method="get">
+                <form action="CreateCV" method="post">
                     <!-- Personal Information -->
                     <div class="contact-info">
-                        <c:if test="${not empty successMessage}">
+                        <c:if test="${not empty sessionScope.successMessage}">
                             <div class="alert alert-success">
-                            ${successMessage}
+                                ${sessionScope.successMessage}
+                            </div>
+                            <c:remove var="successMessage" scope="session"/>
+                        </c:if>
+
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger">
+                                ${errorMessage}
                             </div>
                         </c:if>
                         <h3>Information</h3>

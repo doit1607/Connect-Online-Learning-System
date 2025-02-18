@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
 import model.DAOuser;
+import model.DaoCV;
 
 import utils.EmailUtil;
 
@@ -38,6 +39,7 @@ public class LoginUserController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
+        DaoCV userCV = new DaoCV();
         String service = request.getParameter("service");
 
         if ("login".equals(service)) {
@@ -63,16 +65,19 @@ public class LoginUserController extends HttpServlet {
                     if (role.equalsIgnoreCase("Mentor")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
+                        session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Mentee")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
+                        session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Manager")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
+                        session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         response.sendRedirect("Manager");
                     }
                 } else {
@@ -173,12 +178,12 @@ public class LoginUserController extends HttpServlet {
                     request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", "Old password same with new password.Please input again!");
-                    request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                    request.getRequestDispatcher("/view/ChangePassword.jsp").forward(request, response);
                 }
 
             } else {
                 request.setAttribute("error", "Incorrect old password!");
-                request.getRequestDispatcher("/sourcesHome/ChangePass.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/ChangePassword.jsp").forward(request, response);
             }
         }
 
@@ -189,12 +194,7 @@ public class LoginUserController extends HttpServlet {
                 String newPassword = generateRandomPassword();
                 userDAO.updatePassword(username, newPassword);
                 EmailUtil em = new EmailUtil();
-                String subject = "Password Reset Request";
-                String message = "Hello " + username + ",\n\n"
-                        + "Your password has been reset. Your new password is: " + newPassword + "\n\n"
-                        + "For security reasons, please change your password after logging in.\n\n"
-                        + "Best regards,\nSupport Team";
-                em.sendVerificationEmail(email, subject, message);
+                em.sendVerificationEmail(email, username, newPassword);
                 request.setAttribute("msg", "A new password has been sent to your email.");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {

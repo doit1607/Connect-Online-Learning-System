@@ -52,7 +52,7 @@
                                 <h2 class="breadcrumb-title">Dashboard</h2>
                                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="Home">Home</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                                     </ol>
                                 </nav>
@@ -80,8 +80,8 @@
                                     </div>
                                     <div class="profile-group">
                                         <div class="profile-name text-center">
-                                            <h4><a href="instructor-profile.html">Eugene Andre</a></h4>
-                                            <p>Instructor</p>
+                                            <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
+                                            <p>Mentor</p>
                                             <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
                                         </div>
                                     </div>
@@ -131,7 +131,8 @@
                                         </li>
 
                                     </ul>
-                                    <h3>Instructor</h3>
+                                    
+                                    <h3>Mentor</h3>
                                     <ul>
                                         <li class="nav-item">
                                             <a href="instructor-course.html" class="nav-link ">
@@ -178,7 +179,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="index-2.html" class="nav-link">
+                                             <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
                                             </a>
                                         </li>

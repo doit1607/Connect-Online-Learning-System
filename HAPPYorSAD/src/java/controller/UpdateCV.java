@@ -35,27 +35,7 @@ public class UpdateCV extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String profession = request.getParameter("profession");
-        String professionIntro = request.getParameter("professionIntro");
-        String serviceDescription = request.getParameter("serviceDescription");
-        String achievementDescription = request.getParameter("achievementDescription");
-        String[] courses = request.getParameterValues("courses");
-        List<String> courseList = (courses != null) ? Arrays.asList(courses) : new ArrayList<>();
-        
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("usernameUser");
-        
-        DAOuser mentor = new DAOuser();
-        User u = mentor.getMentorByUsername(username);
-        request.setAttribute("mentor", u);
-        
-        DaoCV dao = new DaoCV();
-        CV cv = dao.getCVByUsername(username);
-        request.setAttribute("cv", cv);
-        
-        dao.updateCV(profession, professionIntro, serviceDescription, achievementDescription, courseList, username);
-        request.setAttribute("successMessage", "Update CV successfully!");
-        request.getRequestDispatcher("/CRUD/UpdateCV.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -70,7 +50,18 @@ public class UpdateCV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+
+        DAOuser mentor = new DAOuser();
+        User u = mentor.getMentorByUsername(username);
+        request.setAttribute("mentor", u);
+
+        DaoCV dao = new DaoCV();
+        CV cv = dao.getCVByUsername(username);
+        request.setAttribute("cv", cv);
+
+        request.getRequestDispatcher("/CRUD/UpdateCV.jsp").forward(request, response);
     }
 
     /**
@@ -84,7 +75,30 @@ public class UpdateCV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+
+        String profession = request.getParameter("profession");
+        String professionIntro = request.getParameter("professionIntro");
+        String serviceDescription = request.getParameter("serviceDescription");
+        String achievementDescription = request.getParameter("achievementDescription");
+        String[] courses = request.getParameterValues("courses");
+        List<String> courseList = (courses != null) ? Arrays.asList(courses) : new ArrayList<>();
+
+        if (profession != null && !profession.isEmpty()
+                && professionIntro != null && !professionIntro.isEmpty()
+                && serviceDescription != null && !serviceDescription.isEmpty()
+                && achievementDescription != null && !achievementDescription.isEmpty()) {
+
+            DaoCV dao = new DaoCV();
+            dao.updateCV(profession, professionIntro, serviceDescription, achievementDescription, courseList, username);
+
+            session.setAttribute("successMessage", "Update CV successfully!");
+            response.sendRedirect("UpdateCV");
+        } else {
+            request.setAttribute("errorMessage", "Please fill in all required fields.");
+            doGet(request, response);
+        }
     }
 
     /**

@@ -13,28 +13,15 @@
             <meta charset="utf-8">         
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">         
             <title>Dreams LMS</title>          
-
-            <!-- Favicon -->         
             <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">          
-
-            <!-- Theme Settings Js -->         
             <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>          
-
-            <!-- Bootstrap CSS -->         
             <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">          
-
-            <!-- Fontawesome CSS -->         
             <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">         
-            <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">          
-
-            <!-- Owl Carousel CSS -->         
+            <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">      
+            
             <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">         
             <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">          
-
-            <!-- Feathericon CSS -->         
             <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/feather/feather.css">          
-
-            <!-- Main CSS  -->         
             <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css"> 
         </head>
         <body>
