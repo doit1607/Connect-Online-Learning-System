@@ -131,8 +131,7 @@
                                         </li>
 
                                     </ul>
-                                    
-                                    <h3>Mentor</h3>
+                                    <h3>Instructor</h3>
                                     <ul>
                                         <li class="nav-item">
                                             <a href="instructor-course.html" class="nav-link ">

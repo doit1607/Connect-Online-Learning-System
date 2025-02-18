@@ -54,6 +54,7 @@ public class UpdateMentorProfile extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
     
+
         User u = mento.getMentorByUsername(username);
 
         request.setAttribute("mentor", u);
