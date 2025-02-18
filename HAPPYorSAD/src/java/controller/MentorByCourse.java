@@ -42,7 +42,6 @@ public class MentorByCourse extends HttpServlet {
         List<Mentor> list = dao.getMentorsByCourse(courseName);
         HttpSession session = request.getSession();
         session.setAttribute("listAllMentorByCourse", list);
-        
 
         request.getRequestDispatcher("view/MentorByCourse.jsp").forward(request, response);
     }

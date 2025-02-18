@@ -59,7 +59,7 @@ public class Mentor {
         this.total_Mentor = total_Mentor;
     }
 
-    public Mentor( String name, double rating, double pricePerSlot, String expertise, String image, String username, int total_mentees, int total_reviews) {
+    public Mentor(String name, double rating, double pricePerSlot, String expertise, String image, String username, int total_mentees, int total_reviews) {
         this.name = name;
         this.rating = rating;
         this.pricePerSlot = pricePerSlot;
@@ -273,5 +273,4 @@ public class Mentor {
         return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + ", total_reviews=" + total_reviews + ", username=" + username + ", CurentlyRequests=" + CurentlyRequests + ", completed=" + completed + ", total_Mentor=" + total_Mentor + '}';
     }
 
-    
 }

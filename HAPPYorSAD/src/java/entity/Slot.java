@@ -14,40 +14,19 @@ public class Slot {
 
     private int slotId;
     private int scheduleId;
-    private Date startTime;
-    private Date endTime;
-    private int duration;
-    private String status;
-    private boolean is_booked;
+    private int slotNumber;
+    private boolean isBooked;
+    private Integer bookedByMenteeId;
 
-    public boolean getIs_booked() {
-        return is_booked;
+    public Slot() {
     }
 
-    public void setIs_booked(boolean is_booked) {
-        
-        this.is_booked = is_booked;
-    }
-
-    public Slot(int scheduleId, Date startTime, Date endTime, int duration, boolean is_booked) {
+    public Slot(int slotId, int scheduleId, int slotNumber, boolean isBooked, Integer bookedByMenteeId) {
+        this.slotId = slotId;
         this.scheduleId = scheduleId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.is_booked = is_booked;
-    }
-
-    public Slot(Date startTime, Date endTime, int duration, String status) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.status = status;
-    }
-
-    public Slot( Date startTime, Date endTime, boolean is_booked) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.is_booked = is_booked;
+        this.slotNumber = slotNumber;
+        this.isBooked = isBooked;
+        this.bookedByMenteeId = bookedByMenteeId;
     }
 
     public int getSlotId() {
@@ -66,42 +45,33 @@ public class Slot {
         this.scheduleId = scheduleId;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public int getSlotNumber() {
+        return slotNumber;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setSlotNumber(int slotNumber) {
+        this.slotNumber = slotNumber;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public boolean isBooked() {
+        return isBooked;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setBooked(boolean isBooked) {
+        this.isBooked = isBooked;
     }
 
-    public int getDuration() {
-        return duration;
+    public Integer getBookedByMenteeId() {
+        return bookedByMenteeId;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setBookedByMenteeId(Integer bookedByMenteeId) {
+        this.bookedByMenteeId = bookedByMenteeId;
     }
 
     @Override
     public String toString() {
-        return "Slot{" + "slotId=" + slotId + ", scheduleId=" + scheduleId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + ", status=" + status + ", is_booked=" + is_booked + '}';
+        return "Slot{" + "slotId=" + slotId + ", scheduleId=" + scheduleId + ", slotNumber=" + slotNumber + ", isBooked=" + isBooked + ", bookedByMenteeId=" + bookedByMenteeId + '}';
     }
 
-   
 }

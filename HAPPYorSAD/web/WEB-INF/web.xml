@@ -84,14 +84,6 @@
         <servlet-name>Schedule</servlet-name>
         <servlet-class>controller.Schedule</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>Slot</servlet-name>
-        <servlet-class>controller.Slot</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>manageSlot</servlet-name>
-        <servlet-class>controller.manageSlot</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -159,14 +151,6 @@
     <servlet-mapping>
         <servlet-name>Schedule</servlet-name>
         <url-pattern>/Schedule</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Slot</servlet-name>
-        <url-pattern>/Slot</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>manageSlot</servlet-name>
-        <url-pattern>/manageSlot</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
