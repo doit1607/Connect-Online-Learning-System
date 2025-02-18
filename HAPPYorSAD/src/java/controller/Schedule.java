@@ -13,7 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import model.DAOMentor;
 import model.DAOschedule;
+import model.DAOslot;
 
 /**
  *
@@ -34,43 +37,60 @@ public class Schedule extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        if (session == null || session.getAttribute("userId") == null) {
-            System.out.println("Session invalid");
-            response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
-            return;
-        }
+        // Lấy userId từ session
         Integer userId = (Integer) session.getAttribute("userId");
-
         if (userId == null) {
-            response.sendRedirect("view/LoginUser.jsp");
+            response.sendRedirect("/HAPPYorSAD/view/login.jsp");
             return;
         }
-        System.out.println("Session ID: " + session.getId());
-        System.out.println("User ID from session: " + session.getAttribute("userId"));
 
-        Date scheduleDate = null;
+        // Lấy mentorId từ userId
+        DAOMentor daoMentor = new DAOMentor();
+        Integer mentorId = daoMentor.getMentorIdByUserId(userId);
+
+        if (mentorId == null) {
+            response.sendRedirect("/HAPPYorSAD/view/SetSchedule.jsp?msg=no_mentor");
+            return;
+        }
+        session.setAttribute("mentorId", mentorId);
+        System.out.println("Mentor ID: " + mentorId);
+
+        String dayOfWeek = request.getParameter("day");
 
         try {
-            String schedule = request.getParameter("schedule");
-
-            if (schedule == null || schedule.trim().isEmpty()) {
+            String scheduleStr = request.getParameter("schedule");
+            if (scheduleStr == null || scheduleStr.trim().isEmpty()) {
                 response.sendRedirect("/HAPPYorSAD/view/SetSchedule.jsp?msg=invalid_date");
                 return;
             }
-
+            // Chuyển đổi ngày từ String sang java.sql.Date
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            formatter.setLenient(false); // Ngăn chặn các giá trị ngày không hợp lệ
-            scheduleDate = formatter.parse(schedule);
+            formatter.setLenient(false); // Ngăn chặn ngày không hợp lệ
+            java.util.Date scheduleDateUtil = formatter.parse(scheduleStr);
+            Date scheduleDate = new Date(scheduleDateUtil.getTime());
 
-            DAOschedule daoS = new DAOschedule();
-            boolean check = daoS.addSchedule(userId, scheduleDate);
+            DAOschedule daoSchedule = new DAOschedule();
 
-            request.getRequestDispatcher("/HAPPYorSAD/view/SetSchedule.jsp?msg=" + (check ? "success" : "error")).forward(request, response);
+            // Lấy hoặc tạo scheduleId
+            int scheduleId = daoSchedule.getOrCreateScheduleId(mentorId, dayOfWeek);
+            if (scheduleId == -1) {
+                response.sendRedirect("/HAPPYorSAD/view/SetSchedule.jsp?msg=error");
+                return;
+            }
+
+            // Lấy danh sách slot theo scheduleId
+            DAOslot daoSL = new DAOslot();
+            
+
+            // Đặt danh sách slot vào request và chuyển hướng đến JSP
+            request.setAttribute("slots", slots);
+            request.setAttribute("dayOfWeek", dayOfWeek);
+            request.getRequestDispatcher("/HAPPYorSAD/view/SetSchedule.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error");
+            response.sendRedirect("/HAPPYorSAD/view/error.jsp");
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

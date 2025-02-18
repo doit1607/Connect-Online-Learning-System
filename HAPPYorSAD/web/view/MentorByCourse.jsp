@@ -123,7 +123,7 @@
                                         </div>
                                         <div class="instructor-content">												
                                             <h5><a href="ProfileServlet">${mentor.name}</a></h5>
-                                            <h6>@${mentor.username}</h6>
+                                            <h6>@ ${mentor.username}</h6>
                                             <div class="instructor-info">
                                                 <div class="rating-img d-flex align-items-center justify-content-center">
                                                     <img src="assets/img/icon/icon-01.svg" class="me-1" alt="Img">

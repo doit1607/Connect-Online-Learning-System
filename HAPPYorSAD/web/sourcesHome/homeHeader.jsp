@@ -120,7 +120,7 @@
                                                 </div>
                                             </div>
                                             <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
+                                            <a class="dropdown-item" href="Slot"><i class="feather-star me-1"></i> Slot</a>
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                                                 <c:choose>
