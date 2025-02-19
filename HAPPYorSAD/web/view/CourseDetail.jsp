@@ -36,10 +36,9 @@
 
     </head>
     <body>
-
         <!-- Main Wrapper -->
         <div class="main-wrapper">
-
+        
 
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar">
@@ -111,33 +110,6 @@
                                     <h6>Course Time</h6>
                                     <p>Create at: ${detail.createdAt}</p> 
                                     <p>updatedAt: ${detail.updatedAt}</p> 
-                                    <!--                                    <h6>What you'll learn</h6>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <ul>
-                                                                                    <li>Become a UX designer.</li>
-                                                                                    <li>You will be able to add UX designer to your CV</li>
-                                                                                    <li>Become a UI designer.</li>
-                                                                                    <li>Build & test a full website design.</li>
-                                                                                    <li>Build & test a full mobile app.</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <ul>
-                                                                                    <li>Learn to design websites & mobile phone apps.</li>
-                                                                                    <li>You'll learn how to choose colors.</li>
-                                                                                    <li>Prototype your designs with interactions.</li>
-                                                                                    <li>Export production ready assets.</li>
-                                                                                    <li>All the techniques used by UX professionals</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                        <h6>Requirements</h6>
-                                                                        <ul class="mb-0">
-                                                                            <li>You will need a copy of Adobe XD 2019 or above. A free trial can be downloaded from Adobe.</li>
-                                                                            <li>No previous design experience is needed.</li>
-                                                                            <li class="mb-0">No previous Adobe XD skills are needed.</li>
-                                                                        </ul>-->
                                 </div>
                             </div>
                             <!-- /Overview -->
@@ -279,7 +251,7 @@
                                                     <h2 class="title"><a href="">Study with Instructor Trung An</a></h2>
                                                     <p><span>$99.00</span> 50% off</p>
                                                 </div>
-                                                <h2><a href="checkout.html" class="btn btn-enroll w-100">Invite</a></h2>
+                                                <h2><a href="CreateRequest" class="btn btn-enroll w-100">Invite</a></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -327,10 +299,10 @@
                 </div>
             </section>
             <!-- /Pricing Plan -->
-
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
         </div>
         <!-- /Main Wrapper -->
-
+        
         <!-- jQuery -->
         <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 

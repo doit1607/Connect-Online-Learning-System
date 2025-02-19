@@ -73,7 +73,6 @@ public class DAOCourse extends DBConnection {
 //        }
 //        return false;
 //    }
-    
     public void createCourse(String title, String description, int majorId, String image) {
         String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image]) "
                 + "VALUES (?, ?, ?, ?, ?)";
@@ -252,7 +251,7 @@ public class DAOCourse extends DBConnection {
             PreparedStatement connect = conn.prepareStatement(query);
             connect.setInt(1, id);
             ResultSet result = connect.executeQuery();
-            
+
             while (result.next()) {
                 id = result.getInt("id");
                 String title = result.getString("title");
@@ -276,6 +275,48 @@ public class DAOCourse extends DBConnection {
         return null;
     }
 
+    public ArrayList<Course> getCourseByMentorId(int mentorId) {
+        ArrayList<Course> listCourse = new ArrayList<>();
+        String query = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "  where [mentor_id] = ?";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            connect.setInt(1, mentorId);
+            ResultSet result = connect.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("id");
+                String title = result.getString("title");
+                String description = result.getString("description");
+                int managerId = result.getInt("manager_id");
+                mentorId = result.getInt("mentor_id");
+                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
+                int courseMajorId = result.getInt("course_major_id");
+                String status = result.getString("status");
+                String image = result.getString("image");
+                Course course =new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                listCourse.add(course);
+
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCourse;
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
@@ -284,7 +325,6 @@ public class DAOCourse extends DBConnection {
 //        for (Course course : listCourseHome) {
 //            System.out.println(course);
 //        }
-
 //        List<Course> listCourse1 = dao.getAllCourse();
 //        System.out.println(listCourse1);
 //        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
@@ -295,7 +335,7 @@ public class DAOCourse extends DBConnection {
 //        } else {
 //            System.out.println("Create failed!");
 //        }
-        Course course = dao.getCourseById(1);
-        System.out.println(course);
+        List<Course> listCourseHome = dao.getCourseByMentorId(1) ;
+        System.out.println(listCourseHome);
     }
 }
