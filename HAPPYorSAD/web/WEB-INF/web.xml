@@ -152,6 +152,22 @@
         <servlet-name>Slot</servlet-name>
         <url-pattern>/Slot</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>controller.ajaxServlet</servlet-class>  
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/ajaxServlet</url-pattern> 
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <servlet-class>controller.VNPayReturnServlet</servlet-class>  
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <url-pattern>/VNPayReturnServlet</url-pattern> 
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
         <!-- 30 phút -->

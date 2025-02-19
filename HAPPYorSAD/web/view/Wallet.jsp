@@ -96,6 +96,9 @@
                                                         <label class="form-control-label">Card Number</label>
                                                         <input type="text" class="form-control" name="cardNumber">
                                                     </div>
+                                                    <c:if test = "${param.msg != null}">
+                                                        ${param.msg}
+                                                    </c:if>
                                                 </div>
                                                 <div class="payment-btn">
                                                     <button class="btn btn-primary" type="submit">Proceed</button>
@@ -120,7 +123,7 @@
 
                     if (withdrawRadio.checked) {
                         cardInputDiv.style.display = "block";
-                        form.action = "/../HAPPYorSAD/WithdrawServlet"; 
+                        form.action = "/../HAPPYorSAD/VNPayReturnServlet?service=withdraw"; 
                     } else {
                         cardInputDiv.style.display = "none";
                         form.action = "/../HAPPYorSAD/ajaxServlet";

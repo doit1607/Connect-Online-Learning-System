@@ -54,7 +54,19 @@ public class TransactionDAO extends DBConnection{
     // Deposit money to user's wallet
     public void depositToWallet(String username, double amount) {
         try{
-            String query = "UPDATE Users SET balance = balance + ? WHERE username = ?";
+            String query = "UPDATE Wallets SET balance = balance + ? WHERE username = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setDouble(1, amount);
+            stmt.setString(2, username);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void withdrawToWallet(String username, double amount) {
+        try{
+            String query = "UPDATE Wallets SET balance = balance - ? WHERE username = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDouble(1, amount);
             stmt.setString(2, username);

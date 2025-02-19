@@ -56,7 +56,7 @@ public class ajaxServlet extends HttpServlet {
         String vnp_OrderInfo = "Thanh toan don hang";
         String vnp_OrderType = "other";
         String vnp_Locale = "vn";
-        String vnp_ReturnUrl = "http://localhost:9999/HAPPYorSAD/VNPayReturnServlet?amount="+amountStr;
+        String vnp_ReturnUrl = "http://localhost:9999/HAPPYorSAD/VNPayReturnServlet?service=deposit&amount="+amountStr;
         String vnp_IpAddr = req.getRemoteAddr();
         String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
 

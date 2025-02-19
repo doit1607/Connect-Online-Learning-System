@@ -4,7 +4,6 @@
  */
 package controller;
 
-import entity.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -33,16 +32,7 @@ public class VNPayReturnServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet VNPayReturnServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet VNPayReturnServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            doGet(request, response);
         }
     }
 
@@ -60,22 +50,45 @@ public class VNPayReturnServlet extends HttpServlet {
         String vnp_TxnRef = request.getParameter("vnp_TxnRef"); // Lấy mã giao dịch
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode"); // Mã phản hồi từ VNPay
         HttpSession session = request.getSession();
-        String username = (String)session.getAttribute("usernameUser");
+        String username = (String) session.getAttribute("usernameUser");
         TransactionDAO transactionDAO = new TransactionDAO();
         double amount = Double.parseDouble(request.getParameter("amount"));
-        if ("00".equals(vnp_ResponseCode)) {     
-            int id = transactionDAO.createTransaction(username, amount, "DEPOSIT");
-            transactionDAO.depositToWallet(username, amount); 
-            double balance = amount+transactionDAO.getBalance(username);
-            transactionDAO.updateBalance(username, balance);
-            String msg = "Your payment is sucessfull!";
-            session.setAttribute("walletBalance", balance);
-            response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg="+msg);
-        } else {
-            transactionDAO.updateTransactionStatus(Integer.parseInt(vnp_TxnRef), "FAILED");
-            String msg = "Your payment is failed!";
-            response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg="+msg);
+        String service = request.getParameter("service");
+        if ("deposit".equalsIgnoreCase(service)) {
+            if ("00".equals(vnp_ResponseCode)) {
+                int id = transactionDAO.createTransaction(username, amount, "DEPOSIT");
+                transactionDAO.depositToWallet(username, amount);
+                double balance = amount + transactionDAO.getBalance(username);
+                transactionDAO.updateBalance(username, balance);
+                String msg = "Your payment is sucessfull!";
+                session.setAttribute("walletBalance", balance);
+                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+            } else {
+                transactionDAO.updateTransactionStatus(Integer.parseInt(vnp_TxnRef), "FAILED");
+                String msg = "Your payment is failed!";
+                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+            }
         }
+        if ("withdraw".equalsIgnoreCase(service)) {
+            double wallet = transactionDAO.getBalance(username); 
+
+            if (amount < wallet) {
+                int id = transactionDAO.createTransaction(username, amount, "WITHDRAW");
+                transactionDAO.withdrawToWallet(username, amount);
+                double newBalance = transactionDAO.getBalance(username); 
+                transactionDAO.updateBalance(username, newBalance);
+
+                String msg = "Your payment is successful!";
+                session.setAttribute("walletBalance", newBalance); 
+                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+
+            } else {
+                String msg = "Your withdrawal request was unsuccessful due to insufficient funds in your wallet.";
+                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+            }
+
+        }
+
     }
 
     /**

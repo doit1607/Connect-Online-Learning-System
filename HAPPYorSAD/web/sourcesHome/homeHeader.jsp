@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%-- 
     Document   : homeHeader
     Created on : Jan 19, 2025, 4:17:41 PM
@@ -81,7 +82,7 @@
                                             <ul class="submenu">
                                                 <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
                                                     <li><a href="CreateCourses">Add Course</a></li>
-                                                </c:if>
+                                                    </c:if>
 
                                                 <li><a href="course-list.html">Course List</a></li>
 
@@ -119,8 +120,15 @@
                                                     <p class="text-muted mb-0">${sessionScope.usernameRole}</p>
                                                 </div>
                                             </div>
+                                            <a class="dropdown-item" href="/../HAPPYorSAD/view/Wallet.jsp">
+                                                <i class="feather-star me-1"></i> Wallet:
+                                                <fmt:formatNumber value="${sessionScope.walletBalance}" 
+                                                                  type="number" 
+                                                                  pattern="#,##0" 
+                                                                  currencySymbol="" /> đ
+                                            </a>
                                             <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
-                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-star me-1"></i> Wallet</a>
+
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                                                 <c:choose>
