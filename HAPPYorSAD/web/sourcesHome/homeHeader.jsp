@@ -81,7 +81,7 @@
                                             <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                                 <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
-                                                    <li><a href="CreateCourses">Add Course</a></li>
+<!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
                                                     </c:if>
 
                                                 <li><a href="course-list.html">Course List</a></li>
@@ -136,7 +136,7 @@
                                                         <a class="dropdown-item" href="CreateCV"><i class="feather-star me-1"></i> Create CV</a>
                                                     </c:when>
 
-                                                    <c:when test="${sessionScope.cvStatus eq 'pending'}">
+                                                    <c:when test="${sessionScope.cvStatus eq 'draft'}">
                                                         <a class="dropdown-item" href="UpdateCV"><i class="feather-star me-1"></i> Update CV</a>
                                                     </c:when>
                                                 </c:choose>

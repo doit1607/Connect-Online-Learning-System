@@ -81,7 +81,7 @@ public class LoginUserController extends HttpServlet {
                     if (role.equalsIgnoreCase("Manager")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
-                        response.sendRedirect("");
+                        response.sendRedirect("Manager");
                     }
                 } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");

@@ -75,6 +75,10 @@
                                 <span class="text">${mentor.fullname}</span>
                             </li>
                             <li>
+                                <span class="icon">Phone 📱:</span>
+                                <span class="text">${mentor.phoneNumber}</span>
+                            </li>
+                            <li>
                                 <span class="icon">Date of Birth 🎂:</span>
                                 <span class="text">${mentor.dateOfBirth}</span>
                             </li>
@@ -94,53 +98,20 @@
                     </div>
                     <!-- Profession and Courses -->
                     <div class="input-block">
-                        <label>Profession:</label>
-                        <input type="text" name="profession" required>
+                        <label>Summary of Myself</label>
+                        <textarea name="profession" rows="3"></textarea>
                     </div>
                     <div class="input-block">
-                        <label>Profession Introduction:</label>
+                        <label>Skills</label>
                         <textarea name="professionIntro" rows="3"></textarea>
                     </div>
+                    
                     <div class="input-block">
-                        <label>Courses you can teach:</label>
-                        <div>
-                            <input type="checkbox" id="course1" name="courses" value="Computer Science">
-                            <label for="course1">Computer Science</label>
-
-                            <input type="checkbox" id="course2" name="courses" value="Data Science">
-                            <label for="course2">Data Science</label>
-
-                            <input type="checkbox" id="course3" name="courses" value="Cybersecurity">
-                            <label for="course3">Cybersecurity</label>
-
-                            <input type="checkbox" id="course4" name="courses" value="Computer Cloud">
-                            <label for="course4">Computer Cloud</label>
-
-                            <input type="checkbox" id="course5" name="courses" value="Business Administration">
-                            <label for="course5">Business Administration</label>
-
-                            <input type="checkbox" id="course6" name="courses" value="Mechanical Engineering">
-                            <label for="course6">Mechanical Engineering</label>
-
-                            <input type="checkbox" id="course7" name="courses" value="Psychology">
-                            <label for="course7">Psychology</label>
-
-                            <input type="checkbox" id="course8" name="courses" value="Graphic Design">
-                            <label for="course8">Graphic Design</label>
-
-                            <input type="checkbox" id="course9" name="courses" value="Other" onclick="toggleOtherInput()">
-                            <label for="course9">Other</label>
-                            <input type="text" id="otherCourseInput" name="otherCourse" placeholder="Please specify" style="display: none; margin-top: 5px;">
-
-                        </div>
-                    </div>
-
-                    <div class="input-block">
-                        <label>Service Description:</label>
+                        <label>Experience</label>
                         <textarea name="serviceDescription" rows="3"></textarea>
                     </div>
                     <div class="input-block">
-                        <label>Achievements:</label>
+                        <label>Education</label>
                         <textarea name="achievementDescription" rows="3"></textarea>
                     </div>
 
@@ -151,22 +122,6 @@
             </div>
         </div>
         <%@include file="../sourcesHome/homeFooter.jsp" %>
-        <script>
-
-            function toggleOtherInput() {
-                var otherCheckbox = document.getElementById("course9");
-                var otherInput = document.getElementById("otherCourseInput");
-
-                if (otherCheckbox.checked) {
-                    otherInput.style.display = "block";
-                    otherInput.required = true;
-                } else {
-                    otherInput.style.display = "none";
-                    otherInput.required = false;
-                    otherInput.value = "";
-                }
-            }
-        </script>
 
     </footer>
     <!-- /Footer -->

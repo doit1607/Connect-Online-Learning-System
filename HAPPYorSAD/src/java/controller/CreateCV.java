@@ -78,8 +78,6 @@ public class CreateCV extends HttpServlet {
         String professionIntro = request.getParameter("professionIntro");
         String serviceDescription = request.getParameter("serviceDescription");
         String achievementDescription = request.getParameter("achievementDescription");
-        String[] courses = request.getParameterValues("courses");
-        List<String> courseList = (courses != null) ? Arrays.asList(courses) : new ArrayList<>();
 
         if (profession != null && !profession.isEmpty()
                 && professionIntro != null && !professionIntro.isEmpty()
@@ -87,21 +85,22 @@ public class CreateCV extends HttpServlet {
                 && achievementDescription != null && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
+            dao.createCV(profession, professionIntro, serviceDescription, achievementDescription, username);
+            
             String cvSta = dao.getCVStatusByUsername(username);
             session.setAttribute("cvStatus", cvSta);
             
-            dao.createCV(profession, professionIntro, serviceDescription, achievementDescription, courseList, username);
             session.setAttribute("successMessage", "CV created successfully!");
-            response.sendRedirect("CreateCV");
+            request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
             return;
         }
-
+        
+        session.setAttribute("cvStatus", "draft");
         request.setAttribute("errorMessage", "Please fill in all required fields.");
         request.setAttribute("profession", profession);
         request.setAttribute("professionIntro", professionIntro);
         request.setAttribute("serviceDescription", serviceDescription);
         request.setAttribute("achievementDescription", achievementDescription);
-        request.setAttribute("courseList", courseList);
 
         request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
     }
