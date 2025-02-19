@@ -32,29 +32,35 @@ public class ProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); 
+        HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             System.out.println("Session invalid");
             response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
             return;
-        } 
+        }
         Integer userId = (Integer) session.getAttribute("userId");
         System.out.println("Session ID: " + session.getId());
         System.out.println("User ID from session: " + session.getAttribute("userId"));
-
         if (userId == null) {
             response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
             return;
         }
 
         DAOuser userDao = new DAOuser();
-        User user = userDao.getUserProfile(userId);
+        User mentor = userDao.getMentorProfile(userId);
+        User mentee = userDao.getMenteeProfile(userId);
+        String role = (String) session.getAttribute("usernameRole");
+        if (role != null) {
+            if (role.equalsIgnoreCase("mentor")) {
+                session.setAttribute("profile", mentor);
+                request.getRequestDispatcher("/Dashboard/DashboardMentorProfile.jsp").forward(request, response);
+            } else if (role.equalsIgnoreCase("mentee")) {
+                System.out.println("CheckID: " + userId);
+                session.setAttribute("profile", mentee);
+                System.out.println("Checka");
+                request.getRequestDispatcher("/Dashboard/DashboardMenteeProfile.jsp").forward(request, response);
+            }
 
-        if (user != null) {
-            System.out.println("CheckID: "+userId);
-            session.setAttribute("profile", user);
-            System.out.println("Checka");
-            request.getRequestDispatcher("/Dashboard/DashboardMentorProfile.jsp").forward(request, response);
         } else {
             response.sendRedirect("error.jsp");
         }

@@ -236,10 +236,8 @@ public class DAOMentor extends DBConnection {
                 + "FROM Mentor m\n"
                 + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id\n"
                 + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee'\n"
-                + "LEFT JOIN [MentorCourse] mc ON m.id = mc.mentor_id  \n"
-                + "LEFT JOIN Course c ON mc.course_id = c.id   \n"
-                + "WHERE 1=1  \n"
-                + "  AND (c.title = ?) \n"
+                + "LEFT JOIN Course c ON c.mentor_id = m.id   \n"
+                + "WHERE (c.title = ?)   \n"
                 + "GROUP BY m.image, m.name, m.expertise, m.rating\n"
                 + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
 
@@ -267,7 +265,7 @@ public class DAOMentor extends DBConnection {
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        List<Mentor> list = dao.getMentorsByCourse("Business Strategy and Management");
+        List<Mentor> list = dao.getMentorsByCourse("Intro to Programming");
 
         for (Mentor mentor : list) {
             System.out.println(mentor);

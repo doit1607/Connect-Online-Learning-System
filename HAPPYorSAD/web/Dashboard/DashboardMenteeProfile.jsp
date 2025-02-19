@@ -74,7 +74,7 @@
                                 <div class="settings-menu">
                                     <div class="profile-bg">
                                         <div class="profile-img">
-                                            <a href="instructor-profile.html"><img src="assets/img/user/user-17.jpg"
+                                            <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user-17.jpg"
                                                                                    alt="Img"></a>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                     <h3>Dashboard</h3>
                                     <ul>
                                         <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
+                                            <a href="ProfileServlet" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Dashboard
                                             </a>
                                         </li>

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
 import model.DAOuser;
 import model.DaoCV;
+import model.TransactionDAO;
 
 import utils.EmailUtil;
 
@@ -40,6 +41,7 @@ public class LoginUserController extends HttpServlet {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
         DaoCV userCV = new DaoCV();
+        TransactionDAO userwallet = new TransactionDAO();
         String service = request.getParameter("service");
 
         if ("login".equals(service)) {
@@ -66,19 +68,20 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
+                        session.setAttribute("walletBalance", userwallet.getBalance(username));
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Mentee")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
+                        session.setAttribute("walletBalance", userwallet.getBalance(username));
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Manager")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
-                        session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
-                        response.sendRedirect("Manager");
+                        response.sendRedirect("");
                     }
                 } else {
                     request.setAttribute("error", "Your account hasn't activated yet. Please check your email!");
