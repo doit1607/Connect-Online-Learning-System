@@ -36,13 +36,13 @@
                                             <span></span>
                                         </span>
                                     </a>
-                                    <a href="/Home" class="navbar-brand logo">
+                                    <a  class="navbar-brand logo">
                                         <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                     </a>
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="Home" class="menu-logo">
+                                        <a  class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -51,27 +51,30 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="Home">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
-                                        <li class="has-submenu active">
+                                        <li class="has-submenu">
                                             <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
+                                                
                                                 <li><a href="ViewMentor_Mentee">Mentor List</a></li>
-                                                <li><a href="instructor-dashboard.html">Dashboard</a></li>
+                                                <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
+                                                <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
                                                 <li><a href="instructor-profile.html">My CV</a></li>
                                                 <li><a href="instructor-course.html">My Course</a></li>
                                                 <li><a href="instructor-reviews.html">Reviews</a></li>
                                                 <li><a href="instructor-orders.html">Request</a></li>
                                                 <li><a href="instructor-notifications.html">Notifications</a></li>
+                                                </c:if>
                                             </ul>
                                         </li>	
                                         <c:if test="${sessionScope.usernameRole eq 'mentee'}">
                                             <li class="has-submenu">
                                                 <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
                                                 <ul class="submenu first-submenu">
-                                                    <li><a href="student-dashboard.html">Student Dashboard</a></li>
+                                                    <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
                                                     <li><a href="student-courses.html">Enrolled Courses</a></li>
                                                     <li><a href="student-settings.html">Settings</a></li>
                                                 </ul>
@@ -127,7 +130,7 @@
                                                                   pattern="#,##0" 
                                                                   currencySymbol="" /> đ
                                             </a>
-                                            <a class="dropdown-item" href="ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
+                                            <a class="dropdown-item" href="/../HAPPYorSAD/ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
 
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
@@ -194,7 +197,7 @@
                                 </div>
                                 <div class="main-menu-wrapper">
                                     <div class="menu-header">
-                                        <a href="index-2.html" class="menu-logo">
+                                        <a class="menu-logo">
                                             <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
                                         </a>
                                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -203,7 +206,7 @@
                                     </div>
                                     <ul class="main-nav">
                                         <li class="has-submenu">
-                                            <a href="#">Home <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
                                             </ul>
                                         </li>
