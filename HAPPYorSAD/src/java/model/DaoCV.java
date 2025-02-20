@@ -56,10 +56,10 @@ public class DaoCV extends DBConnection {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
             ResultSet rs = pre.executeQuery();
-            if (rs.next()) {                
+            if (rs.next()) {
                 return new CV(rs.getString("username"), rs.getString("profession"),
                         rs.getString("professionIntro"), rs.getString("serviceDescription"),
-                        rs.getString("achievementDescription"), "pending");
+                        rs.getString("achievementDescription"), "Pending");
             }
         } catch (Exception e) {
         }
@@ -84,6 +84,7 @@ public class DaoCV extends DBConnection {
             pre.executeUpdate();
         } catch (Exception e) {
         }
+
     }
 
     public static void main(String[] args) {
@@ -92,6 +93,6 @@ public class DaoCV extends DBConnection {
         //dao.updateCV("vippro", "dang cap", "anh trai", "say hi", Arrays.asList("Business Administration"), "dungmtr");
 //        String s = dao.getCVStatusByUsername("emily_white");
 //        System.out.println(s);
-        
+
     }
 }

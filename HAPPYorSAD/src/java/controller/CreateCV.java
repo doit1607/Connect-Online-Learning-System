@@ -95,7 +95,7 @@ public class CreateCV extends HttpServlet {
             return;
         }
         
-        session.setAttribute("cvStatus", "draft");
+        session.setAttribute("cvStatus", "rejected");
         request.setAttribute("errorMessage", "Please fill in all required fields.");
         request.setAttribute("profession", profession);
         request.setAttribute("professionIntro", professionIntro);

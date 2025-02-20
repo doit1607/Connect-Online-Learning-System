@@ -8,7 +8,6 @@ import entity.CV;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,7 +18,7 @@ public class DAOAcceptCV extends DBConnection {
 
     public List<CV> getCVtoAccept() {
         List<CV> cvList = new ArrayList<>();
-        String sql = "SELECT * FROM CV WHERE status = 'pending'";
+        String sql = "SELECT * FROM CV WHERE status = 'Pending'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -44,6 +43,16 @@ public class DAOAcceptCV extends DBConnection {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, status);
             pre.setString(2, username);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public void deleteCVByUsername(String username) {
+        String sql = "DELETE FROM CV WHERE username = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
             pre.executeUpdate();
         } catch (Exception e) {
         }

@@ -68,7 +68,7 @@ public class AcceptCV extends HttpServlet {
         if ("approve".equals(action)) {
             dao.updateCVStatus(username, "approved");
         } else if ("reject".equals(action)){
-            dao.updateCVStatus(username, "rejected");
+            dao.deleteCVByUsername(username);
         }
         response.sendRedirect("AcceptCV");
     }

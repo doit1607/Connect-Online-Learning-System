@@ -98,6 +98,7 @@ public class UpdateCV extends HttpServlet {
                 return;
             }
 
+            session.setAttribute("cvStatus", "draft");
             session.setAttribute("successMessage", "Update CV successfully!");
             response.sendRedirect("UpdateCV");
         } else {
