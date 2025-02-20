@@ -200,10 +200,6 @@
         <servlet-name>DraftCV</servlet-name>
         <url-pattern>/DraftCV</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateRequest</servlet-name>
-        <url-pattern>/CreateRequest</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
         <!-- 30 phút -->
