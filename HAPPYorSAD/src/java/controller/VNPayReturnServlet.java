@@ -72,7 +72,7 @@ public class VNPayReturnServlet extends HttpServlet {
         if ("withdraw".equalsIgnoreCase(service)) {
             double wallet = transactionDAO.getBalance(username); 
 
-            if (amount < wallet) {
+            if (amount <= wallet) {
                 int id = transactionDAO.createTransaction(username, amount, "WITHDRAW");
                 transactionDAO.withdrawToWallet(username, amount);
                 double newBalance = transactionDAO.getBalance(username); 
