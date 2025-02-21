@@ -56,7 +56,7 @@
                                             </ul>
                                         </li>
                                         <li class="has-submenu">
-                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
+                                            <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
 
                                                 <li><a href="ViewMentor_Mentee">Mentor List</a></li>

@@ -46,9 +46,12 @@ public class DBConnection {
         }
         return rs;
     }
-    public static Connection getConnection(){
-        return conn;
+    public static Connection getConnection() {
+    if (conn == null) {
+        new DBConnection(); // Tạo kết nối nếu chưa có
     }
+    return conn;
+}
 
     public static void main(String[] args) {
         new DBConnection();
