@@ -431,7 +431,10 @@ public class DAOuser extends DBConnection {
     
     public User getMenteeById(int id) {
 
-        String sql = "Select * from Users where id = ? and role = 'mentee'";
+        String sql = "SELECT u.* " +
+             "FROM Users u " +
+             "JOIN Mentee m ON u.id = m.user_id " +
+             "WHERE m.id = ? ";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);

@@ -69,6 +69,10 @@
         <servlet-class>controller.UpdateCV</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ViewCV</servlet-name>
+        <servlet-class>controller.ViewCV</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>controller.ProfileServlet</servlet-class>
     </servlet>
@@ -83,6 +87,26 @@
     <servlet>
         <servlet-name>Schedule</servlet-name>
         <servlet-class>controller.Schedule</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Slot</servlet-name>
+        <servlet-class>controller.Slot</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AcceptCV</servlet-name>
+        <servlet-class>controller.AcceptCV</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Manager</servlet-name>
+        <servlet-class>controller.Manager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DraftCV</servlet-name>
+        <servlet-class>controller.DraftCV</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewRequest</servlet-name>
+        <servlet-class>controller.ViewRequest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
@@ -137,6 +161,10 @@
         <url-pattern>/UpdateCV</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ViewCV</servlet-name>
+        <url-pattern>/ViewCV</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/ProfileServlet</url-pattern>
     </servlet-mapping>
@@ -151,6 +179,42 @@
     <servlet-mapping>
         <servlet-name>Schedule</servlet-name>
         <url-pattern>/Schedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Slot</servlet-name>
+        <url-pattern>/Slot</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>controller.ajaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/ajaxServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <servlet-class>controller.VNPayReturnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VNPayReturnServlet</servlet-name>
+        <url-pattern>/VNPayReturnServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AcceptCV</servlet-name>
+        <url-pattern>/AcceptCV</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Manager</servlet-name>
+        <url-pattern>/Manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DraftCV</servlet-name>
+        <url-pattern>/DraftCV</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>ViewRequest</servlet-name>
+    <url-pattern>/ViewRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

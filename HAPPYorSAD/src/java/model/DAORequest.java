@@ -28,11 +28,13 @@ public class DAORequest extends DBConnection {
         StringBuilder sql = new StringBuilder(
             "SELECT r.id, r.mentee_id, r.mentor_id, u.username AS mentor_name, " +
             "r.title, r.deadline_date, r.deadline_hour, r.content, r.status, " +
-            "r.created_at, r.updated_at " +
+            "r.created_at, r.updated_at, r.course_ids " +
             "FROM Request r " +
-            "JOIN [Users] u ON r.mentor_id = u.id " +
+            "JOIN Mentor m ON r.mentor_id = m.id " +
+            "JOIN [Users] u ON m.user_id = u.id " +
             "WHERE u.username = ? "
         );
+
 
         // Add the date filter if the date is not null
         if (date != null) {
@@ -66,7 +68,8 @@ public class DAORequest extends DBConnection {
                         rs.getString("content"),
                         rs.getString("status"),
                         rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getTimestamp("updated_at").toLocalDateTime()
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        rs.getString("course_ids")
                     );
                     requests.add(request);
                 }
@@ -85,7 +88,8 @@ public class DAORequest extends DBConnection {
         StringBuilder sql = new StringBuilder(
             "SELECT COUNT(*) AS total_count " +
             "FROM Request r " +
-            "JOIN [Users] u ON r.mentor_id = u.id " +
+            "JOIN Mentor m ON r.mentor_id = m.id " +
+            "JOIN [Users] u ON m.user_id = u.id " +
             "WHERE u.username = ? "
         );
 
@@ -113,6 +117,16 @@ public class DAORequest extends DBConnection {
 
         return count;
     }
+    public void updateRequestStatus(int requestId, String newStatus) {
+        String sql = "UPDATE Request SET status = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, newStatus);
+            stmt.setInt(2, requestId);
 
+            int rowsUpdated = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

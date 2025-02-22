@@ -134,7 +134,12 @@ public class ViewRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        int requestId = Integer.parseInt(request.getParameter("id"));
+        String status = request.getParameter("status");
+        DAORequest dao = new DAORequest();
+        dao.updateRequestStatus(requestId, status);
+        
+        response.sendRedirect("view/viewRequest.jsp");
     }
 
     /** 

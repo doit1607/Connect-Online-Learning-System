@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import model.DAOCourse;
 import model.DAOuser;
 
 /**
@@ -24,14 +27,15 @@ public class Request {
     private LocalDate deadlineDate;
     private LocalTime deadlineHour;
     private String content;
-    private String status = "Processing";
+    private String status;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
+    private String courseIds;
 
     // Constructors
     public Request() {}
 
-    public Request(int id, int menteeId, int mentorId, String title, LocalDate deadlineDate, LocalTime deadlineHour, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Request(int id, int menteeId, int mentorId, String title, LocalDate deadlineDate, LocalTime deadlineHour, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt, String courseIds) {
         this.id = id;
         this.menteeId = menteeId;
         this.mentorId = mentorId;
@@ -39,9 +43,10 @@ public class Request {
         this.deadlineDate = deadlineDate;
         this.deadlineHour = deadlineHour;
         this.content = content;
-        setStatus(status);
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.courseIds = courseIds;
     }
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -79,6 +84,13 @@ public class Request {
     public String getTitle() {
         return title;
     }
+    
+    public String getCourseIds() {
+        return courseIds;
+    }
+    public void CourseIds(String courseIds) {
+        this.courseIds = courseIds;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -113,11 +125,7 @@ public class Request {
     }
 
     public void setStatus(String status) {
-        if (status.equals("Processing") || status.equals("Rejected") || status.equals("Accepted")) {
-            this.status = status;
-        } else {
-            throw new IllegalArgumentException("Invalid status value");
-        }
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -135,5 +143,14 @@ public class Request {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
+    public List<Course> getRequestedCourses(){
+        DAOCourse dao =  new DAOCourse();
+        String[] strCourseIds = this.courseIds.split(",");
+        List<Course> list = new ArrayList<>();
+        for (String strCourseId : strCourseIds) {
+            int cid = Integer.parseInt(strCourseId);
+            list.add(dao.getCourseById(cid));
+        }
+        return list;
+    }
 }
