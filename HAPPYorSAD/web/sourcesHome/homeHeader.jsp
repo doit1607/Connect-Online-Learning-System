@@ -62,8 +62,6 @@
                                                 <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                     <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
-                                                    <li><a href="instructor-profile.html">My CV</a></li>
-                                                    <li><a href="instructor-course.html">My Course</a></li>
                                                     <li><a href="instructor-reviews.html">Reviews</a></li>
                                                     <li><a href="instructor-orders.html">Request</a></li>
                                                     <li><a href="instructor-notifications.html">Notifications</a></li>
@@ -87,7 +85,7 @@
                                                     <!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
                                                 </c:if>
 
-                                                <li><a href="course-list.html">Course List</a></li>
+                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
 
                                             </ul>
                                         </li>
@@ -223,7 +221,7 @@
                                         <li class="has-submenu">
                                             <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="course-list.html">Course List</a></li>
+                                                <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
                                             </ul>
                                         </li>
 

@@ -16,26 +16,39 @@
         <title>Dreams LMS</title>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
+
 
         <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
 
         <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
 
         <!-- Feather CSS -->
-        <link rel="stylesheet" href="assets/css/feather.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+
+        <!-- Select2 CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
     </head>
+    <%@include file="../sourcesHome/homeHeader.jsp" %>
     <body>
+
+
 
         <!-- Main Wrapper -->
         <div class="main-wrapper">
@@ -51,7 +64,7 @@
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="Home">Home</a></li>
                                         <li class="breadcrumb-item" aria-current="page"><a href="ShowAllCourse">Courses</a></li>
-                           
+
                                         <li class="breadcrumb-item" aria-current="page">${detail.title}</li>
                                     </ol>
                                 </nav>
@@ -269,14 +282,13 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <a href="" class="video-thumbnail" data-fancybox="">
-<!--                                                <div class="play-icon">
-                                                    <i class="fa-solid fa-play"></i>
-                                                </div>-->
+                                                <!--                                                <div class="play-icon">
+                                                                                                    <i class="fa-solid fa-play"></i>
+                                                                                                </div>-->
                                                 <img class="img-fluid" src="${detail.image}" alt="Img">
                                             </a>
                                             <div class="video-details">                                              
                                                 <div class="course-fee">
-                                                    <h2 class="title"><a href="">Study with Instructor Trung An</a></h2>
                                                     <p><span>$99.00</span> 50% off</p>
                                                 </div>
                                                 <h2><a href="checkout.html" class="btn btn-enroll w-100">Invite</a></h2>
@@ -330,17 +342,29 @@
 
         </div>
         <!-- /Main Wrapper -->
-
-        <!-- jQuery -->
-        <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Custom JS -->
-        <script src="assets/js/script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
-        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="de0b254082679f4d756bbefa-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910744684a4004f3","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
     </body>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/course-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:46 GMT -->
