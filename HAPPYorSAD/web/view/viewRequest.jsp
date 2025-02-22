@@ -44,22 +44,6 @@
                         <h3>Requests</h3>
                         <ul>
                                 <li>
-<!--                                        <div class="dropdown header-dropdown">
-                                                <a class="dropdown-toggle nav-tog" data-bs-toggle="dropdown" href="javascript:void(0);">
-                                                        Last 7 Days
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                        <a href="javascript:void(0);" class="dropdown-item">
-                                                                Today
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="dropdown-item">
-                                                                This Month
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="dropdown-item">
-                                                                Last 7 Days
-                                                        </a>
-                                                </div>
-                                                                            </div>-->
                                     <form action="viewRequest" method="GET">
                                         <select name="date" id="date-range" class="form-select" onchange="this.form.submit()">
                                             <option value="0" ${param.date == '0' || empty param.date ? 'selected' : ''}>All</option>
@@ -137,13 +121,6 @@
                                         
 
                     <c:forEach var="course" items="${request.getRequestedCourses()}">
-<!--                        <div class="card">
-                            <h6 class="card-header">${course.title}</h6>
-                            <div class="card-body">
-                              <p class="card-text">${course.description}</p>
-                              <a href="#" class="btn btn-primary">View details</a>
-                            </div>
-                        </div>-->
                         <div class="card mb-3" style="max-width: 540px;">
                             <div class="row g-0">
                               <div class="col-md-4">
@@ -179,16 +156,16 @@
                 <form action="viewRequest" method="POST">
                     <input type="hidden" name="id" value="${request.id}">
                     <input type="hidden" name="status" value="Processing">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa-solid fa-check"></i> Accept
-                    </button>
+                    <button type="button" class="btn btn-success" onclick="confirmAccept(this)">
+    <i class="fa-solid fa-check"></i> Accept
+</button>
                 </form>
             </li>
             <li>
-                <form action="viewRequest" method="POST">
+                <form action="viewRequest" method="POST" >
                     <input type="hidden" name="id" value="${request.id}">
                     <input type="hidden" name="status" value="Cancel">
-                    <button type="submit" class="btn btn-danger">
+                    <button type="button" class="btn btn-danger" onclick="return confirmReject(this)">
                         <i class="fa-solid fa-xmark"></i> Reject
                     </button>
                 </form>
@@ -215,13 +192,6 @@
                 </nav>
             </div>    
         </div>
-        
-        
-        
-        
-        
-        
-        
         
         
         <!-- Footer -->
@@ -365,27 +335,31 @@
         <script src="cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="4b9afacfe3a18f285e1d0e14-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107442839460f2c","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!--        <script>
-            function updateStatus(requestId, status) {
-                console.log("Updating request:", requestId, "with status:", status); // Debug
+        <script>
+    function confirmAccept(button) {
+        if (confirm("Are you sure you want to accept?")) {
+            let form = button.closest("form");
+            form.submit();
+        }
+    }
 
-                fetch('/HAPPYorSAD/viewRequest', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({ id: requestId, status: status }) // Cách chuẩn để gửi form data
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log("Server response:", data);
-                    // window.location.href = "/HAPPYorSAD/viewRequest"; // Nếu cần reload trang sau khi cập nhật
-                })
-                .catch(error => console.error("Lỗi:", error));
-            }
+    function confirmReject(button) {
+        let reason = prompt("Please enter the reason for rejection:");
+        if (reason) {
+            // Tìm form cha của nút Reject
+            let form = button.closest("form");
+            
+            // Thêm input ẩn để gửi lý do reject
+            let input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "reject_reason";
+            input.value = reason;
+            form.appendChild(input);
 
-
-        </script>-->
-
+            // Gửi form
+            form.submit();
+        }
+    }
+</script>
     </body>
 </html>

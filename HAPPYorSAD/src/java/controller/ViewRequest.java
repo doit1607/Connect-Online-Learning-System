@@ -138,6 +138,11 @@ public class ViewRequest extends HttpServlet {
         String status = request.getParameter("status");
         DAORequest dao = new DAORequest();
         dao.updateRequestStatus(requestId, status);
+        
+        if(status.equals("Cancel")){
+            String reason = request.getParameter("reject_reason");
+            dao.addRejectReason(requestId, reason);
+        }
         response.sendRedirect("/HAPPYorSAD/viewRequest");
 
     }

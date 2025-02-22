@@ -128,5 +128,20 @@ public class DAORequest extends DBConnection {
             e.printStackTrace();
         }
     }
+    public boolean addRejectReason(int requestId, String reason){
+        boolean isUpdated = false;
 
+        String sql = "INSERT INTO RejectedRequest (request_Id, message) VALUES (?, ?)";
+
+        try (PreparedStatement insertStmt = conn.prepareStatement(sql)) {
+            insertStmt.setInt(1, requestId);
+            insertStmt.setString(2, reason);
+            isUpdated = insertStmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
+    }
 }
