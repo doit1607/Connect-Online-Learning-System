@@ -15,8 +15,6 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
             <title>Dreams LMS</title>
 
-
-
         </head>
         <body>
 
@@ -63,6 +61,7 @@
                                                     <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
                                                     <li><a href="ViewCV">My CV</a></li>
+                                                    <li><a href="Slot">Schedule</a></li>
                                                     <li><a href="instructor-reviews.html">Reviews</a></li>
                                                     <li><a href="instructor-orders.html">Request</a></li>
                                                     <li><a href="instructor-notifications.html">Notifications</a></li>
@@ -75,6 +74,7 @@
                                                 <ul class="submenu first-submenu">
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
                                                     <li><a href="student-courses.html">Enrolled Courses</a></li>
+                                                    <li><a href="Schedule">Book</a></li>
                                                     <li><a href="student-settings.html">Settings</a></li>
                                                 </ul>
                                             </li>	

@@ -81,10 +81,6 @@
         <servlet-class>controller.MentorByCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SetSchedule</servlet-name>
-        <servlet-class>controller.SetSchedule</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Schedule</servlet-name>
         <servlet-class>controller.Schedule</servlet-class>
     </servlet>
@@ -173,10 +169,6 @@
         <url-pattern>/MentorByCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SetSchedule</servlet-name>
-        <url-pattern>/setSchedule</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Schedule</servlet-name>
         <url-pattern>/Schedule</url-pattern>
     </servlet-mapping>
@@ -213,8 +205,8 @@
         <url-pattern>/DraftCV</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    <servlet-name>ViewRequest</servlet-name>
-    <url-pattern>/ViewRequest</url-pattern>
+        <servlet-name>ViewRequest</servlet-name>
+        <url-pattern>/ViewRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
