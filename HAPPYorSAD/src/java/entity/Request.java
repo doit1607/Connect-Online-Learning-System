@@ -88,7 +88,7 @@ public class Request {
     public String getCourseIds() {
         return courseIds;
     }
-    public void CourseIds(String courseIds) {
+    public void setCourseIds(String courseIds) {
         this.courseIds = courseIds;
     }
 

@@ -13,19 +13,17 @@ public class CV {
     public String professionIntro;
     public String serviceDescription;
     public String achievementDescription;
-    public List<String> courses;
     public String status;
 
     public CV() {
     }
 
-    public CV(String username, String profession, String professionIntro, String serviceDescription, String achievementDescription, List<String> courses, String status) {
+    public CV(String username, String profession, String professionIntro, String serviceDescription, String achievementDescription, String status) {
         this.username = username;
         this.profession = profession;
         this.professionIntro = professionIntro;
         this.serviceDescription = serviceDescription;
         this.achievementDescription = achievementDescription;
-        this.courses = courses;
         this.status = status;
     }
 
@@ -67,14 +65,6 @@ public class CV {
 
     public void setAchievementDescription(String achievementDescription) {
         this.achievementDescription = achievementDescription;
-    }
-
-    public List<String> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<String> courses) {
-        this.courses = courses;
     }
 
     public String getStatus() {

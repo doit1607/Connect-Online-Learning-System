@@ -39,7 +39,7 @@
     </head>
 
     <body>
-
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
         <div class="main-wrapper">
 
@@ -70,35 +70,14 @@
 
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
-                                <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <div class="profile-img">
-                                            <a href="instructor-profile.html"><img src="assets/img/user/user-17.jpg"
-                                                                                   alt="Img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
-                                            <p>Mentor</p>
-                                            <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
                                         <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a href="instructor-profile.html" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>My Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -131,8 +110,7 @@
                                         </li>
 
                                     </ul>
-                                    
-                                    <h3>Mentor</h3>
+                                    <h3>Instructor</h3>
                                     <ul>
                                         <li class="nav-item">
                                             <a href="instructor-course.html" class="nav-link ">
@@ -174,12 +152,12 @@
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
+                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                             <a href="LoginUser?service=logout" class="nav-link">
+                                            <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
                                             </a>
                                         </li>
@@ -284,7 +262,7 @@
 
             </div>
         </div>
-
+ <%@include file="../sourcesHome/homeFooter.jsp" %>
         <!-- /Page Content -->
 
 

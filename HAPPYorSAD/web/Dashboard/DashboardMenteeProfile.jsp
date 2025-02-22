@@ -39,7 +39,7 @@
     </head>
 
     <body>
-
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
         <div class="main-wrapper">
 
@@ -52,7 +52,7 @@
                                 <h2 class="breadcrumb-title">Dashboard</h2>
                                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="/../HAPPYorSAD/Home">Home</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                                     </ol>
                                 </nav>
@@ -70,34 +70,13 @@
 
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
-                                <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <div class="profile-img">
-                                            <a href="instructor-profile.html"><img src="assets/img/user/user-17.jpg"
-                                                                                   alt="Img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="instructor-profile.html">${sessionScope.usernameUser}</a></h4>
-                                            <p>Mentee</p>
-                                            <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
                                         <li class="nav-item ">
-                                            <a href="instructor-profile.html" class="nav-link">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
                                                 <i class="bx bxs-user"></i>My Profile
                                             </a>
                                         </li>
@@ -134,7 +113,7 @@
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
@@ -244,7 +223,7 @@
 
             </div>
         </div>
-
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
         <!-- /Page Content -->
 
 

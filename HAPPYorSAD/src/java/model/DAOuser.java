@@ -381,11 +381,40 @@ public class DAOuser extends DBConnection {
         }
     }
 
-    public User getUserProfile(int userId) {
+    public User getMentorProfile(int userId) {
         String sql = "SELECT u.fullname, u.username, m.created_at, "
                 + "u.email, u.phone_number, m.bio "
                 + "FROM Users u "
                 + "JOIN Mentor m ON m.user_id = u.id "
+                + "WHERE u.id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, userId);  // Truyền tham số userId
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {  // Nếu có dữ liệu thì lấy
+                User user = new User(rs.getString("username"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        rs.getTimestamp("created_at"), // Sử dụng getTimestamp()
+                        rs.getString("bio"));
+                rs.close();
+                pre.close();
+                return user;
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+     public User getMenteeProfile(int userId) {
+        String sql = "SELECT u.fullname, u.username, m.created_at, "
+                + "u.email, u.phone_number "
+                + "FROM Users u "
+                + "JOIN Mentee m ON m.user_id = u.id "
                 + "WHERE u.id = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -452,13 +481,5 @@ public class DAOuser extends DBConnection {
         return null;
     }
 
-    public static void main(String[] args) {
-        DAOuser dao = new DAOuser();
-        int id =1;
-
-        User u = dao.getUserProfile(id); 
-
-        System.out.println(u);
-    }
 
 }

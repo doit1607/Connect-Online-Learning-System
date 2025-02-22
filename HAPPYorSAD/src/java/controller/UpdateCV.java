@@ -12,9 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import model.DAOAcceptCV;
 import model.DAOuser;
 import model.DaoCV;
 
@@ -82,8 +80,6 @@ public class UpdateCV extends HttpServlet {
         String professionIntro = request.getParameter("professionIntro");
         String serviceDescription = request.getParameter("serviceDescription");
         String achievementDescription = request.getParameter("achievementDescription");
-        String[] courses = request.getParameterValues("courses");
-        List<String> courseList = (courses != null) ? Arrays.asList(courses) : new ArrayList<>();
 
         if (profession != null && !profession.isEmpty()
                 && professionIntro != null && !professionIntro.isEmpty()
@@ -91,8 +87,18 @@ public class UpdateCV extends HttpServlet {
                 && achievementDescription != null && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
-            dao.updateCV(profession, professionIntro, serviceDescription, achievementDescription, courseList, username);
+            dao.updateCV(profession, professionIntro, serviceDescription, achievementDescription, username);
 
+            DAOAcceptCV dao1 = new DAOAcceptCV();
+            String submitApproval = request.getParameter("submitApproval");
+            if ("true".equals(submitApproval)) {
+                dao1.updateCVStatus(username, "Pending");
+                session.setAttribute("successMessage", "CV submitted for approval successfully!");
+                response.sendRedirect("UpdateCV");
+                return;
+            }
+
+            session.setAttribute("cvStatus", "draft");
             session.setAttribute("successMessage", "Update CV successfully!");
             response.sendRedirect("UpdateCV");
         } else {

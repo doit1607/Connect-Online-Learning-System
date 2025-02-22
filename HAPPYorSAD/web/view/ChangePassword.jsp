@@ -56,7 +56,7 @@
                                 <h2 class="breadcrumb-title">Settings</h2>
                                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item">Home</li>
+                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Change Password</li>
                                     </ol>
                                 </nav>
@@ -118,7 +118,6 @@
                                                 </li>
 
                                             </ul>
-                                            
                                             <h3>Account Settings</h3>
                                             <ul>
                                                 <li class="nav-item">
@@ -256,8 +255,6 @@
                                                 <li><a href="/../HAPPYorSAD/updatementeeprofile?username=${sessionScope.usernameUser}" ><i class="bx bx-edit"></i>Edit Profile</a></li>
                                                 </c:if>
                                                 <li><a href="/HAPPYorSAD/view/ChangePassword.jsp" class="active" ><i class="bx bx-lock"></i>Change Password</a></li>
-                                                <li><a href="mentor-social-profile.html"><i class="bx bx-user-circle"></i>Social Profiles</a></li>
-                                                <li><a href="mentor-linked-accounts.html"><i class="bx bx-link"></i>Linked Accounts</a></li>
                                                 <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
                                             </ul>
                                         </div>
