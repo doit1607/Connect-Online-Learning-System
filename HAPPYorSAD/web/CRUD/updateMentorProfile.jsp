@@ -254,7 +254,7 @@
                                         <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
                                     </ul>
                                 </div>
-                                <form action="updatementorprofile" method="post" class="checkout-form settings-wrap">
+                                <form action="updatementorprofile" method="post" class="checkout-form settings-wrap" enctype="multipart/form-data">
 
                                     <div class="checkout-form settings-wrap">
                                         <div class="edit-profile-info">
@@ -279,10 +279,8 @@
 
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="input-block">
-                                                    <label class="form-label">Avatar <span class="required">*</span></label>
-                                                    <input type="file" id="avatarUpload" accept="image/*">
-                                                </div>
+                                                <label>Avatar:</label>
+                                                <input type="file" name="avatarFile">
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="input-block">

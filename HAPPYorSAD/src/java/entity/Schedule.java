@@ -4,7 +4,7 @@
  */
 package entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -14,20 +14,48 @@ public class Schedule {
 
     private int id;
     private int mentorId;
-    private Date scheduleDate;
+    private Date start_date;
+    private Date end_date;
 
     public Schedule() {
     }
 
-    public Schedule(int id, int mentorId, Date scheduleDate) {
+    public Schedule(int id, int mentorId) {
         this.id = id;
         this.mentorId = mentorId;
-        this.scheduleDate = scheduleDate;
     }
 
-    public Schedule(int mentorId, Date scheduleDate) {
+    public Schedule(Date end_date) {
+        this.end_date = end_date;
+    }
+    
+    
+
+    public Schedule(Date start_date, Date end_date) {
+        this.start_date = start_date;
+        this.end_date = end_date;
+    }
+
+    public Date getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
+
+    public Date getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
+    }
+    
+    
+
+    public Schedule(int mentorId) {
         this.mentorId = mentorId;
-        this.scheduleDate = scheduleDate;
     }
 
     public int getId() {
@@ -46,17 +74,12 @@ public class Schedule {
         this.mentorId = mentorId;
     }
 
-    public Date getScheduleDate() {
-        return scheduleDate;
-    }
-
-    public void setScheduleDate(Date scheduleDate) {
-        this.scheduleDate = scheduleDate;
-    }
-
     @Override
     public String toString() {
-        return "Schedule{" + "id=" + id + ", mentorId=" + mentorId + ", scheduleDate=" + scheduleDate + '}';
+        return "Schedule{" + "id=" + id + ", mentorId=" + mentorId + ", start_date=" + start_date + ", end_date=" + end_date + '}';
     }
+
+
+    
 
 }

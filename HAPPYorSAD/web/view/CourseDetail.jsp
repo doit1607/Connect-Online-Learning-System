@@ -3,7 +3,7 @@
     Created on : 13 Feb 2025, 12:42:23 am
     Author     : Acer
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html> 
 <html lang="en">
@@ -13,43 +13,30 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Dreams LMS</title>
+        <title>Course Detail</title>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
 
         <!-- Theme Settings Js -->
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
         <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
 
         <!-- Feather CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
-
-        <!-- Select2 CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-
-        <!-- Dropzone -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
-
-        <!-- Boxioons CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+        <link rel="stylesheet" href="assets/css/feather.css">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style.css">
 
     </head>
-    <%@include file="../sourcesHome/homeHeader.jsp" %>
     <body>
-
-
-
+         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
         <div class="main-wrapper">
 
@@ -83,14 +70,6 @@
                             <h2>${detail.title}</h2>
                             <p>Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!</p>
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
-                                <!--                                <div class="cou-info">
-                                                                    <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                                                    <p>12+ Lesson</p>
-                                                                </div>
-                                                                <div class="cou-info">
-                                                                    <img src="assets/img/icon/timer-icon.svg" alt="Img">
-                                                                    <p>9hr 30min</p>
-                                                                </div>-->
                                 <div class="cou-info"> 
                                     <img src="assets/img/icon/timer-icon.svg" alt="Img">
                                     <p>${detail.status}</p>
@@ -124,153 +103,70 @@
                                     <h6>Course Time</h6>
                                     <p>Create at: ${detail.createdAt}</p> 
                                     <p>updatedAt: ${detail.updatedAt}</p> 
-                                    <!--                                    <h6>What you'll learn</h6>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <ul>
-                                                                                    <li>Become a UX designer.</li>
-                                                                                    <li>You will be able to add UX designer to your CV</li>
-                                                                                    <li>Become a UI designer.</li>
-                                                                                    <li>Build & test a full website design.</li>
-                                                                                    <li>Build & test a full mobile app.</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <ul>
-                                                                                    <li>Learn to design websites & mobile phone apps.</li>
-                                                                                    <li>You'll learn how to choose colors.</li>
-                                                                                    <li>Prototype your designs with interactions.</li>
-                                                                                    <li>Export production ready assets.</li>
-                                                                                    <li>All the techniques used by UX professionals</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                        <h6>Requirements</h6>
-                                                                        <ul class="mb-0">
-                                                                            <li>You will need a copy of Adobe XD 2019 or above. A free trial can be downloaded from Adobe.</li>
-                                                                            <li>No previous design experience is needed.</li>
-                                                                            <li class="mb-0">No previous Adobe XD skills are needed.</li>
-                                                                        </ul>-->
+                                    
                                 </div>
                             </div>
                             <!-- /Overview -->
 
-                            <!--List Instructor -->
-                            <div class="card instructor-sec">
-                                <div class="card-body">
-                                    <h5 class="subs-title">About the instructor</h5>
-                                    <div class="instructor-wrap">
-                                        <div class="about-instructor">
-                                            <div class="abt-instructor-img">
-                                                <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg" alt="img" class="img-fluid"></a>
+
+                            <div class="row">
+
+                                <!-- Instructor List -->
+                                <c:forEach var="mentor" items="${sessionScope.listAllMentorByCourse}"> 
+                                    <div class="col-lg-12 d-flex">
+                                        <div class="instructor-list flex-fill">
+                                            <div class="instructor-img">
+                                                <a href="ProfileServlet">
+                                                    <img class="img-fluid" alt="Img" src="${mentor.image}">
+                                                </a>
                                             </div>
-                                            <div class="instructor-detail">
-                                                <h5><a href="instructor-profile.html">Nicole Brown</a></h5>
-                                                <p>UX/UI Designer</p>
+                                            <div class="instructor-content">												
+                                                <h5><a href="ProfileServlet">${mentor.name}</a></h5>
+                                                <h6>@${mentor.username}</h6>
+                                                <div class="instructor-info">
+                                                    <div class="rating-img d-flex align-items-center justify-content-center">
+                                                        <img src="assets/img/icon/icon-01.svg" class="me-1" alt="Img">
+                                                        <p>12+ Lesson</p>
+                                                    </div>
+                                                    <div class="course-view d-flex align-items-center justify-content-center">
+                                                        <img src="assets/img/icon/icon-02.svg" class="me-1" alt="Img">
+                                                        <p>9hr 30min</p>
+                                                    </div>
+                                                    <div class="rating-img d-flex align-items-center">
+                                                        <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
+                                                        <p>${mentor.total_mentees} Mentees</p>
+                                                    </div>
+                                                    <div class="rating">
+                                                        <c:set var="ratingValue" value="${mentor.rating}"/>
+                                                        <c:set var="numReviews" value="${mentor.total_reviews}"/> 
+                                                        <c:set var="fullStars" value="${Math.floor(ratingValue)}"/>
+                                                        <c:forEach begin="1" end="5" varStatus="loop">
+                                                            <c:choose>
+                                                                <c:when test="${loop.index <= fullStars}">
+                                                                    <i class="fas fa-star filled"></i>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <i class="fas fa-star"></i>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:forEach>
+                                                        <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${numReviews})</span>
+                                                    </div>
+
+                                                    <a href="#rate" class="rating-count"><i class="fa-regular fa-heart"></i></a>
+                                                </div>
+                                                <div class="instructor-badge">
+                                                    <span class="web-badge">${mentor.expertise}</span>
+
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="rating">							
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">4.5 Instructor Rating</span>
+                                            <h2><a href="CreateRequest?mentorId=${mentor.mentorId}" class="btn btn-enroll w-100">Invite</a></h2>
                                         </div>
                                     </div>
-                                    <div class="course-info d-flex align-items-center">
-                                        <div class="cou-info">
-                                            <img src="assets/img/icon/play.svg" alt="Img">
-                                            <p>5 Courses</p>
-                                        </div>
-                                        <div class="cou-info">
-                                            <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                            <p>12+ Lesson</p>
-                                        </div>
-                                        <div class="cou-info">
-                                            <img src="assets/img/icon/icon-02.svg" alt="Img">
-                                            <p>9hr 30min</p>
-                                        </div>
-                                        <div class="cou-info">
-                                            <img src="assets/img/icon/people.svg" alt="Img">
-                                            <p>270,866 students enrolled</p>
-                                        </div>
-                                    </div>
-                                    <p>UI/UX Designer, with 7+ Years Experience. Guarantee of High Quality Work.</p>
-                                    <p>Skills: Web Design, UI Design, UX/UI Design, Mobile Design, User Interface Design, Sketch, Photoshop, GUI, Html, Css, Grid Systems, Typography, Minimal, Template, English, Bootstrap, Responsive Web Design, Pixel Perfect, Graphic Design, Corporate, Creative, Flat, Luxury and much more.</p>
+                                </c:forEach>
+                                <!-- /Instructor List -->
 
-
-                                    <p>Available for:</p>
-                                    <ul>
-                                        <li>1. Full Time Office Work</li>
-                                        <li>2. Remote Work</li>
-                                        <li>3. Freelance</li>
-                                        <li>4. Contract</li>
-                                        <li>5. Worldwide</li>
-                                    </ul>
-                                </div>
                             </div>
-                            <!-- /Instructor -->
-
-                            <!--                             Reviews 
-                                                        <div class="card review-sec">
-                                                            <div class="card-body">
-                                                                <h5 class="subs-title">Reviews</h5>
-                                                                <div class="instructor-wrap">
-                                                                    <div class="about-instructor">
-                                                                        <div class="abt-instructor-img">
-                                                                            <a href="instructor-profile.html"><img src="assets/img/user/user1.jpg" alt="img" class="img-fluid"></a>
-                                                                        </div>
-                                                                        <div class="instructor-detail">
-                                                                            <h5><a href="instructor-profile.html">Nicole Brown</a></h5>
-                                                                            <p>UX/UI Designer</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="rating">							
-                                                                        <i class="fas fa-star filled"></i>
-                                                                        <i class="fas fa-star filled"></i>
-                                                                        <i class="fas fa-star filled"></i>
-                                                                        <i class="fas fa-star filled"></i>
-                                                                        <i class="fas fa-star"></i>
-                                                                        <span class="d-inline-block average-rating">4.5 Instructor Rating</span>
-                                                                    </div>
-                                                                </div>
-                                                                <p class="rev-info">“ This is the second Photoshop course I have completed with Cristian. Worth every penny and recommend it highly. To get the most out of this course, its best to to take the Beginner to Advanced course first. The sound and video quality is of a good standard. Thank you Cristian. “</p>
-                                                                <a href="javascript:void(0);" class="btn btn-reply"><i class="feather-corner-up-left"></i> Reply</a>
-                                                            </div>
-                                                        </div>
-                                                         /Reviews 
-                            
-                                                         Comment 
-                                                        <div class="card comment-sec">
-                                                            <div class="card-body">
-                                                                <h5 class="subs-title">Post A comment</h5>
-                                                                <form>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="input-block">
-                                                                                <input type="text" class="form-control" placeholder="Full Name">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="input-block">
-                                                                                <input type="email" class="form-control" placeholder="Email">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="input-block">
-                                                                        <input type="email" class="form-control" placeholder="Subject">
-                                                                    </div>
-                                                                    <div class="input-block">
-                                                                        <textarea rows="4" class="form-control" placeholder="Your Comments"></textarea>
-                                                                    </div>
-                                                                    <div class="submit-section">
-                                                                        <button class="btn submit-btn" type="submit">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                         /Comment -->
 
                         </div>	
 
@@ -289,9 +185,10 @@
                                             </a>
                                             <div class="video-details">                                              
                                                 <div class="course-fee">
+                                                    <h2 class="title"><a href="">Study with Instructor Trung An</a></h2>
                                                     <p><span>$99.00</span> 50% off</p>
                                                 </div>
-                                                <h2><a href="checkout.html" class="btn btn-enroll w-100">Invite</a></h2>
+                                                <h2><a href="CreateRequest" class="btn btn-enroll w-100">Invite</a></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -342,29 +239,17 @@
 
         </div>
         <!-- /Main Wrapper -->
-        <%@include file="../sourcesHome/homeFooter.jsp" %>
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>            
+        <!-- jQuery -->
+        <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 
         <!-- Bootstrap Core JS -->
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Ckeditor JS -->
-        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Dropzone JS -->
-        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Sticky Sidebar JS -->
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="assets/js/bootstrap.bundle.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 
         <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="assets/js/script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="de0b254082679f4d756bbefa-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910744684a4004f3","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
     </body>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/course-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:46 GMT -->

@@ -6,14 +6,17 @@ package controller;
 
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import java.text.SimpleDateFormat;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Date;
 import model.DAOuser;
 
@@ -22,6 +25,9 @@ import model.DAOuser;
  * @author admin
  */
 @WebServlet(name = "UpdateMentorProfile", urlPatterns = {"/updatementorprofile"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
+                 maxFileSize = 1024 * 1024 * 10,       // 10MB
+                 maxRequestSize = 1024 * 1024 * 50)    // 50MB
 public class UpdateMentorProfile extends HttpServlet {
 
     /**
@@ -73,12 +79,29 @@ public class UpdateMentorProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOuser mento = new DAOuser();
+        Part filePart = request.getPart("avatarFile");
+
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String filePath = uploadPath + File.separator + fileName;
+        filePart.write(filePath);
+
+        String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
+        request.getSession().setAttribute("userAvatar", fileUrl);
+        
+        DAOuser mentor = new DAOuser();
         String username = request.getParameter("username");
-        String avatar = request.getParameter("avatar");
         String fullname = request.getParameter("fullname");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
+
         Date dateOfBirth = null;
         try {
             String dob = request.getParameter("dateOfBirth");
@@ -87,9 +110,12 @@ public class UpdateMentorProfile extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mento.updateMentorProfile(username, avatar, fullname, address, dateOfBirth, gender);
+
+        mentor.updateMentorProfile(username, fileUrl, fullname, address, dateOfBirth, gender);
+
         request.getSession().setAttribute("successMessage", "Profile updated successfully!");
         response.sendRedirect("updatementorprofile");
+    
     }
 
     /**

@@ -48,6 +48,16 @@ public class Request {
         this.updatedAt = updatedAt;
         this.courseIds = courseIds;
     }
+     public Request(int menteeId, int mentorId, String title, LocalDate deadlineDate, LocalTime deadlineHour, String content, String courseId) {
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.deadlineDate = deadlineDate;
+        this.deadlineHour = deadlineHour;
+        this.content = content;
+        this.courseIds = courseId;
+    }
+
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return this.createdAt.format(formatter);

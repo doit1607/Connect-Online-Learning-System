@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
+import model.DAORequest;
 import model.DAOuser;
 import model.DaoCV;
 import model.TransactionDAO;
@@ -41,9 +42,10 @@ public class LoginUserController extends HttpServlet {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
         DaoCV userCV = new DaoCV();
+        DAORequest daoRequest = new DAORequest();
         TransactionDAO userwallet = new TransactionDAO();
         String service = request.getParameter("service");
-
+ 
         if ("login".equals(service)) {
 
             String username = request.getParameter("usernameLogin");
@@ -51,7 +53,8 @@ public class LoginUserController extends HttpServlet {
             String rememberMe = request.getParameter("rememberMe");
             int userId = userDAO.getUserIdByUsername(username);
             session.setAttribute("userId", userId);
-
+            int menteeId = daoRequest.getMenteeIdByUserId(userId);
+            session.setAttribute("menteeId", menteeId);
             if (userDAO.loginUser(username, password)) {
                 if (userDAO.checkUserActive(username)) {
                     if ("on".equals(rememberMe)) {
