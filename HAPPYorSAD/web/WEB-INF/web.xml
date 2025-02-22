@@ -104,10 +104,6 @@
         <servlet-name>DraftCV</servlet-name>
         <servlet-class>controller.DraftCV</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ViewRequest</servlet-name>
-        <servlet-class>controller.ViewRequest</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -211,10 +207,6 @@
     <servlet-mapping>
         <servlet-name>DraftCV</servlet-name>
         <url-pattern>/DraftCV</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-    <servlet-name>ViewRequest</servlet-name>
-    <url-pattern>/ViewRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

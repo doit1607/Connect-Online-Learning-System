@@ -175,16 +175,24 @@
                                 <li><span class="text-success"><i class="fa-solid fa-check"></i>Request Accepted</span></li>
                             </c:when>
                             <c:when test="${request.status eq 'Open'}">
-                                <li>
-                                    <a class="accept-link" onclick="updateStatus(${request.id}, 'Processing')">
-                                        <i class="fa-solid fa-check"></i> Accept
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="reject-link" onclick="updateStatus(${request.id}, 'Cancel')">
-                                        <i class="fa-solid fa-xmark"></i> Reject
-                                    </a>
-                                </li>
+                                 <li>
+                <form action="viewRequest" method="POST">
+                    <input type="hidden" name="id" value="${request.id}">
+                    <input type="hidden" name="status" value="Processing">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i> Accept
+                    </button>
+                </form>
+            </li>
+            <li>
+                <form action="viewRequest" method="POST">
+                    <input type="hidden" name="id" value="${request.id}">
+                    <input type="hidden" name="status" value="Cancel">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-xmark"></i> Reject
+                    </button>
+                </form>
+            </li>
                             </c:when>
                         </c:choose>
                     </ul>
@@ -357,22 +365,27 @@
         <script src="cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="4b9afacfe3a18f285e1d0e14-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107442839460f2c","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
+<!--        <script>
             function updateStatus(requestId, status) {
-                fetch('/ViewRequest', {
+                console.log("Updating request:", requestId, "with status:", status); // Debug
+
+                fetch('/HAPPYorSAD/viewRequest', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: `id=${requestId}&status=${status}`
+                    body: new URLSearchParams({ id: requestId, status: status }) // Cách chuẩn để gửi form data
                 })
-                .then(() => {
-                    window.location.href = "/HAPPYorSAD/viewRequest"; // Chuyển hướng về trang chính sau khi cập nhật
+                .then(response => response.text())
+                .then(data => {
+                    console.log("Server response:", data);
+                    // window.location.href = "/HAPPYorSAD/viewRequest"; // Nếu cần reload trang sau khi cập nhật
                 })
                 .catch(error => console.error("Lỗi:", error));
             }
 
-        </script>
+
+        </script>-->
 
     </body>
 </html>

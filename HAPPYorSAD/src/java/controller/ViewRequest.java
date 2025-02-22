@@ -138,8 +138,8 @@ public class ViewRequest extends HttpServlet {
         String status = request.getParameter("status");
         DAORequest dao = new DAORequest();
         dao.updateRequestStatus(requestId, status);
-        
-        response.sendRedirect("view/viewRequest.jsp");
+        response.sendRedirect("/HAPPYorSAD/viewRequest");
+
     }
 
     /** 
