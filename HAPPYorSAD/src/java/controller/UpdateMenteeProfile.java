@@ -7,11 +7,15 @@ package controller;
 import entity.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.DAOuser;
@@ -21,6 +25,9 @@ import model.DAOuser;
  * @author admin
  */
 @WebServlet(name = "UpdateMenteeProfile", urlPatterns = {"/updatementeeprofile"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
+                 maxFileSize = 1024 * 1024 * 10,       // 10MB
+                 maxRequestSize = 1024 * 1024 * 50)    // 50MB
 public class UpdateMenteeProfile extends HttpServlet {
 
     /**
@@ -80,9 +87,25 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Part filePart = request.getPart("avatarFile");
+
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String filePath = uploadPath + File.separator + fileName;
+        filePart.write(filePath);
+
+        String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
+        request.getSession().setAttribute("userAvatar", fileUrl);
+        
         DAOuser mente = new DAOuser();
         String username = request.getParameter("username");
-        String avatar = request.getParameter("avatar");
         String fullname = request.getParameter("fullname");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
@@ -94,7 +117,7 @@ public class UpdateMenteeProfile extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mente.updateMenteeProfile(username, avatar, fullname, address, dateOfBirth, gender);
+        mente.updateMenteeProfile(username, fileUrl, fullname, address, dateOfBirth, gender);
         request.getSession().setAttribute("successMessage", "Profile updated successfully!");
         response.sendRedirect("updatementeeprofile");
     }

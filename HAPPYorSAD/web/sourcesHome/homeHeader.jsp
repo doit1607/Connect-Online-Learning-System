@@ -62,6 +62,7 @@
                                                 <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                     <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
+                                                    <li><a href="ViewCV">My CV</a></li>
                                                     <li><a href="instructor-reviews.html">Reviews</a></li>
                                                     <li><a href="instructor-orders.html">Request</a></li>
                                                     <li><a href="instructor-notifications.html">Notifications</a></li>
@@ -142,11 +143,11 @@
                                                     </c:when>
 
                                                     <c:when test="${sessionScope.cvStatus eq 'Pending'}">
-                                                        <a class="dropdown-item" href="ViewCV"><i class="feather-star me-1"></i> View CV</a>
+                                                        <!--<a class="dropdown-item" href="ViewCV"><i class="feather-star me-1"></i> View CV</a>-->
                                                     </c:when>
                                                 </c:choose>
                                             </c:if>
-                                            <a class="dropdown-item" href="<c:choose>
+<!--                                            <a class="dropdown-item" href="<c:choose>
                                                    <c:when test="${sessionScope.usernameRole == 'mentee'}">
                                                        updatementeeprofile?username=${sessionScope.usernameUser}
                                                    </c:when>
@@ -155,7 +156,7 @@
                                                    </c:otherwise>
                                                </c:choose>">
                                                 <i class="feather-star me-1"></i> Edit Profile
-                                            </a>
+                                            </a>-->
                                             <a class="dropdown-item" href="/../HAPPYorSAD/LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
