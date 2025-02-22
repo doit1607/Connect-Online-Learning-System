@@ -5,11 +5,14 @@
 package controller;
 
 import entity.Course;
+import entity.Mentor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import model.DAOCourse;
 /**
  *
@@ -32,8 +35,13 @@ public class CourseDetails extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("Cid"));
         DAOCourse dao = new DAOCourse();
         Course course = dao.getCourseById(id);
-        request.setAttribute("detail", course);
+        String courseName = course.getTitle();
+        List<Mentor> list = dao.getMentorByCourseTitle(courseName);
+        HttpSession session = request.getSession();
+        session.setAttribute("listAllMentorByCourse", list);
+        session.setAttribute("detail", course);
         request.getRequestDispatcher("view/CourseDetail.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
