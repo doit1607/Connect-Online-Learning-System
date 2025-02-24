@@ -51,10 +51,12 @@ public class LoginUserController extends HttpServlet {
             String username = request.getParameter("usernameLogin");
             String password = request.getParameter("passwordLogin");
             String rememberMe = request.getParameter("rememberMe");
+            String avatar = userDAO.getAvatarPath(username);
             int userId = userDAO.getUserIdByUsername(username);
             session.setAttribute("userId", userId);
             int menteeId = daoRequest.getMenteeIdByUserId(userId);
             session.setAttribute("menteeId", menteeId);
+            session.setAttribute("userAvatar", avatar);
             if (userDAO.loginUser(username, password)) {
                 if (userDAO.checkUserActive(username)) {
                     if ("on".equals(rememberMe)) {
