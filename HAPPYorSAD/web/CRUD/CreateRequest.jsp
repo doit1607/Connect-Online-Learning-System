@@ -3,7 +3,7 @@
     Created on : 21 Feb 2025, 3:45:26 pm
     Author     : Acer
 --%>
-
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,7 +23,126 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
         <link rel="stylesheet" href="/HAPPYorSAD/css/cssCRUD/CreateRequest.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 14%;
+            height: 50px;
+            text-align: center;
+
+        }
+        .has-slot {
+            background-color: #a0e7a0;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 2px;
+            margin-left: 2px;
+            margin-right: 2px;
+            margin-bottom: 2px;
+        }
+        .no-slot {
+            background-color: #f7f7f7;
+
+        }
+        .today {
+            background-color: #4CAF50 !important;
+            color: white;
+            font-weight: bold;
+            border: 2px solid #2E7D32;
+        }
+        .slot-section {
+            margin-top: 20px;
+        }
+        .month-nav {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .month-nav button {
+            padding: 10px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .month-nav button:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Chuyển tháng bằng AJAX
+            function changeMonth(offset) {
+                let month = ${currentMonth};
+                let year = ${currentYear};
+
+                month += offset;
+                if (month < 1) {
+                    month = 12;
+                    year--;
+                } else if (month > 12) {
+                    month = 1;
+                    year++;
+                }
+
+                $.ajax({
+                    url: "Schedule",
+                    type: "GET",
+                    data: {month: month, year: year},
+                    success: function (response) {
+                        $("body").html(response); // Cập nhật nội dung trang
+                    }
+                });
+            }
+
+            $(".month-nav button").on("click", function () {
+                let offset = $(this).text().includes("Tháng trước") ? -1 : 1;
+                changeMonth(offset);
+            });
+
+            // Load slot theo ngày bằng AJAX
+            $(document).on("click", ".load-slots", function (e) {
+                e.preventDefault();
+                let slotDate = $(this).data("date");
+
+                $.ajax({
+                    url: "Schedule",
+                    type: "GET",
+                    data: {slotDate: slotDate},
+                    success: function (response) {
+                        $(".slot-section").fadeOut(200, function () {
+                            $(this).html($(response).find(".slot-section").html()).fadeIn(200);
+                        });
+                    }
+                });
+            });
+
+            // Gửi form đặt lịch bằng AJAX
+            $(document).on("submit", "form[action='Schedule']", function (e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+
+                $.ajax({
+                    url: "Schedule",
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        alert("Đặt lịch thành công!");
+                        $(".slot-section").fadeOut(200, function () {
+                            $(this).html($(response).find(".slot-section").html()).fadeIn(200);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Breadcrumb -->
@@ -32,11 +151,13 @@
                 <div class="row">
                     <div class="col-md-12 col-12">
                         <div class="breadcrumb-list">
-                            <h2 class="breadcrumb-title">Support Tickets</h2>
+                            <h2 class="breadcrumb-title">Create Request</h2>
                             <nav aria-label="breadcrumb" class="page-breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Support Tickets</li>
+                                    <li class="breadcrumb-item"><a href="Home">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Course List</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Course Detail</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Create Request</li>
                                 </ol>
                             </nav>
                         </div>
@@ -45,21 +166,97 @@
             </div>
         </div>
         <!-- /Breadcrumb -->	
+
         <div class="content">
             <div class="container">
                 <div class="row">
 
                     <div class="modal-body custom-modal-body col-md-7 col-lg-8 row">
 
+                        <div class="wallet_content">
+                            <div class="wallet_title">
+                                <div class="col-md-6"> <h4>Wallet</h4> </div>
+
+                                <div class="col-md-6"><h4>Mentee Details</h4>  </div>
+                            </div>
+
+                            <div class="wallet">
+                                <div class="col-md-6">
+                                    <div class="payment-amount">
+                                        <h6 ><i class="fa fa-money" style="font-size:20px"></i> Account Balance(Số dư tài khoản):</h6>                                    
+                                        <span>120.000</span>                                      
+                                    </div> 
+                                    <br>
+                                    <div>
+                                        <h6><a href="view/Wallet.jsp" class=" btn-Recharge">Recharge</a></h6>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <ul>
+                                        <li>
+                                            <h6>Full Name</h6>
+                                        <h7></h7>
+                                        </li>
+                                        <li>
+                                            <h6>Mentee Id</h6>
+                                        <h7>${sessionScope.menteeId}</h7>
+                                        </li>
+                                        <li>
+                                            <h6>Email</h6>
+                                        <h7></h7>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div><br>
+                        <!-- Form chính để tạo Request -->
                         <form action="CreateRequest" method="POST"> 
-                            <div >
+                            <div>
                                 <h4>Add New Request</h4>
                             </div> 
                             <input type="hidden" name="mentee_id" value="${sessionScope.menteeId}">
-                            <input type="hidden" name="mentor_id" value="${sessionScope.mentorId}"/>
+                            <input type="hidden" name="mentor_id" value="${mentorId}"/>
 
                             <label>Title:</label>
-                            <input class="inputtext" type="text" name="title" required/><br/>
+                            <input class="inputtext" type="text" name="title" required/><br>
+                            <br>
+
+                            <!-- Lịch Mentor -->
+                            <h10>Lịch Mentor - ${monthName} ${currentYear}</h10>
+                            <div>                          
+                                <div class="month-nav">
+                                    <button type="button" onclick="changeMonth(-1)">⬅ Tháng trước</button>
+                                    <button type="button" onclick="changeMonth(1)">Tháng sau ➡</button>
+                                </div>
+
+                                <table>
+                                    <tr>
+                                        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                                    </tr>
+                                    <tr>
+                                        <c:forEach var="date" items="${dates}" varStatus="status">
+                                            <c:if test="${status.index % 7 == 0 && status.index != 0}">
+                                            </tr><tr>
+                                            </c:if>
+                                            <c:choose>
+                                                <c:when test="${empty date}">
+                                                    <td class="no-slot"></td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="formattedDate" value="${currentMonth}-${date}-${currentYear}" />
+                                                    <td class="has-slot ${date == currentDay ? 'today' : ''}">
+                                                        <a href="CreateRequest?slotDate=${formattedDate}&mentorId=${mentorId}&month=${currentMonth}&year=${currentYear}">
+                                                            ${date}
+                                                        </a>
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </tr>
+                                </table>
+                            </div>
 
                             <label>Deadline Date:</label><br>
                             <input class="date" type="date" name="deadline_date" required/><br/>
@@ -76,84 +273,52 @@
                                     <input type="checkbox" name="courseIds" value="${o.id}"/> ${o.title}<br/>
                                 </div>
                             </c:forEach>
-                        </form>
-                        <form>
-                            <!-- Personal Information -->
-                            <div>
-                                <h4>Personal Information</h4>
-                                <div class="row">
-                                    <div >
-                                        <div>
-                                            <label>Full Name</label>
-                                            <input class="inputtext" type="text">
-                                        </div>
-                                    </div>                                        
-                                    <div class="col-md-6 ">
-                                        <div>
-                                            <label>Email</label>
-                                            <input class="email" type="email">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div>
-                                            <label>Phone</label>
-                                            <input class="inputtext" type="text">
-                                        </div>
-                                    </div>
-                                </div>                                     
-                            </div>
-                            <!-- /Personal Information -->
 
-                            <div>
-                                <h4>Payment Method</h4>
-
-                                <!-- Credit Card Payment -->
-                                <div >
-                                    <label >
-                                        <input type="radio" name="radio" checked>
-                                        <span ></span>
-                                        Credit card
-                                    </label>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div >
-                                                <label>Name on Card</label>
-                                                <input class="inputtext" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div>
-                                                <label >Card Number</label>
-                                                <input class="inputtext" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div>
-                                                <label>Expiry Month</label>
-                                                <input class="inputtext" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div>
-                                                <label>Expiry Year</label>
-                                                <input class="inputtext" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div>
-                                                <label>CVV</label>
-                                                <input class="inputtext" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Credit Card Payment -->
-                            </div>
-
-
-                            <!-- /Checkout Form -->
                             <button class="btn btn-enroll" type="submit">Create Request</button>
                         </form>
+
+                        <!-- Form riêng để đặt lịch -->
+                        <c:if test="${not empty param.slotDate}">
+                            <div class="slot-section">
+                                <h3>Slot khả dụng cho ngày ${param.slotDate}</h3>
+                                <form action="CreateRequest" method="post">
+                                    <input type="hidden" name="action" value="book">
+                                    <input type="hidden" name="slotDate" value="${param.slotDate}">
+                                    <c:choose>
+                                        <c:when test="${empty morningSlots and empty afternoonSlots and empty eveningSlots}">
+                                            <p>Không có Slot nào khả dụng.</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h4>🌞 Morning Slots</h4>
+                                            <ul>
+                                                <c:forEach var="slot" items="${morningSlots}">
+                                                    <li>
+                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                            <h4>🌆 Afternoon Slots</h4>
+                                            <ul>
+                                                <c:forEach var="slot" items="${afternoonSlots}">
+                                                    <li>
+                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                            <h4>🌙 Evening Slots</h4>
+                                            <ul>
+                                                <c:forEach var="slot" items="${eveningSlots}">
+                                                    <li>
+                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <button type="submit">Đặt lịch</button>
+                                </form>
+                            </div>
+                        </c:if>
                     </div>
 
                     <div class="col-md-5 col-lg-4 row">
@@ -161,9 +326,9 @@
                         <!-- Booking Summary -->
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Booking Summary</h4>
+                                <h4 class="card-title">Mentor detail</h4>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body"> 
 
                                 <!-- Booking Doctor Info -->
                                 <div class="booking-doc-info">
