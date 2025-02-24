@@ -31,7 +31,8 @@ public class Major {
         this.description = description;
     }
 
-    public Major(String name, String image, int total_courses) {
+    public Major(int id, String name, String image, int total_courses) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.total_courses = total_courses;
