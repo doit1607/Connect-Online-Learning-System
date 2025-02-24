@@ -480,6 +480,23 @@ public class DAOuser extends DBConnection {
         }
         return null;
     }
+    public String getAvatarPath(String username){
+        String sql = "Select avatar_path from Users where username = ?";
+        String avatar = null;
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                avatar = rs.getString("avatar_path");
+                return avatar;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+        
+    }
+        
 
 
 }
