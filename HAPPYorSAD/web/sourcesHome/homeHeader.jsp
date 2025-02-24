@@ -75,7 +75,7 @@
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
                                                     <li><a href="student-courses.html">Enrolled Courses</a></li>
                                                     <li><a href="Schedule">Book</a></li>
-                                                    <li><a href="student-settings.html">Settings</a></li>
+
                                                 </ul>
                                             </li>	
                                         </c:if>
@@ -86,7 +86,7 @@
                                                     <!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
                                                 </c:if>
 
-                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
+                                                <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
 
                                             </ul>
                                         </li>
@@ -130,6 +130,14 @@
                                                                   currencySymbol="" /> đ
                                             </a>
                                             <a class="dropdown-item" href="/../HAPPYorSAD/ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
+                                            <c:if test ="${sessionScope.usernameRole eq 'mentee'}">
+                                                <a class="dropdown-item" href="/../HAPPYorSAD/updatementeeprofile"><i class="feather-user me-1"></i> Profile</a>
+                                            </c:if>
+                                            <c:if test ="${sessionScope.usernameRole eq 'mentor'}">
+                                                <a class="dropdown-item" href="/../HAPPYorSAD/updatementorprofile"><i class="feather-user me-1"></i> Profile</a>
+                                            </c:if>
+
+
 
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
@@ -147,16 +155,16 @@
                                                     </c:when>
                                                 </c:choose>
                                             </c:if>
-<!--                                            <a class="dropdown-item" href="<c:choose>
-                                                   <c:when test="${sessionScope.usernameRole == 'mentee'}">
-                                                       updatementeeprofile?username=${sessionScope.usernameUser}
-                                                   </c:when>
-                                                   <c:otherwise>
-                                                       updatementorprofile?username=${sessionScope.usernameUser}
-                                                   </c:otherwise>
-                                               </c:choose>">
-                                                <i class="feather-star me-1"></i> Edit Profile
-                                            </a>-->
+                                            <!--                                            <a class="dropdown-item" href="<c:choose>
+                                                <c:when test="${sessionScope.usernameRole == 'mentee'}">
+                                                    updatementeeprofile?username=${sessionScope.usernameUser}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    updatementorprofile?username=${sessionScope.usernameUser}
+                                                </c:otherwise>
+                                            </c:choose>">
+                                             <i class="feather-star me-1"></i> Edit Profile
+                                         </a>-->
                                             <a class="dropdown-item" href="/../HAPPYorSAD/LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                         </div>
                                     </li>
