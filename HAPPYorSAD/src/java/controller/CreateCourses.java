@@ -1,108 +1,112 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import entity.Major;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.util.List;
 import model.DAOCourse;
 import model.DAOmajor;
 
-/**
- *
- * @author admin
- */
+@MultipartConfig(
+        fileSizeThreshold = 2 * 1024 * 1024, // 2MB
+        maxFileSize = 10 * 1024 * 1024, // 10MB
+        maxRequestSize = 50 * 1024 * 1024 // 50MB
+)
 public class CreateCourses extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
 
-        DAOCourse dao = new DAOCourse();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         DAOmajor dao1 = new DAOmajor();
+        List<Major> list = dao1.getMajorHome();
+        request.setAttribute("listMajor", list);
+        request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+    }
 
-        ResultSet rsMajor = dao.getData("select id, name from CourseMajor");
-        request.setAttribute("rsMajor", rsMajor);
-
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        String majorStr = request.getParameter("majorID");
-
-        if (isEmpty(majorStr)) {
-            request.setAttribute("error", "Missing required fields: majorID.");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DAOCourse dao = new DAOCourse();
+        // Kiểm tra nếu request không phải multipart
+        if (!request.getContentType().toLowerCase().startsWith("multipart/")) {
+            request.setAttribute("error", "Form must have enctype=multipart/form-data.");
             request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
             return;
         }
 
-        int majorId = Integer.parseInt(majorStr);
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String majorStr = request.getParameter("majorID");
 
-        List<Major> list = dao1.getMajorHome();
+        if (isEmpty(title) || isEmpty(description) || isEmpty(majorStr)) {
+            request.setAttribute("error", "Missing required fields.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
+        }
 
-        request.setAttribute("listMajor", list);
+        int majorId;
+        try {
+            majorId = Integer.parseInt(majorStr);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid major ID.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
+        }
 
-        dao.createCourse(title, description, majorId, image);
+        // Xử lý upload file
+        Part filePart = request.getPart("imageFile");
+
+        if (filePart == null || filePart.getSize() == 0) {
+            request.setAttribute("error", "No image file uploaded.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra tên file
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        if (fileName.isEmpty()) {
+            request.setAttribute("error", "No file selected.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
+        }
+
+        // Đường dẫn lưu file
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String filePath = uploadPath + File.separator + fileName;
+        filePart.write(filePath);
+
+        // URL để lưu vào DB
+        String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
+
+        // Lưu vào DB
+        dao.createCourse(title, description, majorId, fileUrl);
 
         request.setAttribute("successMessage", "Course created successfully!");
         response.sendRedirect("CreateCourses?success=true");
     }
-    
+
     private boolean isEmpty(String str) {
         return str == null || str.trim().isEmpty();
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Handles course creation and file upload";
+    }
 }
