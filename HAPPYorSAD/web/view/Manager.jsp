@@ -75,11 +75,6 @@
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
                                         <li class="nav-item">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
                                                 <i class="fas fa-user"></i>Manage CV
