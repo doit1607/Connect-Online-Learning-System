@@ -23,21 +23,23 @@ public class DAOmajor extends DBConnection {
     public List<Major> getMajorHome() {
         ArrayList<Major> l = new ArrayList<>();
         String query = "SELECT \n"
+                + "    m.id,\n"
                 + "    m.name,\n"
                 + "	m.image,\n"
                 + "    COUNT(CASE WHEN c.status = 'active' THEN c.id END) AS total_courses\n"
                 + "FROM CourseMajor m\n"
                 + "LEFT JOIN Course c ON m.id = c.course_major_id\n"
-                + "GROUP BY m.name, m.image";
+                + "GROUP BY m.id, m.name, m.image";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
             while (result.next()) {
+                int id = result.getInt("id");
                 String name = result.getString("name");
                 String image = result.getString("image");
                 int total_courses = result.getInt("total_courses");
 
-                Major m = new Major(name, image, total_courses);
+                Major m = new Major(id, name, image, total_courses);
                 l.add(m);
             }
             result.close();
