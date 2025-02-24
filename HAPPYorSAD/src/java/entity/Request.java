@@ -24,48 +24,36 @@ public class Request {
     private int menteeId;
     private int mentorId;
     private String title;
-    private LocalDate deadlineDate;
-    private LocalTime deadlineHour;
+    private int totalSlot;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String content;
     private String status;
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
-    private String courseIds;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String courseIds; // Lưu danh sách course_id dưới dạng chuỗi (VD: "1,2,3")
 
     // Constructors
-    public Request() {}
+    public Request() {
+    }
 
-    public Request(int id, int menteeId, int mentorId, String title, LocalDate deadlineDate, LocalTime deadlineHour, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt, String courseIds) {
+    public Request(int id, int menteeId, int mentorId, String title, int totalSlot, 
+                   LocalDate startDate, LocalDate endDate, String content, 
+                   String status, LocalDateTime createdAt, LocalDateTime updatedAt, String courseIds) {
         this.id = id;
         this.menteeId = menteeId;
         this.mentorId = mentorId;
         this.title = title;
-        this.deadlineDate = deadlineDate;
-        this.deadlineHour = deadlineHour;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.content = content;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.courseIds = courseIds;
     }
-     public Request(int menteeId, int mentorId, String title, LocalDate deadlineDate, LocalTime deadlineHour, String content, String courseId) {
-        this.menteeId = menteeId;
-        this.mentorId = mentorId;
-        this.title = title;
-        this.deadlineDate = deadlineDate;
-        this.deadlineHour = deadlineHour;
-        this.content = content;
-        this.courseIds = courseId;
-    }
 
-    public String getFormattedCreatedAt() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return this.createdAt.format(formatter);
-    }
-    public User getMentee(){
-        DAOuser dao = new DAOuser();
-        return dao.getMenteeById(this.menteeId);
-    }
     // Getters and Setters
     public int getId() {
         return id;
@@ -94,32 +82,33 @@ public class Request {
     public String getTitle() {
         return title;
     }
-    
-    public String getCourseIds() {
-        return courseIds;
-    }
-    public void setCourseIds(String courseIds) {
-        this.courseIds = courseIds;
-    }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public LocalDate getDeadlineDate() {
-        return deadlineDate;
+    public int getTotalSlot() {
+        return totalSlot;
     }
 
-    public void setDeadlineDate(LocalDate deadlineDate) {
-        this.deadlineDate = deadlineDate;
+    public void setTotalSlot(int totalSlot) {
+        this.totalSlot = totalSlot;
     }
 
-    public LocalTime getDeadlineHour() {
-        return deadlineHour;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDeadlineHour(LocalTime deadlineHour) {
-        this.deadlineHour = deadlineHour;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getContent() {
@@ -152,6 +141,32 @@ public class Request {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getCourseIds() {
+        return courseIds;
+    }
+
+    public void setCourseIds(String courseIds) {
+        this.courseIds = courseIds;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "id=" + id +
+                ", menteeId=" + menteeId +
+                ", mentorId=" + mentorId +
+                ", title='" + title + '\'' +
+                ", totalSlot=" + totalSlot +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", content='" + content + '\'' +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", courseIds='" + courseIds + '\'' +
+                '}';
     }
     public List<Course> getRequestedCourses(){
         DAOCourse dao =  new DAOCourse();
