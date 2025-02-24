@@ -13,24 +13,24 @@
         <title>Dreams LMS</title>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
         <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
 
         <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
 
         <!-- Feather CSS -->
-        <link rel="stylesheet" href="assets/css/feather.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
-        <link rel="stylesheet" href="assets/css/custom.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/custom.css">
 
     </head>
     <body>
@@ -206,7 +206,7 @@
                             <!-- Footer Widget -->
                             <div class="footer-widget footer-about">
                                 <div class="footer-logo">
-                                    <img src="assets/img/logo.svg" alt="logo">
+                                    <img src="/HAPPYorSAD/assets/img/logo.svg" alt="logo">
                                 </div>
                                 <div class="footer-about-content">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
@@ -262,15 +262,15 @@
                                 </div>
                                 <div class="footer-contact-info">
                                     <div class="footer-address">
-                                        <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
+                                        <img src="/HAPPYorSAD/assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
                                         <p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
                                     </div>
                                     <p>
-                                        <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
+                                        <img src="/HAPPYorSAD/assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
                                         <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8ccdacdc9c5dbc4c5dbe8cdd0c9c5d8c4cd86cbc7c5">[email&#160;protected]</a>
                                     </p>
                                     <p class="mb-0">
-                                        <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
+                                        <img src="/HAPPYorSAD/assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
                                         +19 123-456-7890
                                     </p>
                                 </div>
@@ -321,18 +321,18 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- jQuery -->
-        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
+        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
 
         <!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
 
         <!-- Select2 JS -->
-        <script src="assets/plugins/select2/js/select2.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
 
         <!-- Custom JS -->
-        <script src="assets/js/script.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
 
-        <script src="cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="4b9afacfe3a18f285e1d0e14-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107442839460f2c","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="4b9afacfe3a18f285e1d0e14-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107442839460f2c","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
