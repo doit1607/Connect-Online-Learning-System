@@ -31,15 +31,29 @@ public class Request {
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String courseIds; // Lưu danh sách course_id dưới dạng chuỗi (VD: "1,2,3")
+    private int courseId;
 
     // Constructors
     public Request() {
     }
 
+    public Request(int id, int menteeId, int mentorId, String title, LocalDate startDate, LocalDate endDate, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
+        this.id = id;
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseId = courseId;
+    }
+    
     public Request(int id, int menteeId, int mentorId, String title, int totalSlot, 
                    LocalDate startDate, LocalDate endDate, String content, 
-                   String status, LocalDateTime createdAt, LocalDateTime updatedAt, String courseIds) {
+                   String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
         this.id = id;
         this.menteeId = menteeId;
         this.mentorId = mentorId;
@@ -51,10 +65,11 @@ public class Request {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.courseIds = courseIds;
+        this.courseId = courseId;
     }
 
     // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -143,13 +158,15 @@ public class Request {
         this.updatedAt = updatedAt;
     }
 
-    public String getCourseIds() {
-        return courseIds;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setCourseIds(String courseIds) {
-        this.courseIds = courseIds;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
+
+    
 
     @Override
     public String toString() {
@@ -165,17 +182,17 @@ public class Request {
                 ", status='" + status + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", courseIds='" + courseIds + '\'' +
+                ", courseIds='" + courseId + '\'' +
                 '}';
     }
-    public List<Course> getRequestedCourses(){
-        DAOCourse dao =  new DAOCourse();
-        String[] strCourseIds = this.courseIds.split(",");
-        List<Course> list = new ArrayList<>();
-        for (String strCourseId : strCourseIds) {
-            int cid = Integer.parseInt(strCourseId);
-            list.add(dao.getCourseById(cid));
-        }
-        return list;
-    }
+//    public List<Course> getRequestedCourses(){
+//        DAOCourse dao =  new DAOCourse();
+//        String[] strCourseIds = this.courseId.split(",");
+//        List<Course> list = new ArrayList<>();
+//        for (String strCourseId : strCourseIds) {
+//            int cid = Integer.parseInt(strCourseId);
+//            list.add(dao.getCourseById(cid));
+//        }
+//        return list;
+//    }
 }
