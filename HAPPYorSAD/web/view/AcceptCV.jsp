@@ -74,19 +74,14 @@
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
+                                    <ul>                                        
                                         <li class="nav-item active">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
                                                 <i class="fas fa-user"></i>Manage CV
                                             </a>
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/CreateCourses" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Create Courses
+                                            <a href="CourseManager" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Manage Course
                                             </a>
                                         </li>
 
