@@ -6,7 +6,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : 22 Feb 2025, 3:23:11 pm
     Author     : Acer
 */
-.custom-modal-body form {
+/*.custom-modal-body form {
     width: 95%;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -20,6 +20,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     margin-bottom: 10px;
     margin-top: 10px;
     height: 50px;
+    
 }
 .date{
     width: 50%;
@@ -46,7 +47,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     margin-top: 10px;
 }
 .email{
-      width: 100%;
+    width: 100%;
     border-radius: 10px;
     margin-bottom: 10px;
     margin-top: 10px;
@@ -82,11 +83,101 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .wallet_title{
      display: flex;
 }
-.btn-Recharge{
-     border: 2px solid #000;
-     border-radius: 44px;
-     width: 100%;
-     background: linear-gradient(90.08deg, #0E82FD 0.09%, #06AED4 70.28%);
-     color: #000;
-     padding: 5px;
+.Rechargebtn{
+
 }
+.Recharge{
+    
+}*/
+/*.wallet_content {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.wallet_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.wallet_title h4 {
+    font-size: 20px;
+    color: #333;
+}
+
+.wallet {
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-md-6 {
+    width: 48%;
+}
+
+.payment-amount h6 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.payment-amount i {
+    margin-right: 10px;
+    color: #28a745;
+}
+
+.payment-amount span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #28a745;
+    display: block;
+    margin-top: 5px;
+}
+
+.Rechargebtn {
+    margin-top: 10px;
+}
+
+.Rechargebtn .Recharge {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.Rechargebtn .Recharge:hover {
+    background: #0056b3;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+ul h6 {
+    font-size: 14px;
+    color: #555;
+    margin: 0;
+}
+
+ul h7 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}*/
+
