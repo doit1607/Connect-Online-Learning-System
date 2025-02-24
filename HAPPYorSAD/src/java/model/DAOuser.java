@@ -426,8 +426,8 @@ public class DAOuser extends DBConnection {
                         rs.getString("fullname"),
                         rs.getString("email"),
                         rs.getString("phone_number"),
-                        rs.getTimestamp("created_at"), // Sử dụng getTimestamp()
-                        rs.getString("bio"));
+                        rs.getTimestamp("created_at")// Sử dụng getTimestamp()
+                );
                 rs.close();
                 pre.close();
                 return user;
