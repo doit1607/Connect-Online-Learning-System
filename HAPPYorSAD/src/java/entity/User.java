@@ -52,6 +52,14 @@ public class User {
         this.bio = bio;
     }
     
+     public User(String username, String fullname, String email, String phoneNumber, Date createdAt) {
+        this.username = username;
+        this.fullname = fullname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+    }
+    
     
     
     
