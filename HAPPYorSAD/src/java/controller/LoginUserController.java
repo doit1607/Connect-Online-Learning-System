@@ -134,7 +134,7 @@ public class LoginUserController extends HttpServlet {
                     java.sql.Timestamp createdAt = java.sql.Timestamp.valueOf(formattedDate);
                     User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, role, false);
                     userDAO.addUser(newUser);
-
+                   
                     String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
                     em.sendVerificationEmail(email, username, verificationLink);
                     request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
