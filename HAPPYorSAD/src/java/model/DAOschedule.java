@@ -39,18 +39,17 @@ public class DAOschedule extends DBConnection {
         return null;
     }
 
-    public boolean addSchedule(int mentorId, Date scheduleDate) {
-        String sql = "INSERT INTO Schedule (mentor_id, schedule_date) VALUES (?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, mentorId);
-            ps.setDate(2, java.sql.Date.valueOf(LocalDate.MAX));
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+//    public boolean addSchedule(int mentorId, Date scheduleDate) {
+//        String sql = "INSERT INTO Mentor_Schedule (mentor_id, schedule_date) VALUES (?, ?)";
+//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setInt(1, mentorId);
+//            ps.setDate(2, java.sql.Date.valueOf(LocalDate.MAX));
+//            return ps.executeUpdate() > 0;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
     public void deleteSchedule(int scheduleId) {
         String sql = "DELETE FROM Schedule WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -61,9 +60,29 @@ public class DAOschedule extends DBConnection {
         }
     }
 
+//    public static Integer getScheduleIdsByMentorId(int mentorId) {
+//        int scheduleId = -1;
+//        String sql = "SELECT ms.id FROM Mentor m \n"
+//                + "JOIN Mentor_Schedule ms ON m.id = ms.mentor_id \n"
+//                + "WHERE m.id = ?";
+//
+//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+//            ps.setInt(1, mentorId);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                while (rs.next()) {
+//                    scheduleId = rs.getInt("id");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return scheduleId;
+//    }
     public static Integer getScheduleIdsByMentorId(int mentorId) {
         int scheduleId = -1;
-        String sql = "SELECT s.id FROM Mentor m JOIN Schedule s ON m.id = s.mentor_id WHERE m.id = ?";
+        String sql = "SELECT ms.id FROM Mentor m \n"
+                + "JOIN Mentor_Schedule ms ON m.id = ms.mentor_id \n"
+                + "WHERE m.id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, mentorId);
@@ -130,6 +149,21 @@ public class DAOschedule extends DBConnection {
         return null;
     }
 
+    public Date getDateByScheduleId(int scheduleId) {
+        String sql = "SELECT start_date, end_date FROM Schedule WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, scheduleId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return rs.getDate("end_date");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean deleteSchedule(int mentorId, String dayOfWeek) {
         String sql = "DELETE FROM Schedule WHERE mentor_id = ? AND day_of_week = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -178,34 +212,58 @@ public class DAOschedule extends DBConnection {
         return availableSlots;
     }
 
+    public Integer getScheduleIdByMentorIdAndMonth(int mentorId, String month) {
+        Integer scheduleId = null;
+        String sql = "SELECT s.id \n"
+                + "FROM Schedule s\n"
+                + "JOIN Mentor_Schedule ms ON ms.schedule_id = s.id\n"
+                + "JOIN Mentor m ON m.id = ms.mentor_id\n"
+                + "WHERE m.id = ? AND FORMAT(start_Date, 'yyyy-MM') = ?;";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ps.setString(2, month);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                scheduleId = rs.getInt("scheduleId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return scheduleId;
+    }
+
+//    public Integer createScheduleForMonth(int mentorId, String month) {
+//        Integer newScheduleId = null;
+//        String insertScheduleQuery = "INSERT INTO Schedule (startDate, endDate) VALUES (?, ?)";
+//        String insertMentorScheduleQuery = "INSERT INTO Mentor_Schedule (mentor_Id, schedule_Id) VALUES (?, ?)";
+//        String sql = "INSERT INTO Schedule (mentorId, startDate, endDate) VALUES (?, ?, ?)";
+//        try (PreparedStatement psSchedule = conn.prepareStatement(insertScheduleQuery)) {
+//
+//            psSchedule.setDate(1, startDate);
+//            psSchedule.setDate(2, endDate);
+//            psSchedule.executeUpdate();
+//
+//            ResultSet generatedKeys = psSchedule.getGeneratedKeys();
+//            if (generatedKeys.next()) {
+//                newScheduleId = generatedKeys.getInt(1);
+//            } else {
+//                throw new SQLException("No available.");
+//            }
+//
+//            try (PreparedStatement psMentorSchedule = conn.prepareStatement(insertMentorScheduleQuery)) {
+//                psMentorSchedule.setInt(1, mentorId);
+//                psMentorSchedule.setInt(2, newScheduleId);
+//                psMentorSchedule.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return newScheduleId;
+//    }
+
     public static void main(String[] args) {
         DAOschedule scheduleDAO = new DAOschedule();
-//        int scheduleId = 1; // Thay đổi ID để test
-//        Schedule schedule = scheduleDAO.getScheduleById(scheduleId);
-//        if (schedule != null) {
-//            System.out.println("Start Date: " + schedule.getStart_date());
-//            System.out.println("End Date: " + schedule.getEnd_date());
-//        } else {
-//            System.out.println("No schedule found for ID: " + scheduleId);
-//        }
 
-        int scheduleId = 1;
-//        Date slotDate = Date.valueOf("2025-03-04");
-//        List<SlotTemplate> availableSlots = scheduleDAO.getAvailableSlotNumbers(scheduleId, slotDate);
-//        System.out.println("Available Slots:");
-//        for (SlotTemplate slot : availableSlots) {
-//            System.out.println("ID: " + slot.getId()
-//                    + ", Slot Number: " + slot.getSlotNumber()
-//                    + ", Start Time: " + slot.getStartTime()
-//                    + ", End Time: " + slot.getEndTime());
-//        }
-//        
-
-        Date end_date = scheduleDAO.getEndDateByScheduleId(scheduleId);
-        System.out.println(end_date);
-
-//          Date str = scheduleDAO.getStartDateByScheduleId(scheduleId);
-//          System.out.println(str);
     }
 
 }
