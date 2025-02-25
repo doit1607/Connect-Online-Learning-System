@@ -35,8 +35,21 @@
         <link rel="stylesheet" href="assets/css/style.css">
 
     </head>
+    <style>
+        .tablecontent a {
+            color: blue; /* Màu xanh */
+            text-decoration: underline; /* Gạch chân */
+            font-weight: bold; /* Làm chữ đậm (tuỳ chọn) */
+        }
+
+        .tablecontent a:hover {
+            color: darkblue; /* Màu xanh đậm hơn khi hover */
+            text-decoration: none; /* Bỏ gạch chân khi hover (tuỳ chọn) */
+        }
+
+    </style>
     <body>
-         <%@include file="../sourcesHome/homeHeader.jsp" %>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
         <div class="main-wrapper">
 
@@ -103,7 +116,7 @@
                                     <h6>Course Time</h6>
                                     <p>Create at: ${detail.createdAt}</p> 
                                     <p>updatedAt: ${detail.updatedAt}</p> 
-                                    
+
                                 </div>
                             </div>
                             <!-- /Overview -->
@@ -152,7 +165,6 @@
                                                         </c:forEach>
                                                         <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${numReviews})</span>
                                                     </div>
-
                                                     <a href="#rate" class="rating-count"><i class="fa-regular fa-heart"></i></a>
                                                 </div>
                                                 <div class="instructor-badge">
@@ -160,7 +172,10 @@
 
                                                 </div>
                                             </div>
-                                            <h2><a href="CreateRequest?mentorId=${mentor.mentorId}" class="btn btn-enroll w-100">Invite</a></h2>
+                                            <h2>
+                                                <a href="CreateRequest?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
+                                                   class="btn btn-enroll w-100">Invite</a>
+                                            </h2>
                                         </div>
                                     </div>
                                 </c:forEach>
