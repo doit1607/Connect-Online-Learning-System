@@ -75,7 +75,7 @@
                                                     <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
                                                     <li><a href="student-courses.html">Enrolled Courses</a></li>
                                                     <li><a href="Schedule">Book</a></li>
-
+                                                    <li><a href="ShowMenteeRequest">View Request</a></li>
                                                 </ul>
                                             </li>	
                                         </c:if>
