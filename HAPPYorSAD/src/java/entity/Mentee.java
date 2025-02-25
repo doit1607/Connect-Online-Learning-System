@@ -20,10 +20,33 @@ public class Mentee {
     private String goals;
     private LocalDateTime createdAt;
     private int total_Mentee;
-
+    private String image;
     public Mentee() {
     }
 
+    public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt, int total_Mentee, String image) {
+        this.id = id;
+        this.user_id = user_id;
+        this.name = name;
+        this.is_deleted = is_deleted;
+        this.email = email;
+        this.goals = goals;
+        this.createdAt = createdAt;
+        this.total_Mentee = total_Mentee;
+        this.image = image;
+    }
+
+    public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt, String image) {
+        this.id = id;
+        this.user_id = user_id;
+        this.name = name;
+        this.is_deleted = is_deleted;
+        this.email = email;
+        this.goals = goals;
+        this.createdAt = createdAt;
+        this.image = image;
+    }
+    
     public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt) {
         this.id = id;
         this.user_id = user_id;
@@ -104,5 +127,18 @@ public class Mentee {
         this.createdAt = createdAt;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
+    @Override
+    public String toString() {
+        return "Mentee{" + "id=" + id + ", user_id=" + user_id + ", name=" + name + ", is_deleted=" + is_deleted + ", email=" + email + ", goals=" + goals + ", createdAt=" + createdAt + ", total_Mentee=" + total_Mentee + '}';
+    }
+    
     
 }
