@@ -91,6 +91,12 @@
                                                 <i class="bx bxs-graduation"></i>Enrolled Courses
                                             </a>
                                         </li>
+                                         <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Available Timings
+
+                                            </a>
+                                        </li>
 
                                         <li class="nav-item">
                                             <a href="instructor-wishlist.html" class="nav-link">
@@ -153,6 +159,12 @@
                                         <li class="nav-item">
                                             <a href="instructor-enrolled-course.html" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            </a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Available Timings
+
                                             </a>
                                         </li>
 
