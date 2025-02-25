@@ -81,7 +81,7 @@
                                     <h3>Dashboard</h3>
                                     <ul>
                                         <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
+                                            <a href="" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Dashboard
                                             </a>
                                         </li>
