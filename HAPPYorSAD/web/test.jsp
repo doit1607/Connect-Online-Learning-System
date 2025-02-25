@@ -1,428 +1,409 @@
-<!DOCTYPE html> 
-<html lang="en">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="en"/>
 
-    <!-- Mirrored from doccure.dreamstechnologies.com/html/template/booking-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Feb 2025 20:32:21 GMT -->
+<!DOCTYPE html>
+<html>
     <head>
 
         <meta charset="UTF-8">
-
         <title>DreamLMS</title>
-
-
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-
-
-        <!-- Theme Settings Js -->
         <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
-
-        <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
-
-        <!-- Feather CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
-
-        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-
-        <!-- Dropzone -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
-
-        <!-- Boxioons CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
-
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+        <style>
+            .timing.selected {
+                background-color: #007bff;
+                color: white;
+                border: 2px solid #0056b3;
+            }
+            .schedule-widget {
+                min-height: 100px;
+                border-radius: 4px;
+            }
+            .schedule-widget .schedule-header {
+                border-bottom: 1px solid #E6E8EE;
+                padding: 10px 20px;
+                border-radius: 4px 4px 0 0;
+            }
+            .schedule-widget .schedule-header h4 {
+                font-size: 18px;
+                font-weight: 600;
+                margin: 3px 0 0;
+            }
 
-        <!-- Main CSS -->
-
-    </head>
-    <style>
-        .timing.selected {
-            background-color: #007bff;
-            color: white;
-            border: 2px solid #0056b3;
-        }
-        .schedule-widget {
-            min-height: 100px;
-            border-radius: 4px;
-        }
-        .schedule-widget .schedule-header {
-            border-bottom: 1px solid #E6E8EE;
-            padding: 10px 20px;
-            border-radius: 4px 4px 0 0;
-        }
-        .schedule-widget .schedule-header h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 3px 0 0;
-        }
-
-        .day-slot ul {
-            float: left;
-            list-style: none;
-            position: relative;
-            width: 100%;
-            margin: auto -5px 0 -5px;
-            padding: 0;
-        }
-        .day-slot ul li {
-            float: left;
-            padding-left: 5px;
-            padding-right: 5px;
-            text-align: center;
-            width: 14.28%;
-        }
-        .day-slot ul li span {
-            display: block;
-            font-size: 18px;
-            text-transform: uppercase;
-        }
-        @media (max-width: 767.96px) {
+            .day-slot ul {
+                float: left;
+                list-style: none;
+                position: relative;
+                width: 100%;
+                margin: auto -5px 0 -5px;
+                padding: 0;
+            }
+            .day-slot ul li {
+                float: left;
+                padding-left: 5px;
+                padding-right: 5px;
+                text-align: center;
+                width: 14.28%;
+            }
             .day-slot ul li span {
-                font-size: 16px;
-                text-transform: unset;
+                display: block;
+                font-size: 18px;
+                text-transform: uppercase;
             }
-        }
-        .day-slot ul li span.slot-date {
-            display: block;
-            color: #757575;
-            font-size: 14px;
-        }
-        .day-slot ul li small.slot-year {
-            color: #757575;
-            font-size: 14px;
-        }
-        @media (max-width: 767.96px) {
+            @media (max-width: 767.96px) {
+                .day-slot ul li span {
+                    font-size: 16px;
+                    text-transform: unset;
+                }
+            }
+            .day-slot ul li span.slot-date {
+                display: block;
+                color: #757575;
+                font-size: 14px;
+            }
             .day-slot ul li small.slot-year {
-                display: none;
+                color: #757575;
+                font-size: 14px;
             }
-        }
-        .day-slot ul li.left-arrow {
-            text-align: center;
-            width: 20px !important;
-            transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            position: absolute;
-            top: 50%;
-            left: 0;
-            padding: 0;
-        }
-        @media (max-width: 991.96px) {
+            @media (max-width: 767.96px) {
+                .day-slot ul li small.slot-year {
+                    display: none;
+                }
+            }
             .day-slot ul li.left-arrow {
-                left: -10px;
+                text-align: center;
+                width: 20px !important;
+                transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                position: absolute;
+                top: 50%;
+                left: 0;
+                padding: 0;
             }
-        }
-        .day-slot ul li.right-arrow {
-            text-align: center;
-            width: 20px !important;
-            transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            position: absolute;
-            top: 50%;
-            right: -11px;
-            padding: 0;
-        }
+            @media (max-width: 991.96px) {
+                .day-slot ul li.left-arrow {
+                    left: -10px;
+                }
+            }
+            .day-slot ul li.right-arrow {
+                text-align: center;
+                width: 20px !important;
+                transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                position: absolute;
+                top: 50%;
+                right: -11px;
+                padding: 0;
+            }
 
-        .schedule-cont {
-            padding: 20px;
-        }
+            .schedule-cont {
+                padding: 20px;
+            }
 
-        .time-slot ul {
-            list-style: none;
-            margin: auto -5px 0 -5px;
-            padding: 0;
-        }
-        .time-slot ul li {
-            float: left;
-            padding-left: 5px;
-            padding-right: 5px;
-            width: 14.28%;
-        }
-        .time-slot ul li .timing {
-            background-color: #e9e9e9;
-            border: 1px solid #e9e9e9;
-            border-radius: 3px;
-            color: #757575;
-            display: block;
-            font-size: 14px;
-            margin-bottom: 10px;
-            padding: 5px 5px;
-            text-align: center;
-            position: relative;
-        }
-        .time-slot ul li .timing:hover {
-            background-color: #FFF;
-        }
-        .time-slot ul li .timing:last-child {
-            margin-bottom: 0;
-        }
-        .time-slot ul li .timing.selected {
-            background-color: #0E82FD;
-            border: 1px solid #0E82FD;
-            color: #FFF;
-        }
-        .time-slot ul li .timing.selected::before {
-            color: #FFF;
-            content: "\f00c";
-            font-family: "Font Awesome 5 Free";
-            font-size: 12px;
-            font-weight: 900;
-            position: absolute;
-            top: 6px;
-            right: 6px;
-        }
-        @media (max-width: 991.96px) {
+            .time-slot ul {
+                list-style: none;
+                margin: auto -5px 0 -5px;
+                padding: 0;
+            }
+            .time-slot ul li {
+                float: left;
+                padding-left: 5px;
+                padding-right: 5px;
+                width: 14.28%;
+            }
+            .time-slot ul li .timing {
+                background-color: #e9e9e9;
+                border: 1px solid #e9e9e9;
+                border-radius: 3px;
+                color: #757575;
+                display: block;
+                font-size: 14px;
+                margin-bottom: 10px;
+                padding: 5px 5px;
+                text-align: center;
+                position: relative;
+            }
+            .time-slot ul li .timing:hover {
+                background-color: #FFF;
+            }
+            .time-slot ul li .timing:last-child {
+                margin-bottom: 0;
+            }
+            .time-slot ul li .timing.selected {
+                background-color: #0E82FD;
+                border: 1px solid #0E82FD;
+                color: #FFF;
+            }
             .time-slot ul li .timing.selected::before {
-                display: none;
+                color: #FFF;
+                content: "\f00c";
+                font-family: "Font Awesome 5 Free";
+                font-size: 12px;
+                font-weight: 900;
+                position: absolute;
+                top: 6px;
+                right: 6px;
             }
-        }
-        .time-slot ul li .timing.selected:hover {
-            color: #757575;
-        }
-        .time-slot ul li .timing.selected:hover::before {
-            color: #757575;
-        }
+            @media (max-width: 991.96px) {
+                .time-slot ul li .timing.selected::before {
+                    display: none;
+                }
+            }
+            .time-slot ul li .timing.selected:hover {
+                color: #757575;
+            }
+            .time-slot ul li .timing.selected:hover::before {
+                color: #757575;
+            }
 
-        .schedule-list {
-            border-bottom: 1px solid #cfcfcf;
-            margin-bottom: 50px;
-            padding-bottom: 50px;
-        }
-        .schedule-list:last-child {
-            border-bottom: 0;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
+            .schedule-list {
+                border-bottom: 1px solid #cfcfcf;
+                margin-bottom: 50px;
+                padding-bottom: 50px;
+            }
+            .schedule-list:last-child {
+                border-bottom: 0;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
 
-        .submit-section.proceed-btn {
-            margin: 0 0 30px;
-        }
-        @media (max-width: 767.96px) {
             .submit-section.proceed-btn {
+                margin: 0 0 30px;
+            }
+            @media (max-width: 767.96px) {
+                .submit-section.proceed-btn {
+                    margin-bottom: 20px;
+                }
+            }
+            /* ... (c√°c style ?√£ c√≥) ... */
+
+            /* ... (c√°c style ?√£ c√≥) ... */
+
+            .title-container {
                 margin-bottom: 20px;
             }
-        }
-        /* ... (c·c style ?„ cÛ) ... */
 
-        /* ... (c·c style ?„ cÛ) ... */
-
-        .title-container {
-            margin-bottom: 20px;
-        }
-
-        .title-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .title-container input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .title-container input[type="text"]:focus {
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .content-container {
-            margin-bottom: 20px;
-        }
-
-        .content-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .content-container textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-            resize: vertical;
-        }
-
-        .content-container textarea:focus {
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        .date-container {
-            display: flex;
-            gap: 20px; /* Adjust gap as needed */
-            margin-top: 20px;
-        }
-
-        .date-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .date-container input[type="date"] {
-            width: 400px; /* 1.5 times wider (200px * 1.5) - Adjust as needed */
-            height: 80px;  /* Double the height (40px * 2) - Adjust as needed */
-            font-size: 16px; /* Adjust font size if needed */
-            padding: 10px;    /* Adjust padding if needed */
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .date-container input[type="date"]:focus {
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        /* Optional: Style the datepicker dropdown if needed (browser-specific) */
-        /* Example for Chrome: */
-        .date-container input[type="date"]::-webkit-calendar-picker-indicator {
-            width: 40px; /* Adjust width as needed */
-            height: 40px; /* Adjust height as needed */
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                width: 300px;
-                background: white;
-                padding: 20px;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                text-align: center;
+            .title-container label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
             }
 
-            .modal-content {
+            .title-container input[type="text"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                box-sizing: border-box;
                 font-size: 16px;
             }
 
-            .modal button {
-                margin-top: 15px;
+            .title-container input[type="text"]:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+            .content-container {
+                margin-bottom: 20px;
+            }
+
+            .content-container label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .content-container textarea {
+                width: 100%;
+                height: 100px;
+                padding: 10px;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+                resize: vertical;
+            }
+
+            .content-container textarea:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+            .date-container {
+                display: flex;
+                gap: 20px; /* Adjust gap as needed */
+                margin-top: 20px;
+            }
+
+            .date-container label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .date-container input[type="date"] {
+                width: 400px; /* 1.5 times wider (200px * 1.5) - Adjust as needed */
+                height: 80px;  /* Double the height (40px * 2) - Adjust as needed */
+                font-size: 16px; /* Adjust font size if needed */
+                padding: 10px;    /* Adjust padding if needed */
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            .date-container input[type="date"]:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+            /* Optional: Style the datepicker dropdown if needed (browser-specific) */
+            /* Example for Chrome: */
+            .date-container input[type="date"]::-webkit-calendar-picker-indicator {
+                width: 40px; /* Adjust width as needed */
+                height: 40px; /* Adjust height as needed */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 300px;
+                    background: white;
+                    padding: 20px;
+                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+                    border-radius: 10px;
+                    text-align: center;
+                }
+
+                .modal-content {
+                    font-size: 16px;
+                }
+
+                .modal button {
+                    margin-top: 15px;
+                    padding: 8px 15px;
+                    border: none;
+                    background: #007bff;
+                    color: white;
+                    font-size: 14px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                }
+
+                .modal button:hover {
+                    background: #0056b3;
+                }
+            }
+            .price-display {
+                background-color: #f8f9fa;
+                border: 1px solid #007bff;
+                color: #007bff;
+                font-size: 16px;
+                font-weight: bold;
                 padding: 8px 15px;
-                border: none;
-                background: #007bff;
-                color: white;
-                font-size: 14px;
-                cursor: pointer;
+                text-align: center;
                 border-radius: 5px;
+                display: inline-block;
             }
 
-            .modal button:hover {
-                background: #0056b3;
+            .price-display .price-amount {
+                font-size: 18px;
+                color: #28a745;
             }
-        }
-        .price-display {
-            background-color: #f8f9fa;
-            border: 1px solid #007bff;
-            color: #007bff;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 8px 15px;
-            text-align: center;
-            border-radius: 5px;
-            display: inline-block;
-        }
+            .clear-btn {
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                font-size: 14px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                display: block;
+            }
 
-        .price-display .price-amount {
-            font-size: 18px;
-            color: #28a745;
-        }
-        .clear-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            display: block;
-        }
+            .clear-btn:hover {
+                background-color: #c82333;
+            }
+            .button-container {
+                padding-top: 10px;
+                gap: 10px; /* Kho?ng c√°ch gi?a hai n√∫t */
+                justify-content: center; /* C?n gi?a */
+            }
 
-        .clear-btn:hover {
-            background-color: #c82333;
-        }
-        .button-container {
-            padding-top: 10px;
-            gap: 10px; /* Kho?ng c·ch gi?a hai n˙t */
-            justify-content: center; /* C?n gi?a */
-        }
+            .submit-bbb, .save-bbb {
+                background-color: #007bff; /* M√†u xanh d??ng */
+                color: white; /* M√†u ch? tr?ng */
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s;
+                text-align: center;
+                width: auto;
+                min-width: 100px; /* ??m b?o k√≠ch th??c ??ng nh?t */
+            }
 
-        .submit-bbb, .save-bbb {
-            background-color: #007bff; /* M‡u xanh d??ng */
-            color: white; /* M‡u ch? tr?ng */
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
-            text-align: center;
-            width: auto;
-            min-width: 100px; /* ??m b?o kÌch th??c ??ng nh?t */
-        }
+            .submit-bbb:hover, .save-bbb:hover {
+                background-color: #0056b3; /* M√†u xanh ??m h?n khi hover */
+                transform: scale(1.05);
+            }
 
-        .submit-bbb:hover, .save-bbb:hover {
-            background-color: #0056b3; /* M‡u xanh ??m h?n khi hover */
-            transform: scale(1.05);
-        }
-
-        .submit-bbb:active, .save-bbb:active {
-            background-color: #004494; /* M‡u t?i h?n khi b?m */
-            transform: scale(1);
-        }
+            .submit-bbb:active, .save-bbb:active {
+                background-color: #004494; /* M√†u t?i h?n khi b?m */
+                transform: scale(1);
+            }
 
 
-    </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const startDateInput = document.getElementById("start-date");
-            const endDateInput = document.getElementById("end-date");
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const startDateInput = document.getElementById("start-date");
+                const endDateInput = document.getElementById("end-date");
 
-            startDateInput.addEventListener("change", function () {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const startDate = new Date(this.value);
+                startDateInput.addEventListener("change", function () {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const startDate = new Date(this.value);
 
-                if (startDate < today) {
-                    alert("Start Date cannot be in the past!");
-                    this.value = "";
-                }
+                    if (startDate < today) {
+                        alert("Start Date cannot be in the past!");
+                        this.value = "";
+                    }
+                });
+
+                endDateInput.addEventListener("change", function () {
+                    const startDate = new Date(startDateInput.value);
+                    const endDate = new Date(this.value);
+
+                    if (startDateInput.value && endDate < startDate) {
+                        alert("End Date cannot be earlier than Start Date!");
+                        this.value = "";
+                    }
+                });
             });
 
-            endDateInput.addEventListener("change", function () {
-                const startDate = new Date(startDateInput.value);
-                const endDate = new Date(this.value);
-
-                if (startDateInput.value && endDate < startDate) {
-                    alert("End Date cannot be earlier than Start Date!");
-                    this.value = "";
-                }
-            });
-        });
-
-    </script>
+        </script>
+    </head>
     <body>
-        <%@include file="../sourcesHome/homeHeader.jsp" %>
+        <%@include file="/sourcesHome/homeHeader.jsp" %>
         <div id="custom-alert" class="modal">
             <div class="modal-content">
                 <p id="alert-message"></p>
@@ -466,7 +447,7 @@
                                     <form action="CreateRequest" method="post">
                                         <div class="booking-doc-info">
                                             <img src="/HAPPYorSAD/assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                                            </a>
+
                                             <div class="booking-info">
                                                 <h4><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
                                                 <div class="rating">
@@ -506,8 +487,13 @@
 
                             <div class="row">
                                 <div class="col-12 col-sm-4 col-md-6">
-                                    <h4 class="mb-1">11 November 2023</h4>
-                                    <p class="text-muted">Monday</p>
+                                    <h4 class="mb-1">
+                                        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
+                                    </h4>
+                                    <p class="text-muted">
+                                        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
+                                    </p>
+
                                 </div>
                                 <div class="col-12 col-sm-8 col-md-6 text-sm-end">
                                     <div class="bookingrange btn btn-white btn-sm mb-3">
@@ -518,6 +504,7 @@
                                 </div>
                             </div>
 
+                            <!-- Schedule Widget -->
                             <!-- Schedule Widget -->
                             <div class="card booking-schedule schedule-widget">
 
@@ -534,34 +521,16 @@
                                                             <i class="fa fa-chevron-left"></i>
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <span>Mon</span>
-                                                        <span class="slot-date">11 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Tue</span>
-                                                        <span class="slot-date">12 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Wed</span>
-                                                        <span class="slot-date">13 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Thu</span>
-                                                        <span class="slot-date">14 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Fri</span>
-                                                        <span class="slot-date">15 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Sat</span>
-                                                        <span class="slot-date">16 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Sun</span>
-                                                        <span class="slot-date">17 Nov <small class="slot-year">2023</small></span>
-                                                    </li>
+                                                    <c:forEach var="entry" items="${weekDateInfoMap}">
+                                                        <li>
+                                                            <span>${entry.value['dayOfWeek']}</span>
+                                                            <span class="slot-date">${entry.value['day']} ${entry.value['month']} 
+                                                                <small class="slot-year">${entry.value['year']}</small>
+                                                            </span>
+                                                        </li>
+                                                    </c:forEach>
+
+
                                                     <li class="right-arrow">
                                                         <a href="javascript:void(0)">
                                                             <i class="fa fa-chevron-right"></i>
@@ -584,95 +553,35 @@
                                             <!-- Time Slot -->
                                             <div class="time-slot">
                                                 <ul class="clearfix">
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="timing" href="#">
-                                                            <span>9:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>10:00</span> <span>AM</span>
-                                                        </a>
-                                                        <a class="timing" href="#">
-                                                            <span>11:00</span> <span>AM</span>
-                                                        </a>
-                                                    </li>
+                                                    <c:forEach var="entry" items="${weekDateInfoMap}">
+                                                        <li>
+
+                                                            <c:choose>
+                                                                <c:when test="${not empty slotsByDay[entry.key]}">
+                                                                    <c:forEach var="slot" items="${slotsByDay[entry.key]}">
+                                                                        <a class="timing" href="#">
+                                                                            <span>${slotTimeMap[slot.slotNumber]}</span>
+                                                                        </a>
+                                                                    </c:forEach>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <p>No slots available</p>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                             <button id="clearAllBtn" class="clear-btn">Clear</button>
                                             <!-- /Time Slot -->
 
                                         </div>
-
                                     </div>
                                 </div>
                                 <!-- /Schedule Content -->
 
                             </div>
+
 
                             <!-- /Schedule Widget -->
 
@@ -686,7 +595,7 @@
                             </div>
                             <!-- /Submit Section -->
                         </div>
-                        </form>
+
                     </div>
                 </div>
 
@@ -708,19 +617,19 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     const timeSlots = document.querySelectorAll('.timing');
                     const priceDisplay = document.querySelector('.price-amount');
-                    const pricePerSlot = 100; // Gi· ti?n cho m?i slot
+                    const pricePerSlot = 100; // Gi√° ti?n cho m?i slot
                     let totalPrice = 0; // T?ng ti?n ban ??u
 
                     timeSlots.forEach(slot => {
                         slot.addEventListener('click', function (event) {
-                            event.preventDefault(); // Ng?n ch?n h‡nh ??ng m?c ??nh c?a th? <a>
+                            event.preventDefault(); // Ng?n ch?n h√†nh ??ng m?c ??nh c?a th? <a>
 
                             if (this.classList.contains('selected')) {
-                                // N?u slot ?„ ???c ch?n, b? ch?n v‡ gi?m ti?n
+                                // N?u slot ?√£ ???c ch?n, b? ch?n v√† gi?m ti?n
                                 this.classList.remove('selected');
                                 totalPrice -= pricePerSlot;
                             } else {
-                                // N?u slot ch?a ???c ch?n, ch?n v‡ t?ng ti?n
+                                // N?u slot ch?a ???c ch?n, ch?n v√† t?ng ti?n
                                 this.classList.add('selected');
                                 totalPrice += pricePerSlot;
                             }
@@ -738,7 +647,7 @@
             </script>
 
             <!-- /Page Content -->
-            <%@include file="../sourcesHome/homeFooter.jsp" %>
+            <%@include file="/sourcesHome/homeFooter.jsp" %>
 
 
         </div>
