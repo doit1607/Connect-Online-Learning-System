@@ -34,11 +34,48 @@ public class DAOmentee extends DBConnection {
         }
         return menteeId;
     }
-    
+
+    public Mentee getMenteeById(int menteeId) {
+        String query = "SELECT [id]\n"
+                + "      ,[user_id]\n"
+                + "      ,[name]\n"
+                + "      ,[is_deleted]\n"
+                + "      ,[email]\n"
+                + "      ,[goals]\n"
+                + "      ,[created_at]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Mentee]\n"
+                + "  where id = ?;";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, menteeId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Mentee(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("name"),
+                        rs.getInt("is_deleted"),
+                        rs.getString("email"),
+                        rs.getString("goals"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getString("image")
+                        
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         DAOmentee dao = new DAOmentee();
-        int userID=5;
+        int userID = 5;
         Integer menteeId = getMenteeIdByUserId(userID);
-        System.out.println(menteeId);
+        Mentee mentee = dao.getMenteeById(1);
+        System.out.println(mentee);
     }
 }
