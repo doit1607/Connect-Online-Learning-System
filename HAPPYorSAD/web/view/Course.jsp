@@ -130,7 +130,7 @@
                                                     <div class="head-course-title">
                                                         <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>
                                                         <div class="all-btn all-category d-flex align-items-center">
-                                                            <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">Course ID: ${o.id}</a>
+                                                            <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">More detail</a>
                                                         </div>
                                                     </div>
                                                     
