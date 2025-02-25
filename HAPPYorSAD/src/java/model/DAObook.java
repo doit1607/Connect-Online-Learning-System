@@ -25,6 +25,8 @@ import java.util.logging.Logger;
  */
 public class DAObook extends DBConnection {
 
+    private static final Logger LOGGER = Logger.getLogger(DAObook.class.getName());
+
     public Integer getSlotIdByDateAndNumber(Date slotDate, int slotNumberId) {
         String sql = "SELECT id FROM Slot WHERE slot_Date = ? AND slot_number_id = ?";
 
@@ -63,10 +65,46 @@ public class DAObook extends DBConnection {
         return slotNumberId;
     }
 
+    public boolean bookSlot(int menteeId, int scheduleId, Date slotDate, int slotNumber) {
+        if (isSlotBooked(scheduleId, slotDate, slotNumber)) {
+            LOGGER.log(Level.WARNING, "Slot already booked: Schedule ID {0}, Date {1}, Slot {2}", new Object[]{scheduleId, slotDate, slotNumber});
+            return false;
+        }
+        String sql = "UPDATE Slot SET mentee_id = ? WHERE schedule_id = ? AND slot_date = ? AND slot_number_id = ? AND mentee_id IS NULL";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, menteeId);
+            ps.setInt(2, scheduleId);
+            ps.setDate(3, slotDate);
+            ps.setInt(4, slotNumber);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error booking slot", e);
+        }
+        return false;
+    }
+
+    private boolean isSlotBooked(int scheduleId, Date slotDate, int slotNumber) {
+        String sql = "SELECT mentee_id FROM Slot WHERE schedule_id = ? AND slot_date = ? AND slot_number_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, scheduleId);
+            ps.setDate(2, slotDate);
+            ps.setInt(3, slotNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking slot availability", e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         DAObook dao = new DAObook();
         Date slotDate = Date.valueOf("2025-03-03");
-        String time ="10:00";
+        String time = "10:00";
         int slotNumberId = 1;
 
         int retrievedSlotId = dao.getSlotNumberIdByDateAndTime(slotDate, time);
