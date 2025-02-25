@@ -63,7 +63,7 @@
                                                     <li><a href="ViewCV">My CV</a></li>
                                                     <li><a href="Slot">Schedule</a></li>
                                                     <li><a href="instructor-reviews.html">Reviews</a></li>
-                                                    <li><a href="instructor-orders.html">Request</a></li>
+                                                    <li><a href="/../HAPPYorSAD/viewRequest">Request</a></li>
                                                     <li><a href="instructor-notifications.html">Notifications</a></li>
                                                     </c:if>
                                             </ul>
