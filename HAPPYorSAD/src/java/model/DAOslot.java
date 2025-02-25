@@ -5,6 +5,7 @@
 package model;
 
 import entity.Schedule;
+import entity.ScheduleMonth;
 import entity.Slot;
 import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
@@ -273,10 +274,11 @@ public class DAOslot extends DBConnection {
                 + "       END AS period\n"
                 + "FROM Slot sl\n"
                 + "JOIN Schedule sc ON sl.schedule_id = sc.id\n"
-                + "JOIN Mentor m ON sc.mentor_id = m.id\n"
+                + "JOIN Mentor_Schedule ms ON ms.schedule_id = sc.id  -- Thay đổi theo mối quan hệ mới\n"
+                + "JOIN Mentor m ON ms.mentor_id = m.id  -- Liên kết với bảng Mentor thông qua Mentor_Schedule\n"
                 + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
                 + "WHERE sl.slot_date = ?\n"
-                + "AND sc.mentor_id = ?\n"
+                + "AND ms.mentor_id = ?  -- Thay vì sc.mentor_id, dùng ms.mentor_id theo quan hệ mới\n"
                 + "ORDER BY st.start_time;";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -309,6 +311,7 @@ public class DAOslot extends DBConnection {
                 + "       END AS period\n"
                 + "FROM Slot sl\n"
                 + "JOIN Schedule sc ON sl.schedule_id = sc.id\n"
+                + "JOIN Mentor_Schedule ms ON ms.schedule_id = sc.id\n"
                 + "JOIN Mentor m ON sc.mentor_id = m.id\n"
                 + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
                 + "WHERE sl.slot_date = ?\n"
@@ -349,6 +352,59 @@ public class DAOslot extends DBConnection {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Integer getSlotId(String slotDate, int slotNumber) {
+        String query = "SELECT id FROM Slot WHERE slot_date = ? AND slot_number_id = ? AND mentee_id IS NULL";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, slotDate);
+            stmt.setInt(2, slotNumber);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id"); // Trả về slotId
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy slot
+    }
+
+    public List<ScheduleMonth> getSchedulesByMonth() {
+        List<ScheduleMonth> schedules = new ArrayList<>();
+        String sql = "SELECT s.id,\n"
+                + "    DATENAME(MONTH, s.start_date) AS month,\n"
+                + "    COUNT(sl.id) AS slot_count\n"
+                + "FROM Schedule s\n"
+                + "LEFT JOIN Slot sl ON s.id = sl.schedule_id \n"
+                + "GROUP BY s.id, DATENAME(MONTH, s.start_date);";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                schedules.add(new ScheduleMonth(
+                        rs.getInt("schedule_id"),
+                        rs.getString("month"),
+                        rs.getInt("slot_count")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
+    public int getDefaultScheduleId() {
+        String sql = "SELECT schedule_id FROM schedules WHERE MONTH(start_date) = MONTH(CURDATE()) LIMIT 1";
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("schedule_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu không có schedule cho tháng hiện tại
     }
 
     public static void main(String[] args) {
