@@ -1,408 +1,773 @@
-<%-- 
-    Document   : CreateRequest
-    Created on : 21 Feb 2025, 3:45:26 pm
-    Author     : Acer
---%>
-<%@ page import="java.util.List" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html> 
+<html lang="en">
+
+    <!-- Mirrored from doccure.dreamstechnologies.com/html/template/booking-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Feb 2025 20:32:21 GMT -->
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Create Request</title>
+
+        <meta charset="UTF-8">
+
+        <title>DreamLMS</title>
+
+
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
+        <!-- Theme Settings Js -->
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
+
+        <!-- Feather CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+
+        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/css/cssCRUD/CreateRequest.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Main CSS -->
+
     </head>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        td {
-            width: 14%;
-            height: 50px;
-            text-align: center;
-
-        }
-        .has-slot {
-            background-color: #a0e7a0;
-            font-weight: bold;
-            border-radius: 8px;
-            margin-top: 2px;
-            margin-left: 2px;
-            margin-right: 2px;
-            margin-bottom: 2px;
-        }
-        .no-slot {
-            background-color: #f7f7f7;
-
-        }
-        .today {
-            background-color: #4CAF50 !important;
+        .timing.selected {
+            background-color: #007bff;
             color: white;
-            font-weight: bold;
-            border: 2px solid #2E7D32;
+            border: 2px solid #0056b3;
         }
-        .slot-section {
+        .schedule-widget {
+            min-height: 100px;
+            border-radius: 4px;
+        }
+        .schedule-widget .schedule-header {
+            border-bottom: 1px solid #E6E8EE;
+            padding: 10px 20px;
+            border-radius: 4px 4px 0 0;
+        }
+        .schedule-widget .schedule-header h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 3px 0 0;
+        }
+
+        .day-slot ul {
+            float: left;
+            list-style: none;
+            position: relative;
+            width: 100%;
+            margin: auto -5px 0 -5px;
+            padding: 0;
+        }
+        .day-slot ul li {
+            float: left;
+            padding-left: 5px;
+            padding-right: 5px;
+            text-align: center;
+            width: 14.28%;
+        }
+        .day-slot ul li span {
+            display: block;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        @media (max-width: 767.96px) {
+            .day-slot ul li span {
+                font-size: 16px;
+                text-transform: unset;
+            }
+        }
+        .day-slot ul li span.slot-date {
+            display: block;
+            color: #757575;
+            font-size: 14px;
+        }
+        .day-slot ul li small.slot-year {
+            color: #757575;
+            font-size: 14px;
+        }
+        @media (max-width: 767.96px) {
+            .day-slot ul li small.slot-year {
+                display: none;
+            }
+        }
+        .day-slot ul li.left-arrow {
+            text-align: center;
+            width: 20px !important;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            padding: 0;
+        }
+        @media (max-width: 991.96px) {
+            .day-slot ul li.left-arrow {
+                left: -10px;
+            }
+        }
+        .day-slot ul li.right-arrow {
+            text-align: center;
+            width: 20px !important;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            position: absolute;
+            top: 50%;
+            right: -11px;
+            padding: 0;
+        }
+
+        .schedule-cont {
+            padding: 20px;
+        }
+
+        .time-slot ul {
+            list-style: none;
+            margin: auto -5px 0 -5px;
+            padding: 0;
+        }
+        .time-slot ul li {
+            float: left;
+            padding-left: 5px;
+            padding-right: 5px;
+            width: 14.28%;
+        }
+        .time-slot ul li .timing {
+            background-color: #e9e9e9;
+            border: 1px solid #e9e9e9;
+            border-radius: 3px;
+            color: #757575;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding: 5px 5px;
+            text-align: center;
+            position: relative;
+        }
+        .time-slot ul li .timing:hover {
+            background-color: #FFF;
+        }
+        .time-slot ul li .timing:last-child {
+            margin-bottom: 0;
+        }
+        .time-slot ul li .timing.selected {
+            background-color: #0E82FD;
+            border: 1px solid #0E82FD;
+            color: #FFF;
+        }
+        .time-slot ul li .timing.selected::before {
+            color: #FFF;
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-size: 12px;
+            font-weight: 900;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+        }
+        @media (max-width: 991.96px) {
+            .time-slot ul li .timing.selected::before {
+                display: none;
+            }
+        }
+        .time-slot ul li .timing.selected:hover {
+            color: #757575;
+        }
+        .time-slot ul li .timing.selected:hover::before {
+            color: #757575;
+        }
+
+        .schedule-list {
+            border-bottom: 1px solid #cfcfcf;
+            margin-bottom: 50px;
+            padding-bottom: 50px;
+        }
+        .schedule-list:last-child {
+            border-bottom: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .submit-section.proceed-btn {
+            margin: 0 0 30px;
+        }
+        @media (max-width: 767.96px) {
+            .submit-section.proceed-btn {
+                margin-bottom: 20px;
+            }
+        }
+        /* ... (c�c style ?� c�) ... */
+
+        /* ... (c�c style ?� c�) ... */
+
+        .title-container {
+            margin-bottom: 20px;
+        }
+
+        .title-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .title-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .title-container input[type="text"]:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .content-container {
+            margin-bottom: 20px;
+        }
+
+        .content-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .content-container textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        .content-container textarea:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .date-container {
+            display: flex;
+            gap: 20px; /* Adjust gap as needed */
             margin-top: 20px;
         }
-        .month-nav {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-        }
-        .month-nav button {
-            padding: 10px;
-            cursor: pointer;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .month-nav button:hover {
-            background: #0056b3;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Chuyển tháng bằng AJAX
-            function changeMonth(offset) {
-                let month = ${currentMonth};
-                let year = ${currentYear};
 
-                month += offset;
-                if (month < 1) {
-                    month = 12;
-                    year--;
-                } else if (month > 12) {
-                    month = 1;
-                    year++;
-                }
+        .date-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-                $.ajax({
-                    url: "Schedule",
-                    type: "GET",
-                    data: {month: month, year: year},
-                    success: function (response) {
-                        $("body").html(response); // Cập nhật nội dung trang
-                    }
-                });
+        .date-container input[type="date"] {
+            width: 400px; /* 1.5 times wider (200px * 1.5) - Adjust as needed */
+            height: 80px;  /* Double the height (40px * 2) - Adjust as needed */
+            font-size: 16px; /* Adjust font size if needed */
+            padding: 10px;    /* Adjust padding if needed */
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .date-container input[type="date"]:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Optional: Style the datepicker dropdown if needed (browser-specific) */
+        /* Example for Chrome: */
+        .date-container input[type="date"]::-webkit-calendar-picker-indicator {
+            width: 40px; /* Adjust width as needed */
+            height: 40px; /* Adjust height as needed */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 300px;
+                background: white;
+                padding: 20px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                text-align: center;
             }
 
-            $(".month-nav button").on("click", function () {
-                let offset = $(this).text().includes("Tháng trước") ? -1 : 1;
-                changeMonth(offset);
+            .modal-content {
+                font-size: 16px;
+            }
+
+            .modal button {
+                margin-top: 15px;
+                padding: 8px 15px;
+                border: none;
+                background: #007bff;
+                color: white;
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+            .modal button:hover {
+                background: #0056b3;
+            }
+        }
+        .price-display {
+            background-color: #f8f9fa;
+            border: 1px solid #007bff;
+            color: #007bff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 8px 15px;
+            text-align: center;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .price-display .price-amount {
+            font-size: 18px;
+            color: #28a745;
+        }
+        .clear-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .clear-btn:hover {
+            background-color: #c82333;
+        }
+        .button-container {
+            padding-top: 10px;
+            gap: 10px; /* Kho?ng c�ch gi?a hai n�t */
+            justify-content: center; /* C?n gi?a */
+        }
+
+        .submit-bbb, .save-bbb {
+            background-color: #007bff; /* M�u xanh d??ng */
+            color: white; /* M�u ch? tr?ng */
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            text-align: center;
+            width: auto;
+            min-width: 100px; /* ??m b?o k�ch th??c ??ng nh?t */
+        }
+
+        .submit-bbb:hover, .save-bbb:hover {
+            background-color: #0056b3; /* M�u xanh ??m h?n khi hover */
+            transform: scale(1.05);
+        }
+
+        .submit-bbb:active, .save-bbb:active {
+            background-color: #004494; /* M�u t?i h?n khi b?m */
+            transform: scale(1);
+        }
+
+
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const startDateInput = document.getElementById("start-date");
+            const endDateInput = document.getElementById("end-date");
+
+            startDateInput.addEventListener("change", function () {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const startDate = new Date(this.value);
+
+                if (startDate < today) {
+                    alert("Start Date cannot be in the past!");
+                    this.value = "";
+                }
             });
 
-            // Load slot theo ngày bằng AJAX
-            $(document).on("click", ".load-slots", function (e) {
-                e.preventDefault();
-                let slotDate = $(this).data("date");
+            endDateInput.addEventListener("change", function () {
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(this.value);
 
-                $.ajax({
-                    url: "Schedule",
-                    type: "GET",
-                    data: {slotDate: slotDate},
-                    success: function (response) {
-                        $(".slot-section").fadeOut(200, function () {
-                            $(this).html($(response).find(".slot-section").html()).fadeIn(200);
-                        });
-                    }
-                });
-            });
-
-            // Gửi form đặt lịch bằng AJAX
-            $(document).on("submit", "form[action='Schedule']", function (e) {
-                e.preventDefault();
-                let formData = $(this).serialize();
-
-                $.ajax({
-                    url: "Schedule",
-                    type: "POST",
-                    data: formData,
-                    success: function (response) {
-                        alert("Đặt lịch thành công!");
-                        $(".slot-section").fadeOut(200, function () {
-                            $(this).html($(response).find(".slot-section").html()).fadeIn(200);
-                        });
-                    }
-                });
+                if (startDateInput.value && endDate < startDate) {
+                    alert("End Date cannot be earlier than Start Date!");
+                    this.value = "";
+                }
             });
         });
+
     </script>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
-        <!-- Breadcrumb -->
-        <div class="breadcrumb-bar breadcrumb-bar-info">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 col-12">
-                        <div class="breadcrumb-list">
-                            <h2 class="breadcrumb-title">Create Request</h2>
-                            <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="Home">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Course List</li>
-                                    <li class="breadcrumb-item active" aria-current="page">Course Detail</li>
-                                    <li class="breadcrumb-item active" aria-current="page">Create Request</li>
-                                </ol>
-                            </nav>
+        <div id="custom-alert" class="modal">
+            <div class="modal-content">
+                <p id="alert-message"></p>
+                <button id="close-alert">OK</button>
+            </div>
+        </div>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <div class="breadcrumb-bar breadcrumb-bar-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <div class="breadcrumb-list">
+                                <h2 class="breadcrumb-title">Create Request</h2>
+                                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="Home">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Course List</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Course Detail</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Create Request</li>
+                                    </ol>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- /Breadcrumb -->	
 
-        <div class="content">
-            <div class="container">
-                <div class="row">
 
-                    <div class="modal-body custom-modal-body col-md-7 col-lg-8 row">
 
-                        <div class="wallet_content">
-                            <div class="wallet_title">
-                                <div class="col-md-6"> <h4>Wallet</h4> </div>
+            <!-- Page Content -->
+            <div class="content doctor-content">
+                <div class="container">
 
-                                <div class="col-md-6"><h4>Mentee Details</h4>  </div>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="card">
+                                <div class="card-body"> 
+                                    <form action="CreateRequest" method="post">
+                                        <div class="booking-doc-info">
+                                            <img src="/HAPPYorSAD/assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                                            </a>
+                                            <div class="booking-info">
+                                                <h4><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
+                                                <div class="rating">
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <span class="d-inline-block average-rating">35</span>
+                                                </div>
+                                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="title-container">
+                                <label for="request-title">Title:</label>
+                                <input type="text" id="request-title" name="request-title" required>
                             </div>
 
-                            <div class="wallet">
-                                <div class="col-md-6">
-                                    <div class="payment-amount">
-                                        <h6 ><i class="fa fa-money" style="font-size:20px"></i> Account Balance(Số dư tài khoản):</h6>                                    
-                                        <span>120.000</span>                                      
-                                    </div> 
-                                    <br>
-                                    <div>
-                                        <h6><a href="view/Wallet.jsp" class=" Recharge">Recharge</a></h6>
+                            <div class="content-container">
+                                <label for="request-content">Content:</label>
+                                <textarea id="request-content" name="request-content" required></textarea>
+                            </div>
+                            <div class="date-container">
+                                <div>
+                                    <label for="start-date">Start Date:</label>
+                                    <input type="date" id="start-date" name="start-date" required>
+                                </div>
+                                <div>
+                                    <label for="end-date">End Date:</label>
+                                    <input type="date" id="end-date" name="end-date" required>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-12 col-sm-4 col-md-6">
+                                    <h4 class="mb-1">11 November 2023</h4>
+                                    <p class="text-muted">Monday</p>
+                                </div>
+                                <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                                    <div class="bookingrange btn btn-white btn-sm mb-3">
+                                        <i class="far fa-calendar-alt me-2"></i>
+                                        <span></span>
+                                        <i class="fas fa-chevron-down ms-2"></i>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <ul>
-                                        <li>
-                                            <h6>Full Name</h6>
-                                        <h7>${mentee.name}</h7>
-                                        </li>
-                                        <li>
-                                            <h6>Email</h6>
-                                        <h7>${mentee.email}</h7>
-                                        </li>
-                                    </ul>
-
-                                </div>
                             </div>
-                        </div><br>
-                        <!-- Form chính để tạo Request -->
-                        <form action="CreateRequest" method="POST"> 
-                            <div>
-                                <h4>Add New Request</h4>
-                            </div> 
-                            <input type="hidden" name="mentee_id" value="${sessionScope.menteeId}">
-                            <input type="hidden" name="mentor_id" value="${sessionScope.mentorId1}"/>
-                            <input type="hidden" name="course_id" value="${sessionScope.courseId1}"/>
 
-                            <label>Title:</label>
-                            <input class="inputtext" type="text" name="title" required/><br>
-                            <br>
-                            <!-- Lịch Mentor -->
-                            <h10>Lịch Mentor - ${monthName} ${currentYear}</h10>
-                            <div>                          
-                                <div class="month-nav">
-                                    <button type="button" onclick="changeMonth(-1)">⬅ Tháng trước</button>
-                                    <button type="button" onclick="changeMonth(1)">Tháng sau ➡</button>
-                                </div>
+                            <!-- Schedule Widget -->
+                            <div class="card booking-schedule schedule-widget">
 
-                                <table>
-                                    <tr>
-                                        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-                                    </tr>
-                                    <tr>
-                                        <c:forEach var="date" items="${dates}" varStatus="status">
-                                            <c:if test="${status.index % 7 == 0 && status.index != 0}">
-                                            </tr><tr>
-                                            </c:if>
-                                            <c:choose>
-                                                <c:when test="${empty date}">
-                                                    <td class="no-slot"></td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="formattedDate" value="${currentMonth}-${date}-${currentYear}" />
-                                                    <td class="has-slot ${date == currentDay ? 'today' : ''}">
-                                                        <a href="CreateRequest?slotDate=${formattedDate}&mentorId=${mentorId}&month=${currentMonth}&year=${currentYear}">
-                                                            ${date}
+                                <!-- Schedule Header -->
+                                <div class="schedule-header">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <!-- Day Slot -->
+                                            <div class="day-slot">
+                                                <ul>
+                                                    <li class="left-arrow">
+                                                        <a href="javascript:void(0)">
+                                                            <i class="fa fa-chevron-left"></i>
                                                         </a>
-                                                    </td>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </tr>
-                                </table>
-                            </div>
-                            <!-- oi dng dung tam start date end date -->
-                            <label>Start Date:</label>
-                            <input class="date" type="date" name="start_date" required><br>
-
-                            <label>End Date:</label>
-                            <input class="date" type="date" name="end_date" required><br>
-
-                            <label>Content:</label>
-                            <textarea class="contenttex" name="content" rows="3" required></textarea><br/>
-                            <label>Total Slot:</label>
-                            <input type="number" name="total_slot" required><br>
-                            <button class="btn btn-enroll" type="submit" name="action" value="save_draft">Save as Draft</button>
-                            <button class="btn btn-enroll" type="submit" name="action" value="submit">Submit</button>                          
-                        </form>
-
-                        <!-- Form riêng để đặt lịch -->
-                        <c:if test="${not empty param.slotDate}">
-                            <div class="slot-section">
-                                <h3>Slot khả dụng cho ngày ${param.slotDate}</h3>
-                                <form action="CreateRequest" method="post">
-                                    <input type="hidden" name="action" value="book">
-                                    <input type="hidden" name="slotDate" value="${param.slotDate}">
-                                    <c:choose>
-                                        <c:when test="${empty morningSlots and empty afternoonSlots and empty eveningSlots}">
-                                            <p>Không có Slot nào khả dụng.</p>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <h4>🌞 Morning Slots</h4>
-                                            <ul>
-                                                <c:forEach var="slot" items="${morningSlots}">
-                                                    <li>
-                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
                                                     </li>
-                                                </c:forEach>
-                                            </ul>
-                                            <h4>🌆 Afternoon Slots</h4>
-                                            <ul>
-                                                <c:forEach var="slot" items="${afternoonSlots}">
                                                     <li>
-                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
+                                                        <span>Mon</span>
+                                                        <span class="slot-date">11 Nov <small class="slot-year">2023</small></span>
                                                     </li>
-                                                </c:forEach>
-                                            </ul>
-                                            <h4>🌙 Evening Slots</h4>
-                                            <ul>
-                                                <c:forEach var="slot" items="${eveningSlots}">
                                                     <li>
-                                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
+                                                        <span>Tue</span>
+                                                        <span class="slot-date">12 Nov <small class="slot-year">2023</small></span>
                                                     </li>
-                                                </c:forEach>
-                                            </ul>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <button type="submit">Đặt lịch</button>
-                                </form>
-                            </div>
-                        </c:if>
-                    </div>
+                                                    <li>
+                                                        <span>Wed</span>
+                                                        <span class="slot-date">13 Nov <small class="slot-year">2023</small></span>
+                                                    </li>
+                                                    <li>
+                                                        <span>Thu</span>
+                                                        <span class="slot-date">14 Nov <small class="slot-year">2023</small></span>
+                                                    </li>
+                                                    <li>
+                                                        <span>Fri</span>
+                                                        <span class="slot-date">15 Nov <small class="slot-year">2023</small></span>
+                                                    </li>
+                                                    <li>
+                                                        <span>Sat</span>
+                                                        <span class="slot-date">16 Nov <small class="slot-year">2023</small></span>
+                                                    </li>
+                                                    <li>
+                                                        <span>Sun</span>
+                                                        <span class="slot-date">17 Nov <small class="slot-year">2023</small></span>
+                                                    </li>
+                                                    <li class="right-arrow">
+                                                        <a href="javascript:void(0)">
+                                                            <i class="fa fa-chevron-right"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /Day Slot -->
 
-                    <div class="col-md-5 col-lg-4 row">
-
-                        <!-- Booking Summary -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Mentor detail</h4>
-                            </div>
-                            <div class="card-body"> 
-
-                                <!-- Booking Doctor Info -->
-                                <div class="booking-doc-info">
-                                    <a href="doctor-profile.html" class="booking-doc-img">
-                                        <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                                    </a>
-                                    <div class="booking-info">
-                                        <h4><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">35</span>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Booking Doctor Info -->
+                                <!-- /Schedule Header -->
 
-                                <div class="booking-summary">
-                                    <div class="booking-item-wrap">
-                                        <div class="booking-total">
-                                            <ul class="booking-total-list">
-                                                <li>
-                                                    <span>Total slot</span>
-                                                    <span class="total-cost">5</span>
-                                                </li>
-                                            </ul>
+                                <!-- Schedule Content -->
+                                <div class="schedule-cont">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <!-- Time Slot -->
+                                            <div class="time-slot">
+                                                <ul class="clearfix">
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="timing" href="#">
+                                                            <span>9:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>10:00</span> <span>AM</span>
+                                                        </a>
+                                                        <a class="timing" href="#">
+                                                            <span>11:00</span> <span>AM</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <button id="clearAllBtn" class="clear-btn">Clear</button>
+                                            <!-- /Time Slot -->
+
                                         </div>
 
-                                        <div class="booking-total">
-                                            <ul class="booking-total-list">
-                                                <li>
-                                                    <span>Total</span>
-                                                    <span class="total-cost">$160</span>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </div>
                                 </div>
+                                <!-- /Schedule Content -->
+
                             </div>
+
+                            <!-- /Schedule Widget -->
+
+                            <div class="price-display">
+                                Total Price: <span class="price-amount">0</span>
+                            </div>
+                            <!-- Submit Section -->
+                            <div class="button-container">
+                                <button type="submit" class="submit-bbb">Submit</button>
+                                <button type="button" class="save-bbb">Save</button>
+                            </div>
+                            <!-- /Submit Section -->
                         </div>
-                        <!-- /Booking Summary -->
-
+                        </form>
                     </div>
+                </div>
 
-                </div>    
+            </div>
+            <script>
+                const timeSlots = document.querySelectorAll('.timing');
 
-            </div>   
-        </div> 
-        <%@include file="../sourcesHome/homeFooter.jsp" %>     
-        <script>
-            document.querySelector("form").addEventListener("submit", function (event) {
-                let title = document.querySelector('input[name="title"]').value.trim();
-                let deadlineDate = document.querySelector('input[name="deadline_date"]').value;
-                let deadlineHour = document.querySelector('input[name="deadline_hour"]').value;
-                let content = document.querySelector('textarea[name="content"]').value.trim();
-                let courseChecked = document.querySelectorAll('input[name="courseIds"]:checked').length > 0;
+                timeSlots.forEach(slot => {
+                    slot.addEventListener('click', function (event) {
+                        event.preventDefault();
 
-                if (!title || !deadlineDate || !deadlineHour || !content) {
-                    alert("Vui lòng điền đầy đủ thông tin!");
-                    event.preventDefault(); // Ngăn form submit nếu có trường bị thiếu
-                    return;
-                }
+                        if (this.classList.contains('selected')) {
+                            this.classList.remove('selected');
+                        } else {
+                            this.classList.add('selected');
+                        }
+                    });
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    const timeSlots = document.querySelectorAll('.timing');
+                    const priceDisplay = document.querySelector('.price-amount');
+                    const pricePerSlot = 100; // Gi� ti?n cho m?i slot
+                    let totalPrice = 0; // T?ng ti?n ban ??u
 
-                if (!courseChecked) {
-                    alert("Vui lòng chọn ít nhất một khóa học!");
-                    event.preventDefault();
-                    return;
-                }
-            });
-        </script>
-        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
-        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
-        <script src="/HAPPYorSAD/assets/js/script.js"></script>
+                    timeSlots.forEach(slot => {
+                        slot.addEventListener('click', function (event) {
+                            event.preventDefault(); // Ng?n ch?n h�nh ??ng m?c ??nh c?a th? <a>
+
+                            if (this.classList.contains('selected')) {
+                                // N?u slot ?� ???c ch?n, b? ch?n v� gi?m ti?n
+                                this.classList.remove('selected');
+                                totalPrice -= pricePerSlot;
+                            } else {
+                                // N?u slot ch?a ???c ch?n, ch?n v� t?ng ti?n
+                                this.classList.add('selected');
+                                totalPrice += pricePerSlot;
+                            }
+
+                            // Hi?n th? t?ng ti?n
+                            priceDisplay.textContent = totalPrice;
+                        });
+                    });
+                });
+                document.getElementById("clearAllBtn").addEventListener("click", function () {
+                    document.querySelectorAll(".timing.selected").forEach(function (slot) {
+                        slot.classList.remove("selected");
+                    });
+                });
+            </script>
+
+            <!-- /Page Content -->
+            <%@include file="../sourcesHome/homeFooter.jsp" %>
+
+
+        </div>
+        <!-- /Main Wrapper -->
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Custom JS -->
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
+        crossorigin="anonymous"></script>
     </body>
 
 </html>
-
