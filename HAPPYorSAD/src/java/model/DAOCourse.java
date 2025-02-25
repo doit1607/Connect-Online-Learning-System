@@ -86,6 +86,7 @@ public class DAOCourse extends DBConnection {
             pre.setString(5, image);
             pre.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
