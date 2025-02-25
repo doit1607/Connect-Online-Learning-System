@@ -101,7 +101,6 @@ public class Slot extends HttpServlet {
 
         Date slotDate = new Date(calendar.getTimeInMillis());
         request.setAttribute("selectedDate", selectedDate);
-        request.setAttribute("selectedDate", selectedDate);
         request.setAttribute("slots", daoSlot.getSlotsByDate1(selectedDate, mentorId));
         request.setAttribute("availableSlots", daoSc.getAvailableSlotNumbers(scheduleId, selectedDate));
         System.out.println("Slot Date: " + request.getAttribute("selectedDate"));
