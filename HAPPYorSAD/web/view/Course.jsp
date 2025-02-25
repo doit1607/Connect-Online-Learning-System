@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -117,30 +118,51 @@
                             <!-- /Filter -->
 
                             <div class="row">
+                                <c:if test="${sessionScope.cvStatus != 'approved'}">
+                                    <p style="color: red; text-align: center; margin-top: 20px;">
+                                        Your CV has not been approved yet. Please wait for approval.
+                                    </p>
+                                </c:if>
                                 <c:forEach items="${sessionScope.listAllCousre}" var="o">
                                     <div class="col-lg-12 col-md-12 d-flex">
                                         <div class="course-box course-design list-course d-flex">
                                             <div class="product">
                                                 <div class="product-img">
                                                     <a href="CourseDetails?Cid=${o.id}">
-                                                        <img class="img-fluid" alt="Img" src="${o.image}" ">
+                                                        <img class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="head-course-title">
                                                         <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>
                                                         <div class="all-btn all-category d-flex align-items-center">
-                                                            <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">More detail</a>
+                                                            <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">Course ID: ${o.id}</a>
                                                         </div>
                                                     </div>
-                                                    
+                                                    <c:if test="${sessionScope.cvStatus == 'approved'}">
+                                                        <c:choose>
+                                                            <c:when test="${not empty sessionScope.joinedCourses && fn:contains(sessionScope.joinedCourses, o.id)}">
+                                                                <div class="d-flex justify-content-end mt-2">
+                                                                    <button class="btn btn-secondary" disabled>Joined</button>
+                                                                </div>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="d-flex justify-content-end mt-2">
+                                                                    <form action="JoinCourse" method="get">
+                                                                        <input type="hidden" name="courseId" value="${o.id}">
+                                                                        <button type="submit" class="btn btn-success">Join Course</button>
+                                                                    </form>
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:if>
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                 </c:forEach>
-                                
+
                             </div>
 
                             <!-- /pagination -->

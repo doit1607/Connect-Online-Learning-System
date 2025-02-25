@@ -89,6 +89,10 @@
         <servlet-class>controller.Slot</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>JoinCourse</servlet-name>
+        <servlet-class>controller.JoinCourse</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AcceptCV</servlet-name>
         <servlet-class>controller.AcceptCV</servlet-class>
     </servlet>
@@ -223,6 +227,10 @@
     <servlet-mapping>
         <servlet-name>UpdateRequest</servlet-name>
         <url-pattern>/UpdateRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JoinCourse</servlet-name>
+        <url-pattern>/JoinCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

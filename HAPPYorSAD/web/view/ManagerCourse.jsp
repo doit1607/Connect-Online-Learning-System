@@ -102,13 +102,7 @@
 
                                     </ul>
 
-                                    <h3>Account Settings</h3>
                                     <ul>
-                                        <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
                                         <li class="nav-item">
                                             <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
@@ -241,37 +235,6 @@
                 }
 
             </script>
-            <footer class="footer">
-                <%@include file="../sourcesHome/homeFooter.jsp" %>
-            </footer>
         </div>
-        <!-- /Footer -->
-        <!-- jQuery -->
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- counterup JS -->
-        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Owl Carousel -->
-        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Slick Slider -->
-        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Aos -->
-        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1d433aff6b2b8dd82abe2a72-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910743f1baeee2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
     </body>
 </html>

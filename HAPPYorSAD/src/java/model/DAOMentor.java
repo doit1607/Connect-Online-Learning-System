@@ -263,21 +263,82 @@ public class DAOMentor extends DBConnection {
     }
 
     public static Integer getMentorIdByUserId(int userId) {
-        int mentorId = -1;
         String sql = "SELECT m.id \n"
                 + "FROM Users u join Mentor m on m.user_id = u.id\n"
                 + "WHERE u.id = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql);) {
-
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                mentorId = rs.getInt("id");
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, userId);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mentorId;
+        return -1;
+    }
+
+    public void MentorCourse(int mentorId, int courseId) {
+        String sql = "INSERT INTO MentorCourse (mentor_id, course_id) VALUES (?, ?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            pre.setInt(2, courseId);
+            pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public int getMentorByUserId(int userId) {
+        String sql = "SELECT id \n"
+                + "FROM Mentor \n"
+                + "WHERE user_id = ?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean isMentorJoinedCourse(int mentorId, int courseId) {
+        String sql = "SELECT COUNT(*) FROM MentorCourse WHERE mentor_id = ? AND course_id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, mentorId);
+            ps.setInt(2, courseId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Integer> getJoinedCoursesByMentorId(int mentorId) {
+        List<Integer> joinedCourses = new ArrayList<>();
+        String sql = "SELECT course_id FROM MentorCourse WHERE mentor_id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, mentorId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                joinedCourses.add(rs.getInt("course_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return joinedCourses;
     }
 
     public static void main(String[] args) {

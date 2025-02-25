@@ -94,8 +94,8 @@
                                             <!-- Search Form -->
                                             <form id="searchForm" action="viewMentor" method="GET" class="mb-4">
                                                 <div class="input-group">
-                                                    <input type="text" id="searchInput" name="search" class="form-control" placeholder="Tìm kiếm mentor..." value="${param.search}">
-                                                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+                                                    <input type="text" id="searchInput" name="search" class="form-control" placeholder="Search mentor..." value="${param.search}">
+                                                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i>Search</button>
                                                 </div>
                                             </form>
 

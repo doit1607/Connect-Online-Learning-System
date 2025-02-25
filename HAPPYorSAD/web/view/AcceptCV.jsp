@@ -110,13 +110,7 @@
 
                                     </ul>
 
-                                    <h3>Account Settings</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
+                                    <ul>                                        
                                         <li class="nav-item">
                                             <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
@@ -152,7 +146,7 @@
                                                     <td>${cv.professionIntro}</td>
                                                     <td>${cv.serviceDescription}</td>
                                                     <td>${cv.achievementDescription}</td>
-                                                    
+
                                                     <td>
                                                         <form action="AcceptCV"  method="post">
                                                             <input type="hidden" name="username" value="${cv.username}" />
@@ -170,43 +164,11 @@
                     </div>
                 </div>
             </div>	
-            <!-- /Page Content -->
+        </div>
+        <!-- /Page Content -->
 
-            <!-- Footer -->
-            <%@include file="../sourcesHome/homeFooter.jsp" %>
-            <!-- /Footer Top -->
+    </body>
 
-        </footer>
-        <!-- /Footer -->
-
-    </div>
-    <!-- /Main Wrapper -->
-
-    <!-- jQuery -->
-    <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Bootstrap Core JS -->
-    <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Select2 JS -->
-    <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Ckeditor JS -->
-    <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Dropzone JS -->
-    <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Sticky Sidebar JS -->
-    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <!-- Custom JS -->
-    <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-    <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-</body>
-
-<!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
+    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
 </html>
 
