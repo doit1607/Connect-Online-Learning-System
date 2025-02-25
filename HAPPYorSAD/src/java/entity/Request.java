@@ -68,6 +68,20 @@ public class Request {
         this.courseId = courseId;
     }
 
+    public Request(int menteeId, int mentorId, String title, int totalSlot, LocalDate startDate, LocalDate endDate, String content, String status, int courseId) {
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.courseId = courseId;
+    }
+
+   
+    
     // Getters and Setters
 
     public int getId() {
