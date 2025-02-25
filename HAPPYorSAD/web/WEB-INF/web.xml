@@ -100,9 +100,17 @@
         <servlet-name>DraftCV</servlet-name>
         <servlet-class>controller.DraftCV</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>CreateRequest</servlet-name>
         <servlet-class>controller.CreateRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowMenteeRequest</servlet-name>
+        <servlet-class>controller.ShowMenteeRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateRequest</servlet-name>
+        <servlet-class>controller.UpdateRequest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
@@ -207,6 +215,14 @@
     <servlet-mapping>
         <servlet-name>CreateRequest</servlet-name>
         <url-pattern>/CreateRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowMenteeRequest</servlet-name>
+        <url-pattern>/ShowMenteeRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateRequest</servlet-name>
+        <url-pattern>/UpdateRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
