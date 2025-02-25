@@ -20,22 +20,45 @@
         <meta charset="utf-8">
         <title>Doccure</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="/HAPPYorSAD/assets/img/favicon.png" type="image/x-icon">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
         <link rel="apple-touch-icon" sizes="180x180" href="/HAPPYorSAD/assets/img/apple-touch-icon.png">
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+
+        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+
+        <!-- FontAwesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
 
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/iconsax.css">
+        <!-- Feather CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+
+        <!-- Icons -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/iconsax.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
+        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Bootstrap DateTimePicker -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap-datetimepicker.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Custom & Main Styles -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/custom.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        
-        <script src="/HAPPYorSAD//assets/js/Ajax.js"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!-- Theme Script -->
+        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
+
+        <!-- Ajax -->
+        <script src="/HAPPYorSAD/assets/js/Ajax.js"></script>
+
 
 
         <style>
@@ -50,7 +73,7 @@
 
     </head>
     <body>
-
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
         <div class="main-wrapper">   
 
             <!-- Breadcrumb -->
@@ -79,41 +102,27 @@
                     <div class="row">
 
                         <!-- sidebar -->
+
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
-                                <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <div class="profile-img">
-                                            <a href="instructor-profile.html"><img src="assets/img/user/user-17.jpg"
-                                                                                   alt="Img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="instructor-profile.html">Eugene Andre</a></h4>
-                                            <p>Instructor</p>
-                                            <a href="add-course.html" class="add-course btn-primary">Add New Course</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a href="instructor-profile.html" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>My Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="instructor-enrolled-course.html" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            </a>
+                                        </li>
+                                        <li class="nav-item active" >
+                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Available Timings
+
                                             </a>
                                         </li>
 
@@ -122,6 +131,7 @@
                                                 <i class="bx bxs-heart"></i>Wishlist
                                             </a>
                                         </li>
+
                                         <li class="nav-item">
                                             <a href="instructor-reviews.html" class="nav-link">
                                                 <i class="bx bxs-star"></i>Reviews
@@ -183,12 +193,12 @@
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
+                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="index-2.html" class="nav-link">
+                                            <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
                                             </a>
                                         </li>
@@ -382,24 +392,39 @@
                 </div>
             </div>
         </div>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
         <!-- /Remove Slots -->
 
-        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"
-        type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"
-        type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/moment.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/bootstrap-datetimepicker.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/script.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
-        data-cf-settings="a18776aee842a8e5f3a30141-|49" defer></script>
-        <script defer
-                src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-                integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-                data-cf-beacon='{"rayId":"9127c0ff5d5b02d2","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}'
-        crossorigin="anonymous"></script>
+        <!-- jQuery -->
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Theia Sticky Sidebar -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+        <!-- Select2 -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
+
+        <!-- CKEditor -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js"></script>
+
+        <!-- Dropzone -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js"></script>
+
+        <!-- Date & Time Picker -->
+        <script src="/HAPPYorSAD/assets/js/moment.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+        <!-- Custom Script -->
+        <script src="/HAPPYorSAD/assets/js/script.js"></script>
+
+        <!-- Cloudflare & Performance Scripts -->
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" crossorigin="anonymous"></script>
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
     </body>
 </html>
