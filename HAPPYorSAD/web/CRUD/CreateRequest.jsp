@@ -188,23 +188,18 @@
                                     </div> 
                                     <br>
                                     <div>
-                                        <h6><a href="view/Wallet.jsp" class=" btn-Recharge">Recharge</a></h6>
+                                        <h6><a href="view/Wallet.jsp" class=" Recharge">Recharge</a></h6>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-
                                     <ul>
                                         <li>
                                             <h6>Full Name</h6>
-                                        <h7></h7>
-                                        </li>
-                                        <li>
-                                            <h6>Mentee Id</h6>
-                                        <h7>${sessionScope.menteeId}</h7>
+                                        <h7>${mentee.name}</h7>
                                         </li>
                                         <li>
                                             <h6>Email</h6>
-                                        <h7></h7>
+                                        <h7>${mentee.email}</h7>
                                         </li>
                                     </ul>
 
@@ -217,12 +212,12 @@
                                 <h4>Add New Request</h4>
                             </div> 
                             <input type="hidden" name="mentee_id" value="${sessionScope.menteeId}">
-                            <input type="hidden" name="mentor_id" value="${mentorId}"/>
+                            <input type="hidden" name="mentor_id" value="${sessionScope.mentorId1}"/>
+                            <input type="hidden" name="course_id" value="${sessionScope.courseId1}"/>
 
                             <label>Title:</label>
                             <input class="inputtext" type="text" name="title" required/><br>
                             <br>
-
                             <!-- Lịch Mentor -->
                             <h10>Lịch Mentor - ${monthName} ${currentYear}</h10>
                             <div>                          
@@ -257,24 +252,19 @@
                                     </tr>
                                 </table>
                             </div>
+                            <!-- oi dng dung tam start date end date -->
+                            <label>Start Date:</label>
+                            <input class="date" type="date" name="start_date" required><br>
 
-                            <label>Deadline Date:</label><br>
-                            <input class="date" type="date" name="deadline_date" required/><br/>
-
-                            <label>Deadline Hour:</label><br>
-                            <input class="time" type="time" name="deadline_hour" required/><br/>
+                            <label>End Date:</label>
+                            <input class="date" type="date" name="end_date" required><br>
 
                             <label>Content:</label>
                             <textarea class="contenttex" name="content" rows="3" required></textarea><br/>
-
-                            <label>Courses:</label><br/>
-                            <c:forEach items="${sessionScope.listAllCourse}" var="o">
-                                <div class="checkbox"> 
-                                    <input type="checkbox" name="courseIds" value="${o.id}"/> ${o.title}<br/>
-                                </div>
-                            </c:forEach>
-
-                            <button class="btn btn-enroll" type="submit">Create Request</button>
+                            <label>Total Slot:</label>
+                            <input type="number" name="total_slot" required><br>
+                            <button class="btn btn-enroll" type="submit" name="action" value="save_draft">Save as Draft</button>
+                            <button class="btn btn-enroll" type="submit" name="action" value="submit">Submit</button>                          
                         </form>
 
                         <!-- Form riêng để đặt lịch -->
@@ -345,24 +335,21 @@
                                             <i class="fas fa-star"></i>
                                             <span class="d-inline-block average-rating">35</span>
                                         </div>
-                                        <div class="clinic-details">
-                                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- Booking Doctor Info -->
 
                                 <div class="booking-summary">
                                     <div class="booking-item-wrap">
-                                        <ul class="booking-date">
-                                            <li>Date :<span> 16 Nov 2023</span></li>
-                                            <li>Time :<span> 10:00 AM</span></li>
-                                        </ul>
-                                        <ul class="booking-fee">
-                                            <li>Consulting Fee <span>$100</span></li>
-                                            <li>Booking Fee <span>$10</span></li>
-                                            <li>Video Call <span>$50</span></li>
-                                        </ul>
+                                        <div class="booking-total">
+                                            <ul class="booking-total-list">
+                                                <li>
+                                                    <span>Total slot</span>
+                                                    <span class="total-cost">5</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+
                                         <div class="booking-total">
                                             <ul class="booking-total-list">
                                                 <li>
@@ -378,6 +365,7 @@
                         <!-- /Booking Summary -->
 
                     </div>
+
                 </div>    
 
             </div>   
