@@ -129,9 +129,6 @@
                                             <td>endDate</td>
                                             <td>content</td>
                                             <td>status</td>
-                                            <td>createdAt</td>
-                                            <td>updatedAt</td>
-                                            <td>courseIds</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -152,9 +149,6 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-                                                <td>${o.createdAt}</td>
-                                                <td>${o.updatedAt}</td>
-                                                <td>${o.courseId}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
