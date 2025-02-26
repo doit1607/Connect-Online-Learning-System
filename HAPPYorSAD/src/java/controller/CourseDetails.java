@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import model.DAOCourse;
 /**
@@ -25,7 +26,7 @@ public class CourseDetails extends HttpServlet {
      * methods.
      *
      * @param request servlet request
-     * @param response servlet response
+     * @param response servlet responsee
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
@@ -37,10 +38,26 @@ public class CourseDetails extends HttpServlet {
         Course course = dao.getCourseById(id);
         String courseName = course.getTitle();
         List<Mentor> list = dao.getMentorByCourseTitle(courseName);
+//        int countMenteOfCourse = dao.getTotalMenteesByCourse(id);
+        int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
+        String majorName = dao.getCourseMajor(id);
+        int majorId = course.getCourseMajorId();
+        List<Course> listc = dao.getTop3CoursesByMajor(majorId);
+        ArrayList<Course> listCourseToPrint = new ArrayList<>();
+        for (Course course1 : listc) {
+            if(course1.getId() != course.getId()){
+                listCourseToPrint.add(course1);
+            }
+        }
         HttpSession session = request.getSession();
         session.setAttribute("listAllMentorByCourse", list);
         session.setAttribute("detail", course);
+//        session.setAttribute("countMenteOfCourse", countMenteOfCourse);
+        session.setAttribute("countMentorOfCourse", countMentorOfCourse);
+        session.setAttribute("majorName", majorName);
+         session.setAttribute("listCourseToPrint", listCourseToPrint);
         request.getRequestDispatcher("view/CourseDetail.jsp").forward(request, response);
+        
 
     }
 
