@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,10 +17,8 @@ import model.DAOuser;
  *
  * @author admin
  */
-
-    
-
 public class Request {
+
     private int id;
     private int menteeId;
     private int mentorId;
@@ -50,11 +49,27 @@ public class Request {
         this.updatedAt = updatedAt;
         this.courseId = courseId;
     }
-    
-    public Request(int id, int menteeId, int mentorId, String title, int totalSlot, 
-                   LocalDate startDate, LocalDate endDate, String content, 
-                   String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
+
+    public Request(int id, int menteeId, int mentorId, String title, int totalSlot,
+            LocalDate startDate, LocalDate endDate, String content,
+            String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
         this.id = id;
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseId = courseId;
+    }
+
+    public Request( int menteeId, int mentorId, String title, int totalSlot,
+            LocalDate startDate, LocalDate endDate, String content,
+            String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
         this.menteeId = menteeId;
         this.mentorId = mentorId;
         this.title = title;
@@ -79,11 +94,19 @@ public class Request {
         this.status = status;
         this.courseId = courseId;
     }
-
-   
     
-    // Getters and Setters
+     public Request(int menteeId, int mentorId, String title, int totalSlot, LocalDate startDate, LocalDate endDate, String content, int courseId) {
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.courseId = courseId;
+    }
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -180,24 +203,22 @@ public class Request {
         this.courseId = courseId;
     }
 
-    
-
     @Override
     public String toString() {
-        return "Request{" +
-                "id=" + id +
-                ", menteeId=" + menteeId +
-                ", mentorId=" + mentorId +
-                ", title='" + title + '\'' +
-                ", totalSlot=" + totalSlot +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", content='" + content + '\'' +
-                ", status='" + status + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", courseIds='" + courseId + '\'' +
-                '}';
+        return "Request{"
+                + "id=" + id
+                + ", menteeId=" + menteeId
+                + ", mentorId=" + mentorId
+                + ", title='" + title + '\''
+                + ", totalSlot=" + totalSlot
+                + ", startDate=" + startDate
+                + ", endDate=" + endDate
+                + ", content='" + content + '\''
+                + ", status='" + status + '\''
+                + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt
+                + ", courseIds='" + courseId + '\''
+                + '}';
     }
 //    public List<Course> getRequestedCourses(){
 //        DAOCourse dao =  new DAOCourse();
