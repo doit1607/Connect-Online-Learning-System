@@ -35,9 +35,11 @@ public class CourseDetails extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("Cid"));
         DAOCourse dao = new DAOCourse();
         Course course = dao.getCourseById(id);
+        double price = dao.getPriceCourse(id);
         String courseName = course.getTitle();
         List<Mentor> list = dao.getMentorByCourseTitle(courseName);
         HttpSession session = request.getSession();
+        session.setAttribute("price", price);
         session.setAttribute("listAllMentorByCourse", list);
         session.setAttribute("detail", course);
         request.getRequestDispatcher("view/CourseDetail.jsp").forward(request, response);
