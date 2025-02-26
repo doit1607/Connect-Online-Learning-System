@@ -102,6 +102,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  order by [title]";
         try {
@@ -359,6 +360,103 @@ public class DAOCourse extends DBConnection {
         return mentors;
     }
 
+//    public int getTotalMenteesByCourse(int courseId) {
+//        String sql = "SELECT COUNT(DISTINCT m.id) AS total_mentees "
+//                + "FROM Mentee m "
+//                + "JOIN CourseEnrollment ce ON m.id = ce.mentee_id "
+//                + "WHERE ce.course_id = ?";
+//        try {
+//            PreparedStatement stmt = conn.prepareStatement(sql);
+//
+//            stmt.setInt(1, courseId);
+//            ResultSet rs = stmt.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt("total_mentees");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return 0;
+//    }
+
+    public int getTotalMentorsByCourse(int courseId) {
+        String sql = "SELECT COUNT(DISTINCT c.mentor_id) AS total_mentors "
+                + "FROM Course c "
+                + "WHERE c.id = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, courseId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total_mentors");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public String getCourseMajor(int courseId) {
+        String sql = "SELECT cm.name AS course_major "
+                + "FROM Course c "
+                + "JOIN CourseMajor cm ON c.course_major_id = cm.id "
+                + "WHERE c.id = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, courseId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("course_major");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Course> getTop3CoursesByMajor(int majorId) {
+        List<Course> courses = new ArrayList<>();
+        String sql = "SELECT top 3  [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "      ,[price]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "  where [course_major_id] = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, majorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));
+                course.setManagerId(rs.getInt("manager_id"));
+                course.setMentorId(rs.getInt("mentor_id"));
+                course.setStatus(rs.getString("status"));
+                course.setCourseMajorId(rs.getInt("course_major_id"));
+                course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
@@ -378,6 +476,12 @@ public class DAOCourse extends DBConnection {
 //            System.out.println("Create failed!");
 //        }
         Course course = dao.getCourseById(1);
+//        int a = dao.getTotalMenteesByCourse(2);
+        int b = dao.getTotalMentorsByCourse(2);
+        String str = dao.getCourseMajor(2);
+//        System.out.println(a);
+        System.out.println(b);
+        System.out.println(str);
         System.out.println(course);
     }
 }
