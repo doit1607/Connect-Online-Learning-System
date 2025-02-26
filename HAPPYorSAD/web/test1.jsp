@@ -246,6 +246,7 @@
                 display: flex;
                 gap: 20px; /* Adjust gap as needed */
                 margin-top: 20px;
+                margin-bottom: 20px;
             }
 
             .date-container label {
@@ -370,10 +371,44 @@
                 background-color: #004494; /* Màu t?i h?n khi b?m */
                 transform: scale(1);
             }
+            .notification {
+                position: fixed; /* Giữ nguyên */
+                top: 20px; /* Thay bottom bằng top */
+                right: 20px; /* Giữ nguyên */
+                background-color: red; /* Đặt màu nền đỏ */
+                color: white; /* Đặt màu chữ trắng để dễ đọc trên nền đỏ */
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                opacity: 0; /* Ẩn ban đầu */
+                transition: opacity 0.3s ease-in-out; /* Hiệu ứng mờ dần */
+                z-index: 1000;
+            }
+
+            .notification.show {
+                opacity: 1; /* Hiện khi có class 'show' */
+            }
+
+            .notification p {
+                margin: 0; /* Loại bỏ margin mặc định của <p> */
+            }
 
 
         </style>
         <script>
+            function showNotification(message) {
+                const notification = document.getElementById("notification");
+                const notificationMessage = document.getElementById("notification-message");
+
+                notificationMessage.textContent = message;
+                notification.classList.add("show"); // Hiển thị popup
+
+                // Tự động ẩn sau 3 giây (tùy chỉnh)
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 3000);
+            }
             document.addEventListener("DOMContentLoaded", function () {
                 const startDateInput = document.getElementById("start-date");
                 const endDateInput = document.getElementById("end-date");
@@ -384,7 +419,7 @@
                     const startDate = new Date(this.value);
 
                     if (startDate < today) {
-                        alert("Start Date cannot be in the past!");
+                        showNotification("Start Date cannot be in the past!"); // Thay alert()
                         this.value = "";
                     }
                 });
@@ -394,7 +429,7 @@
                     const endDate = new Date(this.value);
 
                     if (startDateInput.value && endDate < startDate) {
-                        alert("End Date cannot be earlier than Start Date!");
+                        showNotification("End Date cannot be earlier than Start Date!"); // Thay alert()
                         this.value = "";
                     }
                 });
@@ -402,6 +437,9 @@
 
         </script>
     </head>
+    <div id="notification" class="notification">
+        <p id="notification-message"></p>
+    </div>
     <body>
         <%@include file="/sourcesHome/homeHeader.jsp" %>
         <div id="custom-alert" class="modal">
@@ -444,7 +482,10 @@
 
                             <div class="card">
                                 <div class="card-body"> 
-                                    <form action="CreateRequest" method="post">
+                                    <form action="/../HAPPYorSAD/test" method="post">
+                                        <input type="hidden" name="mentorId" value="${sessionScope.mentorIdrequest}"> 
+                                        <input type="hidden" name="courseId" value="${sessionScope.courseIdrequest}"> 
+                                        <input type="hidden" name="price" value="${sessionScope.price}"> 
                                         <div class="booking-doc-info">
                                             <img src="/HAPPYorSAD/assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
 
@@ -465,21 +506,21 @@
                             </div>
                             <div class="title-container">
                                 <label for="request-title">Title:</label>
-                                <input type="text" id="request-title" name="request-title" required>
+                                <input type="text" id="request-title" name="title" required>
                             </div>
 
                             <div class="content-container">
                                 <label for="request-content">Content:</label>
-                                <textarea id="request-content" name="request-content" required></textarea>
+                                <textarea id="request-content" name="content" required></textarea>
                             </div>
                             <div class="date-container">
                                 <div>
                                     <label for="start-date">Start Date:</label>
-                                    <input type="date" id="start-date" name="start-date" required>
+                                    <input type="date" id="start-date" name="startdate" required>
                                 </div>
                                 <div>
                                     <label for="end-date">End Date:</label>
-                                    <input type="date" id="end-date" name="end-date" required>
+                                    <input type="date" id="end-date" name="enddate" required>
                                 </div>
                             </div>
 
@@ -490,11 +531,12 @@
                                     <h4 class="mb-1">
                                         <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
                                     </h4>
-                                    <p class="text-muted">
-                                        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
-                                    </p>
+                                    <!--                                    <p class="text-muted">
+                                    <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
+                                </p>-->
 
                                 </div>
+
                                 <div class="col-12 col-sm-8 col-md-6 text-sm-end">
                                     <div class="bookingrange btn btn-white btn-sm mb-3">
                                         <i class="far fa-calendar-alt me-2"></i>
@@ -503,7 +545,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <input type="hidden" name="totalSlots" id="totalSlots" value="0">
                             <!-- Schedule Widget -->
                             <!-- Schedule Widget -->
                             <div class="card booking-schedule schedule-widget">
@@ -574,8 +616,8 @@
                                             <label>
                                                 <input type="checkbox" id="repeatBooking"> Repeat Booking
                                             </label>
-                                            <button id="bookSlots">Book Selected Slots</button>
-                                            <button id="clearAllBtn" class="clear-btn">Clear</button>
+                                            <!--                                            <button id="bookSlots">Book Selected Slots</button>-->
+                                            <button type="button" id="clearAllBtn" class="clear-btn">Clear</button>
                                             <!-- /Time Slot -->
 
                                         </div>
@@ -598,72 +640,88 @@
                             </div>
                             <!-- /Submit Section -->
                         </div>
+                        </form>
 
                     </div>
                 </div>
 
             </div>
+
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     const timeSlots = document.querySelectorAll(".timing");
-                    let selectedSlots = new Set(); // Set giúp tránh trùng lặp slot đã chọn
+                    const priceDisplay = document.querySelector(".price-amount");
+                    const pricePerSlot = ${sessionScope.price}; // Lấy giá từ session
+                    const walletBalance = ${sessionScope.walletBalance}; // Lấy số dư ví
+                    const totalSlotsInput = document.getElementById("totalSlots");
+                    const submitBtn = document.querySelector(".submit-bbb"); // Nút Submit
+                    const saveBtn = document.querySelector(".save-bbb"); // Nút Save
+                    let totalPrice = 0;
+                    let totalSlots = 0;
+                    let selectedSlots = new Set();
+
+                    function updateUI() {
+                        priceDisplay.textContent = totalPrice;
+                        totalSlotsInput.value = totalSlots;
+
+                        if (totalPrice > walletBalance) {
+                            showNotification("Bạn không đủ tiền trong ví để đặt thêm slot!");
+                            submitBtn.disabled = true;
+                            saveBtn.disabled = true;
+                            submitBtn.classList.add("disabled"); // Thêm CSS class để làm mờ nút
+                            saveBtn.classList.add("disabled");
+                        } else {
+                            submitBtn.disabled = false;
+                            saveBtn.disabled = false;
+                            submitBtn.classList.remove("disabled"); // Xóa class nếu hợp lệ
+                            saveBtn.classList.remove("disabled");
+                        }
+                    }
 
                     timeSlots.forEach(slot => {
                         slot.addEventListener("click", function (event) {
                             event.preventDefault();
-
                             let slotInfo = this.dataset.slotInfo;
 
-                            // Nếu đã chọn thì bỏ chọn, nếu chưa thì chọn
                             if (selectedSlots.has(slotInfo)) {
                                 selectedSlots.delete(slotInfo);
                                 this.classList.remove("selected");
+                                totalPrice -= pricePerSlot;
+                                totalSlots--;
                             } else {
                                 selectedSlots.add(slotInfo);
                                 this.classList.add("selected");
+                                totalPrice += pricePerSlot;
+                                totalSlots++;
                             }
 
-                            console.log("Slots đã chọn:", Array.from(selectedSlots));
+                            updateUI();
                         });
                     });
 
-                    // Khi bấm "Book Selected Slots", gửi danh sách slot lên Servlet
-                    document.getElementById("bookSlots").addEventListener("click", function () {
-                        if (selectedSlots.size === 0) {
-                            alert("Vui lòng chọn ít nhất một slot!");
-                            return;
-                        }
+                    // Xử lý nút "Clear"
+                    const clearAllBtn = document.getElementById("clearAllBtn");
+                    if (clearAllBtn) {
+                        clearAllBtn.addEventListener("click", function () {
+                            console.log("Clear All Clicked!");
+                            document.querySelectorAll(".timing.selected").forEach(function (slot) {
+                                slot.classList.remove("selected");
+                            });
 
-                        // Chuyển danh sách slot thành chuỗi URL-encoded
-                        let formData = new URLSearchParams();
-                        Array.from(selectedSlots).forEach(slot => {
-                            formData.append("selectedSlots", slot);
+                            totalSlots = 0;
+                            totalPrice = 0;
+                            selectedSlots.clear();
+
+                            updateUI();
                         });
-
-                        let repeatCheckbox = document.getElementById("repeatBooking");
-
-                        if (repeatCheckbox.checked) {
-                            formData.append("repeat", "on");
-                        } else {
-                            formData.append("repeat", "off");
-                        }
-
-
-                        fetch("test?action=book", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded"
-                            },
-                            body: formData.toString()
-                        })
-                                .then(response => response.text())
-                                .then(data => {
-                                    alert(data); // Hiển thị thông báo từ Servlet
-                                    console.log("Phản hồi từ Server:", data);
-                                })
-                                .catch(error => console.error("Lỗi khi gửi dữ liệu:", error));
-                    });
+                    } else {
+                        console.error("Không tìm thấy nút Clear All!");
+                    }
                 });
+
+
+
+
             </script>
 
 
