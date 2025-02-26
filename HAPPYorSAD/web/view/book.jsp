@@ -1,202 +1,119 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <title>Doccure</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lịch Mentor</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            td {
-                width: 14%;
-                height: 50px;
-                text-align: center;
-                border: 1px solid #ccc;
-            }
-            .has-slot {
-                background-color: #a0e7a0;
-                font-weight: bold;
-            }
-            .no-slot {
-                background-color: #f7f7f7;
-            }
-            .today {
-                background-color: #4CAF50 !important;
-                color: white;
-                font-weight: bold;
-                border: 2px solid #2E7D32;
-            }
-            .slot-section {
-                margin-top: 20px;
-            }
-            .month-nav {
-                display: flex;
-                justify-content: space-between;
-                margin: 20px 0;
-            }
-            .month-nav button {
-                padding: 10px;
-                cursor: pointer;
-                background: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-            }
-            .month-nav button:hover {
-                background: #0056b3;
-            }
-        </style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                // Chuyển tháng bằng AJAX
-                function changeMonth(offset) {
-                    let month = ${currentMonth};
-                    let year = ${currentYear};
+        <link rel="shortcut icon" href="/HAPPYorSAD/assets/img/favicon.png" type="image/x-icon">
 
-                    month += offset;
-                    if (month < 1) {
-                        month = 12;
-                        year--;
-                    } else if (month > 12) {
-                        month = 1;
-                        year++;
-                    }
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/iconsax.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/custom.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
-                    $.ajax({
-                        url: "Schedule",
-                        type: "GET",
-                        data: {month: month, year: year},
-                        success: function (response) {
-                            $("body").html(response); // Cập nhật nội dung trang
-                        }
-                    });
-                }
-
-                $(".month-nav button").on("click", function () {
-                    let offset = $(this).text().includes("Tháng trước") ? -1 : 1;
-                    changeMonth(offset);
-                });
-
-                // Load slot theo ngày bằng AJAX
-                $(document).on("click", ".load-slots", function (e) {
-                    e.preventDefault();
-                    let slotDate = $(this).data("date");
-
-                    $.ajax({
-                        url: "Schedule",
-                        type: "GET",
-                        data: {slotDate: slotDate},
-                        success: function (response) {
-                            $(".slot-section").fadeOut(200, function () {
-                                $(this).html($(response).find(".slot-section").html()).fadeIn(200);
-                            });
-                        }
-                    });
-                });
-
-                // Gửi form đặt lịch bằng AJAX
-                $(document).on("submit", "form[action='Schedule']", function (e) {
-                    e.preventDefault();
-                    let formData = $(this).serialize();
-
-                    $.ajax({
-                        url: "Schedule",
-                        type: "POST",
-                        data: formData,
-                        success: function (response) {
-                            alert("Đặt lịch thành công!");
-                            $(".slot-section").fadeOut(200, function () {
-                                $(this).html($(response).find(".slot-section").html()).fadeIn(200);
-                            });
-                        }
-                    });
-                });
-            });
-        </script>
+        <!-- Custom Style -->
 
     </head>
     <body>
+        <div class="main-wrapper">
+            <div class="page-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9 col-xl-9">
+                            <div class="tab-content pt-0 timing-content">
+                                <div class="tab-pane fade show active" id="general-availability">
+                                    <div class="card custom-card">
+                                        <div class="card-body">
+                                            <div class="available-tab">
+                                                <label class="form-label">Select Available days</label>
+                                                <ul class="nav">
+                                                    <c:forEach var="day" items="${weekDays}">
+                                                        <li>
+                                                            <a href="Slot?scheduleId=${scheduleId}&day=${day}" class="${selectedDay eq day ? 'active' : ''}">
+                                                                ${day}
+                                                            </a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content pt-0">
+                                                <c:forEach var="date" items="${weekDates}">
+                                                    <div class="tab-pane fade show active" id="${date}">
+                                                        <div class="slot-box">
+                                                            <div class="slot-header"><h5>${date}</h5></div>
+                                                            <div class="slot-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty slotsByDay[date]}">
+                                                                                <ul class="time-slots">
+                                                                                    <c:forEach var="slot" items="${slotsByDay[date]}">
+                                                                                        <li class="slot-item"
+                                                                                            data-day="${date}"
+                                                                                            data-date="${slotDate}"
+                                                                                            data-slot-number="${slot.slotNumber}">
 
-        <h2>Lịch Mentor - ${monthName} ${currentYear}</h2>
+                                                                                            <i class="isax isax-clock"></i> ${slotTimeMap[slot.slotNumber]}
+                                                                                        </li>
+                                                                                    </c:forEach>
+                                                                                </ul>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <p>No slots available.</p>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                        <c:forEach var="tempSlot" items="${sessionScope.tempSlots[date]}">
+                                                                            <li class="slot-item temp-slot-item"
+                                                                                data-day="${date}"
+                                                                                data-slot-date="${slotDate}"
+                                                                                data-slot-number="${slotNumber}"
+                                                                                onclick="selectSlot(this)">
+                                                                                <i class="isax isax-clock"></i> ${slotTimeMap[tempSlot.slotNumber]}
+                                                                                <c:out value="slotDate=${slotDate}, slotNumber=${slotNumber}" />
 
-        <div class="month-nav">
-            <button onclick="changeMonth(-1)">⬅ Tháng trước</button>
-            <button onclick="changeMonth(1)">Tháng sau ➡</button>
-        </div>
+                                                                            </li>
+                                                                            <c:out value="slotDate=${slotDate}, slotNumber=${slotNumber}" />
 
-        <table>
-            <tr>
-                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-            </tr>
-            <tr>
-                <c:forEach var="date" items="${dates}" varStatus="status">
-                    <c:if test="${status.index % 7 == 0 && status.index != 0}">
-                    </tr><tr>
-                    </c:if>
-                    <c:choose>
-                        <c:when test="${empty date}">
-                            <td class="no-slot"></td>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="formattedDate" value="${currentMonth}-${date}-${currentYear}" />
-                            <td class="has-slot ${date == currentDay ? 'today' : ''}">
-                                <a href="Schedule?slotDate=${formattedDate}&mentorId=${mentorId}&month=${currentMonth}&year=${currentYear}">
-                                    ${date}
-                                </a>
-                            </td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </tr>
-        </table>
+                                                                        </c:forEach>
 
-        <c:if test="${not empty param.slotDate}">
-            <div class="slot-section">
-                <h3>Slot khả dụng cho ngày ${param.slotDate}</h3>
-                <form action="Schedule" method="post">
-                    <input type="hidden" name="action" value="book">
-                    <input type="hidden" name="slotDate" value="${param.slotDate}">
-                    <c:choose>
-                        <c:when test="${empty morningSlots and empty afternoonSlots and empty eveningSlots}">
-                            <p>Không có Slot nào khả dụng.</p>
-                        </c:when>
-                        <c:otherwise>
-                            <h4>🌞 Morning Slots</h4>
-                            <ul>
-                                <c:forEach var="slot" items="${morningSlots}">
-                                    <li>
-                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                            <h4>🌆 Afternoon Slots</h4>
-                            <ul>
-                                <c:forEach var="slot" items="${afternoonSlots}">
-                                    <li>
-                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                            <h4>🌙 Evening Slots</h4>
-                            <ul>
-                                <c:forEach var="slot" items="${eveningSlots}">
-                                    <li>
-                                        <input type="checkbox" name="startTimes" value="${slot.startTime}"> ${slot.startTime}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </c:otherwise>
-                    </c:choose>
-                    <button type="submit">Đặt lịch</button>
-                </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-btn text-end">
+                                    <form action="Slot?action=confirmBook" method="post">
+                                        <a href="#" class="btn btn-gray" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</a>
+                                        <input type="hidden" name="scheduleId" value="${scheduleId}"> 
+                                        <button type="submit" class="btn btn-primary prime-btn">Confirm</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </c:if>
+        </div>
+        <!-- JS Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/moment.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js"></script>
     </body>
 </html>

@@ -55,6 +55,7 @@ public class Slot extends HttpServlet {
         int userId = (Integer) session.getAttribute("userId");
         Integer mentorId = DAOMentor.getMentorIdByUserId(userId);
         Integer scheduleId = DAOschedule.getScheduleIdsByMentorId(mentorId);
+        
 
         System.out.println("User ID: " + userId);
         System.out.println("Mentor ID: " + mentorId);
@@ -156,9 +157,40 @@ public class Slot extends HttpServlet {
             } else {
                 System.out.println("Error: endTime is null.");
             }
-
+        } else if ("nextSchedule".equals(action)) {
+//            try {
+//                int slotId = Integer.parseInt(request.getParameter("slotId"));
+//                entity.Slot slot = daoSlot.getSlotById(slotId);
+//                if (slot == null) {
+//                    response.setContentType("application/json");
+//                    response.getWriter().write("{\"success\": false, \"message\": \"Slot không tồn tại!\"}");
+//                    return;
+//                }
+//                if (mentorId == 0) {
+//                    response.setContentType("application/json");
+//                    response.getWriter().write("{\"success\": false, \"message\": \"Không tìm thấy Mentor!\"}");
+//                    return;
+//                }
+//                Schedule currentSchedule = daoSc.getScheduleById(slot.getScheduleId());
+//                if (currentSchedule == null) {
+//                    response.setContentType("application/json");
+//                    response.getWriter().write("{\"success\": false, \"message\": \"Không tìm thấy lịch trình hiện tại!\"}");
+//                    return;
+//                }
+//                // Tính toán thời gian tháng tiếp theo
+//                LocalDate newStartDate = currentSchedule.getStartDate().toLocalDate().plusMonths(1);
+//                LocalDate newEndDate = currentSchedule.getEndDate().toLocalDate().plusMonths(1);
+//                // Tạo lịch trình mới
+//                Schedule newSchedule = new Schedule(mentorId, java.sql.Date.valueOf(newStartDate), java.sql.Date.valueOf(newEndDate));
+//                int newScheduleId = daoSc.addSchedule(newSchedule);
+//
+//                request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
+//            } catch (Exception e) {
+//
+//            }
         }
         request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
+
     }
 
     private void handleAddSlot(HttpSession session, HttpServletRequest request, int scheduleId, Date selectedDate) {
