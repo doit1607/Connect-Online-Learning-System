@@ -142,7 +142,7 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${o.status eq 'Draft'}">${o.status}
-                                                            <a href="UpdateRequest?id=${o.id}" target="_blank">Update</a>
+                                                            <a href="UpdateRequest?id=${o.id}" class="updatebtn"><ins><i>Update</i></ins></a>
                                                         </c:when>
                                                         <c:otherwise>
                                                             ${o.status}
@@ -153,7 +153,6 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div> 
                         <div class="dash-pagination">
