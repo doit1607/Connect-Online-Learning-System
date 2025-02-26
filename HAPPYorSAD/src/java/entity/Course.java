@@ -75,10 +75,6 @@ public class Course {
     
     
     
-    
-
-    
-    
     public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId) {
         this.id = id;
         this.title = title;
@@ -221,11 +217,13 @@ public class Course {
     public void setPrice(Double price) {
         this.price = price;
     }
-    
+
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + ", total_Courses=" + total_Courses + '}';
+        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + ", total_Courses=" + total_Courses + ", price=" + price + '}';
     }
+    
+    
 
   
 }
