@@ -15,39 +15,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Course Detail</title>
 
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
-
-        <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
-        <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-        <!-- Feather CSS -->
-        <link rel="stylesheet" href="assets/css/feather.css">
-
-        <!-- Main CSS -->
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
         <link rel="stylesheet" href="assets/css/style.css">
 
     </head>
-    <style>
-        .tablecontent a {
-            color: blue; /* Màu xanh */
-            text-decoration: underline; /* Gạch chân */
-            font-weight: bold; /* Làm chữ đậm (tuỳ chọn) */
-        }
 
-        .tablecontent a:hover {
-            color: darkblue; /* Màu xanh đậm hơn khi hover */
-            text-decoration: none; /* Bỏ gạch chân khi hover (tuỳ chọn) */
-        }
-
-    </style>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
@@ -83,11 +65,19 @@
                             <h2>${detail.title}</h2>
                             <p>Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!</p>
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
-                                <div class="cou-info"> 
-                                    <img src="assets/img/icon/timer-icon.svg" alt="Img">
-                                    <p>${detail.status}</p>
+                                <div class="cou-info">
+                                    <img src="assets/img/icon/icon-01.svg" alt="Img">
+                                    <p>12+ Lesson</p>
                                 </div>
-                            </div>							
+                                <div class="cou-info">
+                                    <img src="assets/img/icon/timer-icon.svg" alt="Img">
+                                    <p>9hr 30min</p>
+                                </div>
+                                <div class="cou-info">
+                                    <img src="assets/img/icon/people.svg" alt="Img">
+                                    <p> Total: ${countMentorOfCourse} Mentor </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,26 +94,21 @@
                             <!-- Overview -->
                             <div class="card overview-sec">
                                 <div class="card-body">
-                                    <h5 class="subs-title">Overview</h5>
-                                    <h6>Course Title</h6>
-                                    <p>${detail.title}</p> 
-                                    <h6>Course ID</h6>
-                                    <p>${detail.id}</p> 
-                                    <h6>Course Description</h6>
-                                    <p>${detail.description}</p>                              
-                                    <h6>Course Status</h6>
-                                    <p>${detail.status}</p> 
-                                    <h6>Course Time</h6>
-                                    <p>Create at: ${detail.createdAt}</p> 
-                                    <p>updatedAt: ${detail.updatedAt}</p> 
+                                    <h2 class="subs-title">Overview</h2>
+                                    <h5>Course Title</h5>
+                                    <h5><p>${detail.title}</p> </h5>
 
+                                    <h5>Course Major</h5>
+                                    <h5><p>${majorName}</p>  </h5>  
+                                    <h5>Course Description</h5>
+                                    <h5><p>${detail.description}</p>  </h5>                                                            
                                 </div>
                             </div>
                             <!-- /Overview -->
 
-
+                            <!-- Instructor List -->
                             <div class="row">
-
+                                <h2 class="subs-title">List of suggested course mentors</h2>
                                 <!-- Instructor List -->
                                 <c:forEach var="mentor" items="${sessionScope.listAllMentorByCourse}"> 
                                     <div class="col-lg-12 d-flex">
@@ -179,10 +164,58 @@
                                         </div>
                                     </div>
                                 </c:forEach>
-                                <!-- /Instructor List -->
-
+                                <!-- /Instructor List -->                             
                             </div>
 
+                            <div class="row">
+                                <h2 class="subs-title">List of suggested course have same major</h2>
+                                <c:forEach var="o" items="${sessionScope.listCourseToPrint}"> 
+                                    <div class="col-lg-4 col-md-6 d-flex">
+                                        <div class="course-box course-design d-flex ">
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <a href="course-details.html">
+                                                        <img class="img-fluid" alt="Img" src="${o.image}">
+                                                    </a>
+                                                    <div class="price">
+                                                        <h3> ${o.price} đ</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content">
+                                                    <div class="course-group d-flex">                                                 
+                                                        <div
+                                                            class="course-share d-flex align-items-center justify-content-center">
+                                                            <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="title"><a href="course-details.html">${o.title}</a></h3>
+                                                    <div class="course-info d-flex align-items-center">
+                                                        <div class="rating-img d-flex align-items-center">
+                                                            <img src="assets/img/icon/icon-01.svg" alt="Img">
+                                                            <p>12+ Lesson</p>
+                                                        </div>
+                                                        <div class="course-view d-flex align-items-center">
+                                                            <img src="assets/img/icon/icon-02.svg" alt="Img">
+                                                            <p>9hr 30min</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rating">
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                                                    </div>
+                                                    <div class="all-btn all-category d-flex align-items-center">
+                                                        <a href="checkout.html" class="btn btn-primary">MORE DETAIL</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
                         </div>	
 
                         <div class="col-lg-4">
@@ -256,15 +289,16 @@
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
         <!-- jQuery -->
-        <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="assets/js/bootstrap.bundle.min.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="assets/js/script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
-
-        <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="de0b254082679f4d756bbefa-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910744684a4004f3","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js"></script>
     </body>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/course-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:46 GMT -->

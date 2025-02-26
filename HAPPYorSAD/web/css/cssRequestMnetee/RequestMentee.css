@@ -9,29 +9,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
 .formcontent {
-    width: 70%;
+    width: 100%;
     display: flex;
 }
 
 .tablecontent {
-    width: 90%;
-    border-collapse: collapse;
+    width: 100%;
+
     margin-top: 20px;
     background-color: white;
     margin-bottom: 20px;
 }
 
 .tablecontent thead tr {
-    background-color: #f36980; /* Header màu đỏ nhạt */
+    background-color: #f36980;  /*Header màu đỏ nhạt */
     color: white;
-    text-align: center;
-    font-weight: bold;
+    padding-right: 50px;
 }
 
 .tablecontent th, .tablecontent td {
-    border: 1px solid #ddd; /* Đường viền mỏng màu xám nhạt */
+    border: 1px solid #ddd;  /*ường viền mỏng màu xám nhạt*/ 
     padding: 10px;
-    text-align: center;
 }
 
 .tablecontent tbody tr:nth-child(even) {
@@ -39,11 +37,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 .tablecontent tbody tr:hover {
-    background-color: #f1f1f1; /* Hover làm nổi bật */
+    background-color: #f1f1f1;  /*Hover làm nổi bật */
 }
 
 h3 {
-    text-align: center;
     color: #333;
     margin-bottom: 10px;
+}
+.updatebtn{
+   color: #004FFF; 
 }
