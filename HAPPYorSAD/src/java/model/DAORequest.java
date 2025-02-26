@@ -5,6 +5,7 @@
 package model;
 
 import entity.Request;
+import java.security.Timestamp;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -130,19 +131,21 @@ public class DAORequest extends DBConnection {
     }
 
     public boolean insertRequest(Request request) {
-        String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, start_date, end_date, content, status, course_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, start_date, end_date , content,course_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, request.getMenteeId());
             stmt.setInt(2, request.getMentorId());
             stmt.setString(3, request.getTitle());
             stmt.setInt(4, request.getTotalSlot());
-            stmt.setDate(5, Date.valueOf(request.getStartDate()));
-            stmt.setDate(6, Date.valueOf(request.getEndDate()));
-            stmt.setString(7, request.getContent());
-            stmt.setString(8, request.getStatus());
-            stmt.setInt(9, request.getCourseId());
 
+            stmt.setDate(5, java.sql.Date.valueOf(request.getStartDate()));
+            stmt.setDate(6, java.sql.Date.valueOf(request.getEndDate()));
+
+            stmt.setString(7, request.getContent());
+          
+            stmt.setInt(8, request.getCourseId());
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
@@ -152,25 +155,25 @@ public class DAORequest extends DBConnection {
     }
 
     // Lấy request theo ID
-   public Request getRequestById(int id) {
+    public Request getRequestById(int id) {
         String sql = "SELECT * FROM Request WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Request(
-                    rs.getInt("id"),
-                    rs.getInt("mentee_id"),
-                    rs.getInt("mentor_id"),
-                    rs.getString("title"),
-                    rs.getInt("total_slot"),
-                    rs.getDate("start_date").toLocalDate(),
-                    rs.getDate("end_date").toLocalDate(),
-                    rs.getString("content"),
-                    rs.getString("status"),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getTimestamp("updated_at").toLocalDateTime(),
-                    rs.getInt("course_id")
+                        rs.getInt("id"),
+                        rs.getInt("mentee_id"),
+                        rs.getInt("mentor_id"),
+                        rs.getString("title"),
+                        rs.getInt("total_slot"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getString("content"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        rs.getInt("course_id")
                 );
             }
         } catch (SQLException e) {
@@ -293,8 +296,8 @@ public class DAORequest extends DBConnection {
         LocalDate validDate = LocalDate.of(2025, 2, 18);
         LocalDate validDate1 = LocalDate.of(2025, 2, 28);
 //
-//    dao.createRequest(3, "qqqqqqqqq", validDate, validTime, "tt", "open");
-//        System.out.println(getMenteeIdByUserId(1));
+//      dao.createRequest(3, "qqqqqqqqq", validDate, validTime, "tt", "open");
+//      System.out.println(getMenteeIdByUserId(1));
         int userId = 5; // Thay đổi giá trị này nếu cần test với user khác
         int menteeId = dao.getMenteeIdByUserId(userId);
 
