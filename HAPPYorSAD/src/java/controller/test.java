@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Request;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,11 @@ import model.DAOschedule;
 import model.DAOslot;
 import entity.Slot;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import model.DAORequest;
 
 public class test extends HttpServlet {
 
@@ -27,7 +32,22 @@ public class test extends HttpServlet {
     private final DAOschedule daoSc = new DAOschedule();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
+        Object mentorId_raw = session.getAttribute("mentorIdrequest");
+        int mentorId = 0;
+        int courseId = 0;
+        double pricecourse = 0;
+        if (mentorId_raw == null) {
+            mentorId = Integer.parseInt(request.getParameter("mentorId"));
+            courseId = Integer.parseInt(request.getParameter("courseId"));
+            session.setAttribute("mentorIdrequest", mentorId);
+            session.setAttribute("courseIdrequest", courseId);
+        } else {
+            mentorId = (Integer) session.getAttribute("mentorIdrequest");
+            courseId = (Integer) session.getAttribute("courseIdrequest");
+            pricecourse = (Double) session.getAttribute("price");
+        }
+
         Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
 
         if (userId == null) {
@@ -39,7 +59,7 @@ public class test extends HttpServlet {
         LOGGER.info("Action received: " + action);
         Integer menteeId = DAOmentee.getMenteeIdByUserId(userId);
         LOGGER.info("Mentee ID retrieved: " + menteeId);
-        Integer mentorId = 1;
+        //Integer mentorId = 1;
 //        Integer scheduleId = DAOschedule.getScheduleIdsByMentorId(mentorId);
         Integer scheduleId = 2;
         LOGGER.info("Schedule ID for mentor " + mentorId + ": " + scheduleId);
@@ -49,6 +69,8 @@ public class test extends HttpServlet {
         }
         java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
         java.sql.Date endDate = daoSc.getEndDateByScheduleId(scheduleId);
+//        java.sql.Date startDate = java.sql.Date.valueOf(LocalDate.MAX);
+//        java.sql.Date endDate = java.sql.Date.valueOf(LocalDate.MAX);
         if (startDate == null || endDate == null) {
             LOGGER.severe("Schedule start or end date not found for scheduleId: " + scheduleId);
             redirect(response, "Schedule?action=list&error=noScheduleDates");
@@ -189,6 +211,7 @@ public class test extends HttpServlet {
         }
 
     }
+
     private List<java.sql.Date> getDatesWithSameWeekday(java.sql.Date slotDate, java.sql.Date startDate, java.sql.Date endDate) {
         List<java.sql.Date> matchingDates = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -228,6 +251,44 @@ public class test extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        DAORequest daorequest = new DAORequest();
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String startDateStr = request.getParameter("startdate");
+        String endDateStr = request.getParameter("enddate");
+
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            startDate = LocalDate.parse(startDateStr, formatter);
+            endDate = LocalDate.parse(endDateStr, formatter);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+
+            request.setAttribute("errorMessage", "Invalid date format.");
+            request.getRequestDispatcher("yourErrorPage.jsp").forward(request, response);
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        int menteeID = daorequest.getMenteeIdByUserId((Integer) session.getAttribute("userId"));
+        int mentorID = (Integer) session.getAttribute("mentorIdrequest");
+        int courseID = (Integer) session.getAttribute("courseIdrequest");
+//        int menteeID = 2;
+//         int mentorID = 1;
+//         int courseID = 1;
+
+        int totalSlots = Integer.parseInt(request.getParameter("totalSlots"));
+
+        Request requests = new Request(menteeID, mentorID, title, totalSlots, startDate, endDate, content, courseID);
+        if (!daorequest.insertRequest(requests)) {
+            System.out.println("Failed");
+        }
+        response.sendRedirect("/../HAPPYorSAD/test");
     }
 }
