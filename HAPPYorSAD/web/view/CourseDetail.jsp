@@ -172,8 +172,8 @@
 
                                                 </div>
                                             </div>
-                                            <h2>
-                                                <a href="CreateRequest?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
+                                            <h2>CreateRequest
+                                                <a href="test?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}" 
                                                    class="btn btn-enroll w-100">Invite</a>
                                             </h2>
                                         </div>
@@ -203,7 +203,7 @@
                                                     <h2 class="title"><a href="">Study with Instructor Trung An</a></h2>
                                                     <p><span>$99.00</span> 50% off</p>
                                                 </div>
-                                                <h2><a href="CreateRequest" class="btn btn-enroll w-100">Invite</a></h2>
+                                                <h2><a href="/../HAPPYorSAD/CreateRequest" class="btn btn-enroll w-100">Invite</a></h2>
                                             </div>
                                         </div>
                                     </div>
