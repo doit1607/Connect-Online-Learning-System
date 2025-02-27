@@ -483,23 +483,23 @@
                             <div class="card">
                                 <div class="card-body"> 
                                     <form action="/../HAPPYorSAD/test" method="post">
-                                        <input type="hidden" name="mentorId" value="${sessionScope.mentorIdrequest}"> 
-                                        <input type="hidden" name="courseId" value="${sessionScope.courseIdrequest}"> 
-                                        <input type="hidden" name="price" value="${sessionScope.price}"> 
+                                        <input type="hidden" name="mentorId" value="${requestScope.mentorId}"> 
+                                        <input type="hidden" name="courseId" value="${requestScope.courseId}"> 
+                                        <input type="hidden" name="price" value="${requestScope.price}"> 
                                         <div class="booking-doc-info">
-                                            <img src="/HAPPYorSAD/assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                                            <img src="${requestScope.mentorrequest.image}" alt="User Image">
 
                                             <div class="booking-info">
-                                                <h4><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
+                                                <h4><a href="">${requestScope.mentorrequest.name}</a></h4>
                                                 <div class="rating">
                                                     <i class="fas fa-star filled"></i>
                                                     <i class="fas fa-star filled"></i>
                                                     <i class="fas fa-star filled"></i>
                                                     <i class="fas fa-star filled"></i>
                                                     <i class="fas fa-star"></i>
-                                                    <span class="d-inline-block average-rating">35</span>
+                                                    <span class="d-inline-block average-rating">${requestScope.mentorrequest.rating}</span>
                                                 </div>
-                                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
+                                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>${requestScope.mentorrequest.bio}</p>
                                             </div>
                                         </div>
                                 </div>
