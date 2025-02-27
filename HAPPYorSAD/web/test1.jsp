@@ -480,7 +480,7 @@
                     <div class="row">
                         <div class="col-12">
 
-                            <div class="card">
+<!--                            <div class="card">
                                 <div class="card-body"> 
                                     <form action="/../HAPPYorSAD/test" method="post">
                                         <input type="hidden" name="mentorId" value="${requestScope.mentorId}"> 
@@ -503,7 +503,7 @@
                                             </div>
                                         </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="title-container">
                                 <label for="request-title">Title:</label>
                                 <input type="text" id="request-title" name="title" required>
