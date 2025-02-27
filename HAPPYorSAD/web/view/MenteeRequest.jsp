@@ -124,10 +124,11 @@
                                     <thead>
                                         <tr>
                                             <td>title</td>
+
+                                            <td>content</td>
                                             <td>totalSlot</td>
                                             <td>startDate</td>
                                             <td>endDate</td>
-                                            <td>content</td>
                                             <td>status</td>
                                         </tr>
                                     </thead>
@@ -135,14 +136,18 @@
                                         <c:forEach items="${sessionScope.listAllRequest}" var="o">
                                             <tr>
                                                 <td>${o.title}</td>
+                                                <td>${o.content}</td>
                                                 <td>${o.totalSlot}</td>
                                                 <td>${o.startDate}</td>
                                                 <td>${o.endDate}</td>
-                                                <td>${o.content}</td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${o.status eq 'Draft'}">${o.status}
-                                                            <a href="UpdateRequest?id=${o.id}" class="updatebtn"><ins><i>Update</i></ins></a>
+                                                            <form action="UpdateRequest" method="post">
+                                                                <input type="hidden" name="Rid" value="${o.id}">
+                                                                <button type="submit" class="updatebtn"><ins><i>Update</i></ins></button>
+                                                            </form>
+
                                                         </c:when>
                                                         <c:otherwise>
                                                             ${o.status}
