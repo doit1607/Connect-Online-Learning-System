@@ -122,17 +122,30 @@
                                             <div class="product">
                                                 <div class="product-img">
                                                     <a href="CourseDetails?Cid=${o.id}">
-                                                        <img class="img-fluid" alt="Img" src="${o.image}">
+                                                        <img  class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="head-course-title">
-                                                        <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>
+                                                        <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>                                                 
                                                         <div class="all-btn all-category d-flex align-items-center">
                                                             <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">MORE DETAIL</a>
+                                                        </div>                                             
+                                                    </div>
+                                                    <div class="course-group d-flex mb-0">
+                                                        <div class="course-group-img d-flex">
+                                                            <div class="cou-info">
+                                                                <img src="assets/img/icon/people.svg" alt="Img">
+                                                                <p> Total: ${countMentorOfCourse} Mentor </p>
+                                                            </div> 
+                                                        </div>
+                                                        <div
+                                                            class="course-share d-flex align-items-center justify-content-center">
+                                                            <a href="#rate"><i class="fa-regular fa-heart"></i></a>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
