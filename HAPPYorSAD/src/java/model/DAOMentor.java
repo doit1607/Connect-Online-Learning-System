@@ -305,6 +305,28 @@ public class DAOMentor extends DBConnection {
         return -1;
     }
 
+    public Mentor getMentorByID(int id) {
+        Mentor mentor = null;
+        String sql = "SELECT name, email, rating, bio, image FROM Mentor WHERE user_id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new Mentor();
+                    mentor.setName(rs.getString("name"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setRating(rs.getInt("rating"));
+                    mentor.setBio(rs.getString("bio"));
+                    mentor.setImage(rs.getString("image"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentor;
+    }
+
     public boolean isMentorJoinedCourse(int mentorId, int courseId) {
         String sql = "SELECT COUNT(*) FROM MentorCourse WHERE mentor_id = ? AND course_id = ?";
         try {
@@ -362,7 +384,7 @@ public class DAOMentor extends DBConnection {
 
             if (rs.next()) {
                 mentor = new Mentor1(
-                        rs.getInt("id"), 
+                        rs.getInt("id"),
                         rs.getInt("user_id"),
                         rs.getString("name"),
                         rs.getString("email"),
@@ -373,7 +395,6 @@ public class DAOMentor extends DBConnection {
                         rs.getString("bio"),
                         rs.getDouble("base_rate"),
                         rs.getDouble("multiplier")
-                       
                 );
                 mentor.setImage(rs.getString("image"));
             }
