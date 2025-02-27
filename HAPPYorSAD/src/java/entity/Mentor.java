@@ -55,6 +55,20 @@ public class Mentor {
         this.is_deleted = is_deleted;
     }
 
+    public Mentor() {
+    }
+
+    public Mentor(String name, String email, double rating, String bio, String image) {
+        this.name = name;
+        this.email = email;
+        this.rating = rating;
+        this.bio = bio;
+        this.image = image;
+    }
+
+    
+    
+
     public Mentor(int total_Mentor) {
         this.total_Mentor = total_Mentor;
     }
