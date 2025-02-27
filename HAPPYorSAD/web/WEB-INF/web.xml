@@ -116,6 +116,10 @@
         <servlet-name>CreateRequest</servlet-name>
         <servlet-class>controller.CreateRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MentorDetail</servlet-name>
+        <servlet-class>controller.MentorDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -231,6 +235,10 @@
     <servlet-mapping>
         <servlet-name>CreateRequest</servlet-name>
         <url-pattern>/CreateRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MentorDetail</servlet-name>
+        <url-pattern>/MentorDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
