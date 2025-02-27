@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Mentor;
 import entity.Request;
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import model.DAOMentor;
 import model.DAORequest;
 
 public class test extends HttpServlet {
@@ -33,20 +35,18 @@ public class test extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Object mentorId_raw = session.getAttribute("mentorIdrequest");
+        DAOMentor daomentor = new DAOMentor();
         int mentorId = 0;
         int courseId = 0;
         double pricecourse = 0;
-        if (mentorId_raw == null) {
-            mentorId = Integer.parseInt(request.getParameter("mentorId"));
-            courseId = Integer.parseInt(request.getParameter("courseId"));
-            session.setAttribute("mentorIdrequest", mentorId);
-            session.setAttribute("courseIdrequest", courseId);
-        } else {
-            mentorId = (Integer) session.getAttribute("mentorIdrequest");
-            courseId = (Integer) session.getAttribute("courseIdrequest");
-            pricecourse = (Double) session.getAttribute("price");
-        }
+        mentorId = Integer.parseInt(request.getParameter("mentorId"));
+        courseId = Integer.parseInt(request.getParameter("courseId"));
+        Mentor mentor = daomentor.getMentorByID(mentorId);
+        request.setAttribute("mentorrequest", mentor);
+        request.setAttribute("mentorId", mentorId);
+        request.setAttribute("courseId", courseId);
+        pricecourse = Double.parseDouble(request.getParameter("price"));
+        request.setAttribute("price", pricecourse);
 
         Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
 
@@ -257,7 +257,6 @@ public class test extends HttpServlet {
         String content = request.getParameter("content");
         String startDateStr = request.getParameter("startdate");
         String endDateStr = request.getParameter("enddate");
-
         LocalDate startDate = null;
         LocalDate endDate = null;
 
@@ -275,20 +274,20 @@ public class test extends HttpServlet {
             e.printStackTrace();
 
         }
-
-        int menteeID = daorequest.getMenteeIdByUserId((Integer) session.getAttribute("userId"));
-        int mentorID = (Integer) session.getAttribute("mentorIdrequest");
-        int courseID = (Integer) session.getAttribute("courseIdrequest");
+        DAOMentor daomentor = new DAOMentor();
+        int menteeId = daorequest.getMenteeIdByUserId((Integer) session.getAttribute("userId"));
+        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        Mentor mentor = daomentor.getMentorByID(mentorId);
 //        int menteeID = 2;
 //         int mentorID = 1;
 //         int courseID = 1;
-
         int totalSlots = Integer.parseInt(request.getParameter("totalSlots"));
-
-        Request requests = new Request(menteeID, mentorID, title, totalSlots, startDate, endDate, content, courseID);
+        Request requests = new Request(menteeId, mentorId, title, totalSlots, startDate, endDate, content, courseId);
         if (!daorequest.insertRequest(requests)) {
             System.out.println("Failed");
         }
-        response.sendRedirect("/../HAPPYorSAD/test");
+        response.sendRedirect("test?mentorId=" + mentorId + "&courseId=" + courseId+"&price="+price);
     }
 }
