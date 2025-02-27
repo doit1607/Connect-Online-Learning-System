@@ -296,7 +296,7 @@ public class DAOCourse extends DBConnection {
 
     public ArrayList<Course> getCourseByMentorId(int mentorId) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT [id]\n"
+        String query = "SELECT top 3 [id]\n"
                 + "      ,[title]\n"
                 + "      ,[description]\n"
                 + "      ,[manager_id]\n"
@@ -306,6 +306,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                 + "     ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  where [mentor_id] = ?";
         try {
@@ -314,17 +315,17 @@ public class DAOCourse extends DBConnection {
             ResultSet result = connect.executeQuery();
 
             while (result.next()) {
-                int id = result.getInt("id");
-                String title = result.getString("title");
-                String description = result.getString("description");
-                int managerId = result.getInt("manager_id");
-                mentorId = result.getInt("mentor_id");
-                LocalDateTime createdAt = result.getTimestamp("created_at").toLocalDateTime();
-                LocalDateTime updatedAt = result.getTimestamp("updated_at").toLocalDateTime();
-                int courseMajorId = result.getInt("course_major_id");
-                String status = result.getString("status");
-                String image = result.getString("image");
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                Course course = new Course();
+                course.setId(result.getInt("id"));
+                course.setTitle(result.getString("title"));
+                course.setDescription(result.getString("description"));
+                course.setManagerId(result.getInt("manager_id"));
+                course.setMentorId(result.getInt("mentor_id"));
+                course.setStatus(result.getString("status"));
+                course.setCourseMajorId(result.getInt("course_major_id"));
+                course.setImage(result.getString("image"));
+                course.setPrice(result.getDouble("price"));
+
                 listCourse.add(course);
 
             }
