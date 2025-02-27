@@ -11,7 +11,7 @@ import java.sql.Date;
  * @author Dell
  */
 public class Mentor1 {
-     private int id;
+    private int id;
     private User user;
     private int mentorId;
     private int userId;
@@ -28,8 +28,23 @@ public class Mentor1 {
     private double multiplier;
     private int totalMentees;
     private int ratingCount;
-     private String image;
+    private String image;
 
+    public Mentor1(int id, int userId, String name, String email, double rating, boolean isDeleted, String reviews, String expertise, String bio, double baseRate, double multiplier) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.rating = rating;
+        this.isDeleted = isDeleted;
+        this.reviews = reviews;
+        this.expertise = expertise;
+        this.bio = bio;
+        this.baseRate = baseRate;
+        this.multiplier = multiplier;
+
+    }
+    
     public Mentor1(int id, User user, int mentorId, int userId, String name, String email, double rating, boolean isDeleted, String reviews, double pricePerSlot, String expertise, String bio, Date createdAt, double baseRate, double multiplier, int totalMentees, int ratingCount, String image) {
         this.id = id;
         this.user = user;
