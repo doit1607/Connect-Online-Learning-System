@@ -12731,6 +12731,7 @@ input[type="password"]::-ms-clear {
   font-weight: 700;
   color: #392c7d;
   margin-bottom: 20px;
+  display: flex
 }
 .course-sec p {
   font-size: 14px;
@@ -30148,4 +30149,5 @@ color: #B9B7C0 ;
   .settings-pg-links li {
     width: 100%;
   }
+  
 }
