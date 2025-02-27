@@ -10,11 +10,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -232,6 +235,64 @@ public class DAOschedule extends DBConnection {
         return scheduleId;
     }
 
+    public Map<String, List<Schedule>> getSchedulesByMonth() {
+        Map<String, List<Schedule>> schedulesByMonth = new LinkedHashMap<>();
+        String query = "SELECT * FROM schedule ORDER BY start_date";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        try (PreparedStatement stmt = conn.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Date startDate = rs.getDate("start_date");
+                Date endDate = rs.getDate("end_date");
+                Schedule schedule = new Schedule(startDate, endDate);
+                // Định dạng lại tháng & năm (Ví dụ: "Tháng 3, 2025")
+                String monthKey = formatter.format(startDate);
+                schedulesByMonth
+                        .computeIfAbsent(monthKey, k -> new ArrayList<>())
+                        .add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return schedulesByMonth;
+    }
+
+    public List<Schedule> getSchedulesByMonth(int year, int month) {
+        List<Schedule> schedules = new ArrayList<>();
+        String sql = "SELECT * FROM schedule\n"
+                + "WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?\n"
+                + "ORDER BY start_date ASC;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("id"));
+                schedule.setStart_date(rs.getDate("start_date"));
+                schedules.add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log lỗi hoặc sử dụng LOGGER.warning(e.getMessage())
+        }
+
+        return schedules;
+    }
+
+    public Integer getScheduleIdByNearestStartDate() {
+        String sql = "SELECT id FROM Schedule where start_date='?'\n";
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 //    public Integer createScheduleForMonth(int mentorId, String month) {
 //        Integer newScheduleId = null;
 //        String insertScheduleQuery = "INSERT INTO Schedule (startDate, endDate) VALUES (?, ?)";
@@ -260,9 +321,27 @@ public class DAOschedule extends DBConnection {
 //        }
 //        return newScheduleId;
 //    }
-
     public static void main(String[] args) {
         DAOschedule scheduleDAO = new DAOschedule();
+//        Map<String, List<Schedule>> schedulesByMonth = dao.getSchedulesByMonth();
+//
+//        for (String month : schedulesByMonth.keySet()) {
+//            System.out.println("📅 " + month);
+//            for (Schedule schedule : schedulesByMonth.get(month)) {
+//                System.out.println("  " + schedule);
+//            }
+//        }
+
+        List<Schedule> schedules = scheduleDAO.getSchedulesByMonth(2025, 2);
+        // In kết quả
+        if (schedules.isEmpty()) {
+            System.out.println("Không có schedule nào trong tháng 2/2025.");
+        } else {
+            System.out.println("Danh sách schedule trong tháng 2/2025:");
+            for (Schedule schedule : schedules) {
+                System.out.println(schedule);
+            }
+        }
 
     }
 
