@@ -114,12 +114,12 @@
                                     <div class="col-lg-12 d-flex">
                                         <div class="instructor-list flex-fill">
                                             <div class="instructor-img">
-                                                <a href="ProfileServlet">
+                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}">
                                                     <img class="img-fluid" alt="Img" src="${mentor.image}">
                                                 </a>
                                             </div>
                                             <div class="instructor-content">												
-                                                <h5><a href="ProfileServlet">${mentor.name}</a></h5>
+                                                <h5><a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}">${mentor.name}</a></h5>
                                                 <h6>@${mentor.username}</h6>
                                                 <div class="instructor-info">
                                                     <div class="rating-img d-flex align-items-center justify-content-center">
