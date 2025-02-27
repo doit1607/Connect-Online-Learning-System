@@ -23,6 +23,10 @@ import model.DAOslot;
 import entity.SlotTemplate;
 import entity.Schedule;
 import entity.TempSlot;
+import static java.lang.System.out;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -54,21 +58,81 @@ public class Slot extends HttpServlet {
 
         int userId = (Integer) session.getAttribute("userId");
         Integer mentorId = DAOMentor.getMentorIdByUserId(userId);
-        Integer scheduleId = DAOschedule.getScheduleIdsByMentorId(mentorId);
-        
 
+//        Integer scheduleId = 5;
         System.out.println("User ID: " + userId);
         System.out.println("Mentor ID: " + mentorId);
 
-        if (scheduleId == null) {
-            System.out.println("Schedule ID not found for mentor: " + mentorId);
-            return;
-        } else {
-            System.out.println("Schedule ID: " + scheduleId);
+        String scheduleIdStr = request.getParameter("scheduleId");
+        StringBuilder responseHtml = new StringBuilder();
+
+        int scheduleId = -1; // Mặc định nếu không có ID
+        if (scheduleIdStr == null || scheduleIdStr.isEmpty()) {
+            String selectedMonthStr = request.getParameter("month");
+            String selectedYearStr = request.getParameter("year");
+            int selectedMonth;
+            int selectedYear;
+            LOGGER.info("Extracted month = " + selectedMonthStr + ", year = " + selectedYearStr);
+            if (selectedMonthStr != null && selectedYearStr != null
+                    && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
+                try {
+                    selectedMonth = Integer.parseInt(selectedMonthStr);
+                } catch (NumberFormatException e) {
+                    try {
+                        Month monthEnum = Month.valueOf(selectedMonthStr.toUpperCase());
+                        selectedMonth = monthEnum.getValue();
+                    } catch (IllegalArgumentException ex) {
+                        selectedMonth = LocalDate.now().getMonthValue();
+                        LOGGER.info("Invalid month parameter: " + selectedMonthStr + ". Defaulting to current month: " + selectedMonth);
+                    }
+                }
+                try {
+                    selectedYear = Integer.parseInt(selectedYearStr);
+                } catch (NumberFormatException e) {
+                    selectedYear = LocalDate.now().getYear();
+                    LOGGER.info("Invalid year parameter: " + selectedYearStr + ". Defaulting to current year: " + selectedYear);
+                }
+                LOGGER.info("Selected Month = " + selectedMonth + ", Selected Year = " + selectedYear);
+            } else {
+                selectedMonth = LocalDate.now().getMonthValue();
+                selectedYear = LocalDate.now().getYear();
+                LOGGER.info("Defaulting to current month/year: " + selectedMonth + "/" + selectedYear);
+            }
+            LOGGER.info("Fetching schedules for: " + selectedMonth + "/" + selectedYear);
+            List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
+
+            responseHtml.append("<h3>Schedules for ").append(Month.of(selectedMonth)).append(" ").append(selectedYear).append("</h3>");
+
+            if (schedules.isEmpty()) {
+                responseHtml.append("<p>No schedules found.</p>");
+            } else {
+                responseHtml.append("<ul class='schedule-list'>");
+                for (Schedule schedule : schedules) {
+                    responseHtml.append("<li data-schedule-id='").append(schedule.getId()).append("'>")
+                            .append("Schedule ID: ").append(schedule.getId())
+                            .append(" - ").append(schedule.getStart_date())
+                            .append("</li>");
+                }
+                responseHtml.append("</ul>");
+                // Gửi scheduleId đầu tiên vào session nếu có lịch trình
+                scheduleId = schedules.get(0).getId();
+                session.setAttribute("selectedScheduleId", scheduleId);
+                responseHtml.append("<div id='hiddenScheduleId' style='display:none;'>").append(scheduleId).append("</div>");
+            }
 
         }
+        if (scheduleId == -1 && session.getAttribute("selectedScheduleId") != null) {
+            scheduleId = (Integer) session.getAttribute("selectedScheduleId");
+        }
+
+        LOGGER.info("Processing sessionn Schedule ID: " + scheduleId);
+        LOGGER.info("Receive Schedule IDdd: " + scheduleId);
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(responseHtml.toString());
 
         String dateString = request.getParameter("slotDate");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
         SimpleDateFormat dayFormatter = new SimpleDateFormat("EEEE");
         String[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -83,6 +147,51 @@ public class Slot extends HttpServlet {
         for (int i = 0; i < 7; i++) {
             weekDates[i] = new java.sql.Date(calendar.getTimeInMillis());
             calendar.add(Calendar.DATE, 1);
+        }
+        Map<Integer, java.sql.Date> closestWeekDates = new LinkedHashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+            closestWeekDates.put(i + 1, new java.sql.Date(calendar.getTimeInMillis()));
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        List<String> formattedWeekDates = new ArrayList<>();
+
+        Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
+        for (int i = 0; i < 7; i++) {
+            java.sql.Date date = closestWeekDates.get(i + 1);
+            if (date != null) {
+                LocalDate localDate = date.toLocalDate();
+                String formattedDate = localDate.format(dateFormatter); // Format trực tiếp bằng DateTimeFormatter
+
+                formattedWeekDates.add(formattedDate);
+            }
+        }
+        Map<String, List<entity.Slot>> slotsByDay = new HashMap<>();
+        Map<Integer, String> slotTimeMap = Map.of(
+                1, "07:30:00",
+                2, "10:00:00",
+                3, "13:00:00",
+                4, "15:30:00",
+                5, "19:30:00"
+        );
+        for (int i = 1; i <= 7; i++) {
+            java.sql.Date date = closestWeekDates.get(i);
+            if (date != null) {
+                LocalDate localDate = date.toLocalDate();
+                String formattedDate = localDate.format(dateFormatter);
+                formattedWeekDates.add(formattedDate);
+                List<entity.Slot> slots = daoSlot.getSlotsByDate1(date, mentorId);
+                slotsByDay.put(formattedDate, slots);
+                Map<String, String> dateInfo = new HashMap<>();
+                dateInfo.put("dayOfWeek", weekDays[i - 1]);
+                dateInfo.put("day", String.valueOf(localDate.getDayOfMonth()));
+                dateInfo.put("month", localDate.getMonth().toString());
+                dateInfo.put("year", String.valueOf(localDate.getYear()));
+                weekDateInfoMap.put(formattedDate, dateInfo);
+                LOGGER.info("formattedDate: " + formattedDate + " | dateInfo: " + dateInfo);
+                LOGGER.info("Date: " + formattedDate + " | Slots: " + slots);
+            }
         }
         request.setAttribute("weekDates", weekDates);
         System.out.println("Week Dates Set: " + Arrays.toString(weekDates));
@@ -99,8 +208,12 @@ public class Slot extends HttpServlet {
                 break;
             }
         }
-
         Date slotDate = new Date(calendar.getTimeInMillis());
+        Map<String, List<entity.Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
+        Set<String> months = schedulesByMonth.keySet();
+        request.setAttribute("weekDateInfoMap", weekDateInfoMap);
+        request.setAttribute("formattedWeekDates", formattedWeekDates);
+        request.setAttribute("months", months);
         request.setAttribute("selectedDate", selectedDate);
         request.setAttribute("slots", daoSlot.getSlotsByDate1(selectedDate, mentorId));
         request.setAttribute("availableSlots", daoSc.getAvailableSlotNumbers(scheduleId, selectedDate));
@@ -110,6 +223,10 @@ public class Slot extends HttpServlet {
         System.out.println("Action received: " + action);
 
         if ("add".equals(action)) {
+            if (scheduleId == -1) {
+                scheduleId = (Integer) session.getAttribute("scheduleId");
+            }
+            LOGGER.info("hahahaahaha: " + scheduleId);
             handleAddSlot(session, request, scheduleId, selectedDate);
             LOGGER.info("handleAddSlot called with scheduleId: " + scheduleId + " and selectedDate: " + selectedDate);
 
@@ -157,43 +274,16 @@ public class Slot extends HttpServlet {
             } else {
                 System.out.println("Error: endTime is null.");
             }
-        } else if ("nextSchedule".equals(action)) {
-//            try {
-//                int slotId = Integer.parseInt(request.getParameter("slotId"));
-//                entity.Slot slot = daoSlot.getSlotById(slotId);
-//                if (slot == null) {
-//                    response.setContentType("application/json");
-//                    response.getWriter().write("{\"success\": false, \"message\": \"Slot không tồn tại!\"}");
-//                    return;
-//                }
-//                if (mentorId == 0) {
-//                    response.setContentType("application/json");
-//                    response.getWriter().write("{\"success\": false, \"message\": \"Không tìm thấy Mentor!\"}");
-//                    return;
-//                }
-//                Schedule currentSchedule = daoSc.getScheduleById(slot.getScheduleId());
-//                if (currentSchedule == null) {
-//                    response.setContentType("application/json");
-//                    response.getWriter().write("{\"success\": false, \"message\": \"Không tìm thấy lịch trình hiện tại!\"}");
-//                    return;
-//                }
-//                // Tính toán thời gian tháng tiếp theo
-//                LocalDate newStartDate = currentSchedule.getStartDate().toLocalDate().plusMonths(1);
-//                LocalDate newEndDate = currentSchedule.getEndDate().toLocalDate().plusMonths(1);
-//                // Tạo lịch trình mới
-//                Schedule newSchedule = new Schedule(mentorId, java.sql.Date.valueOf(newStartDate), java.sql.Date.valueOf(newEndDate));
-//                int newScheduleId = daoSc.addSchedule(newSchedule);
-//
-//                request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
-//            } catch (Exception e) {
-//
-//            }
         }
+
+        session.setAttribute("scheduleId", scheduleId);
+        System.out.println("Session scheduleId: " + session.getAttribute("scheduleId"));
         request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
 
     }
 
     private void handleAddSlot(HttpSession session, HttpServletRequest request, int scheduleId, Date selectedDate) {
+
         LOGGER.info("handleAddSlot called with scheduleId: " + scheduleId + " and selectedDate: " + selectedDate);
 
         Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
