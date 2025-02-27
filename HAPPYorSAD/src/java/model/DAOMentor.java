@@ -3,15 +3,11 @@ package model;
 import entity.Mentor;
 import entity.Mentor1;
 import entity.User;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -339,6 +335,52 @@ public class DAOMentor extends DBConnection {
             e.printStackTrace();
         }
         return joinedCourses;
+    }
+
+    public Mentor1 getMentorById(int mentorId) {
+        String query = "SELECT [id]\n"
+                + "      ,[user_id]\n"
+                + "      ,[name]\n"
+                + "      ,[email]\n"
+                + "      ,[rating]\n"
+                + "      ,[is_deleted]\n"
+                + "      ,[reviews]\n"
+                + "      ,[price_per_slot]\n"
+                + "      ,[expertise]\n"
+                + "      ,[bio]\n"
+                + "      ,[created_at]\n"
+                + "      ,[base_rate]\n"
+                + "      ,[multiplier]\n"
+                + "      ,[image]\n"
+                + "  FROM [SWP1].[dbo].[Mentor] WHERE id = ?";
+        Mentor1 mentor = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, mentorId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                mentor = new Mentor1(
+                        rs.getInt("id"), 
+                        rs.getInt("user_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getDouble("rating"),
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("reviews"),
+                        rs.getString("expertise"),
+                        rs.getString("bio"),
+                        rs.getDouble("base_rate"),
+                        rs.getDouble("multiplier")
+                       
+                );
+                mentor.setImage(rs.getString("image"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mentor;
     }
 
     public static void main(String[] args) {
