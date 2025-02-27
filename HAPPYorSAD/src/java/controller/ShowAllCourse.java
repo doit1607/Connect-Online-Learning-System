@@ -36,6 +36,13 @@ public class ShowAllCourse extends HttpServlet {
         DAOCourse dao = new DAOCourse();
         HttpSession session = request.getSession();
         List<Course> listAllCousre = dao.getAllCourseOrderByName();
+        int id = 0;
+        for (Course course : listAllCousre) {
+            id = course.getId();   
+            
+        }
+        int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
+        session.setAttribute("countMentorOfCourse", countMentorOfCourse);
         session.setAttribute("listAllCousre", listAllCousre);       
         request.getRequestDispatcher("view/Course.jsp").forward(request, response);
         
