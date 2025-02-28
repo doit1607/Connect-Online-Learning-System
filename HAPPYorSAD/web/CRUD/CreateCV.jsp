@@ -84,6 +84,7 @@
                 <h2>Create CV of Mentor</h2>
 
                 <form action="CreateCV" method="post">
+                    <c:set var="cvStatus" value="${sessionScope.cvStatus}"/>
                     <!-- Personal Information -->
                     <div class="contact-info">
                         <c:if test="${not empty sessionScope.successMessage}">
@@ -148,6 +149,26 @@
                     <div class="input-block">
                         <label>Education</label>
                         <textarea name="achievementDescription" rows="3"></textarea>
+                    </div>
+
+                    <div class="input-block">
+                        <label>Courses I Can Teach</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="cs" name="courses" value="Computer Science">
+                            <label for="cs">Computer Science</label>
+
+                            <input type="checkbox" id="ds" name="courses" value="Data Science">
+                            <label for="ds">Data Science</label>
+
+                            <input type="checkbox" id="ba" name="courses" value="Business Administration">
+                            <label for="ba">Business Administration</label>
+
+                            <input type="checkbox" id="gd" name="courses" value="Graphic Design">
+                            <label for="gd">Graphic Design</label>
+
+                            <input type="checkbox" id="me" name="courses" value="Mechanical Engineering">
+                            <label for="me">Mechanical Engineering</label>
+                        </div>
                     </div>
 
                     <input type="hidden" name="username" value="${sessionScope.usernameUser}">
