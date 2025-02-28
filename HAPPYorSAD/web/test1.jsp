@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <fmt:setLocale value="en"/>
 
 <!DOCTYPE html>
@@ -508,24 +509,34 @@
                                 <input type="hidden" name="mentorId" value= "${requestScope.mentorId}">   
                                 <input type="hidden" name="courseId" value="${requestScope.courseId}">   
                                 <input type="hidden" name="price" value="${requestScope.price}">   
+                                <c:if test="${not empty requestScope.requestId}">
+                                    <input type="hidden" name="requestId" value="${requestScope.requestId}">
+                                </c:if>
+
 
                                 <div class="title-container">
                                     <label for="request-title">Title:</label>
-                                    <input type="text" id="request-title" name="title" required>
-                                </div>
+                                    <input type="text" id="request-title" name="title"<c:if test="${requestScope.title != null}">value="${requestScope.title}" </c:if>required>
+                                    </div>
 
-                                <div class="content-container">
-                                    <label for="request-content">Content:</label>
-                                    <textarea id="request-content" name="content" required></textarea>
-                                </div>
-                                <div class="date-container">
-                                    <div>
-                                        <label for="start-date">Start Date:</label>
-                                        <input type="date" id="start-date" name="startdate" required>
+                                    <div class="content-container">
+                                        <label for="request-content">Content:</label>
+                                        <textarea id="request-content" name="content" required><c:if test="${not empty requestScope.content}">${requestScope.content}</c:if></textarea>
+                                    </div>
+                                    <div class="date-container">
+                                        <div>
+                                            <label for="start-date">Deadline Start:</label>
+                                            <input type="date" id="start-date" name="startdate"
+                                            <c:if test="${not empty requestScope.startdate}">
+                                                value="<fmt:formatDate value='${requestScope.startdate}' pattern='yyyy-MM-dd'/>"
+                                            </c:if> required>
                                     </div>
                                     <div>
-                                        <label for="end-date">End Date:</label>
-                                        <input type="date" id="end-date" name="enddate" required>
+                                        <label for="end-date">Deadline End:</label>
+                                        <input type="date" id="end-date" name="enddate"
+                                               <c:if test="${not empty requestScope.enddate}">
+                                                   value="<fmt:formatDate value='${requestScope.enddate}' pattern='yyyy-MM-dd'/>"
+                                               </c:if> required>
                                     </div>
                                 </div>
 
@@ -667,14 +678,12 @@
                     let totalPrice = 0;
                     let totalSlots = 0;
                     let selectedSlots = new Set();
-
                     function updateUI() {
                         priceDisplay.textContent = totalPrice;
                         totalSlotsInput.value = totalSlots;
-                        totalPriceInput.value = totalPrice; // Cập nhật giá trị vào input hidden
-
+                        totalPriceInput.value = totalPrice;
                         if (totalPrice > walletBalance) {
-                            showNotification("Bạn không đủ tiền trong ví để đặt thêm slot!");
+                            showNotification("Deposit your wallet to add more slot");
                             submitBtn.disabled = true;
                             saveBtn.disabled = true;
                             submitBtn.classList.add("disabled");
@@ -691,7 +700,6 @@
                         slot.addEventListener("click", function (event) {
                             event.preventDefault();
                             let slotInfo = this.dataset.slotInfo;
-
                             if (selectedSlots.has(slotInfo)) {
                                 selectedSlots.delete(slotInfo);
                                 this.classList.remove("selected");
@@ -707,15 +715,12 @@
                             updateUI();
                         });
                     });
-
-                    // Xử lý nút "Clear"
                     const clearAllBtn = document.getElementById("clearAllBtn");
                     if (clearAllBtn) {
                         clearAllBtn.addEventListener("click", function () {
                             document.querySelectorAll(".timing.selected").forEach(function (slot) {
                                 slot.classList.remove("selected");
                             });
-
                             totalSlots = 0;
                             totalPrice = 0;
                             selectedSlots.clear();
@@ -723,20 +728,41 @@
                         });
                     }
 
-                    // Xử lý khi nhấn Submit hoặc Save
-                    submitBtn.addEventListener("click", function () {
-                        serviceInput.value = "submit";
-                        totalPriceInput.value = totalPrice; 
-                        bookingForm.submit(); 
+                    submitBtn.addEventListener("click", function (event) {
+                        if (bookingForm.checkValidity()) {
+                            serviceInput.value = "submit";
+                            totalPriceInput.value = totalPrice;
+                            bookingForm.requestSubmit(); // Kích hoạt kiểm tra required
+                        } else {
+                            event.preventDefault(); // Ngăn form gửi nếu có lỗi
+                            showNotification("Please fill in all required fields.");
+                        }
                     });
 
-                    saveBtn.addEventListener("click", function () {
-                        serviceInput.value = "save";
-                        bookingForm.submit(); 
+                    saveBtn.addEventListener("click", function (event) {
+                        if (bookingForm.checkValidity()) {
+                            serviceInput.value = "save";
+                            bookingForm.requestSubmit();
+                        } else {
+                            event.preventDefault();
+                            showNotification("Please fill in all required fields.");
+                        }
                     });
+
+
+
                 });
 
+
             </script>
+            <c:if test="${not empty sessionScope.msg}">
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        showNotification("${sessionScope.msg}");
+                    });
+                </script>
+                <c:remove var="msg" scope="session"/> 
+            </c:if>
 
 
             <!-- /Page Content -->
