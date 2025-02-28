@@ -146,7 +146,7 @@
                                                 <th>Courses</th>
                                                 <th>Service Description</th>
                                                 <th>Achievements</th>
-                                                <th>Created at</th>
+                                                <th>Created At</th>
                                             </tr>
                                             <c:forEach var="cv" items="${cvApproved}">
                                                 <tr>
