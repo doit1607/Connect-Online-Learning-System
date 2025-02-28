@@ -158,7 +158,7 @@
                                                 </div>
                                             </div>
                                             <h2>
-                                                <a href="test?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}" 
+                                                <a href="test?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
                                                    class="btn btn-enroll w-100">Invite</a>
                                             </h2>
                                         </div>
