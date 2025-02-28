@@ -23,6 +23,7 @@ public class Request {
     private int menteeId;
     private int mentorId;
     private String title;
+    private double totalprice;
     private int totalSlot;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -31,6 +32,7 @@ public class Request {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int courseId;
+    
 
     // Constructors
     public Request() {
@@ -88,6 +90,20 @@ public class Request {
         this.mentorId = mentorId;
         this.title = title;
         this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.courseId = courseId;
+        
+    }
+    
+     public Request(int menteeId, int mentorId, String title, int totalSlot, double totalprice, LocalDate startDate, LocalDate endDate, String content, String status, int courseId) {
+        this.menteeId = menteeId;
+        this.mentorId = mentorId;
+        this.title = title;
+        this.totalSlot = totalSlot;
+        this.totalprice = totalprice;
         this.startDate = startDate;
         this.endDate = endDate;
         this.content = content;
@@ -169,6 +185,13 @@ public class Request {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    public double gettotalprice() {
+        return totalprice;
+    }
+
+    public void settotalprice(double totalprice) {
+        this.totalprice = totalprice;
     }
 
     public String getStatus() {
