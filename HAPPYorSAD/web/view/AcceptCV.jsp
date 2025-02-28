@@ -4,7 +4,8 @@
     Author     : admin
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +49,7 @@
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <!-- Header -->
+            <%@include file="/../sourcesHome/homeHeader.jsp" %>
             <!-- /Header -->
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar breadcrumb-bar-info">
@@ -124,9 +126,17 @@
                             <!-- Mentee Settings -->
                             <div class="content-area" id="content-area">
                                 <div class="profile-heading">
-                                    <h3>Manage CV</h3>
+                                    <h3>Request CV</h3>
                                 </div>
-
+                                <form action="AcceptCV" method="get">
+                                    <label for="statusFilter">Filter by Status:</label>
+                                    <select name="status" id="statusFilter" class="form-control">
+                                        <option value="">--Select status of CV--</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </form>
                                 <div class="checkout-form">
                                     <div class="table-responsive custom-table">
 
@@ -135,8 +145,10 @@
                                                 <th>Username</th>
                                                 <th>Profession</th>
                                                 <th>Introduction</th>
+                                                <th>Courses</th>
                                                 <th>Service Description</th>
                                                 <th>Achievements</th>
+                                                <th>Created at</th>
                                                 <th>Actions</th>
                                             </tr>
                                             <c:forEach var="cv" items="${acceptCV}">
@@ -144,14 +156,30 @@
                                                     <td>${cv.username}</td>
                                                     <td>${cv.profession}</td>
                                                     <td>${cv.professionIntro}</td>
+                                                    <td>
+                                                        <ul>
+                                                            <c:forEach var="course" items="${cv.courses}">
+                                                                <li>${course}</li>
+                                                                </c:forEach>
+                                                        </ul>
+                                                    </td>
                                                     <td>${cv.serviceDescription}</td>
                                                     <td>${cv.achievementDescription}</td>
-
                                                     <td>
-                                                        <form action="AcceptCV"  method="post">
-                                                            <input type="hidden" name="username" value="${cv.username}" />
-                                                            <button type="submit" name="action" value="approve" class="resut-badge badge-light-success approve">Approve</button>
-                                                            <button type="submit" name="action" value="reject" class="resut-badge badge-light-danger reject">Reject</button>
+                                                        <fmt:formatDate value="${cv.createdAtAsDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                    </td>
+                                                    <td>
+                                                        <form action="AcceptCV" method="post">
+                                                            <input type="hidden" name="username" value="${cv.username}">
+
+                                                            <button type="submit" name="action" value="approve" class="btn btn-success">
+                                                                Approve CV
+                                                            </button>
+
+                                                            <input type="text" name="reason" placeholder="Enter reason if rejected">
+                                                            <button type="submit" name="action" value="reject" class="btn btn-danger">
+                                                                Reject CV
+                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>
