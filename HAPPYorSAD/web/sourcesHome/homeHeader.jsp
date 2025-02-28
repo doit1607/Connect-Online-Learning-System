@@ -47,52 +47,54 @@
                                             <i class="fas fa-times"></i>
                                         </a>
                                     </div>
-                                    <ul class="main-nav">
-                                        <li class="has-submenu">
-                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-                                            </ul>
-                                        </li>
-                                        <li class="has-submenu">
-                                            <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-
-                                                <li><a href="ViewMentor_Mentee">Mentor List</a></li>
-                                                    <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
-                                                    <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
-                                                    <li><a href="ViewCV">My CV</a></li>
-                                                    <li><a href="Slot">Schedule</a></li>
-                                                    <li><a href="instructor-reviews.html">Reviews</a></li>
-                                                    <li><a href="/../HAPPYorSAD/viewRequest">Request</a></li>
-                                                    <li><a href="instructor-notifications.html">Notifications</a></li>
-                                                    </c:if>
-                                            </ul>
-                                        </li>	
-                                        <c:if test="${sessionScope.usernameRole eq 'mentee'}">
+                                    <c:if test = "${sessionScope.usernameRole eq 'mentor' || sessionScope.usernameRole eq 'mentee'}">
+                                        <ul class="main-nav">
                                             <li class="has-submenu">
-                                                <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
-                                                <ul class="submenu first-submenu">
-                                                    <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
-                                                    <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                                    <li><a href="Schedule">Book</a></li>
-                                                    <li><a href="test">Test1</a></li>
-                                                    <li><a href="ShowMenteeRequest">View Request</a></li>
+                                                <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu">
+                                                </ul>
+                                            </li>
+                                            <li class="has-submenu">
+                                                <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu">
+
+                                                    <li><a href="ViewMentor_Mentee">Mentor List</a></li>
+                                                        <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
+                                                        <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
+                                                        <li><a href="ViewCV">My CV</a></li>
+                                                        <li><a href="Slot">Schedule</a></li>
+                                                        <li><a href="instructor-reviews.html">Reviews</a></li>
+                                                        <li><a href="/../HAPPYorSAD/viewRequest">Request</a></li>
+                                                        <li><a href="instructor-notifications.html">Notifications</a></li>
+                                                        </c:if>
                                                 </ul>
                                             </li>	
-                                        </c:if>
-                                        <li class="has-submenu">
-                                            <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-                                                <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
-                                                    <!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
-                                                </c:if>
+                                            <c:if test="${sessionScope.usernameRole eq 'mentee'}">
+                                                <li class="has-submenu">
+                                                    <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
+                                                    <ul class="submenu first-submenu">
+                                                        <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
+                                                        <li><a href="student-courses.html">Enrolled Courses</a></li>
+                                                        <li><a href="Schedule">Book</a></li>
+                                                        <li><a href="test">Test1</a></li>
+                                                        <li><a href="ShowMenteeRequest">View Request</a></li>
+                                                    </ul>
+                                                </li>	
+                                            </c:if>
+                                            <li class="has-submenu">
+                                                <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu">
+                                                    <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
+                                                        <!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
+                                                    </c:if>
 
-                                                <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
+                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
 
-                                            </ul>
-                                        </li>
+                                                </ul>
+                                            </li>
 
-                                    </ul>		 
+                                        </ul>
+                                    </c:if>
                                 </div>	 
                                 <ul class="nav header-navbar-rht">		
                                     <li class="nav-item user-nav">
@@ -143,11 +145,11 @@
 
                                             <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                                                 <c:choose>
-                                                    <c:when test="${empty sessionScope.cvStatus || sessionScope.cvStatus eq 'rejected'}">
+                                                    <c:when test="${empty sessionScope.cvStatus}">
                                                         <a class="dropdown-item" href="CreateCV"><i class="feather-star me-1"></i> Create CV</a>
                                                     </c:when>
 
-                                                    <c:when test="${sessionScope.cvStatus eq 'draft'}">
+                                                    <c:when test="${sessionScope.cvStatus eq 'draft' || sessionScope.cvStatus eq 'rejected'}">
                                                         <a class="dropdown-item" href="UpdateCV"><i class="feather-star me-1"></i> Update CV</a>
                                                     </c:when>
 
