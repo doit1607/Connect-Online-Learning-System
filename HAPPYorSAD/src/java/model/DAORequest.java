@@ -131,8 +131,8 @@ public class DAORequest extends DBConnection {
     }
 
     public boolean insertRequest(Request request) {
-        String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, start_date, end_date , content,course_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Request (mentee_id,mentor_id,title,total_slot,start_date,end_date,content,status,course_id,totalprice) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, request.getMenteeId());
@@ -144,8 +144,9 @@ public class DAORequest extends DBConnection {
             stmt.setDate(6, java.sql.Date.valueOf(request.getEndDate()));
 
             stmt.setString(7, request.getContent());
-          
-            stmt.setInt(8, request.getCourseId());
+            stmt.setString(8, request.getStatus());
+            stmt.setInt(9, request.getCourseId());
+            stmt.setDouble(10, request.gettotalprice());
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
