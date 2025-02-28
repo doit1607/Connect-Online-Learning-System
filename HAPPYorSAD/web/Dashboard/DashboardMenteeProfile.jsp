@@ -104,7 +104,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
+                                            <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
