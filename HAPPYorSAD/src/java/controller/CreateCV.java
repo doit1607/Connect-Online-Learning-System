@@ -79,13 +79,16 @@ public class CreateCV extends HttpServlet {
         String serviceDescription = request.getParameter("serviceDescription");
         String achievementDescription = request.getParameter("achievementDescription");
 
+        String[] coursesArray = request.getParameterValues("courses");
+        List<String> courses = (coursesArray != null) ? Arrays.asList(coursesArray) : null;
+        
         if (profession != null && !profession.isEmpty()
                 && professionIntro != null && !professionIntro.isEmpty()
                 && serviceDescription != null && !serviceDescription.isEmpty()
                 && achievementDescription != null && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
-            dao.createCV(profession, professionIntro, serviceDescription, achievementDescription, username);
+            dao.createCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username);
             
             String cvSta = dao.getCVStatusByUsername(username);
             session.setAttribute("cvStatus", cvSta);
@@ -95,7 +98,7 @@ public class CreateCV extends HttpServlet {
             return;
         }
         
-        session.setAttribute("cvStatus", "rejected");
+        //session.setAttribute("cvStatus", "rejected");
         request.setAttribute("errorMessage", "Please fill in all required fields.");
         request.setAttribute("profession", profession);
         request.setAttribute("professionIntro", professionIntro);
