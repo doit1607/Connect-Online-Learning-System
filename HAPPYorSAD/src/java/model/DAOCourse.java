@@ -160,6 +160,23 @@ public class DAOCourse extends DBConnection {
         }
         return listCourseHome;
     }
+    public double getPriceCourse(int id){
+        double price = 0;
+        String sql = "Select * from Course where id = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                price = rs.getInt("price");
+                return price;
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return price;
+    }
 
     public List<Course> getAllCourseHome2() {
         ArrayList<Course> listCourseHome = new ArrayList<>();
@@ -237,21 +254,7 @@ public class DAOCourse extends DBConnection {
         return false;
     }
 
-    public double getPriceCourse(int id) {
-        double price = 0;
-        String sql = "SELECT price FROM Course WHERE id = ?";
-        try {
-            PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, id); 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                price = rs.getDouble("price");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return price;
-    }
+    
 
     public Course getCourseById(int id) {
         String query = "SELECT [id]\n"
