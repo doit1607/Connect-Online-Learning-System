@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import model.DAOAcceptCV;
 import model.DAOuser;
 import model.DaoCV;
@@ -58,6 +61,7 @@ public class UpdateCV extends HttpServlet {
         DaoCV dao = new DaoCV();
         CV cv = dao.getCVByUsername(username);
         request.setAttribute("cv", cv);
+        request.setAttribute("selectedCourses", cv.getCourses() != null ? cv.getCourses() : new ArrayList<>());
 
         request.getRequestDispatcher("/CRUD/UpdateCV.jsp").forward(request, response);
     }
@@ -81,24 +85,28 @@ public class UpdateCV extends HttpServlet {
         String serviceDescription = request.getParameter("serviceDescription");
         String achievementDescription = request.getParameter("achievementDescription");
 
-        if (profession != null && !profession.isEmpty()
-                && professionIntro != null && !professionIntro.isEmpty()
-                && serviceDescription != null && !serviceDescription.isEmpty()
-                && achievementDescription != null && !achievementDescription.isEmpty()) {
+        String[] coursesArray = request.getParameterValues("courses");
+        List<String> courses = (coursesArray != null) ? Arrays.asList(coursesArray) : new ArrayList<>();
+
+        String coursesString = String.join(", ", courses);
+
+        if (!profession.isEmpty() && !professionIntro.isEmpty()
+                && !serviceDescription.isEmpty() && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
-            dao.updateCV(profession, professionIntro, serviceDescription, achievementDescription, username);
+            dao.updateCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username);
 
             DAOAcceptCV dao1 = new DAOAcceptCV();
             String submitApproval = request.getParameter("submitApproval");
-            if ("true".equals(submitApproval)) {
+            if ("true".equalsIgnoreCase(submitApproval)) {
                 dao1.updateCVStatus(username, "Pending");
                 session.setAttribute("successMessage", "CV submitted for approval successfully!");
                 response.sendRedirect("UpdateCV");
                 return;
             }
 
-            session.setAttribute("cvStatus", "draft");
+            String cvStatus = dao.getCVStatusByUsername(username);
+            session.setAttribute("cvStatus", cvStatus);
             session.setAttribute("successMessage", "Update CV successfully!");
             response.sendRedirect("UpdateCV");
         } else {
