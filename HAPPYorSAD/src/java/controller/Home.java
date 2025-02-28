@@ -56,6 +56,7 @@ public class Home extends HttpServlet {
         List<Mentor> listCountMentor = daoMe.getCount();
         List<Mentee> listCountMentee = daoMentee.getCount();
         //Count course and menteees
+        System.out.println("Hello");
 
         session.setAttribute("listFCourse", listC);
         session.setAttribute("listTCourse", listT);
