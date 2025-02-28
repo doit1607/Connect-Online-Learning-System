@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE iddtml> 
 <html lang="en">       
     <head>          
         <meta charset="utf-8">         
@@ -81,15 +81,15 @@
                                             <input type="checkbox" id="rememberMe" name="rememberMe">                                             
                                             <span class="checkmark"></span>                                         
                                         </label>                                         
-                                                                                    
-                                            <c:if test="${requestScope.error != null}">                                             
-                                                <span style="color: red;">${requestScope.error}</span>                                        
-                                            </c:if> 
 
-                                                                             
+                                        <c:if test="${requestScope.error != null}">                                             
+                                            <span style="color: red;">${requestScope.error}</span>                                        
+                                        </c:if> 
+
+
                                         <c:if test="${requestScope.msg != null}">                                             
-                                                <span style="color: red;">${requestScope.msg}</span>                                        
-                                            </c:if>                                      
+                                            <span style="color: red;">${requestScope.msg}</span>                                        
+                                        </c:if>                                      
                                     </div>                                     
                                     <div class="d-grid">                                         
                                         <button class="btn btn-primary btn-start" type="submit">Sign In</button>                                     
