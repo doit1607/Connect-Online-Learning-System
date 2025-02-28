@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import model.DAOuser;
 import model.DaoCV;
 
@@ -35,6 +36,7 @@ public class ViewCV extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
+
         DAOuser mentor = new DAOuser();
         User u = mentor.getMentorByUsername(username);
         request.setAttribute("mentor", u);
@@ -42,8 +44,16 @@ public class ViewCV extends HttpServlet {
         DaoCV dao = new DaoCV();
         CV cv = dao.getCVByUsername(username);
 
-        session.setAttribute("cvStatus", "Pending");
+        if (cv == null) {
+            cv = new CV();
+        }
+
         request.setAttribute("cv", cv);
+        request.setAttribute("selectedCourses", cv.getCourses() != null ? cv.getCourses() : new ArrayList<>());
+
+        String cvStatus = dao.getCVStatusByUsername(username);
+        session.setAttribute("cvStatus", cvStatus);
+
         request.getRequestDispatcher("/view/ViewCV.jsp").forward(request, response);
 
     }
