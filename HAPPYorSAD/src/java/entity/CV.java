@@ -4,6 +4,9 @@
  */
 package entity;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 
@@ -11,21 +14,38 @@ public class CV {
     public String username;
     public String profession;
     public String professionIntro;
+    public List<String> courses;
     public String serviceDescription;
     public String achievementDescription;
+    public LocalDateTime createdAt;
     public String status;
+    public String message;
 
     public CV() {
     }
 
-    public CV(String username, String profession, String professionIntro, String serviceDescription, String achievementDescription, String status) {
+    public CV(String username, String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, LocalDateTime createdAt, String status, String message) {
         this.username = username;
         this.profession = profession;
         this.professionIntro = professionIntro;
+        this.courses = courses;
         this.serviceDescription = serviceDescription;
         this.achievementDescription = achievementDescription;
+        this.createdAt = createdAt;
         this.status = status;
     }
+
+    public CV(String username, String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, LocalDateTime createdAt, String message) {
+        this.username = username;
+        this.profession = profession;
+        this.professionIntro = professionIntro;
+        this.courses = courses;
+        this.serviceDescription = serviceDescription;
+        this.achievementDescription = achievementDescription;
+        this.createdAt = createdAt;
+        this.message = message;
+    }
+    
 
     public String getUsername() {
         return username;
@@ -51,6 +71,14 @@ public class CV {
         this.professionIntro = professionIntro;
     }
 
+    public List<String> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<String> courses) {
+        this.courses = courses;
+    }
+
     public String getServiceDescription() {
         return serviceDescription;
     }
@@ -67,6 +95,18 @@ public class CV {
         this.achievementDescription = achievementDescription;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    
+    public Date getCreatedAtAsDate() {
+        return createdAt != null ? Date.from(createdAt.atZone(ZoneId.systemDefault()).toInstant()) : null;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -75,4 +115,11 @@ public class CV {
         this.status = status;
     }
     
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
