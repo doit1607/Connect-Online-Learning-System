@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
@@ -80,7 +81,21 @@
         <div class="container mt-5">
             <div class="cv-container">
                 <h2>View CV</h2>
-
+                <c:set var="cvStatus" value="${sessionScope.cvStatus}"/>
+                <c:choose>
+                    <c:when test="${sessionScope.cvStatus eq 'Pending'}">
+                        <button type="button" class="btn btn-warning">Status: Pending</button>
+                    </c:when>
+                    <c:when test="${sessionScope.cvStatus eq 'approved'}">
+                        <button type="button" class="btn btn-success">Status: Approved</button>
+                    </c:when>
+                    <c:when test="${sessionScope.cvStatus eq 'rejected'}">
+                        <button type="button" class="btn btn-danger">Status: Rejected</button>
+                    </c:when>
+                    <c:when test="${sessionScope.cvStatus eq 'draft'}">
+                        <button type="button" class="btn btn-secondary">Status: Draft</button>
+                    </c:when>
+                </c:choose>
                 <form action="ViewCV" method="get">
                     <!-- Personal Information -->
                     <div class="contact-info">
@@ -129,11 +144,25 @@
                     </div>
                     <div class="input-block">
                         <label>Experience</label>
-                        <textarea name="serviceDescription" rows="3" readonly>${cv.professionIntro}</textarea>
+                        <textarea name="serviceDescription" rows="3" readonly>${cv.serviceDescription}</textarea>
                     </div>
                     <div class="input-block">
                         <label>Education</label>
                         <textarea name="achievementDescription" rows="3" readonly>${cv.achievementDescription}</textarea>
+                    </div>
+
+                    <div class="input-block">
+                        <label>Courses I Can Teach</label>
+                        <div class="checkbox-group">
+                            <c:set var="selectedCourses" value="${requestScope.selectedCourses}" />
+
+                            <c:set var="coursesList" value="Computer Science,Data Science,Business Administration,Graphic Design,Mechanical Engineering"/>
+                            <c:forEach var="course" items="${fn:split(coursesList, ',')}">
+                                <input type="checkbox" id="${course}" name="courses" value="${course}" 
+                                       <c:if test="${selectedCourses.contains(course)}">checked</c:if> >
+                                <label for="${course}">${course}</label>
+                            </c:forEach>
+                        </div>
                     </div>
 
                     <input type="hidden" name="username" value="${sessionScope.usernameUser}">
