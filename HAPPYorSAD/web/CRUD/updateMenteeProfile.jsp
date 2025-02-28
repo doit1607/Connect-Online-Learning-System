@@ -114,7 +114,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
+                                            <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
@@ -124,7 +124,7 @@
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
+                                            <a href="updatementeeprofile" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
@@ -178,7 +178,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
+                                            <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
@@ -226,7 +226,7 @@
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-settings.html" class="nav-link ">
+                                            <a href="updatementeeprofile" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
