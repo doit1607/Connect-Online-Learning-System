@@ -480,165 +480,170 @@
                     <div class="row">
                         <div class="col-12">
 
-<!--                            <div class="card">
-                                <div class="card-body"> 
-                                    <form action="/../HAPPYorSAD/test" method="post">
-                                        <input type="hidden" name="mentorId" value="${requestScope.mentorId}"> 
-                                        <input type="hidden" name="courseId" value="${requestScope.courseId}"> 
-                                        <input type="hidden" name="price" value="${requestScope.price}"> 
-                                        <div class="booking-doc-info">
-                                            <img src="${requestScope.mentorrequest.image}" alt="User Image">
+                            <!--                            <div class="card">
+                                                            <div class="card-body"> 
+                                                                <form action="/../HAPPYorSAD/test" method="post">
+                                                                    <input type="hidden" name="mentorId" value="${requestScope.mentorId}"> 
+                                                                    <input type="hidden" name="courseId" value="${requestScope.courseId}"> 
+                                                                    <input type="hidden" name="price" value="${requestScope.price}"> 
+                                                                    <div class="booking-doc-info">
+                                                                        <img src="${requestScope.mentorrequest.image}" alt="User Image">
+                            
+                                                                        <div class="booking-info">
+                                                                            <h4><a href="">${requestScope.mentorrequest.name}</a></h4>
+                                                                            <div class="rating">
+                                                                                <i class="fas fa-star filled"></i>
+                                                                                <i class="fas fa-star filled"></i>
+                                                                                <i class="fas fa-star filled"></i>
+                                                                                <i class="fas fa-star filled"></i>
+                                                                                <i class="fas fa-star"></i>
+                                                                                <span class="d-inline-block average-rating">${requestScope.mentorrequest.rating}</span>
+                                                                            </div>
+                                                                            <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>${requestScope.mentorrequest.bio}</p>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>-->
+                            <form id="bookingForm" action="/../HAPPYorSAD/test" method="post">
+                                <input type="hidden" name="mentorId" value= "${requestScope.mentorId}">   
+                                <input type="hidden" name="courseId" value="${requestScope.courseId}">   
+                                <input type="hidden" name="price" value="${requestScope.price}">   
 
-                                            <div class="booking-info">
-                                                <h4><a href="">${requestScope.mentorrequest.name}</a></h4>
-                                                <div class="rating">
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star filled"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <span class="d-inline-block average-rating">${requestScope.mentorrequest.rating}</span>
+                                <div class="title-container">
+                                    <label for="request-title">Title:</label>
+                                    <input type="text" id="request-title" name="title" required>
+                                </div>
+
+                                <div class="content-container">
+                                    <label for="request-content">Content:</label>
+                                    <textarea id="request-content" name="content" required></textarea>
+                                </div>
+                                <div class="date-container">
+                                    <div>
+                                        <label for="start-date">Start Date:</label>
+                                        <input type="date" id="start-date" name="startdate" required>
+                                    </div>
+                                    <div>
+                                        <label for="end-date">End Date:</label>
+                                        <input type="date" id="end-date" name="enddate" required>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-4 col-md-6">
+                                        <h4 class="mb-1">
+                                            <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
+                                        </h4>
+                                        <!--                                    <p class="text-muted">
+                                        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
+                                    </p>-->
+
+                                    </div>
+
+                                    <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                                        <div class="dropdown">
+                                            <button class="bookingrange btn btn-white btn-sm mb-3 dropdown-toggle" type="button" id="monthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="far fa-calendar-alt me-2"></i>
+                                                <span id="selectedMonth">Choose month</span>
+                                                <i class="fas fa-chevron-down ms-2"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="monthDropdown">
+                                                <c:forEach var="month" items="${months}">
+                                                    <li><a class="dropdown-item month-item" data-month="${month}">${month}</a></li>
+                                                    </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="totalSlots" id="totalSlots" value="0">
+                                <!-- Schedule Widget -->
+                                <!-- Schedule Widget -->
+                                <div class="card booking-schedule schedule-widget">
+
+                                    <!-- Schedule Header -->
+                                    <div class="schedule-header">
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <!-- Day Slot -->
+                                                <div class="day-slot">
+                                                    <ul>
+
+                                                        <c:forEach var="entry" items="${weekDateInfoMap}">
+                                                            <li>
+                                                                <span>${entry.value['dayOfWeek']}</span>
+                                                                <span class="slot-date">${entry.value['day']} ${entry.value['month']} 
+                                                                    <small class="slot-year">${entry.value['year']}</small>
+                                                                </span>
+                                                            </li>
+                                                        </c:forEach>
+
+
+                                                    </ul>
                                                 </div>
-                                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>${requestScope.mentorrequest.bio}</p>
+                                                <!-- /Day Slot -->
+
                                             </div>
                                         </div>
-                                </div>
-                            </div>-->
-                            <div class="title-container">
-                                <label for="request-title">Title:</label>
-                                <input type="text" id="request-title" name="title" required>
-                            </div>
-
-                            <div class="content-container">
-                                <label for="request-content">Content:</label>
-                                <textarea id="request-content" name="content" required></textarea>
-                            </div>
-                            <div class="date-container">
-                                <div>
-                                    <label for="start-date">Start Date:</label>
-                                    <input type="date" id="start-date" name="startdate" required>
-                                </div>
-                                <div>
-                                    <label for="end-date">End Date:</label>
-                                    <input type="date" id="end-date" name="enddate" required>
-                                </div>
-                            </div>
-
-
-
-                            <div class="row">
-                                <div class="col-12 col-sm-4 col-md-6">
-                                    <h4 class="mb-1">
-                                        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
-                                    </h4>
-                                    <!--                                    <p class="text-muted">
-                                    <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
-                                </p>-->
-
-                                </div>
-
-                                <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                    <div class="bookingrange btn btn-white btn-sm mb-3">
-                                        <i class="far fa-calendar-alt me-2"></i>
-                                        <span></span>
-                                        <i class="fas fa-chevron-down ms-2"></i>
                                     </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="totalSlots" id="totalSlots" value="0">
-                            <!-- Schedule Widget -->
-                            <!-- Schedule Widget -->
-                            <div class="card booking-schedule schedule-widget">
+                                    <!-- /Schedule Header -->
 
-                                <!-- Schedule Header -->
-                                <div class="schedule-header">
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                    <!-- Schedule Content -->
+                                    <div class="schedule-cont">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- Time Slot -->
+                                                <div class="time-slot">
+                                                    <ul class="clearfix">
+                                                        <c:forEach var="entry" items="${weekDateInfoMap}">
+                                                            <li>
+                                                                <c:choose>
+                                                                    <c:when test="${not empty slotsByDay[entry.key]}">
+                                                                        <c:forEach var="slot" items="${slotsByDay[entry.key]}">
+                                                                            <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
+                                                                                <span>${slotTimeMap[slot.slotNumber]}</span>
+                                                                            </a>
+                                                                        </c:forEach>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <p>No slots available</p>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
 
-                                            <!-- Day Slot -->
-                                            <div class="day-slot">
-                                                <ul>
-                                                    <li class="left-arrow">
-                                                        <a href="javascript:void(0)">
-                                                            <i class="fa fa-chevron-left"></i>
-                                                        </a>
-                                                    </li>
-                                                    <c:forEach var="entry" items="${weekDateInfoMap}">
-                                                        <li>
-                                                            <span>${entry.value['dayOfWeek']}</span>
-                                                            <span class="slot-date">${entry.value['day']} ${entry.value['month']} 
-                                                                <small class="slot-year">${entry.value['year']}</small>
-                                                            </span>
-                                                        </li>
-                                                    </c:forEach>
+                                                <label>
+                                                    <input type="checkbox" id="repeatBooking"> Repeat Booking
+                                                </label>
+                                                <button id="bookSlots">Book Selected Slots</button>
+                                                <button type="button" id="clearAllBtn" class="clear-btn">Clear</button>
+                                                <!-- /Time Slot -->
 
-
-                                                    <li class="right-arrow">
-                                                        <a href="javascript:void(0)">
-                                                            <i class="fa fa-chevron-right"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
                                             </div>
-                                            <!-- /Day Slot -->
-
                                         </div>
                                     </div>
+                                    <!-- /Schedule Content -->
+
                                 </div>
-                                <!-- /Schedule Header -->
 
-                                <!-- Schedule Content -->
-                                <div class="schedule-cont">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- Time Slot -->
-                                            <div class="time-slot">
-                                                <ul class="clearfix">
-                                                    <c:forEach var="entry" items="${weekDateInfoMap}">
-                                                        <li>
-                                                            <c:choose>
-                                                                <c:when test="${not empty slotsByDay[entry.key]}">
-                                                                    <c:forEach var="slot" items="${slotsByDay[entry.key]}">
-                                                                        <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
-                                                                            <span>${slotTimeMap[slot.slotNumber]}</span>
-                                                                        </a>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <p>No slots available</p>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
 
-                                            <label>
-                                                <input type="checkbox" id="repeatBooking"> Repeat Booking
-                                            </label>
-                                            <!--                                            <button id="bookSlots">Book Selected Slots</button>-->
-                                            <button type="button" id="clearAllBtn" class="clear-btn">Clear</button>
-                                            <!-- /Time Slot -->
+                                <!-- /Schedule Widget -->
 
-                                        </div>
-                                    </div>
+                                <div class="price-display">
+                                    Total Price: <span class="price-amount">0</span>
                                 </div>
-                                <!-- /Schedule Content -->
-
-                            </div>
-
-
-                            <!-- /Schedule Widget -->
-
-                            <div class="price-display">
-                                Total Price: <span class="price-amount">0</span>
-                            </div>
-                            <!-- Submit Section -->
-                            <div class="button-container">
-                                <button type="submit" class="submit-bbb">Submit</button>
-                                <button type="button" class="save-bbb">Save</button>
-                            </div>
-                            <!-- /Submit Section -->
+                                <!-- Submit Section -->
+                                <div class="button-container">
+                                    <input type="hidden" name="service" id="serviceInput" value="">
+                                    <input type="hidden" id="totalPriceInput" name="totalprice">
+                                    <button type="submit" class="submit-bbb">Submit</button>
+                                    <button type="button" class="save-bbb">Save</button>
+                                </div>
+                                <!-- /Submit Section -->
                         </div>
                         </form>
 
@@ -651,11 +656,14 @@
                 document.addEventListener("DOMContentLoaded", function () {
                     const timeSlots = document.querySelectorAll(".timing");
                     const priceDisplay = document.querySelector(".price-amount");
-                    const pricePerSlot = ${sessionScope.price}; // Lấy giá từ session
+                    const pricePerSlot = ${requestScope.price}; // Lấy giá từ requestScope
                     const walletBalance = ${sessionScope.walletBalance}; // Lấy số dư ví
                     const totalSlotsInput = document.getElementById("totalSlots");
                     const submitBtn = document.querySelector(".submit-bbb"); // Nút Submit
                     const saveBtn = document.querySelector(".save-bbb"); // Nút Save
+                    const serviceInput = document.getElementById("serviceInput"); // Input ẩn chứa giá trị service
+                    const bookingForm = document.getElementById("bookingForm"); // Form chính
+                    const totalPriceInput = document.getElementById("totalPriceInput"); // Input ẩn chứa totalPrice
                     let totalPrice = 0;
                     let totalSlots = 0;
                     let selectedSlots = new Set();
@@ -663,17 +671,18 @@
                     function updateUI() {
                         priceDisplay.textContent = totalPrice;
                         totalSlotsInput.value = totalSlots;
+                        totalPriceInput.value = totalPrice; // Cập nhật giá trị vào input hidden
 
                         if (totalPrice > walletBalance) {
                             showNotification("Bạn không đủ tiền trong ví để đặt thêm slot!");
                             submitBtn.disabled = true;
                             saveBtn.disabled = true;
-                            submitBtn.classList.add("disabled"); // Thêm CSS class để làm mờ nút
+                            submitBtn.classList.add("disabled");
                             saveBtn.classList.add("disabled");
                         } else {
                             submitBtn.disabled = false;
                             saveBtn.disabled = false;
-                            submitBtn.classList.remove("disabled"); // Xóa class nếu hợp lệ
+                            submitBtn.classList.remove("disabled");
                             saveBtn.classList.remove("disabled");
                         }
                     }
@@ -703,7 +712,6 @@
                     const clearAllBtn = document.getElementById("clearAllBtn");
                     if (clearAllBtn) {
                         clearAllBtn.addEventListener("click", function () {
-                            console.log("Clear All Clicked!");
                             document.querySelectorAll(".timing.selected").forEach(function (slot) {
                                 slot.classList.remove("selected");
                             });
@@ -711,65 +719,25 @@
                             totalSlots = 0;
                             totalPrice = 0;
                             selectedSlots.clear();
-
                             updateUI();
                         });
-                    } else {
-                        console.error("Không tìm thấy nút Clear All!");
                     }
+
+                    // Xử lý khi nhấn Submit hoặc Save
+                    submitBtn.addEventListener("click", function () {
+                        serviceInput.value = "submit";
+                        totalPriceInput.value = totalPrice; 
+                        bookingForm.submit(); 
+                    });
+
+                    saveBtn.addEventListener("click", function () {
+                        serviceInput.value = "save";
+                        bookingForm.submit(); 
+                    });
                 });
-
-
-
 
             </script>
 
-
-            <!-- <script>
-                            const timeSlots = document.querySelectorAll('.timing');
-            
-                            timeSlots.forEach(slot => {
-                                slot.addEventListener('click', function (event) {
-                                    event.preventDefault();
-            
-                                    if (this.classList.contains('selected')) {
-                                        this.classList.remove('selected');
-                                    } else {
-                                        this.classList.add('selected');
-                                    }
-                                });
-                            });
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const timeSlots = document.querySelectorAll('.timing');
-                                const priceDisplay = document.querySelector('.price-amount');
-                                const pricePerSlot = 100; // Giá ti?n cho m?i slot
-                                let totalPrice = 0; // T?ng ti?n ban ??u
-            
-                                timeSlots.forEach(slot => {
-                                    slot.addEventListener('click', function (event) {
-                                        event.preventDefault(); // Ng?n ch?n hành ??ng m?c ??nh c?a th? <a>
-            
-                                        if (this.classList.contains('selected')) {
-                                            // N?u slot ?ã ???c ch?n, b? ch?n và gi?m ti?n
-                                            this.classList.remove('selected');
-                                            totalPrice -= pricePerSlot;
-                                        } else {
-                                            // N?u slot ch?a ???c ch?n, ch?n và t?ng ti?n
-                                            this.classList.add('selected');
-                                            totalPrice += pricePerSlot;
-                                        }
-            
-                                        // Hi?n th? t?ng ti?n
-                                        priceDisplay.textContent = totalPrice;
-                                    });
-                                });
-                            });
-                            document.getElementById("clearAllBtn").addEventListener("click", function () {
-                                document.querySelectorAll(".timing.selected").forEach(function (slot) {
-                                    slot.classList.remove("selected");
-                                });
-                            });
-                        </script>-->
 
             <!-- /Page Content -->
             <%@include file="/sourcesHome/homeFooter.jsp" %>
