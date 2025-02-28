@@ -21,7 +21,7 @@ public class TransactionDAO extends DBConnection{
     public int createTransaction(String username, double amount, String type) {
         int transactionId = 0;
         try {
-            String query = "INSERT INTO Transactions (username, type, amount, status) VALUES (?, ?, ?, 'PENDING')";
+            String query = "INSERT INTO Transactions (username, type, amount, status) VALUES (?, ?, ?, 'DONE')";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, type);
@@ -46,6 +46,17 @@ public class TransactionDAO extends DBConnection{
             stmt.setString(1, status);
             stmt.setInt(2, transactionId);
             stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateHold(String username,double hold){
+        String sql = "UPDATE Wallets SET hold = hold + ? WHERE username = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setDouble(1, hold);
+            st.setString(2, username);
+            st.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
