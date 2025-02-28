@@ -36,7 +36,7 @@ public class UpdateRequest extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         DAORequest requestDAO = new DAORequest();
         try {
-            // Lấy dữ liệu từ form JSP
+            
             int requestId = Integer.parseInt(request.getParameter("id"));
             String title = request.getParameter("title");
             int totalSlot = Integer.parseInt(request.getParameter("totalSlot"));
@@ -44,13 +44,13 @@ public class UpdateRequest extends HttpServlet {
             String startDateStr = request.getParameter("startDate");
             String endDateStr = request.getParameter("endDate");
             String content = request.getParameter("content");
-            String action = request.getParameter("action"); // "draft" hoặc "submit"
-
+            String action = request.getParameter("action"); // "draft" hoặc "submit" 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate startDate = LocalDate.parse(startDateStr, formatter);
             LocalDate endDate = LocalDate.parse(endDateStr, formatter);
 
             Request existingRequest = requestDAO.getRequestById(requestId);
+
             if (existingRequest == null) {
                 response.getWriter().println("⚠️ Lỗi: Không tìm thấy request với ID: " + requestId);
                 return;
