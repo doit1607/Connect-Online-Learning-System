@@ -157,7 +157,7 @@
 
                                                 </div>
                                             </div>
-                                            <h2>CreateRequest
+                                            <h2>
                                                 <a href="test?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}" 
                                                    class="btn btn-enroll w-100">Invite</a>
                                             </h2>
