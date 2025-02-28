@@ -49,6 +49,7 @@
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <!-- Header -->
+            <%@include file="/../sourcesHome/homeHeader.jsp" %>
             <!-- /Header -->
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar breadcrumb-bar-info">
