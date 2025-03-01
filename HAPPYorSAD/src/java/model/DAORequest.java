@@ -184,6 +184,23 @@ public class DAORequest extends DBConnection {
     }
 
     public boolean updateRequest(Request req) {
+        String sql = "UPDATE Request SET title=?, total_slot=?, start_date=?, end_date=?, content=?, totalPrice=?, updated_at=GETDATE(),status =? WHERE id=? ";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, req.getTitle());
+            stmt.setInt(2, req.getTotalSlot());
+            stmt.setDate(3, java.sql.Date.valueOf(req.getStartDate()));
+            stmt.setDate(4, java.sql.Date.valueOf(req.getEndDate()));
+            stmt.setString(5, req.getContent());
+            stmt.setDouble(6, req.gettotalprice());
+            stmt.setInt(8, req.getId());
+            stmt.setString(7, req.getStatus());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateRequestSubmit(Request req) {
         String sql = "UPDATE Request SET title=?, total_slot=?, start_date=?, end_date=?, content=?, totalPrice=?, updated_at=GETDATE() WHERE id=? AND status='Draft'";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, req.getTitle());
