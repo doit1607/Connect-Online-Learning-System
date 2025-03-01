@@ -389,11 +389,22 @@ public class test extends HttpServlet {
                 Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
                 daorequest.insertRequest(requests);
                 session.setAttribute("msg", "Your request submit successfully!");
+            } else {
+                int requestId = Integer.parseInt(request.getParameter("requestId"));
+                Request existingRequest = daorequest.getRequestById(requestId);
+                if (existingRequest != null) {
+                    existingRequest.setTitle(title);
+                    existingRequest.setContent(content);
+                    existingRequest.setStartDate(startDate);
+                    existingRequest.setEndDate(endDate);
+                    existingRequest.setTotalSlot(totalSlots);
+                    existingRequest.settotalprice(Double.parseDouble(request.getParameter("totalprice")));
+                    existingRequest.setStatus("Open");
+                    daorequest.updateRequest(existingRequest);
+                } else {
+                    request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
+                }
             }
-            else{
-                
-            }
-
             response.sendRedirect("ShowMenteeRequest");
         }
         if ("save".equals(service)) {
@@ -405,23 +416,15 @@ public class test extends HttpServlet {
             } else {
                 int requestId = Integer.parseInt(request.getParameter("requestId"));
                 Request existingRequest = daorequest.getRequestById(requestId);
-
                 if (existingRequest != null) {
-                    // Cập nhật thông tin mới cho yêu cầu
                     existingRequest.setTitle(title);
                     existingRequest.setContent(content);
                     existingRequest.setStartDate(startDate);
                     existingRequest.setEndDate(endDate);
                     existingRequest.setTotalSlot(totalSlots);
                     existingRequest.settotalprice(Double.parseDouble(request.getParameter("totalprice")));
-
-                    // Giữ nguyên trạng thái "Draft" vì người dùng chỉ lưu bản nháp
                     existingRequest.setStatus("Draft");
-                    
-                    // Thực hiện cập nhật trong database
                     daorequest.updateRequest(existingRequest);
-
-                    // Chuyển hướng về trang danh sách yêu cầu
                     response.sendRedirect("ShowMenteeRequest");
                 } else {
                     request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
