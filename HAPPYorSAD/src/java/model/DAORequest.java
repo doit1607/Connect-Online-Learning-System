@@ -184,14 +184,14 @@ public class DAORequest extends DBConnection {
     }
 
     public boolean updateRequest(Request req) {
-        String sql = "UPDATE Request SET title=?, total_slot=?, start_date=?, end_date=?, content=?, course_id=?, updated_at=GETDATE() WHERE id=? AND status='Draft'";
+        String sql = "UPDATE Request SET title=?, total_slot=?, start_date=?, end_date=?, content=?, totalPrice=?, updated_at=GETDATE() WHERE id=? AND status='Draft'";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, req.getTitle());
             stmt.setInt(2, req.getTotalSlot());
             stmt.setDate(3, java.sql.Date.valueOf(req.getStartDate()));
             stmt.setDate(4, java.sql.Date.valueOf(req.getEndDate()));
             stmt.setString(5, req.getContent());
-            stmt.setInt(6, req.getCourseId());
+            stmt.setDouble(6, req.gettotalprice());
             stmt.setInt(7, req.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -278,18 +278,6 @@ public class DAORequest extends DBConnection {
         return isUpdated;
     }
 
-    public boolean submitRequest(int requestId) {
-        String sql = "UPDATE Request SET status='Open', updated_at=GETDATE() WHERE id=? AND status='Draft'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, requestId);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
