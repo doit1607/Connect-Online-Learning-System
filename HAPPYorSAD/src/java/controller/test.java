@@ -96,63 +96,63 @@ public class test extends HttpServlet {
         // Lấy scheduleId từ request nếu có
         String scheduleIdStr = request.getParameter("scheduleId");
         int scheduleId = 1; // Mặc định nếu không có ID
-//        if (scheduleIdStr == null || scheduleIdStr.isEmpty()) {
-//            String selectedMonthStr = request.getParameter("month");
-//            String selectedYearStr = request.getParameter("year");
-//            int selectedMonth;
-//            int selectedYear;
-//
-//            LOGGER.info("Extracted month = " + selectedMonthStr + ", year = " + selectedYearStr);
-//            if (selectedMonthStr != null && selectedYearStr != null
-//                    && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
-//                try {
-//                    selectedMonth = Integer.parseInt(selectedMonthStr);
-//                } catch (NumberFormatException e) {
-//                    try {
-//                        // Nếu không phải số, chuyển đổi tên tháng sang số (ví dụ: "March" -> 3)
-//                        Month monthEnum = Month.valueOf(selectedMonthStr.toUpperCase());
-//                        selectedMonth = monthEnum.getValue();
-//                    } catch (IllegalArgumentException ex) {
-//                        // Nếu tên tháng không hợp lệ, mặc định lấy tháng hiện tại
-//                        selectedMonth = LocalDate.now().getMonthValue();
-//                        LOGGER.info("Invalid month parameter: " + selectedMonthStr + ". Defaulting to current month: " + selectedMonth);
-//                    }
-//                }
-//                try {
-//                    selectedYear = Integer.parseInt(selectedYearStr);
-//                } catch (NumberFormatException e) {
-//                    selectedYear = LocalDate.now().getYear();
-//                    LOGGER.info("Invalid year parameter: " + selectedYearStr + ". Defaulting to current year: " + selectedYear);
-//                }
-//                LOGGER.info("Selected Month = " + selectedMonth + ", Selected Year = " + selectedYear);
-//            } else {
-//                selectedMonth = LocalDate.now().getMonthValue();
-//                selectedYear = LocalDate.now().getYear();
-//                LOGGER.info("Defaulting to current month/year: " + selectedMonth + "/" + selectedYear);
-//            }
-//            LOGGER.info("Fetching schedules for: " + selectedMonth + "/" + selectedYear);
-//            List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
-//            response.setContentType("text/html");
-//            response.getWriter().write("<h3>Schedules for " + Month.of(selectedMonth) + " " + selectedYear + "</h3>");
-//            if (schedules.isEmpty()) {
-//                response.getWriter().write("<p>No schedules found.</p>");
-//                return;
-//            } else {
-//                response.getWriter().write("<ul>");
-//                for (Schedule schedule : schedules) {
-//                    response.getWriter().write("<li data-schedule-id='" + schedule.getId() + "'>"
-//                            + "Schedule ID: " + schedule.getId()
-//                            + " - " + schedule.getStart_date() + "</li>");
-//                }
-//                response.getWriter().write("</ul>");
-//
-//                // Lưu scheduleId đầu tiên vào session nếu có lịch trình
-//                scheduleId = schedules.get(0).getId();
-//                request.setAttribute("scheduleId", scheduleId);
-//            }
-//            LOGGER.info("Processing Schedule ID: " + scheduleId);
-//
-//        }
+        if (scheduleIdStr == null || scheduleIdStr.isEmpty()) {
+            String selectedMonthStr = request.getParameter("month");
+            String selectedYearStr = request.getParameter("year");
+            int selectedMonth;
+            int selectedYear;
+
+            LOGGER.info("Extracted month = " + selectedMonthStr + ", year = " + selectedYearStr);
+            if (selectedMonthStr != null && selectedYearStr != null
+                    && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
+                try {
+                    selectedMonth = Integer.parseInt(selectedMonthStr);
+                } catch (NumberFormatException e) {
+                    try {
+                        // Nếu không phải số, chuyển đổi tên tháng sang số (ví dụ: "March" -> 3)
+                        Month monthEnum = Month.valueOf(selectedMonthStr.toUpperCase());
+                        selectedMonth = monthEnum.getValue();
+                    } catch (IllegalArgumentException ex) {
+                        // Nếu tên tháng không hợp lệ, mặc định lấy tháng hiện tại
+                        selectedMonth = LocalDate.now().getMonthValue();
+                        LOGGER.info("Invalid month parameter: " + selectedMonthStr + ". Defaulting to current month: " + selectedMonth);
+                    }
+                }
+                try {
+                    selectedYear = Integer.parseInt(selectedYearStr);
+                } catch (NumberFormatException e) {
+                    selectedYear = LocalDate.now().getYear();
+                    LOGGER.info("Invalid year parameter: " + selectedYearStr + ". Defaulting to current year: " + selectedYear);
+                }
+                LOGGER.info("Selected Month = " + selectedMonth + ", Selected Year = " + selectedYear);
+            } else {
+                selectedMonth = LocalDate.now().getMonthValue();
+                selectedYear = LocalDate.now().getYear();
+                LOGGER.info("Defaulting to current month/year: " + selectedMonth + "/" + selectedYear);
+            }
+            LOGGER.info("Fetching schedules for: " + selectedMonth + "/" + selectedYear);
+            List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
+            response.setContentType("text/html");
+            response.getWriter().write("<h3>Schedules for " + Month.of(selectedMonth) + " " + selectedYear + "</h3>");
+            if (schedules.isEmpty()) {
+                response.getWriter().write("<p>No schedules found.</p>");
+                return;
+            } else {
+                response.getWriter().write("<ul>");
+                for (Schedule schedule : schedules) {
+                    response.getWriter().write("<li data-schedule-id='" + schedule.getId() + "'>"
+                            + "Schedule ID: " + schedule.getId()
+                            + " - " + schedule.getStart_date() + "</li>");
+                }
+                response.getWriter().write("</ul>");
+
+                // Lưu scheduleId đầu tiên vào session nếu có lịch trình
+                scheduleId = schedules.get(0).getId();
+                request.setAttribute("scheduleId", scheduleId);
+            }
+            LOGGER.info("Processing Schedule ID: " + scheduleId);
+
+        }
         LOGGER.info("Receive Schedule ID: " + scheduleId);
         LOGGER.info("Action received: " + action);
 //        Integer scheduleId = DAOschedule.getScheduleIdsByMentorId(mentorId);
