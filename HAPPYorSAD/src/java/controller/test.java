@@ -378,30 +378,33 @@ public class test extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
         Mentor mentor = daomentor.getMentorByID(mentorId);
         int totalSlots = Integer.parseInt(request.getParameter("totalSlots"));
+        double totalprice = Double.parseDouble(request.getParameter("totalprice"));
         if ("submit".equals(service)) {
-            double totalprice = Double.parseDouble(request.getParameter("totalprice"));
-            daowallet.updateHold(usernamementee, totalprice);
-            daowallet.withdrawToWallet(usernamementee, totalprice);
-            double balance = daowallet.getBalance(usernamementee);
-            session.setAttribute("walletBalance", balance);
-            Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
-            daorequest.insertRequest(requests);
-            session.setAttribute("msg", "Your request submit successfully!");
+            String requestId_raw = request.getParameter("requestId");
+            if (requestId_raw == null) {
+                daowallet.updateHold(usernamementee, totalprice);
+                daowallet.withdrawToWallet(usernamementee, totalprice);
+                double balance = daowallet.getBalance(usernamementee);
+                session.setAttribute("walletBalance", balance);
+                Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
+                daorequest.insertRequest(requests);
+                session.setAttribute("msg", "Your request submit successfully!");
+            }
+            else{
+                
+            }
+
             response.sendRedirect("ShowMenteeRequest");
         }
         if ("save".equals(service)) {
             String requestId_raw = request.getParameter("requestId");
             if (requestId_raw == null) {
-                double totalprice = Double.parseDouble(request.getParameter("totalprice"));
                 Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Draft", courseId);
                 daorequest.insertRequest(requests);
                 response.sendRedirect("ShowMenteeRequest");
-            }
-            else{
+            } else {
                 int requestId = Integer.parseInt(request.getParameter("requestId"));
             }
-
-            
 
         }
     }
