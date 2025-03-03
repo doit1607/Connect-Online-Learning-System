@@ -19,104 +19,124 @@ import static model.DBConnection.conn;
 
 public class DAORequest extends DBConnection {
 
-    public List<Request> getRequestByMentor(String mentor, LocalDate date, int page, int limit) {
-        List<Request> requests = new ArrayList<>();
+    public List<Request> getRequestByMentor(String mentor, String title, String status, LocalDate date, int page, int limit) {
+    List<Request> requests = new ArrayList<>();
+    int offset = (page - 1) * limit;
 
-        // Calculate the offset for pagination (page starts at 1)
-        int offset = (page - 1) * limit;
+    StringBuilder sql = new StringBuilder(
+            "SELECT r.id, r.mentee_id, r.mentor_id, u.username AS mentor_name, "
+            + "r.title, r.start_date, r.end_date, r.content, r.status, "
+            + "r.created_at, r.updated_at, r.course_id "
+            + "FROM Request r "
+            + "JOIN Mentor m ON r.mentor_id = m.id "
+            + "JOIN [Users] u ON m.user_id = u.id "
+            + "WHERE u.username = ? "
+    );
 
-        // Start the SQL query
-        StringBuilder sql = new StringBuilder(
-                "SELECT r.id, r.mentee_id, r.mentor_id, u.username AS mentor_name, "
-                + "r.title, r.deadline_date, r.deadline_hour, r.content, r.status, "
-                + "r.created_at, r.updated_at, r.course_ids "
-                + "FROM Request r "
-                + "JOIN Mentor m ON r.mentor_id = m.id "
-                + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? "
-        );
-
-        // Add the date filter if the date is not null
-        if (date != null) {
-            sql.append("AND r.created_at >= ? ");
-        }
-
-        // Add pagination and ordering
-        sql.append("ORDER BY r.deadline_date ASC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
-            preparedStatement.setString(1, mentor);  // Set mentor name
-
-            int index = 2;
-            if (date != null) {
-                preparedStatement.setDate(index++, java.sql.Date.valueOf(date));  // Set the date if not null
-            }
-
-            preparedStatement.setInt(index++, offset);  // Set the OFFSET (pagination)
-            preparedStatement.setInt(index, limit);     // Set the LIMIT (pagination)
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    Request request = new Request(
-                            rs.getInt("id"),
-                            rs.getInt("mentee_id"),
-                            rs.getInt("mentor_id"),
-                            rs.getString("title"),
-                            rs.getDate("start_date").toLocalDate(),
-                            rs.getDate("end_date").toLocalDate(),
-                            rs.getString("content"),
-                            rs.getString("status"),
-                            rs.getTimestamp("created_at").toLocalDateTime(),
-                            rs.getTimestamp("updated_at").toLocalDateTime(),
-                            rs.getInt("course_id")
-                    );
-                    requests.add(request);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return requests;
+    // Add filters dynamically
+    if (date != null) {
+        sql.append("AND r.created_at >= ? ");
+    }
+    if (status != null && !status.isEmpty()) {
+        sql.append("AND r.status = ? ");
+    }
+    if (title != null && !title.isEmpty()) {
+        sql.append("AND r.title LIKE ? ");
     }
 
-    public int getRequestCount(String mentor, LocalDate date) {
-        int count = 0;
+    // Add pagination
+    sql.append("ORDER BY r.end_date ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
 
-        // Start the SQL query
-        StringBuilder sql = new StringBuilder(
-                "SELECT COUNT(*) AS total_count "
-                + "FROM Request r "
-                + "JOIN Mentor m ON r.mentor_id = m.id "
-                + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? "
-        );
+    try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
+        int index = 1;
+        preparedStatement.setString(index++, mentor);
 
-        // Add the date filter if the date is not null
         if (date != null) {
-            sql.append("AND r.created_at >= ? ");
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
+        }
+        if (status != null && !status.isEmpty()) {
+            preparedStatement.setString(index++, status);
+        }
+        if (title != null && !title.isEmpty()) {
+            preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
         }
 
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
-            preparedStatement.setString(1, mentor);  // Set mentor name
+        preparedStatement.setInt(index++, offset);
+        preparedStatement.setInt(index, limit);
 
-            int index = 2;
-            if (date != null) {
-                preparedStatement.setDate(index++, java.sql.Date.valueOf(date));  // Set the date if not null
+        try (ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                Request request = new Request(
+                        rs.getInt("id"),
+                        rs.getInt("mentee_id"),
+                        rs.getInt("mentor_id"),
+                        rs.getString("title"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getString("content"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        rs.getInt("course_id")
+                );
+                requests.add(request);
             }
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    count = rs.getInt("total_count");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return count;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return requests;
+}
+
+    public int getRequestCount(String mentor, String title, String status, LocalDate date) {
+    int count = 0;
+
+    StringBuilder sql = new StringBuilder(
+            "SELECT COUNT(*) AS total_count "
+            + "FROM Request r "
+            + "JOIN Mentor m ON r.mentor_id = m.id "
+            + "JOIN [Users] u ON m.user_id = u.id "
+            + "WHERE u.username = ? "
+    );
+
+    // Add filters dynamically
+    if (date != null) {
+        sql.append("AND r.created_at >= ? ");
+    }
+    if (status != null && !status.isEmpty()) {
+        sql.append("AND r.status = ? ");
+    }
+    if (title != null && !title.isEmpty()) {
+        sql.append("AND r.title LIKE ? ");
+    }
+
+    try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
+        int index = 1;
+        preparedStatement.setString(index++, mentor);
+
+        if (date != null) {
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
+        }
+        if (status != null && !status.isEmpty()) {
+            preparedStatement.setString(index++, status);
+        }
+        if (title != null && !title.isEmpty()) {
+            preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
+        }
+
+        try (ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total_count");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return count;
+}
+
 
     public void updateRequestStatus(int requestId, String newStatus) {
         String sql = "UPDATE Request SET status = ? WHERE id = ?";

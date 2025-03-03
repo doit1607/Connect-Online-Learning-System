@@ -56,6 +56,8 @@ public class ViewRequest extends HttpServlet {
         int page = 1; 
         
         String dateFilterString = request.getParameter("date");
+        String title = request.getParameter("title");
+        String status = request.getParameter("status");
         int dateFilter = 0;
 
         if (dateFilterString != null && !dateFilterString.isEmpty()) {
@@ -101,7 +103,7 @@ public class ViewRequest extends HttpServlet {
             default:
 //                throw new AssertionError();
         }
-        int totalRequests = daoReq.getRequestCount(mentorUsername, date);
+        int totalRequests = daoReq.getRequestCount(mentorUsername,title, status, date);
         int totalPages = (int) Math.ceil((double) totalRequests / limit);
         
 //        List<Mentor1> list = dao.getAllMentors(search, page, limit);
@@ -114,7 +116,7 @@ public class ViewRequest extends HttpServlet {
 //        session.setAttribute("limit", limit);
 //        session.setAttribute("totalPages", totalPages); // Gửi tổng số trang đến session
         
-        List<Request> requests = daoReq.getRequestByMentor(mentorUsername, date, page, limit);
+        List<Request> requests = daoReq.getRequestByMentor(mentorUsername, title, status, date, page, limit);
         request.setAttribute("requests", requests);
         request.setAttribute("currentPage", page);
         request.setAttribute("limit", limit);
