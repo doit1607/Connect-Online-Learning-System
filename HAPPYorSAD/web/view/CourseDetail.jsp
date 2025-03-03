@@ -58,12 +58,12 @@
             <!-- /Breadcrumb -->
 
             <!-- Inner Banner -->
-            <div class="inner-banner">
+            <div class="inner-banner" style="background-image: url('${detail.image}');background-size: cover; background-position: center;">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8">                          
+                        <div class="col-lg-8 " >                          
                             <h2>${detail.title}</h2>
-                            <p>Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!</p>
+                            
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
                                 <div class="cou-info">
                                     <img src="assets/img/icon/icon-01.svg" alt="Img">
@@ -217,69 +217,6 @@
                                 </c:forEach>
                             </div>
                         </div>	
-
-                        <div class="col-lg-4">
-                            <div class="sidebar-sec">
-
-                                <!-- Video -->
-                                <div class="video-sec vid-bg">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <a href="" class="video-thumbnail" data-fancybox="">
-                                                <!--                                                <div class="play-icon">
-                                                                                                    <i class="fa-solid fa-play"></i>
-                                                                                                </div>-->
-                                                <img class="img-fluid" src="${detail.image}" alt="Img">
-                                            </a>
-                                            <div class="video-details">                                              
-                                                <div class="course-fee">
-                                                    <h2 class="title"><a href="">Study with Instructor Trung An</a></h2>
-                                                    <p><span>$99.00</span> 50% off</p>
-                                                </div>
-                                                <h2><a href="/../HAPPYorSAD/CreateRequest" class="btn btn-enroll w-100">Invite</a></h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Video -->
-
-                                <!-- Include -->
-                                <div class="card include-sec">
-                                    <div class="card-body">
-                                        <div class="cat-title">
-                                            <h4>Includes</h4>
-                                        </div>
-                                        <ul>
-                                            <li><img src="assets/img/icon/import.svg" class="me-2" alt="Img"> 11 hours on-demand video</li>
-                                            <li><img src="assets/img/icon/play.svg" class="me-2" alt="Img"> 69 downloadable resources</li>
-                                            <li><img src="assets/img/icon/key.svg" class="me-2" alt="Img"> Full lifetime access</li>
-                                            <li><img src="assets/img/icon/mobile.svg" class="me-2" alt="Img"> Access on mobile and TV</li>
-                                            <li><img src="assets/img/icon/cloud.svg" class="me-2" alt="Img"> Assignments</li>
-                                            <li><img src="assets/img/icon/teacher.svg" class="me-2" alt="Img"> Certificate of Completion</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- /Include -->
-
-                                <!-- Features -->
-                                <div class="card feature-sec">
-                                    <div class="card-body">
-                                        <div class="cat-title">
-                                            <h4>Includes</h4>
-                                        </div>
-                                        <ul>
-                                            <li><img src="assets/img/icon/users.svg" class="me-2" alt="Img"> Enrolled: <span>32 students</span></li>
-                                            <li><img src="assets/img/icon/timer.svg" class="me-2" alt="Img"> Duration: <span>20 hours</span></li>
-                                            <li><img src="assets/img/icon/chapter.svg" class="me-2" alt="Img"> Chapters: <span>15</span></li>
-                                            <li><img src="assets/img/icon/video.svg" class="me-2" alt="Img"> Video:<span> 12 hours</span></li>
-                                            <li><img src="assets/img/icon/chart.svg" class="me-2" alt="Img"> Level: <span>Beginner</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- /Features -->
-
-                            </div>
-                        </div>
                     </div>	
                 </div>
             </section>
