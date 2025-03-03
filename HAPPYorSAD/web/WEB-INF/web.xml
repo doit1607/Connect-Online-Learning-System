@@ -124,6 +124,10 @@
         <servlet-name>MentorDetail</servlet-name>
         <servlet-class>controller.MentorDetail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EnrolledCourses</servlet-name>
+        <servlet-class>controller.EnrolledCourses</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -247,6 +251,10 @@
     <servlet-mapping>
         <servlet-name>MentorDetail</servlet-name>
         <url-pattern>/MentorDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnrolledCourses</servlet-name>
+        <url-pattern>/EnrolledCourses</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

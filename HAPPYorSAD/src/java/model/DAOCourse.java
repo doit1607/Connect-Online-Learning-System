@@ -476,6 +476,46 @@ public class DAOCourse extends DBConnection {
         }
         return courses;
     }
+    public List<Course> getCoursesByStatus(String username, String status) {
+    List<Course> courses = new ArrayList<>();
+
+    // SQL Query to join Request, Course, Mentee, and Users tables
+    String sql = "SELECT c.id, c.title, c.description, c.manager_id, c.mentor_id, " +
+                 "c.status, c.created_at, c.updated_at, c.course_major_id, c.image, c.price " +
+                 "FROM Request r " +
+                 "JOIN Course c ON r.course_id = c.id " +
+                 "JOIN Mentee m ON r.mentee_id = m.id " +
+                 "JOIN Users u ON m.user_id = u.id " +
+                 "WHERE u.username = ? AND r.status = ?";
+
+    try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, status);
+
+        try (ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));
+                course.setManagerId(rs.getInt("manager_id"));
+                course.setMentorId(rs.getInt("mentor_id"));
+                course.setStatus(rs.getString("status"));
+                course.setCourseMajorId(rs.getInt("course_major_id"));
+                course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
+
+                courses.add(course);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return courses;
+}
+
+
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
