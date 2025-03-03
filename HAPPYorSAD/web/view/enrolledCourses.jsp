@@ -1,0 +1,256 @@
+<%-- 
+    Document   : ViewCV
+    Created on : Feb 20, 2025, 1:42:58 PM
+    Author     : admin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Dreams LMS</title>
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
+
+
+        <!-- Theme Settings Js -->
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+
+        <!-- Feather CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+
+        <!-- Select2 CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+
+
+
+
+
+
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Custom JS -->
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+
+        <link href="css/cssCRUD/createCV.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>  
+                <div class="page-content">
+            <div class="container">
+                <div class="row">
+
+                    <!-- sidebar -->
+
+                    <!-- Breadcrumb -->
+                    <div class="breadcrumb-bar breadcrumb-bar-info">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="breadcrumb-list">
+                                        <h2 class="breadcrumb-title">Enrolled Courses</h2>
+                                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="Home">Home</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Enrolled Courses</li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Breadcrumb -->	
+                    <div class="col-md-3  ">
+                        <div class="settings-widget account-settings">
+                            <div class="settings-menu">
+                                <h3>Dashboard</h3>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a href="student-profile.html" class="nav-link">
+                                            <i class="bx bxs-user"></i>My Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="student-wishlist.html" class="nav-link">
+                                            <i class="bx bxs-heart"></i>Wishlist
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="student-reviews.html" class="nav-link">
+                                            <i class="bx bxs-star"></i>Reviews
+                                        </a>
+                                    </li>                                  
+                                    <li class="nav-item">
+                                        <a href="student-referral.html" class="nav-link">
+                                            <i class="bx bxs-user-plus"></i>Referrals
+                                        </a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a href="student-tickets.html" class="nav-link">
+                                            <i class="bx bxs-coupon"></i>View request
+                                        </a>
+                                    </li>
+                                </ul>
+                                <h3>Account Settings</h3>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a href="student-settings.html" class="nav-link ">
+                                            <i class="bx bxs-cog"></i>Settings
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="index-2.html" class="nav-link">
+                                            <i class="bx bxs-log-out"></i>Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>			
+                    </div>
+                    <!-- Page Content -->
+                    <div class="col-md-9"> 
+                        <!--in progess-->
+                        <div class="row">
+                            <div class="col-md-12">
+    <h5>In Processing</h5>
+    <c:choose>
+        <c:when test="${not empty processingCourses}">
+            <c:forEach var="course" items="${processingCourses}">
+                                    <div class="card mb-3 w-100">
+                                        <div class="row g-0">
+                                            <div class="col-md-3">
+                                                <img src="${course.image}" class="img-fluid rounded-start" alt="Course Image">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${course.title}</h5>
+                                                    <p class="card-text">${course.description}</p>
+                                                    <a href="/CourseDetails?Cid=${course.id}" class="btn btn-primary">View details</a>
+                                                <form action="/EnrolledCourses" method="post" class="d-inline">
+                                                    <input type="hidden" name="courseId" value="${course.id}">
+                                                    <button type="submit" class="btn btn-success btn-lg">Confirm Complete</button>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <p class="text-muted">No course in progress.</p>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+<div class="col-md-12 mt-3">
+    <h5>Completed</h5>
+    <c:choose>
+        <c:when test="${not empty completedCourses}">
+            <c:forEach var="course" items="${completedCourses}">
+                                    <div class="card mb-3 w-100">
+                                        <div class="row g-0">
+                                            <div class="col-md-3">
+                                                <img src="${course.image}" class="img-fluid rounded-start" alt="Course Image">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${course.title}</h5>
+                                                    <p class="card-text">${course.description}</p>
+                                                    <a href="CourseDetails?Cid=${course.id}" class="btn btn-primary">View details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <p class="text-muted">No completed courses.</p>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+                        </div>
+                            
+                            
+                    </div>
+                    
+                
+
+        <!-- /Page Content -->
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
+
+
+    </footer>
+    <!-- /Footer -->
+
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Select2 JS -->
+    <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Ckeditor JS -->
+    <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Dropzone JS -->
+    <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Sticky Sidebar JS -->
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+
+    <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+
+</body>
+</html>
