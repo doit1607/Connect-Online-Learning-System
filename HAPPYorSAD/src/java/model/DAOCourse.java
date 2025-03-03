@@ -74,9 +74,9 @@ public class DAOCourse extends DBConnection {
 //        }
 //        return false;
 //    }
-    public void createCourse(String title, String description, int majorId, String image) {
-        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image]) "
-                + "VALUES (?, ?, ?, ?, ?)";
+    public void createCourse(String title, String description, int majorId, String image, Double price) {
+        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image], [price]) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, title);
@@ -84,6 +84,7 @@ public class DAOCourse extends DBConnection {
             pre.setString(3, "active");
             pre.setInt(4, majorId);
             pre.setString(5, image);
+            pre.setDouble(6, price);
             pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
