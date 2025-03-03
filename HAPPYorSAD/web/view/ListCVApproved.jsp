@@ -17,8 +17,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Dreams LMS</title>
 
-        <!-- Favicon -->
-        <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
 
@@ -207,7 +205,7 @@
 
                                     </div>
                                 </div>
-                                <a href="AcceptCV" class="resut-badge badge-light-success">Back to RequestCV</a>
+                                <a href="AcceptCV" class="resut-badge badge-light-success">Back RequestCV</a>
                             </div>
                         </div>
                     </div>
