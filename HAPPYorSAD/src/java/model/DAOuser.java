@@ -445,14 +445,14 @@ public class DAOuser extends DBConnection {
         int userId = -1;
         String sql = "SELECT id FROM Users WHERE username = ?";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
+            ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 userId = rs.getInt("id");
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
