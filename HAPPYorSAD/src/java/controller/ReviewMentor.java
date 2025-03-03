@@ -11,8 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.DAORateMentor;
+import model.DAOuser;
 
 /**
  *
@@ -48,20 +50,25 @@ public class ReviewMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
-
+        DAOuser dao1 = new DAOuser();
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+        int menteeId = dao1.getUserIdByUsername(username);
+        session.setAttribute("menteeID", menteeId);
+        
         String mentorIdStr = request.getParameter("mentorId");
-        String menteeIdStr = request.getParameter("menteeId");
+        //String menteeIdStr = request.getParameter("menteeId");
         String ratingStr = request.getParameter("rating");
         String comment = request.getParameter("comment");
 
-        if (isEmpty(mentorIdStr) || isEmpty(menteeIdStr) || isEmpty(ratingStr)) {
+        if (isEmpty(mentorIdStr) || isEmpty(ratingStr)) {
             request.setAttribute("error", "Missing required fields: mentorId, menteeId, or rating.");
             request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
             return;
         }
 
         int mentorId = Integer.parseInt(mentorIdStr);
-        int menteeId = Integer.parseInt(menteeIdStr);
+        //int menteeId = Integer.parseInt(menteeIdStr);
         int rating = Integer.parseInt(ratingStr);
 
         boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
