@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,8 +18,9 @@
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
+
         <!-- Theme Settings Js -->
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="de0b254082679f4d756bbefa-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
@@ -28,69 +32,316 @@
         <!-- Feather CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
 
+        <!-- Select2 CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/custom.css">
 
+        <!--<link rel="stylesheet" href="/HAPPYorSAD/assets/css/custom.css">-->
+        <link href="css/Request.css" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Custom JS -->
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+
+        <link href="css/cssCRUD/createCV.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <%@include file="../sourcesHome/homeHeader.jsp" %>
+    <%@include file="../sourcesHome/homeHeader.jsp" %>
         
         <!--screen here-->
         <div class="container" style="margin-top: 100px; margin-bottom: 100px">
-            <div class="col-lg-8 col-xl-10">
+            <div class = "row">
+                                        <!-- sidebar -->
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                           
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item active">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>My Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            </a>
+                                        </li>
+                                         <li class="nav-item ">
+                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Available Timings
 
-                <div class="dashboard-header">
-                        <h3>Requests</h3>
-                        <ul>
-                                <li>
-                                    <form action="viewRequest" method="GET">
-                                        <select name="date" id="date-range" class="form-select" onchange="this.form.submit()">
-                                            <option value="0" ${param.date == '0' || empty param.date ? 'selected' : ''}>All</option>
-                                            <option value="1" ${param.date == '1' ? 'selected' : ''}>Today</option>
-                                            <option value="2" ${param.date == '2' ? 'selected' : ''}>Last 7 Days</option>
-                                            <option value="3" ${param.date == '3' ? 'selected' : ''}>This Month</option>
-                                        </select>
-                                    </form>
+                                            </a>
+                                        </li>
 
-                                </li>
-                        </ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-wishlist.html" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Wishlist
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-reviews.html" class="nav-link">
+                                                <i class="bx bxs-star"></i>Reviews
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-referral.html" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Referrals
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="Notifications" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    <h3>Instructor</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="instructor-course.html" class="nav-link ">
+                                                <i class="bx bxs-rocket"></i>My Courses
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-course.html" class="nav-link ">
+                                                <i class="bx bxs-rocket"></i>My Curriculum Vitae
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Inviting Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-referral.html" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Statistic Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-announcements.html" class="nav-link">
+                                                <i class="bx bxs-volume-full"></i>Announcements
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="instructor-withdraw.html" class="nav-link ">
+                                                <i class="bx bxs-wallet"></i>Withdrawls
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-earnings.html" class="nav-link">
+                                                <i class="bx bxs-badge-dollar"></i>Earnings
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Sidebar -->
+            <div class="col-lg-9 col-xl-9">
+                <div>
+                    <h3>Requests</h3>
+                <span id="toggleFilter" style="cursor: pointer;">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
                 </div>
-                <c:forEach var="request" items="${requests}">
-    <div class="appointment-wrap">
-        <ul>
-            <li>
-                <div class="patinet-information">
-                    <a href="patient-profile.html">
-                        <img src="${request.getMentee().getAvatarPath()}" alt="img">
-                    </a>
-                    <div class="patient-info">
-                        <p>Mentee</p>
-                        <h6><a href="patient-profile.html">${request.getMentee().getFullname()}</a></h6>
+                
+                <div class="dashboard-header">
+                    <div id="filterContainer" style="display: none;">    
+                        
+                                    <form action="viewRequest" method="GET">
+    <div class="row">
+         
+        <div class="col-md-8">
+            Title:
+            <input type="text" name="title" class="form-control" placeholder="Search title" value="${param.title}">
+        </div>
+
+
+        
+
+        
+        <div class="col-md-4">
+            Created:
+            <select name="date" id="date-range" class="form-select">
+                <option value="0" ${param.date == '0' || empty param.date ? 'selected' : ''}>All</option>
+                <option value="1" ${param.date == '1' ? 'selected' : ''}>Today</option>
+                <option value="2" ${param.date == '2' ? 'selected' : ''}>Last 7 Days</option>
+                <option value="3" ${param.date == '3' ? 'selected' : ''}>This Month</option>
+            </select>
+        </div>
+            <div class="col-md-12" style="margin-top: 8px">
+            <label>Status:</label><br>
+            <input type="checkbox" name="status" value="Open" id="status-opening" ${param.status == 'Open' ? 'checked' : ''}>
+            <label for="status-opening">Opening</label>
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="status" value="Closed" id="status-closed" ${param.status == 'Closed' ? 'checked' : ''}>
+            <label for="status-closed">Closed</label>
+            &nbsp;&nbsp;&nbsp;
+
+            <input type="checkbox" name="status" value="Cancel" id="status-cancelled" ${param.status == 'Cancel' ? 'checked' : ''}>
+            <label for="status-cancelled">Cancelled</label>
+            &nbsp;&nbsp;&nbsp;
+
+            <input type="checkbox" name="status" value="Processing" id="status-processing" ${param.status == 'Processing' ? 'checked' : ''}>
+            <label for="status-processing">Processing</label>
+        </div>
+
+         
+        <div class="col-md-12 mt-2">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+
+                    </div>           
+                </div>
+<!--<div class="col-lg-9 col-xl-9">
+    <h3>
+        Requests 
+        <span id="toggleFilter" style="cursor: pointer;">
+            <i class="fas fa-chevron-down"></i>
+        </span>
+    </h3>
+
+    <div class="dashboard-header">
+        <div id="filterContainer" style="display: none;">
+            <form action="viewRequest" method="GET">
+                <div class="row">
+                     Search Title 
+                    <div class="col-md-4">
+                        <input type="text" name="" class="form-control" placeholder="Search title" value="">
+                    </div>
+
+                     Status Checkbox 
+                    <div class="col-md-5">
+                        <label>Status:</label><br>
+                        <input type="checkbox" name="" value="Open" id="status-opening" >
+                        <label for="status-opening">Opening</label>
+
+                        <input type="checkbox" name="" value="Closed" id="status-closed">
+                        <label for="status-closed">Closed</label>
+
+                        <input type="checkbox" name="" value="Cancelled" id="status-cancelled" >
+                        <label for="status-cancelled">Cancelled</label>
+
+                        <input type="checkbox" name="" value="Processing" id="status-processing">
+                        <label for="status-processing">Processing</label>
+                    </div>
+
+                     Date Range Dropdown 
+                    <div class="col-md-3">
+                        <select name="date" id="date-range" class="form-select">
+                            <option value="0" ${param.date == '0' || empty param.date ? 'selected' : ''}>All</option>
+                            <option value="1" ${param.date == '1' ? 'selected' : ''}>Today</option>
+                            <option value="2" ${param.date == '2' ? 'selected' : ''}>Last 7 Days</option>
+                            <option value="3" ${param.date == '3' ? 'selected' : ''}>This Month</option>
+                        </select>
+                    </div>
+
+                     Filter Button 
+                    <div class="col-md-12 mt-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </div>
                 </div>
-            </li>
-            <li class="appointment-info" style="width: 300px">
-                <p class="md-text">Title</p>
-                <p><i class="isax isax-clock5"></i>${request.getTitle()}</p>
-            </li>
-            <li class="appointment-info">
-                <p class="md-text">Created at</p>
-                <p><i class="isax isax-clock5"></i>${request.getFormattedCreatedAt()}</p>
-            </li>
-            <li class="appointment-type">
-                <p class="md-text">Deadline</p>
-                <p><i class="isax isax-clock5"></i>${request.getDeadlineDate()}</p>
-            </li>
-            <li>
-                <button type="button" class="btn btn-outline-secondary" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#acceptAppointmentModal_${request.getId()}">
-                    <i class="fa-solid fa-info"></i>&nbsp;Details
-                </button>
-            </li>
-        </ul>
+            </form>
+        </div>
     </div>
+</div>-->
+                                       
+                <c:forEach var="request" items="${requests}">
+                    <div class="appointment-wrap " >
+                        <ul>
+                            <li>
+                                <div class="patinet-information">
+                                    <a href="#">
+                                        <img src="${request.getMentee().getAvatarPath()}" alt="img">
+                                    </a>
+                                    <div class="patient-info">
+                                        <p>Mentee</p>
+                                        <h6><a href="#">${request.getMentee().getFullname()}</a></h6>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="appointment-info" style="width: 300px">
+                                <p class="md-text">Title</p>
+                                <p><i class="isax isax-clock5"></i>${request.getTitle()}</p>
+                            </li>
+                            <li class="appointment-info">
+                                <p class="md-text">Start Date</p>
+                                <p><i class="isax isax-clock5"></i>${request.getStartDate()}</p>
+                            </li>
+                            <li class="appointment-info">
+                                <p class="md-text">End Date</p>
+                                <p><i class="isax isax-clock5"></i>${request.getEndDate()}</p>
+                            </li>
+                <!--            <li>
+                                <button type="button" class="btn btn-outline-secondary" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#acceptAppointmentModal_${request.getId()}">
+                                    <i class="fa-solid fa-info"></i>&nbsp;Details
+                                </button>
+                            </li>-->
+                        </ul>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-secondary" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#acceptAppointmentModal_${request.getId()}">
+                            <i class="fa-solid fa-info"></i>&nbsp;Details
+                        </button>
+                                    </div>
+                        
+                    </div>
 
     <!-- Modal cho từng request -->
     <div class="modal fade" id="acceptAppointmentModal_${request.getId()}" tabindex="-1" 
@@ -157,8 +408,8 @@
                     <input type="hidden" name="id" value="${request.id}">
                     <input type="hidden" name="status" value="Processing">
                     <button type="button" class="btn btn-success" onclick="confirmAccept(this)">
-    <i class="fa-solid fa-check"></i> Accept
-</button>
+                        <i class="fa-solid fa-check"></i> Accept
+                    </button>
                 </form>
             </li>
             <li>
@@ -190,152 +441,43 @@
                     </ul>
                     
                 </nav>
-            </div>    
+            </div>  
+            </div>
+  
         </div>
         
         
-        <!-- Footer -->
-        <footer class="footer">
+        <%@include file="../sourcesHome/homeFooter.jsp" %>    
 
-            <!-- Footer Top -->
-            <div class="footer-top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
 
-                            <!-- Footer Widget -->
-                            <div class="footer-widget footer-about">
-                                <div class="footer-logo">
-                                    <img src="/HAPPYorSAD/assets/img/logo.svg" alt="logo">
-                                </div>
-                                <div class="footer-about-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                </div>
-                            </div>
-                            <!-- /Footer Widget -->
+    <!-- /Footer -->
 
-                        </div>
+    <!-- /Main Wrapper -->
 
-                        <div class="col-lg-2 col-md-6">
+    <!-- jQuery -->
+    <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                            <!-- Footer Widget -->
-                            <div class="footer-widget footer-menu">
-                                <h2 class="footer-title">For Instructor</h2>
-                                <ul>
-                                    <li><a href="instructor-profile.html">Profile</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="instructor-list.html">Instructor</a></li>
-                                    <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                </ul>
-                            </div>
-                            <!-- /Footer Widget -->
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                        </div>
+    <!-- Select2 JS -->
+    <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                        <div class="col-lg-2 col-md-6">
+    <!-- Ckeditor JS -->
+    <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                            <!-- Footer Widget -->
-                            <div class="footer-widget footer-menu">
-                                <h2 class="footer-title">For Student</h2>
-                                <ul>
-                                    <li><a href="student-profile.html">Profile</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="students-list.html">Student</a></li>
-                                    <li><a href="student-dashboard.html"> Dashboard</a></li>
-                                </ul>
-                            </div>
-                            <!-- /Footer Widget -->
+    <!-- Dropzone JS -->
+    <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                        </div>
+    <!-- Sticky Sidebar JS -->
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                        <div class="col-lg-4 col-md-6">
+    <!-- Custom JS -->
+    <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
-                            <!-- Footer Widget -->
-                            <div class="footer-widget footer-contact">
-                                <h2 class="footer-title">News letter</h2>
-                                <div class="news-letter">
-                                    <form>
-                                        <input type="text" class="form-control" placeholder="Enter your email address" name="email">
-                                    </form>
-                                </div>
-                                <div class="footer-contact-info">
-                                    <div class="footer-address">
-                                        <img src="/HAPPYorSAD/assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                        <p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                    </div>
-                                    <p>
-                                        <img src="/HAPPYorSAD/assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                        <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8ccdacdc9c5dbc4c5dbe8cdd0c9c5d8c4cd86cbc7c5">[email&#160;protected]</a>
-                                    </p>
-                                    <p class="mb-0">
-                                        <img src="/HAPPYorSAD/assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                        +19 123-456-7890
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /Footer Widget -->
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- /Footer Top -->
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <div class="container">
-
-                    <!-- Copyright -->
-                    <div class="copyright">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="privacy-policy">
-                                    <ul>
-                                        <li><a href="term-condition.html">Terms</a></li>
-                                        <li><a href="privacy-policy.html">Privacy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="copyright-text">
-                                    <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Copyright -->
-
-                </div>
-            </div>
-            <!-- /Footer Bottom -->
-
-        </footer>
-        <!-- /Footer -->
-        
-        
-        
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- jQuery -->
-        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
-
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="4b9afacfe3a18f285e1d0e14-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107442839460f2c","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
+    <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+    <script>
     function confirmAccept(button) {
         if (confirm("Are you sure you want to accept?")) {
             let form = button.closest("form");
@@ -360,6 +502,43 @@
             form.submit();
         }
     }
+    document.getElementById("toggleFilter").addEventListener("click", function () {
+        var filterContainer = document.getElementById("filterContainer");
+        var icon = this.querySelector("i");
+
+        if (filterContainer.style.display === "none") {
+            filterContainer.style.display = "block";
+            icon.classList.remove("fa-chevron-down");
+            icon.classList.add("fa-chevron-up");
+        } else {
+            filterContainer.style.display = "none";
+            icon.classList.remove("fa-chevron-up");
+            icon.classList.add("fa-chevron-down");
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+    var filterContainer = document.getElementById("filterContainer");
+    var toggleFilter = document.getElementById("toggleFilter");
+
+    // Kiểm tra localStorage để quyết định có hiển thị bộ lọc không
+    if (localStorage.getItem("filterVisible") === "true") {
+        filterContainer.style.display = "block";
+        toggleFilter.innerHTML = "&#9650;"; // Mũi tên hướng lên
+    }
+
+    // Khi nhấn vào toggle, ẩn/hiện bộ lọc và lưu trạng thái
+    toggleFilter.addEventListener("click", function () {
+        if (filterContainer.style.display === "none") {
+            filterContainer.style.display = "block";
+            toggleFilter.innerHTML = "&#9650;";
+            localStorage.setItem("filterVisible", "true");
+        } else {
+            filterContainer.style.display = "none";
+            toggleFilter.innerHTML = "&#9660;";
+            localStorage.setItem("filterVisible", "false");
+        }
+    });
+});
 </script>
-    </body>
+</body>
 </html>

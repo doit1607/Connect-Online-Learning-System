@@ -1,0 +1,380 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 2, 2025, 9:15:15 PM
+    Author     : admin
+*/
+
+.appointment-wrap {
+  box-shadow: 0px 4px 14px 0px rgba(226, 237, 255, 0.25);
+  padding: 24px 24px 10px 24px;
+  margin-bottom: 24px;
+  border: 1px solid #E6E8EE;
+  border-radius: 10px;
+}
+.appointment-wrap > ul {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 575.98px) {
+  .appointment-wrap > ul {
+    display: block;
+  }
+}
+.appointment-wrap > ul > li {
+  margin-bottom: 14px;
+}
+.appointment-wrap > ul > li:first-child {
+  min-width: 150px;
+}
+.appointment-wrap > ul > li.appointment-info {
+  min-width: 190px;
+}
+.appointment-wrap > ul > li.mail-info-patient {
+  min-width: 190px;
+}
+
+.grid-patient .appointment-wrap.appointment-grid-wrap > ul > li {
+  margin-bottom: 15px;
+}
+.appointment-wrap .appointment-detail-btn a {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.appointment-wrap .appointment-detail-btn a:hover {
+  background: #0E82FD;
+  color: #FFF;
+}
+.appointment-wrap.appointment-grid-wrap {
+  flex-direction: column;
+  align-items: start;
+  padding: 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  border: 0;
+  box-shadow: 0px 4px 44px 0px rgba(187, 187, 187, 0.25);
+}
+.appointment-wrap.appointment-grid-wrap > ul > li {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.appointment-wrap.appointment-grid-wrap > ul > li:last-child {
+  margin-bottom: 0;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head .grid-user-msg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #E6E8EE;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head .grid-user-msg .video-icon i {
+  color: #822BD4;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head .grid-user-msg .hospital-icon i {
+  color: #822BD4;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head .grid-user-msg .telephone-icon i {
+  color: #822BD4;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-info {
+  background: #EEF5FF;
+  padding: 15px;
+  border-radius: 10px;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.appointment-wrap.appointment-grid-wrap > ul .appointment-start a {
+  font-size: 14px;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information img {
+  width: 64px;
+  height: 64px;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li {
+  color: #465D7C;
+  font-size: 12px;
+  margin: 0 10px 0 0;
+  padding: 0 10px 0 0;
+  position: relative;
+  display: inline-block;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li::before {
+  content: "";
+  background: #E6E8EE;
+  width: 1px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li:last-child {
+  margin: 0;
+  padding: 0;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li:last-child::before {
+  content: none;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .appointment-action .patient-book p {
+  font-size: 14px;
+  color: #012047;
+  margin-bottom: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .appointment-action .patient-book p i {
+  margin-right: 5px;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .appointment-action .patient-book p:last-child {
+  margin-bottom: 0;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .appointment-action .patient-book p span {
+  color: #465D7C;
+  display: inline-block;
+  margin-left: 5px;
+}
+.appoint-patient .appointment-wrap.appointment-grid-wrap > ul .appointment-info {
+  padding-bottom: 10px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  flex-wrap: wrap;
+}
+.appoint-patient .appointment-wrap.appointment-grid-wrap > ul .appointment-info p:first-child {
+  margin-right: 10px;
+}
+.appoint-patient .appointment-wrap.appointment-grid-wrap > ul .appointment-grid-head .grid-user-msg .hospital-icon i {
+  color: #7C3AED;
+}
+.dark-mode .dashboard-header .header-list-btns li .dash-search-input .form-control, .dark-mode .dashboard-header, .dark-mode .appointment-wrap, .dark-mode .detail-card-bottom-info {
+  border-color: #1B1B1B;
+}
+.dark-mode .appointment-wrap.appointment-grid-wrap > ul .appointment-info {
+  background: #1B1B1B;
+}
+.dark-mode .grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li::before {
+  background: #1B1B1B;
+}
+.dark-mode .profile-sidebar, .dark-mode .appointment-wrap, .dark-mode .profile-widget.patient-favour, .dark-mode .dependent-wrap {
+  box-shadow: none !important;
+}
+
+.patinet-information {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  min-width: 175px;
+}
+.patinet-information > a {
+  flex-shrink: 0;
+}
+.patinet-information img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+.patinet-information .patient-info {
+  margin: 0;
+}
+.patinet-information .patient-info p {
+  color: #0E82FD;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.patinet-information .patient-info p.visit {
+  font-weight: 400;
+  color: #465D7C;
+}
+.patinet-information .patient-info h6 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #012047;
+  margin-bottom: 0;
+}
+.patinet-information .patient-info h6 a {
+  color: #012047;
+}
+.patinet-information .patient-info h6 a:hover {
+  color: #0E82FD;
+}
+.grid-patient .patinet-information .patient-info p {
+  margin-bottom: 0;
+}
+.grid-patient .patinet-information .patient-info h6 {
+  margin-bottom: 5px;
+}
+.appointment-detail-card .patinet-information a {
+  flex-shrink: 0;
+}
+.appointment-detail-card .patinet-information a img {
+  width: 120px;
+  height: 120px;
+}
+@media (max-width: 575.98px) {
+  .appointment-detail-card .patinet-information a img {
+    width: 90px;
+    height: 90px;
+  }
+}
+.appointment-detail-card .patinet-information .mail-info-patient ul {
+  margin-top: 10px;
+}
+.appointment-detail-card .patinet-information .mail-info-patient ul li {
+  color: #465D7C;
+}
+.appointment-detail-card .patinet-information .mail-info-patient ul li + li {
+  margin-top: 5px;
+}
+.appointment-detail-card .patinet-information .mail-info-patient ul li i {
+  color: #012047;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information img {
+  width: 64px;
+  height: 64px;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li {
+  color: #465D7C;
+  font-size: 12px;
+  margin: 0 10px 0 0;
+  padding: 0 10px 0 0;
+  position: relative;
+  display: inline-block;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li::before {
+  content: "";
+  background: #E6E8EE;
+  width: 1px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li:last-child {
+  margin: 0;
+  padding: 0;
+}
+.grid-patient .appointment-wrap.appointment-grid-wrap .patinet-information .patient-info ul li:last-child::before {
+  content: none;
+}
+
+.cancellation-fees .cancellation-info .appointment-type {
+  margin-right: 24px;
+  margin-bottom: 15px;
+}
+.dashboard-header {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  border-bottom: 1px solid #E6E8EE;
+  margin-bottom: 24px;
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+}
+.dashboard-header h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+@media (max-width: 991.98px) {
+  .dashboard-header h3 {
+    font-size: 22px;
+  }
+}
+.appointment-info p {
+  color: #465D7C;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+.appointment-info p i {
+  margin-right: 5px;
+  font-size: 16px;
+  color: #012047;
+}
+.appointment-info p.md-text {
+  color: #012047;
+  margin-bottom: 0;
+}
+.dark-mode .appointment-wrap.appointment-grid-wrap > ul .appointment-info {
+  background: #1B1B1B;
+}
+.dark-mode .appointment-type p.md-text, .dark-mode .appointment-info p.md-text, .dark-mode .appointment-info p i, .dark-mode .custom-card .card-header h3 {
+  color: #FAFCFF;
+}
+.dark-mode .appointment-tab-head .filter-head .daterange-wraper i, .dark-mode .appointment-info .apponitment-types li, .dark-mode .patinet-information .patient-info h6 a {
+  color: #FAFCFF;
+}
+.request-action li {
+  margin-right: 15px;
+  position: relative;
+  padding-right: 15px;
+  display: inline-block;
+}
+.request-action li:last-child {
+  margin-right: 0;
+  padding-right: 0;
+}
+.request-action li:last-child::before {
+  content: none;
+}
+.request-action li::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  content: "";
+  background: #E6E8EE;
+  width: 1px;
+  height: 19px;
+}
+.request-action li a {
+  font-size: 15px;
+  font-weight: 500;
+}
+.request-action li a i {
+  margin-right: 6px;
+}
+.request-action li a.accept-link {
+  color: #04BD6C;
+}
+.request-action li a.reject-link {
+  color: #FF0000;
+}

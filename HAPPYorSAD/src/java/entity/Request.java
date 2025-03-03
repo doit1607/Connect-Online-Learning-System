@@ -121,7 +121,10 @@ public class Request {
         this.content = content;
         this.courseId = courseId;
     }
-
+    public User getMentee(){
+        DAOuser dao = new DAOuser();
+        return dao.getMenteeById(this.menteeId);
+    }
     // Getters and Setters
     public int getId() {
         return id;
@@ -243,14 +246,10 @@ public class Request {
                 + ", courseIds='" + courseId + '\''
                 + '}';
     }
-//    public List<Course> getRequestedCourses(){
-//        DAOCourse dao =  new DAOCourse();
-//        String[] strCourseIds = this.courseId.split(",");
-//        List<Course> list = new ArrayList<>();
-//        for (String strCourseId : strCourseIds) {
-//            int cid = Integer.parseInt(strCourseId);
-//            list.add(dao.getCourseById(cid));
-//        }
-//        return list;
-//    }
+    public List<Course> getRequestedCourses(){
+        DAOCourse dao =  new DAOCourse();
+        List<Course> list = new ArrayList<>();
+        list.add(dao.getCourseById(this.courseId));
+        return list;
+    }
 }
