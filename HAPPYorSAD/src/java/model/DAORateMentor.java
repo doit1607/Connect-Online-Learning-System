@@ -17,7 +17,7 @@ public class DAORateMentor extends DBConnection {
     public boolean submitReview(int mentorId, int menteeId, int rating, String comment) {
         boolean isUpdated = false;
 
-        String sql = "INSERT INTO mentor_reviews (mentor_Id, mentee_Id, rating, comment) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO mentor_reviews (user_mentor_id, user_mentee_id, rating, comment) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement insertStmt = conn.prepareStatement(sql)) {
             insertStmt.setInt(1, mentorId);
@@ -35,7 +35,7 @@ public class DAORateMentor extends DBConnection {
 
     public static void main(String[] args) {
         DAORateMentor dao = new DAORateMentor();
-        boolean result = dao.submitReview(2, 3, 5, "very good");
+        boolean result = dao.submitReview(14, 15, 5, "very good");
 
         if (result) {
             System.out.println("Review submitted successfully!");
