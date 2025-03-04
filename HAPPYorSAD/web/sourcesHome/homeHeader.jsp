@@ -49,18 +49,13 @@
                                     </div>
                                     <c:if test = "${sessionScope.usernameRole eq 'mentor' || sessionScope.usernameRole eq 'mentee'}">
                                         <ul class="main-nav">
-                                            <li class="has-submenu">
-                                                <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
-                                                <ul class="submenu">
-                                                </ul>
-                                            </li>
+
                                             <li class="has-submenu">
                                                 <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                                 <ul class="submenu">
 
                                                     <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                         <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
-                                                        <li><a href="/../HAPPYorSAD/ProfileServlet">Dashboard</a></li>
                                                         <li><a href="ViewCV">My CV</a></li>
                                                         <li><a href="Slot">Schedule</a></li>
                                                         <li><a href="instructor-reviews.html">Reviews</a></li>
@@ -71,27 +66,27 @@
                                             </li>	
                                             <c:if test="${sessionScope.usernameRole eq 'mentee'}">
                                                 <li class="has-submenu">
+                                                    <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
+                                                    <ul class="submenu">
+                                                    </ul>
+                                                </li>
+                                                <li class="has-submenu">
                                                     <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
                                                     <ul class="submenu first-submenu">
                                                         <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
                                                         <li><a href="/../HAPPYorSAD/EnrolledCourses">Enrolled Courses</a></li>
                                                         <li><a href="Schedule">Book</a></li>
-                                                        <li><a href="test">Test1</a></li>
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
                                                     </ul>
                                                 </li>	
+                                                <li class="has-submenu">
+                                                    <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
+                                                    <ul class="submenu">
+                                                        <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
+                                                    </ul>
+                                                </li>
+
                                             </c:if>
-                                            <li class="has-submenu">
-                                                <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
-                                                <ul class="submenu">
-                                                    <c:if test="${sessionScope.usernameRole eq 'mentor' and sessionScope.cvStatus eq 'approved'}">
-                                                        <!--                                                    <li><a href="CreateCourses">Add Course</a></li>-->
-                                                    </c:if>
-
-                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
-
-                                                </ul>
-                                            </li>
 
                                         </ul>
                                     </c:if>
