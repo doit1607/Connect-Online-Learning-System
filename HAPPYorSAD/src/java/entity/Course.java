@@ -46,7 +46,22 @@ public class Course {
         this.total_Courses = total_Courses;
         this.price = price;
     }
-     
+
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String image, Double price) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.managerId = managerId;
+        this.mentorId = mentorId;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseMajorId = courseMajorId;
+        this.image = image;
+        this.price = price;
+    }
+    
+    
     public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String image) {
         this.id = id;
         this.title = title;
