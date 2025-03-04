@@ -74,7 +74,7 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
-                        response.sendRedirect("Home");
+                        response.sendRedirect("ProfileServlet");
                     }
                     if (role.equalsIgnoreCase("Mentee")) {
                         session.setAttribute("usernameUser", username);
