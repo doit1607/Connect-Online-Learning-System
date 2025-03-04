@@ -72,7 +72,7 @@
                             <!-- Filter -->
                             <div class="showing-list">
                                 <div class="row">
-                                    <div class="col-lg-6">
+<!--                                    <div class="col-lg-6">
                                         <div class="d-flex align-items-center">
                                             <div class="view-icons">
                                                 <a href="course-grid.html" class="grid-view">
@@ -86,7 +86,7 @@
                                                 <h4>Showing 1-9 of 50 results</h4>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="col-lg-6">
                                         <div class="show-filter add-course-info ">
                                             <form action="#">
@@ -124,6 +124,9 @@
                                                     <a href="CourseDetails?Cid=${o.id}">
                                                         <img  class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
+                                                    <div class="price">
+                                                        <h3>${o.price}</h3>
+                                                    </div>
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="head-course-title">
@@ -256,158 +259,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /Search Filter -->
-
-                                <!-- Search Filter -->
-                                <div class="card search-filter">
-                                    <div class="card-body">
-                                        <div class="filter-widget mb-0">
-                                            <div class="categories-head d-flex align-items-center">
-                                                <h4>Instructors</h4>
-                                                <i class="fas fa-angle-down"></i>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Keny White (10)
-
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Hinata Hyuga (5)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> John Doe (3)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check mb-0">
-                                                    <input type="checkbox" name="select_specialist" checked>
-                                                    <span class="checkmark"></span> Nicole Brown
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Search Filter -->
-
-                                <!-- Search Filter -->
-                                <div class="card search-filter ">
-                                    <div class="card-body">
-                                        <div class="filter-widget mb-0">
-                                            <div class="categories-head d-flex align-items-center">
-                                                <h4>Price</h4>
-                                                <i class="fas fa-angle-down"></i>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check custom_one">
-                                                    <input type="radio" name="select_specialist">
-                                                    <span class="checkmark"></span> All (18)
-
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check custom_one">
-                                                    <input type="radio" name="select_specialist">
-                                                    <span class="checkmark"></span> Free (3)
-
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check custom_one mb-0">
-                                                    <input type="radio" name="select_specialist" checked>
-                                                    <span class="checkmark"></span> Paid (15)
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Search Filter -->
-
-                                <!-- Latest Posts -->
-                                <div class="card post-widget ">
-                                    <div class="card-body">
-                                        <div class="latest-head">
-                                            <h4 class="card-title">Latest Courses</h4>
-                                        </div>
-                                        <ul class="latest-posts">
-                                            <li>
-                                                <div class="post-thumb">
-                                                    <a href="course-details.html">
-                                                        <img class="img-fluid" src="/HAPPYorSAD/assets/img/blog/blog-01.jpg" alt="Img">
-                                                    </a>
-                                                </div>
-                                                <div class="post-info free-color">
-                                                    <h4>
-                                                        <a href="course-details.html">Introduction LearnPress ? LMS
-                                                            plugin</a>
-                                                    </h4>
-                                                    <p>FREE</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="post-thumb">
-                                                    <a href="course-details.html">
-                                                        <img class="img-fluid" src="/HAPPYorSAD/assets/img/blog/blog-02.jpg" alt="Img">
-                                                    </a>
-                                                </div>
-                                                <div class="post-info">
-                                                    <h4>
-                                                        <a href="course-details.html">Become a PHP Master and Make Money</a>
-                                                    </h4>
-                                                    <p>$200</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="post-thumb">
-                                                    <a href="#">
-                                                        <img class="img-fluid" src="/HAPPYorSAD/assets/img/blog/blog-03.jpg" alt="Img">
-                                                    </a>
-                                                </div>
-                                                <div class="post-info free-color">
-                                                    <h4>
-                                                        <a href="blog-details.html">Learning jQuery Mobile for Beginners</a>
-                                                    </h4>
-                                                    <p>FREE</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="post-thumb">
-                                                    <a href="course-details.html">
-                                                        <img class="img-fluid" src="/HAPPYorSAD/assets/img/blog/blog-01.jpg" alt="Img">
-                                                    </a>
-                                                </div>
-                                                <div class="post-info">
-                                                    <h4>
-                                                        <a href="course-details.html.html">Improve Your CSS Workflow with
-                                                            SASS</a>
-                                                    </h4>
-                                                    <p>$200</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="post-thumb ">
-                                                    <a href="course-details.html">
-                                                        <img class="img-fluid" src="/HAPPYorSAD/assets/img/blog/blog-02.jpg" alt="Img">
-                                                    </a>
-                                                </div>
-                                                <div class="post-info free-color">
-                                                    <h4>
-                                                        <a href="course-details.html">HTML5/CSS3 Essentials in 4-Hours</a>
-                                                    </h4>
-                                                    <p>FREE</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- /Latest Posts -->
-
+                                <!-- /Search Filter -->                                                        
+                          
                             </div>
                         </div>
                     </div>
