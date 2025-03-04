@@ -70,9 +70,15 @@
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
                                                     </ul>
                                                 </li>	
-                                                
+                                                <li class="has-submenu">
+                                                <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu">
+                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
+                                                </ul>
+                                            </li>
                                             </c:if>
                                             
+
                                         </ul>
                                     </c:if>
                                 </div>	 
