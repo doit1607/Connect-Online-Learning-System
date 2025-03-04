@@ -125,7 +125,7 @@
                                                     <p class="text-muted mb-0">${sessionScope.usernameRole}</p>
                                                 </div>
                                             </div>
-                                            <a class="dropdown-item" href="/../HAPPYorSAD/view/Wallet.jsp">
+                                            <a class="dropdown-item" href="/../HAPPYorSAD/Wallet">
                                                 <i class="feather-star me-1"></i> Wallet:
                                                 <fmt:formatNumber value="${sessionScope.walletBalance}" 
                                                                   type="number" 
