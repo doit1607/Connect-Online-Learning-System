@@ -47,29 +47,20 @@
                                             <i class="fas fa-times"></i>
                                         </a>
                                     </div>
-                                    <c:if test = "${sessionScope.usernameRole eq 'mentor' || sessionScope.usernameRole eq 'mentee'}">
+                                    <c:if test = "${sessionScope.usernameRole eq 'mentee'}">
                                         <ul class="main-nav">
-
+                                            <li class="has-submenu">
+                                                <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
+                                                <ul class="submenu">
+                                                </ul>
+                                            </li>
                                             <li class="has-submenu">
                                                 <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                                 <ul class="submenu">
-
                                                     <li><a href="ViewMentor_Mentee">Mentor List</a></li>
-                                                        <c:if test = "${sessionScope.usernameRole eq 'mentor'}">
-                                                        <li><a href="ViewCV">My CV</a></li>
-                                                        <li><a href="Slot">Schedule</a></li>
-                                                        <li><a href="instructor-reviews.html">Reviews</a></li>
-                                                        <li><a href="/../HAPPYorSAD/viewRequest">Request</a></li>
-                                                        <li><a href="instructor-notifications.html">Notifications</a></li>
-                                                        </c:if>
                                                 </ul>
                                             </li>	
                                             <c:if test="${sessionScope.usernameRole eq 'mentee'}">
-                                                <li class="has-submenu">
-                                                    <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
-                                                    <ul class="submenu">
-                                                    </ul>
-                                                </li>
                                                 <li class="has-submenu">
                                                     <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
                                                     <ul class="submenu first-submenu">
@@ -79,15 +70,9 @@
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
                                                     </ul>
                                                 </li>	
-                                                <li class="has-submenu">
-                                                    <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
-                                                    <ul class="submenu">
-                                                        <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
-                                                    </ul>
-                                                </li>
-
+                                                
                                             </c:if>
-
+                                            
                                         </ul>
                                     </c:if>
                                 </div>	 
