@@ -15,21 +15,86 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Course Detail</title>
 
+        <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
+        <!-- Theme Settings Js -->
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
+
+        <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
+
+        <!-- Feather CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+
+        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
+        <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        <link rel="stylesheet" href="assets/css/style.css">
 
     </head>
+    <style>
+        .video-sec .card {
+            position: relative;
+            overflow: hidden;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
+        .video-sec .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-sec .card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .video-sec .video-details {
+            position: absolute;
+            bottom: 20px; /* Đặt giá cao hơn một chút để giống hình */
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0;
+        }
+
+        .video-sec .price-tag {
+            display: inline-block;
+            padding: 8px 16px; /* Padding vừa phải */
+            background-color: #fff; /* Nền trắng như trong hình */
+            color: #ff0000; /* Chữ đỏ như trong hình */
+            font-size: 24px; /* Kích thước chữ vừa phải, giống hình */
+            font-weight: 700; /* Đậm để nổi bật */
+            border: 2px solid #000; /* Viền đen xung quanh */
+            border-radius: 15px; /* Bo tròn như nhãn dán trong hình */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Bóng nhẹ để nổi */
+            text-shadow: none; /* Bỏ bóng chữ để giống hình */
+            transition: all 0.3s ease;
+        }
+
+        .video-sec .card:hover .price-tag {
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            background-color: #f8f9fa; /* Nền trắng nhạt hơn khi hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bóng đậm hơn khi hover */
+        }
+    </style>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
         <!-- Main Wrapper -->
@@ -150,8 +215,9 @@
                                                 </div>
                                             </div>
                                             <h2>
-                                                <a href="test?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
-                                                   class="btn btn-enroll w-100">Invite</a>
+                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}" 
+                                                   class="btn btn-enroll w-100">View</a>
+
                                             </h2>
                                         </div>
                                     </div>
@@ -215,14 +281,9 @@
                                 <div class="video-sec vid-bg">
                                     <div class="card">
                                         <div class="card-body">
-
                                             <img src="${detail.image}" alt="Img">
-                                            </a>
                                             <div class="video-details">
-                                                <div >
-
-                                                    <h3>${detail.price}đ</h3>
-                                                </div>
+                                                <span class="price-tag">${detail.price}đ</span>
                                             </div>
                                         </div>
                                     </div>
@@ -238,16 +299,31 @@
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
         <!-- jQuery -->
-        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
-        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
-        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
-        <script src="/HAPPYorSAD/assets/js/script.js"></script>
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Custom JS -->
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
+        crossorigin="anonymous"></script>
     </body>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/course-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:46 GMT -->
