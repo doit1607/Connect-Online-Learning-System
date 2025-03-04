@@ -62,11 +62,11 @@ public class VNPayReturnServlet extends HttpServlet {
                 transactionDAO.updateBalance(username, balance);
                 String msg = "Your payment is sucessfull!";
                 session.setAttribute("walletBalance", balance);
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                response.sendRedirect("Wallet?service=deposit");
             } else {
                 transactionDAO.updateTransactionStatus(Integer.parseInt(vnp_TxnRef), "FAILED");
                 String msg = "Your payment is failed!";
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                response.sendRedirect("Wallet?service=error&msg="+msg);
             }
         }
         if ("withdraw".equalsIgnoreCase(service)) {
@@ -80,12 +80,11 @@ public class VNPayReturnServlet extends HttpServlet {
 
                 String msg = "Your payment is successful!";
                 session.setAttribute("walletBalance", newBalance); 
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                response.sendRedirect("Wallet?service=withdraw&msg="+msg);
 
             } else {
                 String msg = "Your withdrawal request was unsuccessful due to insufficient funds in your wallet.";
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
-            }
+                response.sendRedirect("Wallet?service=error&msg="+msg);            }
 
         }
 
