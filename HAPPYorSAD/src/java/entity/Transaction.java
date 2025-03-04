@@ -16,7 +16,7 @@ public class Transaction {
     private String username;
     private String type;  // 'DEPOSIT', 'WITHDRAW', 'COURSE_REGISTRATION'
     private double amount;
-    private Date transactionDate;
+    private Date transactionDate;   
     private String status;  // 'PENDING', 'COMPLETED', 'FAILED'
     private int courseId;  // For course registration
     private String managerUsername;  // For manager's username during registration
