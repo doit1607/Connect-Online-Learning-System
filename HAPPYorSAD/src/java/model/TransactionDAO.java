@@ -21,7 +21,7 @@ public class TransactionDAO extends DBConnection{
     public int createTransaction(String username, double amount, String type) {
         int transactionId = 0;
         try {
-            String query = "INSERT INTO Transactions (username, type, amount, status) VALUES (?, ?, ?, 'DONE')";
+            String query = "INSERT INTO Transactions (username, type, amount) VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, type);
@@ -159,5 +159,28 @@ public class TransactionDAO extends DBConnection{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Transaction> listTransactionByUsername(String username){
+        List<Transaction> transactionList = new ArrayList<>();
+        String sql = "Select * from Transactions where username = ? ";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Transaction trans = new Transaction();
+                trans.setTransactionDate(rs.getDate("transaction_date"));
+                trans.setType(rs.getString("type"));
+                trans.setAmount(rs.getDouble("amount"));
+                trans.setStatus(rs.getString("status"));
+                transactionList.add(trans);
+            }
+            
+            
+        } catch (Exception e) {
+        }
+        return transactionList;
+        
     }
 }
