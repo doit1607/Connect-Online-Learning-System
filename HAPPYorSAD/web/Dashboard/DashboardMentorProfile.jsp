@@ -81,34 +81,15 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Enrolled Courses
-                                            </a>
-                                        </li>
-                                         <li class="nav-item ">
-                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Available Timings
-
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
                                             <a href="instructor-reviews.html" class="nav-link">
                                                 <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Schedule
                                             </a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
@@ -119,39 +100,13 @@
                                     <h3>Instructor</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
-                                                <i class="bx bxs-rocket"></i>My Courses
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
+                                            <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
                                                 <i class="bx bxs-rocket"></i>My Curriculum Vitae
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                            <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Inviting Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Statistic Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-announcements.html" class="nav-link">
-                                                <i class="bx bxs-volume-full"></i>Announcements
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-withdraw.html" class="nav-link ">
-                                                <i class="bx bxs-wallet"></i>Withdrawls
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-earnings.html" class="nav-link">
-                                                <i class="bx bxs-badge-dollar"></i>Earnings
                                             </a>
                                         </li>
                                     </ul>
@@ -242,26 +197,6 @@
                         <!-- /Content dashboard -->
 
 
-                    </div>
-                    <div class="dash-pagination">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <p>Page 1 of 2</p>
-                            </div>
-                            <div class="col-6">
-                                <ul class="pagination">
-                                    <li class="active">
-                                        <a href="#">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="bx bx-chevron-right"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- Student Dashboard -->
