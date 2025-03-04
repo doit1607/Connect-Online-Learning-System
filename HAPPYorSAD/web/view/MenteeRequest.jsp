@@ -172,53 +172,44 @@
                         </div>
                     </div>
                     <!-- /Breadcrumb -->	
-                    <div class="col-md-3  ">
-                        <div class="settings-widget account-settings">
-                            <div class="settings-menu">
-                                <h3>Dashboard</h3>
-                                <ul>
-                                    <li class="nav-item">
-                                        <a href="student-profile.html" class="nav-link">
-                                            <i class="bx bxs-user"></i>My Profile
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="student-wishlist.html" class="nav-link">
-                                            <i class="bx bxs-heart"></i>Wishlist
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="student-reviews.html" class="nav-link">
-                                            <i class="bx bxs-star"></i>Reviews
-                                        </a>
-                                    </li>                                  
-                                    <li class="nav-item">
-                                        <a href="student-referral.html" class="nav-link">
-                                            <i class="bx bxs-user-plus"></i>Referrals
-                                        </a>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a href="student-tickets.html" class="nav-link">
-                                            <i class="bx bxs-coupon"></i>View request
-                                        </a>
-                                    </li>
-                                </ul>
-                                <h3>Account Settings</h3>
-                                <ul>
-                                    <li class="nav-item">
-                                        <a href="student-settings.html" class="nav-link ">
-                                            <i class="bx bxs-cog"></i>Settings
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="index-2.html" class="nav-link">
-                                            <i class="bx bxs-log-out"></i>Logout
-                                        </a>
-                                    </li>
-                                </ul>
+                     <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item ">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-user"></i>My Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="Notifications" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>			
-                    </div>
+                        </div>
                     <!-- Page Content -->
                     <div class="col-md-9"> 
                         <div class="formcontent">
