@@ -91,7 +91,7 @@ public class DAOCourse extends DBConnection {
         }
     }
 
-    public List<Course> getAllCourseOrderByName() {
+   public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -120,8 +120,9 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
+                Double price = result.getDouble("price");
 
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
                 listCourse.add(course);
             }
             result.close();
@@ -257,7 +258,7 @@ public class DAOCourse extends DBConnection {
 
     
 
-    public Course getCourseById(int id) {
+  public Course getCourseById(int id) {
         String query = "SELECT [id]\n"
                 + "      ,[title]\n"
                 + "      ,[description]\n"
@@ -268,6 +269,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  Where [id] = ?";
         try {
@@ -286,8 +288,9 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
+                Double price = result.getDouble("price");
 
-                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image,price);
 
             }
             result.close();
