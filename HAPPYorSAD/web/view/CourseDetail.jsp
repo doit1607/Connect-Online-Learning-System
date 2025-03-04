@@ -64,15 +64,7 @@
                         <div class="col-lg-8 " >                          
                             <h2>${detail.title}</h2>
                             
-                            <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
-                                <div class="cou-info">
-                                    <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                    <p>12+ Lesson</p>
-                                </div>
-                                <div class="cou-info">
-                                    <img src="assets/img/icon/timer-icon.svg" alt="Img">
-                                    <p>9hr 30min</p>
-                                </div>
+                            <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">                              
                                 <div class="cou-info">
                                     <img src="assets/img/icon/people.svg" alt="Img">
                                     <p> Total: ${countMentorOfCourse} Mentor </p>
