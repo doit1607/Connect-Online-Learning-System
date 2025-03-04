@@ -63,7 +63,7 @@
                     <div class="row">
                         <div class="col-lg-8 " >                          
                             <h2>${detail.title}</h2>
-                            
+
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">                              
                                 <div class="cou-info">
                                     <img src="assets/img/icon/people.svg" alt="Img">
@@ -80,8 +80,8 @@
             <section class="page-content course-sec">
                 <div class="container">
 
-                    <div class="row">
-                        <div class="col-lg-8">
+                    <div class="row d-flex">
+                        <div class="col-md-8">
 
                             <!-- Overview -->
                             <div class="card overview-sec">
@@ -208,7 +208,27 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                        </div>	
+                        </div>	   
+                        <div class="col-md-4">
+                            <div >
+
+                                <div class="video-sec vid-bg">
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <img src="${detail.image}" alt="Img">
+                                            </a>
+                                            <div class="video-details">
+                                                <div >
+
+                                                    <h3>${detail.price}đ</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>	
                 </div>
             </section>
