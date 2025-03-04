@@ -43,8 +43,12 @@ public class MentorDetail extends HttpServlet {
         Mentor1 mentor = dao.getMentorById(mentorIdDetail);
         ArrayList<Course> list = daoC.getCourseByMentorId(mentorIdDetail);
         HttpSession session = request.getSession();
+        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
         session.setAttribute("mentor", mentor);
         session.setAttribute("list", list);
+        request.setAttribute("mentorId", mentorId);
+        request.setAttribute("courseId", courseId);
          request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
     }
 
