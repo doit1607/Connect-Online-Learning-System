@@ -32,10 +32,24 @@ public class Request {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int courseId;
+    private String mentorname;
+    private String coursename;
     
 
     // Constructors
     public Request() {
+    }
+
+    public Request(String title, double totalprice, int totalSlot, LocalDate startDate, LocalDate endDate, String content, String status, String mentorname, String coursename) {
+        this.title = title;
+        this.totalprice = totalprice;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.mentorname = mentorname;
+        this.coursename = coursename;
     }
 
     public Request(int id, int menteeId, int mentorId, String title, LocalDate startDate, LocalDate endDate, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
@@ -121,6 +135,31 @@ public class Request {
         this.content = content;
         this.courseId = courseId;
     }
+
+    public double getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(double totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public String getMentorname() {
+        return mentorname;
+    }
+
+    public void setMentorname(String mentorname) {
+        this.mentorname = mentorname;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+     
     public User getMentee(){
         DAOuser dao = new DAOuser();
         return dao.getMenteeById(this.menteeId);
