@@ -514,6 +514,43 @@ public class DAOCourse extends DBConnection {
 
     return courses;
 }
+    public ArrayList<Course> getCourseByMentor(String username) {
+        ArrayList<Course> listCourse = new ArrayList<>();
+        String query = "SELECT c.[id], c.[title], c.[description], c.[manager_id], c.[mentor_id], " +
+                   "       u.[username] AS mentor_username, c.[status], c.[created_at], " +
+                   "       c.[updated_at], c.[course_major_id], c.[image], c.[price] " +
+                   "FROM [SWP1].[dbo].[Course] c " +
+                   "JOIN [SWP1].[dbo].[Mentor] m ON c.mentor_id = m.id " +
+                   "JOIN [SWP1].[dbo].[Users] u ON m.user_id = u.id " +
+                   "WHERE u.[username] = ?";
+        try {
+            PreparedStatement connect = conn.prepareStatement(query);
+            connect.setString(1, username);
+            ResultSet result = connect.executeQuery();
+
+            while (result.next()) {
+                Course course = new Course();
+                course.setId(result.getInt("id"));
+                course.setTitle(result.getString("title"));
+                course.setDescription(result.getString("description"));
+                course.setManagerId(result.getInt("manager_id"));
+                course.setMentorId(result.getInt("mentor_id"));
+                course.setStatus(result.getString("status"));
+                course.setCourseMajorId(result.getInt("course_major_id"));
+                course.setImage(result.getString("image"));
+                course.setPrice(result.getDouble("price"));
+
+                listCourse.add(course);
+
+            }
+            result.close();
+            connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCourse;
+
+    }
 
 
 

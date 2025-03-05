@@ -169,10 +169,7 @@
                                                     <h5 class="card-title">${course.title}</h5>
                                                     <p class="card-text">${course.description}</p>
                                                     <a href="/CourseDetails?Cid=${course.id}" class="btn btn-primary">View details</a>
-                                                <form action="/EnrolledCourses" method="post" class="d-inline">
-                                                    <input type="hidden" name="courseId" value="${course.id}">
-                                                    <button type="submit" class="btn btn-success btn-lg">Confirm Complete</button>
-                                                </form>
+
                                                 </div>
                                             </div>
                                         </div>

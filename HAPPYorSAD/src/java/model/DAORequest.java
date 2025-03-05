@@ -13,7 +13,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.DBConnection;
 import static model.DBConnection.conn;
 
@@ -314,8 +317,68 @@ public class DAORequest extends DBConnection {
 
         return isUpdated;
     }
+    public double getTotalReceivedAmountByMentor(String mentor) {
+        double totalAmount = 0.0;
 
+        String sql = "SELECT COALESCE(SUM(c.price), 0) AS total_received " +
+                     "FROM Request r " +
+                     "JOIN Mentor m ON r.mentor_id = m.id " +
+                     "JOIN [Users] u ON m.user_id = u.id " +
+                     "JOIN Course c ON r.course_id = c.id " +
+                     "WHERE u.username = ? AND r.status = 'Closed'";
 
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, mentor);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    totalAmount = rs.getDouble("total_received");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalAmount;
+    }
+    
+    public List<Integer> getRequestByYear(String username, int year) {
+    // Khởi tạo danh sách với 12 tháng, mặc định là 0
+    List<Integer> requestData = new ArrayList<>(Collections.nCopies(12, 0));
+
+    String sql = "SELECT MONTH(r.created_at) AS month, COUNT(*) AS total_requests " +
+                 "FROM Request r " +
+                 "JOIN Mentor m ON m.id = r.mentor_id " +
+                 "JOIN Users u ON u.id = m.user_id " +
+                 "WHERE YEAR(r.created_at) = ? AND u.username = ? " +
+                 "GROUP BY MONTH(r.created_at) " +
+                 "ORDER BY MONTH(r.created_at)";
+
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, year);
+        stmt.setString(2, username);
+
+        ResultSet rs = stmt.executeQuery();
+        
+        // Sử dụng Map để lưu dữ liệu tạm thời
+        Map<Integer, Integer> monthData = new HashMap<>();
+        while (rs.next()) {
+            int month = rs.getInt("month");
+            int count = rs.getInt("total_requests");
+            monthData.put(month, count);
+        }
+
+        // Đưa dữ liệu từ Map vào List
+        for (int i = 1; i <= 12; i++) {
+            requestData.set(i - 1, monthData.getOrDefault(i, 0));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return requestData;
+}
+    
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
 

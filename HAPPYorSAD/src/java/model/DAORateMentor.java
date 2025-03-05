@@ -4,9 +4,12 @@
  */
 package model;
 
+import entity.MentorReview;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -32,6 +35,70 @@ public class DAORateMentor extends DBConnection {
 
         return isUpdated;
     }
+    public List<MentorReview> getReviewsByMentor(String username) {
+        List<MentorReview> reviews = new ArrayList<>();
+        String sql = "SELECT mr.* FROM mentor_reviews mr "
+                   + "JOIN Mentor m ON mr.mentor_id = m.id "
+                   + "JOIN Users u ON m.user_id = u.id "
+                   + "WHERE u.username = ? "
+                   + "ORDER BY mr.created_at DESC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    MentorReview review = new MentorReview(
+                        rs.getInt("id"),
+                        rs.getInt("mentor_id"),
+
+                        rs.getInt("mentee_id"),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
+                    );
+                    reviews.add(review);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+    public List<MentorReview> getReviewsByMentorAndStar(String username, int star) {
+        List<MentorReview> reviews = new ArrayList<>();
+        String sql = "SELECT mr.* FROM mentor_reviews mr "
+                   + "JOIN Mentor m ON mr.mentor_id = m.id "
+                   + "JOIN Users u ON m.user_id = u.id "
+                   + "WHERE u.username = ? AND mr.rating = ?"
+                   + "ORDER BY mr.created_at DESC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            ps.setInt(2, star);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    MentorReview review = new MentorReview(
+                            rs.getInt("id"),
+                                                    rs.getInt("mentor_id"),
+
+                        rs.getInt("mentee_id"),
+                        rs.getInt("star"),
+                        rs.getString("comment"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
+                    );
+                    reviews.add(review);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+    
+    
 
     public static void main(String[] args) {
         DAORateMentor dao = new DAORateMentor();

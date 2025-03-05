@@ -5,6 +5,7 @@
 package entity;
 
 import java.time.LocalDateTime;
+import model.DAOuser;
 
 /**
  *
@@ -78,5 +79,8 @@ public class MentorReview {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    
+    public User getMentee(){
+        DAOuser dao = new DAOuser();
+        return dao.getMenteeById(this.menteeID);
+    }
 }
