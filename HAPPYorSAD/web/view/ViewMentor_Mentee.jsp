@@ -113,7 +113,7 @@
                         <div class="row">
 
                             <!-- Instructor List -->
-                            <c:forEach var="mentor" items="${listAllMentorSuggestion}"> 
+                            <c:forEach var="mentor" items="${sessionScope.listAllMentorSuggestion}"> 
                                 <div class="col-lg-12 d-flex">
                                     <div class="instructor-list flex-fill">
                                         <div class="instructor-img">
