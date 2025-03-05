@@ -1,5 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <!DOCTYPE html> 
+
 <html lang="en">
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/student-tickets.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:22 GMT -->
@@ -172,84 +176,115 @@
                         </div>
                     </div>
                     <!-- /Breadcrumb -->	
-                     <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                    <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
-                            <div class="settings-widget account-settings">
-                                <div class="settings-menu">
-                                    <h3>Dashboard</h3>
-                                    <ul>
-                                        <li class="nav-item ">
-                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
-                                            </a>
-                                        </li>
-                                        <li class="nav-item active">
-                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="Notifications" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <h3>Account Settings</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="LoginUser?service=logout" class="nav-link">
-                                                <i class="bx bxs-log-out"></i>Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <div class="settings-widget account-settings">
+                            <div class="settings-menu">
+                                <h3>Dashboard</h3>
+                                <ul>
+                                    <li class="nav-item ">
+                                        <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                            <i class="bx bxs-user"></i>My Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                            <i class="bx bxs-graduation"></i>Request
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="Notifications" class="nav-link">
+                                            <i class="bx bxs-bell"></i>Notifications
+                                        </a>
+                                    </li>
+                                </ul>
+                                <h3>Account Settings</h3>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                            <i class="bx bxs-cog"></i>Settings
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="LoginUser?service=logout" class="nav-link">
+                                            <i class="bx bxs-log-out"></i>Logout
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                    </div>
                     <!-- Page Content -->
                     <div class="col-md-9"> 
                         <div class="formcontent">
                             <div>  
-                                
-                                    <table class="tablecontent">
-                                        <thead>
-                                            <tr>
-                                                <td>Title</td>
-                                                <td>Content</td>
-                                                <td>TotalSlot</td>
-                                                <td>Deadline Start</td>
-                                                <td>Deadline End</td>
-                                                <td>Status</td>
-                                                <td>Action</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${sessionScope.listAllRequest}" var="o">
-                                                <tr>
-                                                    <td>${o.title}</td>
-                                                    <td>${o.content}</td>
-                                                    <td>${o.totalSlot}</td>
-                                                    <td>${o.startDate}</td>
-                                                    <td>${o.endDate}</td>                                            
-                                                    <td>${o.status}</td>
-                                                    <td>
-                                                        <c:if test="${o.status eq 'Draft'}">                                                           
-                                                           <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update"class="updatebtn">Update</a>
-                                                        </c:if>
-                                                        <c:if test="${o.status eq 'Open'}">
-                                                            
-                                                            <a href="UpdateRequest?id=${o.id}" class="viewbtn">View</a>
 
-                                                        </c:if>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+                                <table class="tablecontent">
+                                    <thead>
+                                        <tr>
+                                            <td>Title</td>
+                                            <td>Content</td>
+                                            <td>TotalSlot</td>
+                                            <td>Deadline Start</td>
+                                            <td>Deadline End</td>
+                                            <td>Status</td>
+                                            <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${sessionScope.listAllRequest}" var="o">
+                                            <tr>
+                                                <td>${o.title}</td>
+                                                <td>${o.content}</td>
+                                                <td>${o.totalSlot}</td>
+                                                <td>${o.startDate}</td>
+                                                <td>${o.endDate}</td>                                            
+                                                <td>${o.status}</td>
+                                                <td>
+                                                    <c:if test="${o.status eq 'Draft'}">                                                           
+                                                        <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" class="updatebtn">Update</a>
+                                                    </c:if>
+                                                    <c:if test="${o.status eq 'Open'}">
+
+                                                        <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">
+                                                            View
+                                                        </button>
+                                                    </c:if>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <c:forEach items="${sessionScope.listAllRequest}" var="o">
+                                    <div class="modal fade" id="requestModal_${o.id}" tabindex="-1" 
+                                         aria-labelledby="requestModalLabel_${o.id}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="requestModalLabel_${o.id}">Request Details</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="request-details">
+                                                        <p><strong>Mentor name:</strong> ${o.mentorname}</p>
+                                                        <p><strong>Course name:</strong> ${o.coursename}</p>
+                                                        <p><strong>Title:</strong> ${o.title}</p>
+                                                        <p><strong>Content:</strong> ${o.content}</p>
+                                                        <p><strong>Total Slots:</strong> ${o.totalSlot}</p> 
+                                                        <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />&#273;</p>
+                                                        <p><strong>Deadline Start:</strong> ${o.startDate}</p>
+                                                        <p><strong>Deadline End:</strong> ${o.endDate}</p>
+                                                        <p><strong>Status:</strong> ${o.status}</p>
+                                                        <p><strong>Schedule:</strong></p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
                             </div>
                         </div>
 
