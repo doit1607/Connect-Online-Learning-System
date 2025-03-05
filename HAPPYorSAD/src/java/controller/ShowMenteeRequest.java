@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import model.DAOCourse;
+import model.DAOMentor;
 import model.DAORequest;
 import model.DAOmentee;
 
@@ -37,6 +39,8 @@ public class ShowMenteeRequest extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         DAORequest dao = new DAORequest();
         DAOmentee daom = new DAOmentee();
+        DAOMentor daomentor = new DAOMentor();
+        DAOCourse daoc = new DAOCourse();
         HttpSession session = request.getSession();
         Integer menteeId = (Integer) session.getAttribute("menteeId");
         Mentee mentee = daom.getMenteeById(menteeId);
