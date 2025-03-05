@@ -42,17 +42,34 @@ public class DAOschedule extends DBConnection {
         return null;
     }
 
-//    public boolean addSchedule(int mentorId, Date scheduleDate) {
-//        String sql = "INSERT INTO Mentor_Schedule (mentor_id, schedule_date) VALUES (?, ?)";
-//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, mentorId);
-//            ps.setDate(2, java.sql.Date.valueOf(LocalDate.MAX));
-//            return ps.executeUpdate() > 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    public int addSchedule(String startDate, String endDate) throws SQLException {
+        String sql = "INSERT INTO Schedule (start_date, end_date) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            stmt.executeUpdate();
+            // Lấy scheduleId vừa tạo
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            }
+        }
+        return -1; // Trả về -1 nếu không tạo được
+    }
+
+    public boolean linkMentorToSchedule(int mentorId, int scheduleId) throws SQLException {
+        String sql = "INSERT INTO Mentor_Schedule (mentor_id, schedule_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, mentorId);
+            stmt.setInt(2, scheduleId);
+            stmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void deleteSchedule(int scheduleId) {
         String sql = "DELETE FROM Schedule WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -63,24 +80,6 @@ public class DAOschedule extends DBConnection {
         }
     }
 
-//    public static Integer getScheduleIdsByMentorId(int mentorId) {
-//        int scheduleId = -1;
-//        String sql = "SELECT ms.id FROM Mentor m \n"
-//                + "JOIN Mentor_Schedule ms ON m.id = ms.mentor_id \n"
-//                + "WHERE m.id = ?";
-//
-//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, mentorId);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                while (rs.next()) {
-//                    scheduleId = rs.getInt("id");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return scheduleId;
-//    }
     public static Integer getScheduleIdsByMentorId(int mentorId) {
         int scheduleId = -1;
         String sql = "SELECT ms.id FROM Mentor m \n"
@@ -293,34 +292,8 @@ public class DAOschedule extends DBConnection {
         return null;
     }
 
-//    public Integer createScheduleForMonth(int mentorId, String month) {
-//        Integer newScheduleId = null;
-//        String insertScheduleQuery = "INSERT INTO Schedule (startDate, endDate) VALUES (?, ?)";
-//        String insertMentorScheduleQuery = "INSERT INTO Mentor_Schedule (mentor_Id, schedule_Id) VALUES (?, ?)";
-//        String sql = "INSERT INTO Schedule (mentorId, startDate, endDate) VALUES (?, ?, ?)";
-//        try (PreparedStatement psSchedule = conn.prepareStatement(insertScheduleQuery)) {
-//
-//            psSchedule.setDate(1, startDate);
-//            psSchedule.setDate(2, endDate);
-//            psSchedule.executeUpdate();
-//
-//            ResultSet generatedKeys = psSchedule.getGeneratedKeys();
-//            if (generatedKeys.next()) {
-//                newScheduleId = generatedKeys.getInt(1);
-//            } else {
-//                throw new SQLException("No available.");
-//            }
-//
-//            try (PreparedStatement psMentorSchedule = conn.prepareStatement(insertMentorScheduleQuery)) {
-//                psMentorSchedule.setInt(1, mentorId);
-//                psMentorSchedule.setInt(2, newScheduleId);
-//                psMentorSchedule.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return newScheduleId;
-//    }
+
+
     public static void main(String[] args) {
         DAOschedule scheduleDAO = new DAOschedule();
 //        Map<String, List<Schedule>> schedulesByMonth = dao.getSchedulesByMonth();

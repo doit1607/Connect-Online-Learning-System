@@ -396,6 +396,89 @@
             }
 
 
+            #repeatOptions {
+                padding-left: 20px;
+            }
+            .clear-btn {
+                margin-left: 10px;
+            }
+            .week-list {
+                display: flex;
+                align-items: center;
+                list-style: none;
+                padding: 0;
+            }
+            .week-list li {
+                margin: 0 5px;
+            }
+            .left-arrow, .right-arrow {
+                cursor: pointer;
+            }
+            #bookedSchedule {
+                margin-top: 20px;
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
+            .schedule-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+            .schedule-table th, .schedule-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            .schedule-table th {
+                background-color: #f2f2f2;
+            }
+
+
+            .slot-row {
+                margin: 5px 0; /* Khoảng cách giữa các hàng */
+            }
+
+            /* Style cơ bản cho tất cả các slot */
+            .timing {
+                display: inline-block;
+                padding: 10px 15px;
+                margin: 5px;
+                text-decoration: none;
+                color: #333;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                min-width: 100px; /* Đảm bảo kích thước tối thiểu để đồng đều */
+                text-align: center;
+            }
+
+            /* Style cho slot khả dụng */
+            .timing:not(.disabled) {
+                background-color: #4CAF50; /* Màu xanh lá */
+                color: white;
+                cursor: pointer;
+            }
+
+            .timing:not(.disabled):hover {
+                background-color: #45a049;
+                border-color: #45a049;
+            }
+
+            /* Style cho slot không khả dụng (trống) */
+            .timing.disabled {
+                background-color: #f0f0f0; /* Màu xám nhạt */
+                color: #999;
+                cursor: not-allowed;
+                opacity: 0.7;
+                pointer-events: none; /* Không thể click */
+            }
+
+            /* Đảm bảo span hiển thị đồng đều */
+            .timing span {
+                font-size: 14px;
+            }
+
+
         </style>
         <script>
             function showNotification(message) {
@@ -512,6 +595,7 @@
                                 <c:if test="${not empty requestScope.requestId}">
                                     <input type="hidden" name="requestId" value="${requestScope.requestId}">
                                 </c:if>
+                                <input type="hidden" id="currentWeekOffset" value="0"> 
 
 
                                 <div class="title-container">
@@ -542,6 +626,8 @@
 
 
 
+
+
                                 <div class="row">
                                     <div class="col-12 col-sm-4 col-md-6">
                                         <h4 class="mb-1">
@@ -561,6 +647,8 @@
                                                 <i class="fas fa-chevron-down ms-2"></i>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="monthDropdown">
+                                                <input type="hidden" name="year" id="selectedYear">
+                                                <input type="hidden" name="month" id="selectedMonthValue">
                                                 <c:forEach var="month" items="${months}">
                                                     <li><a class="dropdown-item month-item" data-month="${month}">${month}</a></li>
                                                     </c:forEach>
@@ -580,8 +668,12 @@
 
                                                 <!-- Day Slot -->
                                                 <div class="day-slot">
-                                                    <ul>
-
+                                                    <ul class="week-list">
+                                                        <li class="left-arrow">
+                                                            <a href="javascript:void(0)" onclick="changeWeek(-1)">
+                                                                <i class="fa fa-chevron-left"></i>
+                                                            </a>
+                                                        </li>
                                                         <c:forEach var="entry" items="${weekDateInfoMap}">
                                                             <li>
                                                                 <span>${entry.value['dayOfWeek']}</span>
@@ -590,11 +682,19 @@
                                                                 </span>
                                                             </li>
                                                         </c:forEach>
+                                                        <li class="right-arrow">
+                                                            <a href="javascript:void(0)" onclick="changeWeek(1)">
+                                                                <i class="fa fa-chevron-right"></i>
+                                                            </a>
+                                                        </li>
 
 
                                                     </ul>
                                                 </div>
                                                 <!-- /Day Slot -->
+
+                                                <script>
+                                                </script>
 
                                             </div>
                                         </div>
@@ -606,38 +706,98 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <!-- Time Slot -->
-                                                <div class="time-slot">
+                                                <div class="time-slot" id="timeSlotContainer">
                                                     <ul class="clearfix">
                                                         <c:forEach var="entry" items="${weekDateInfoMap}">
                                                             <li>
                                                                 <c:choose>
                                                                     <c:when test="${not empty slotsByDay[entry.key]}">
-                                                                        <c:forEach var="slot" items="${slotsByDay[entry.key]}">
-                                                                            <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
-                                                                                <span>${slotTimeMap[slot.slotNumber]}</span>
-                                                                            </a>
+                                                                        <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
+                                                                        <c:forEach var="slotNumber" begin="1" end="5">
+                                                                            <div class="slot-row"> <!-- Thêm div để chia thành từng hàng -->
+                                                                                <c:set var="slotFound" value="false" />
+                                                                                <c:forEach var="slot" items="${slotsByDay[entry.key]}">
+                                                                                    <c:if test="${slot.slotNumber == slotNumber}">
+                                                                                        <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
+                                                                                            <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                        </a>
+                                                                                            <c:set var="slotFound" value="true" />
+                                                                                        </c:if>
+                                                                                    </c:forEach>
+                                                                                    <c:if test="${not slotFound}">
+                                                                                    <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
+
+                                                                                        <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                    </a>
+                                                                                    </c:if>
+                                                                            </div>
                                                                         </c:forEach>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <p>No slots available</p>
+                                                                        <div class="slot-row">
+                                                                            <!-- Nếu không có slot nào, hiển thị 5 hàng disabled -->
+                                                                            <c:forEach var="slotNumber" begin="1" end="5">
+                                                                                <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
+                                                                                    <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                            </a>
+                                                                                </c:forEach>
+                                                                        </div>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </li>
                                                         </c:forEach>
                                                     </ul>
                                                 </div>
-
+                                                <!-- /Time Slot -->
                                                 <label>
                                                     <input type="checkbox" id="repeatBooking"> Repeat Booking
                                                 </label>
-                                                <button id="bookSlots">Book Selected Slots</button>
+                                                <div id="repeatOptions" style="display: none; margin-top: 10px;">
+                                                    <label>Chế độ lặp lại:</label>
+                                                    <div>
+                                                        <input type="radio" id="repeatByWeeks" name="repeatMode" value="weeks" checked>
+                                                        <label for="repeatByWeeks">Theo số tuần</label>
+                                                        <input type="radio" id="repeatBySlots" name="repeatMode" value="slots">
+                                                        <label for="repeatBySlots">Theo số lượng slot</label>
+                                                    </div>
+                                                    <div id="weeksOption">
+                                                        <label for="repeatWeeks">Số tuần (tối đa 4): </label>
+                                                        <select id="repeatWeeks">
+                                                            <option value="1">+1 tuần</option>
+                                                            <option value="2">+2 tuần</option>
+                                                            <option value="3">+3 tuần</option>
+                                                            <option value="4">+4 tuần</option>
+                                                        </select>
+                                                    </div>
+                                                    <div id="slotsOption" style="display: none;">
+                                                        <label for="maxSlots">Số lượng slot tối đa: </label>
+                                                        +<input type="number" id="maxSlots" min="1" max="20" value="5">
+                                                    </div>
+                                                </div>
+                                                <button id="bookSlots" type="button">Book Selected Slots</button>
                                                 <button type="button" id="clearAllBtn" class="clear-btn">Clear</button>
-                                                <!-- /Time Slot -->
-
                                             </div>
                                         </div>
                                     </div>
                                     <!-- /Schedule Content -->
+                                    <!-- Schedule hiển thị slot đã book (thời khóa biểu) -->
+                                    <div id="bookedSchedule">
+                                        <h3>Thời Khóa Biểu của Bạn</h3>
+                                        <table class="schedule-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Thứ</th>
+                                                    <th>Ngày</th>
+                                                    <th>Tháng</th>
+                                                    <th>Năm</th>
+                                                    <th>Slot</th> <!-- Thêm cột Slot -->
+                                                    <th>Thời Gian</th>
+                                                    <th>Trạng Thái</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="bookedSlotsContainer">
+                                                <!-- Bảng trống ban đầu, sẽ được cập nhật khi chọn slot -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+
 
                                 </div>
 
@@ -663,27 +823,183 @@
 
             </div>
 
+            <form id="hiddenForm" action="/HAPPYorSAD/test" method="GET">
+                <input type="hidden" name="mentorId" id="hiddenMentorId">
+                <input type="hidden" name="courseId" id="hiddenCourseId">
+                <input type="hidden" name="price" id="hiddenPrice">
+                <input type="hidden" name="year" id="hiddenYear">
+                <input type="hidden" name="month" id="hiddenMonth">
+                <input type="hidden" name="service" id="hiddenService">
+            </form>
+
+
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
+                    // Biến để theo dõi các handler đã được gắn
+                    const eventHandlersAttached = {
+                        submitBtn: false,
+                        bookSlotsBtn: false,
+                        clearAllBtn: false,
+                        timeSlots: false
+                    };
+                    // Khai báo các biến cần thiết
                     const timeSlots = document.querySelectorAll(".timing");
                     const priceDisplay = document.querySelector(".price-amount");
-                    const pricePerSlot = ${requestScope.price}; // Lấy giá từ requestScope
-                    const walletBalance = ${sessionScope.walletBalance}; // Lấy số dư ví
+                    const pricePerSlot = ${requestScope.price};
+                    const walletBalance = ${sessionScope.walletBalance};
                     const totalSlotsInput = document.getElementById("totalSlots");
-                    const submitBtn = document.querySelector(".submit-bbb"); // Nút Submit
-                    const saveBtn = document.querySelector(".save-bbb"); // Nút Save
-                    const serviceInput = document.getElementById("serviceInput"); // Input ẩn chứa giá trị service
-                    const bookingForm = document.getElementById("bookingForm"); // Form chính
-                    const totalPriceInput = document.getElementById("totalPriceInput"); // Input ẩn chứa totalPrice
+                    const submitBtn = document.querySelector(".submit-bbb");
+                    let isSubmitProcessing = false;
+
+                    const saveBtn = document.querySelector(".save-bbb");
+                    const monthItems = document.querySelectorAll(".month-item");
+                    const selectedMonthSpan = document.getElementById("selectedMonth");
+                    const bookSlotsBtn = document.getElementById("bookSlots");
+                    const repeatCheckbox = document.getElementById("repeatBooking");
+                    const repeatOptions = document.getElementById("repeatOptions");
+                    const repeatByWeeks = document.getElementById("repeatByWeeks");
+                    const repeatBySlots = document.getElementById("repeatBySlots");
+                    const weeksOption = document.getElementById("weeksOption");
+                    const slotsOption = document.getElementById("slotsOption");
+                    const repeatWeeks = document.getElementById("repeatWeeks");
+                    const maxSlotsInput = document.getElementById("maxSlots");
+                    const bookedSlotsContainer = document.getElementById("bookedSlotsContainer");
+
+                    const requestTitle = document.getElementById("request-title");
+                    const requestContent = document.getElementById("request-content");
+                    const startDate = document.getElementById("start-date");
+                    const endDate = document.getElementById("end-date");
+
+                    let slotRepeatMap = new Map(); // Map để lưu slot gốc và các slot lặp lại của nó
                     let totalPrice = 0;
                     let totalSlots = 0;
                     let selectedSlots = new Set();
+                    // Biến tạm để lưu slot đã book, lưu dưới dạng chuỗi ngăn cách bởi dấu phẩy
+
+                    let tempSlotBooked = new Set((sessionStorage.getItem("tempSlotBooked") || "").split(",").filter(slot => slot.trim() !== ""));
+
+                    // Khôi phục dữ liệu form từ sessionStorage
+                    function restoreFormData() {
+                        const savedTitle = sessionStorage.getItem("requestTitle");
+                        const savedContent = sessionStorage.getItem("requestContent");
+                        const savedStartDate = sessionStorage.getItem("startDate");
+                        const savedEndDate = sessionStorage.getItem("endDate");
+
+                        if (savedTitle)
+                            requestTitle.value = savedTitle;
+                        if (savedContent)
+                            requestContent.value = savedContent;
+                        if (savedStartDate)
+                            startDate.value = savedStartDate;
+                        if (savedEndDate)
+                            endDate.value = savedEndDate;
+                    }
+
+                    // Lưu dữ liệu form vào sessionStorage
+                    function saveFormData() {
+                        sessionStorage.setItem("requestTitle", requestTitle.value);
+                        sessionStorage.setItem("requestContent", requestContent.value);
+                        sessionStorage.setItem("startDate", startDate.value);
+                        sessionStorage.setItem("endDate", endDate.value);
+                        sessionStorage.setItem("tempSlotBooked", Array.from(tempSlotBooked).join(","));
+                    }
+
+                    // Xóa dữ liệu form khỏi sessionStorage sau khi submit thành công
+                    function clearFormData() {
+                        sessionStorage.removeItem("requestTitle");
+                        sessionStorage.removeItem("requestContent");
+                        sessionStorage.removeItem("startDate");
+                        sessionStorage.removeItem("endDate");
+                        sessionStorage.removeItem("tempSlotBooked");
+                    }
+
+                    function updateBookedSchedule() {
+                        console.log("Starting updateBookedSchedule function");
+                        bookedSlotsContainer.innerHTML = ""; // Xóa nội dung cũ
+                        console.log("Cleared bookedSlotsContainer HTML");
+
+                        tempSlotBooked.forEach(slot => {
+                            var slotTimeMap = {
+                                1: "7:30-09:30",
+                                2: "10:00-12:00",
+                                3: "13:00-15:00",
+                                4: "15:30-17:30",
+                                5: "19:30-21:30"
+                            };
+                            var timeToSlotMap = Object.fromEntries(
+                                    Object.entries(slotTimeMap).map(([key, value]) => [value, key])
+                                    );
+                            console.log("Processing slot:", slot);
+                            let [dateStr, slotNumber] = slot.split("_");
+                            console.log("Parsed slot - dateStr:", dateStr, "slotNumber:", slotNumber);
+
+                            let date = new Date(dateStr);
+                            console.log("Converted date:", date);
+
+                            let dayOfWeek = date.toLocaleString("vi-VN", {weekday: "long"});
+                            let day = date.getDate();
+                            let month = date.toLocaleString("vi-VN", {month: "long"});
+                            let year = date.getFullYear();
+                            let slotTime = slotTimeMap[slotNumber] || "Unknown Time";
+                            console.log("Extracted values - dayOfWeek:", dayOfWeek, "day:", day, "month:", month, "year:", year, "slotTime:", slotTime);
+
+                            // Tạo hàng và các ô thủ công
+                            let tr = document.createElement("tr");
+                            let tdDayOfWeek = document.createElement("td");
+                            let tdDay = document.createElement("td");
+                            let tdMonth = document.createElement("td");
+                            let tdYear = document.createElement("td");
+                            let tdSlot = document.createElement("td"); // Thêm ô cho Slot
+                            let tdSlotTime = document.createElement("td");
+                            let tdStatus = document.createElement("td");
+
+                            tdDayOfWeek.textContent = dayOfWeek;
+                            tdDay.textContent = day;
+                            tdMonth.textContent = month;
+                            tdYear.textContent = year;
+                            tdSlotTime.textContent = slotTime;
+                            tdSlot.textContent = "Slot " + slotNumber; // Sử dụng nối chuỗi thay vì template literal               
+                            tdStatus.textContent = "Đã chọn";
+
+
+                            console.log("Created td elements - dayOfWeek:", tdDayOfWeek.textContent, "day:", tdDay.textContent, "month:", tdMonth.textContent, "year:", tdYear.textContent, "slotTime:", tdSlotTime.textContent, "status:", tdStatus.textContent);
+
+                            tr.appendChild(tdDayOfWeek);
+                            tr.appendChild(tdDay);
+                            tr.appendChild(tdMonth);
+                            tr.appendChild(tdYear);
+                            tr.appendChild(tdSlot); // Thêm ô Slot vào hàng
+                            tr.appendChild(tdSlotTime);
+                            tr.appendChild(tdStatus);
+                            console.log("Appended td elements to tr");
+
+                            bookedSlotsContainer.appendChild(tr);
+                            console.log("Added row to bookedSlotsContainer, current HTML:", bookedSlotsContainer.innerHTML);
+                        });
+                        console.log("Finished updateBookedSchedule function, total slots processed:", tempSlotBooked.size);
+                    }
+
+                    console.log("Initializing updateTempSlotUI");
+
+
+                    console.log("Khởi tạo script...");
+                    console.log("Giá mỗi slot:", pricePerSlot);
+                    console.log("Số dư ví:", walletBalance);
+                    console.log("Slot đã book tạm:", Array.from(tempSlotBooked));
+
+                    // Hàm cập nhật UI
                     function updateUI() {
+                        console.log("Cập nhật UI...");
+                        console.log("Tổng giá hiện tại:", totalPrice);
+                        console.log("Số slot đã chọn:", totalSlots);
+
                         priceDisplay.textContent = totalPrice;
                         totalSlotsInput.value = totalSlots;
-                        totalPriceInput.value = totalPrice;
+                        document.getElementById("totalPriceInput").value = totalPrice;
+                        console.log("Giá trị được gán vào totalPriceInput:", document.getElementById("totalPriceInput").value);
+
                         if (totalPrice > walletBalance) {
-                            showNotification("Deposit your wallet to add more slot");
+                            showNotification("Bạn không đủ tiền trong ví để đặt thêm slot!");
                             submitBtn.disabled = true;
                             saveBtn.disabled = true;
                             submitBtn.classList.add("disabled");
@@ -696,52 +1012,298 @@
                         }
                     }
 
-                    timeSlots.forEach(slot => {
-                        slot.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            let slotInfo = this.dataset.slotInfo;
-                            if (selectedSlots.has(slotInfo)) {
-                                selectedSlots.delete(slotInfo);
-                                this.classList.remove("selected");
-                                totalPrice -= pricePerSlot;
-                                totalSlots--;
+                    // Cập nhật giao diện khi có slot đã book tạm
+                    function updateTempSlotUI() {
+                        timeSlots.forEach(slot => {
+                            let slotInfo = slot.dataset.slotInfo;
+                            if (tempSlotBooked.has(slotInfo)) {
+                                slot.classList.add("selected");
                             } else {
-                                selectedSlots.add(slotInfo);
-                                this.classList.add("selected");
-                                totalPrice += pricePerSlot;
-                                totalSlots++;
-                            }
-
-                            updateUI();
-                        });
-                    });
-                    const clearAllBtn = document.getElementById("clearAllBtn");
-                    if (clearAllBtn) {
-                        clearAllBtn.addEventListener("click", function () {
-                            document.querySelectorAll(".timing.selected").forEach(function (slot) {
                                 slot.classList.remove("selected");
-                            });
-                            totalSlots = 0;
-                            totalPrice = 0;
-                            selectedSlots.clear();
-                            updateUI();
+                            }
                         });
+                        totalSlots = tempSlotBooked.size;
+                        totalPrice = totalSlots * pricePerSlot;
+                        updateUI();
+                        updateBookedSchedule(); // Cập nhật thời khóa biểu ngay khi chọn hoặc bỏ chọn slot
+                        console.log("Finished updateTempSlotUI function, totalSlots:", totalSlots, "totalPrice:", totalPrice);
                     }
 
-                    submitBtn.addEventListener("click", function (event) {
-                        if (bookingForm.checkValidity()) {
-                            serviceInput.value = "submit";
-                            totalPriceInput.value = totalPrice;
-                            bookingForm.requestSubmit(); // Kích hoạt kiểm tra required
-                        } else {
-                            event.preventDefault(); // Ngăn form gửi nếu có lỗi
-                            showNotification("Please fill in all required fields.");
+                    // Hàm tạo slot lặp lại dựa trên chế độ
+                    function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
+                        let repeatedSlots = new Set();
+                        let [dateStr, slotNumber] = slot.split("_");
+                        let slotDate = new Date(dateStr);
+                        let currentDate = new Date(slotDate);
+                        let slotCount = 1; // Đếm slot gốc
+                        console.log("SlotDate:", currentDate);
+                        console.log("repeatedSlots", repeatedSlots);
+
+                        repeatedSlots.add(slot); // Thêm slot gốc
+                        console.log("Generating repeated slots for:", slot, "mode:", mode, "weeks:", weeks, "maxSlots:", maxSlots);
+                        let repeatedSlotsArray = []; // Lưu các slot lặp lại để gán vào slotRepeatMap
+
+                        if (mode === "weeks" && repeatCheckbox.checked) {
+                            for (let week = 1; week <= weeks; week++) {
+                                currentDate.setDate(currentDate.getDate() + 7);
+                                let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
+                                repeatedSlots.add(newSlot);
+                                repeatedSlotsArray.push(newSlot); // Thêm vào danh sách lặp lại
+                                slotCount++;
+                                console.log("Added repeated slot:", newSlot);
+                            }
+                        } else if (mode === "slots" && repeatCheckbox.checked && slotCount < maxSlots) {
+                            while (slotCount < maxSlots) {
+                                currentDate.setDate(currentDate.getDate() + 7);
+                                let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
+                                repeatedSlots.add(newSlot);
+                                repeatedSlotsArray.push(newSlot); // Thêm vào danh sách lặp lại
+                                slotCount++;
+                                console.log("Added repeated slot:", newSlot);
+                            }
+                        }
+                        if (repeatedSlotsArray.length > 0) {
+                            slotRepeatMap.set(slot, repeatedSlotsArray);
+                        }
+                        console.log("Generated repeated slots:", Array.from(repeatedSlots));
+                        console.log("Updated slotRepeatMap:", Array.from(slotRepeatMap.entries()));
+                        return Array.from(repeatedSlots);
+                    }
+
+                    // Hiển thị/ẩn tùy chọn repeat và chế độ
+                    repeatCheckbox.addEventListener("change", function () {
+                        repeatOptions.style.display = this.checked ? "block" : "none";
+                        console.log("Repeat checkbox changed to:", this.checked);
+                    });
+
+                    repeatByWeeks.addEventListener("change", function () {
+                        if (this.checked) {
+                            weeksOption.style.display = "block";
+                            slotsOption.style.display = "none";
+                            console.log("Switched to weeks mode");
                         }
                     });
 
+                    repeatBySlots.addEventListener("change", function () {
+                        if (this.checked) {
+                            weeksOption.style.display = "none";
+                            slotsOption.style.display = "block";
+                            console.log("Switched to slots mode");
+                        }
+                    });
+
+                    // Lưu dữ liệu form khi thay đổi
+                    [requestTitle, requestContent, startDate, endDate].forEach(input => {
+                        input.addEventListener("input", saveFormData);
+                    });
+                    // Gắn handler cho timeSlots nếu chưa gắn
+                    if (!eventHandlersAttached.timeSlots) {
+                        timeSlots.forEach(slot => {
+                            slot.addEventListener("click", function (event) {
+                                event.preventDefault();
+                                console.log("Time slot clicked - Handler triggered for ", this.dataset.slotInfo, "on element: ", this, "at", new Date().toISOString());
+
+                                let slotInfo = this.dataset.slotInfo;
+                                if (tempSlotBooked.has(slotInfo)) {
+                                    tempSlotBooked.delete(slotInfo);
+                                    this.classList.remove("selected");
+                                    if (slotRepeatMap.has(slotInfo)) {
+                                        const repeatedSlots = slotRepeatMap.get(slotInfo);
+                                        repeatedSlots.forEach(repeatedSlot => {
+                                            tempSlotBooked.delete(repeatedSlot);
+                                        });
+                                        slotRepeatMap.delete(slotInfo);
+                                    }
+                                } else {
+                                    tempSlotBooked.add(slotInfo);
+                                    this.classList.add("selected");
+                                    if (repeatCheckbox.checked) {
+                                        let mode = repeatByWeeks.checked ? "weeks" : "slots";
+                                        let weeks = parseInt(repeatWeeks.value) || 1;
+                                        let maxSlots = parseInt(maxSlotsInput.value) || 5;
+                                        let repeatedSlots = generateRepeatedSlots(slotInfo, mode, weeks, maxSlots);
+                                        repeatedSlots.forEach(s => {
+                                            if (!tempSlotBooked.has(s)) {
+                                                tempSlotBooked.add(s);
+                                            }
+                                        });
+                                    }
+                                }
+
+                                saveFormData();
+                                totalSlots = tempSlotBooked.size;
+                                totalPrice = totalSlots * pricePerSlot;
+                                updateUI();
+                                updateBookedSchedule();
+                            });
+                        });
+                        eventHandlersAttached.timeSlots = true;
+                    }
+
+                    let isBookProcessing = false; // Flag để tránh gửi lặp
+                    // Gắn handler cho bookSlotsBtn nếu chưa gắn
+                    if (!eventHandlersAttached.bookSlotsBtn) {
+                        let isBookProcessing = false;
+                        bookSlotsBtn.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            console.log("Book Slots clicked - Handler triggered on element: ", this, "at", new Date().toISOString());
+                            if (isBookProcessing)
+                                return;
+                            isBookProcessing = true;
+
+                            console.log("Book Slots clicked - Handler triggered at " + new Date().toISOString());
+
+                            if (tempSlotBooked.size === 0) {
+                                alert("Vui lòng chọn ít nhất một slot!");
+                                isBookProcessing = false;
+                                return;
+                            }
+
+                            let formData = new FormData();
+                            tempSlotBooked.forEach(slot => {
+                                formData.append("tempSlotBooked", slot);
+                            });
+                            console.log("Sending FormData for Book:", Array.from(formData.entries()));
+
+                            fetch("/HAPPYorSAD/test?action=book", {
+                                method: "POST",
+                                body: formData,
+                                credentials: "same-origin"
+                            })
+                                    .then(response => {
+                                        if (!response.ok)
+                                            throw new Error("Network response was not ok " + response.status);
+                                        return response.text();
+                                    })
+                                    .then(data => {
+                                        console.log("Raw response from Book:", data);
+                                        const message = data.trim() || "Đã lưu tạm thành công nhưng không có phản hồi chi tiết từ server!";
+                                        alert(message);
+                                        updateTempSlotUI();
+                                    })
+                                    .catch(error => {
+                                        console.error("Lỗi khi gửi Book:", error);
+                                        alert("Lỗi khi lưu tạm: " + error.message);
+                                    })
+                                    .finally(() => {
+                                        isBookProcessing = false;
+                                    });
+
+                            saveFormData();
+                        });
+                        eventHandlersAttached.bookSlotsBtn = true;
+                    }
+
+                    // Gắn handler cho clearAllBtn nếu chưa gắn
+                    if (!eventHandlersAttached.clearAllBtn && clearAllBtn) {
+                        let isClearProcessing = false;
+                        clearAllBtn.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            if (isClearProcessing)
+                                return;
+                            isClearProcessing = true;
+
+                            console.log("Clear clicked - Handler triggered at " + new Date().toISOString());
+
+                            tempSlotBooked.clear();
+                            slotRepeatMap.clear();
+                            sessionStorage.removeItem("tempSlotBooked");
+                            timeSlots.forEach(slot => slot.classList.remove("selected"));
+                            if (bookedSlotsContainer) {
+                                bookedSlotsContainer.innerHTML = "";
+                            }
+                            totalSlots = 0;
+                            totalPrice = 0;
+                            updateUI();
+
+                            fetch("/HAPPYorSAD/test?action=clear", {
+                                method: "POST",
+                                credentials: "same-origin"
+                            })
+                                    .then(response => response.text())
+                                    .then(data => console.log("Clear response:", data))
+                                    .catch(error => console.error("Lỗi khi clear:", error))
+                                    .finally(() => {
+                                        isClearProcessing = false;
+                                    });
+                        });
+                        eventHandlersAttached.clearAllBtn = true;
+                    }
+                    // Gắn handler cho submitBtn nếu chưa gắn
+                    if (!eventHandlersAttached.submitBtn) {
+                        let isSubmitProcessing = false;
+                        submitBtn.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            if (isSubmitProcessing)
+                                return;
+                            isSubmitProcessing = true;
+
+                            console.log("Submit clicked - Handler triggered at " + new Date().toISOString());
+
+                            const bookingForm = document.getElementById("bookingForm");
+                            if (bookingForm.checkValidity()) {
+                                if (tempSlotBooked.size === 0) {
+                                    showNotification("Please select at least one slot before submitting!");
+                                    isSubmitProcessing = false;
+                                    return;
+                                }
+
+                                document.getElementById("serviceInput").value = "submit";
+                                document.getElementById("totalPriceInput").value = totalPrice;
+
+                                let formData = new FormData(bookingForm);
+                                tempSlotBooked.forEach(slot => {
+                                    formData.append("tempSlotBooked", slot);
+                                });
+                                console.log("Sending FormData for Submit:", Array.from(formData.entries()));
+
+                                fetch(bookingForm.action, {
+                                    method: "POST",
+                                    body: formData,
+                                    credentials: "same-origin"
+                                })
+                                        .then(response => {
+                                            if (!response.ok)
+                                                throw new Error("Network response was not ok " + response.status);
+                                            return response.text();
+                                        })
+                                        .then(data => {
+                                            console.log("Raw response from Submit:", data);
+                                            const message = data.trim() || "Submit thành công nhưng không có phản hồi chi tiết từ server!";
+                                            alert(message);
+                                            if (message.includes("successfully")) {
+                                                clearFormData();
+                                                tempSlotBooked.clear();
+                                                slotRepeatMap.clear();
+                                                updateTempSlotUI();
+                                                bookedSlotsContainer.innerHTML = "";
+                                                totalSlots = 0;
+                                                totalPrice = 0;
+                                                updateUI();
+                                                window.location.href = "/HAPPYorSAD/request-list";
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error("Lỗi khi gửi dữ liệu:", error);
+                                            alert("Lỗi khi submit: " + error.message);
+                                        })
+                                        .finally(() => {
+                                            isSubmitProcessing = false;
+                                        });
+                            } else {
+                                showNotification("Please fill in all required fields.");
+                                isSubmitProcessing = false;
+                            }
+                        });
+                        eventHandlersAttached.submitBtn = true;
+                    }
+
+                    // Xử lý nút Save
                     saveBtn.addEventListener("click", function (event) {
                         if (bookingForm.checkValidity()) {
-                            serviceInput.value = "save";
+                            document.getElementById("serviceInput").value = "save";
+                            // Lưu dữ liệu trước khi submit
+                            saveFormData();
                             bookingForm.requestSubmit();
                         } else {
                             event.preventDefault();
@@ -749,8 +1311,88 @@
                         }
                     });
 
+                    // Xử lý chọn tháng
+                    monthItems.forEach(item => {
+                        item.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            const selectedMonth = this.getAttribute("data-month");
+                            document.getElementById("selectedMonth").textContent = selectedMonth;
 
+                            const parts = selectedMonth.split(" ");
+                            if (parts.length === 2) {
+                                const year = parts[1];
+                                const month = parts[0];
+                                document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']").value;
+                                document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']").value;
+                                document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']").value;
+                                document.getElementById("hiddenYear").value = year;
+                                document.getElementById("hiddenMonth").value = month;
+                                document.getElementById("hiddenForm").submit();
+                            }
+                        });
+                    });
 
+                    submitBtn.removeEventListener("click", submitHandler); // Xóa handler cũ nếu có
+                    submitBtn.addEventListener("click", submitHandler);
+
+//                    function submitHandler(event) {
+//                        event.preventDefault();
+//                        if (isSubmitProcessing)
+//                            return;
+//                        isSubmitProcessing = true;
+//
+//                        if (bookingForm.checkValidity()) {
+//                            document.getElementById("serviceInput").value = "submit";
+//                            document.getElementById("totalPriceInput").value = totalPrice;
+//
+//                            let formData = new FormData(bookingForm);
+//                            tempSlotBooked.forEach(slot => {
+//                                formData.append("tempSlotBooked", slot);
+//                            });
+//                            console.log("Sending FormData for Submit:", Array.from(formData.entries()));
+//
+//                            fetch(bookingForm.action, {
+//                                method: "POST",
+//                                body: formData,
+//                                credentials: "same-origin"
+//                            })
+//                                    .then(response => {
+//                                        if (!response.ok)
+//                                            throw new Error("Network response was not ok " + response.status);
+//                                        return response.text();
+//                                    })
+//                                    .then(data => {
+//                                        console.log("Raw response from Submit:", data);
+//                                        const message = data.trim() || "Submit thành công nhưng không có phản hồi chi tiết từ server!";
+//                                        alert(message);
+//                                        if (message.includes("successfully")) {
+//                                            clearFormData();
+//                                        }
+//                                    })
+//                                    .catch(error => {
+//                                        console.error("Lỗi khi gửi dữ liệu:", error);
+//                                        alert("Lỗi khi submit: " + error.message);
+//                                    })
+//                                    .finally(() => {
+//                                        isSubmitProcessing = false;
+//                                    });
+//                        } else {
+//                            showNotification("Please fill in all required fields.");
+//                        }
+//                    }
+
+                    // Khởi tạo UI với slot và form đã book tạm
+                    window.addEventListener("load", function () {
+                        const savedMonth = localStorage.getItem("selectedMonth");
+                        if (savedMonth) {
+                            document.getElementById("selectedMonth").textContent = savedMonth;
+                        }
+                        updateTempSlotUI();
+                        restoreFormData();
+                        repeatByWeeks.checked = true;
+                        weeksOption.style.display = "block";
+                        slotsOption.style.display = "none";
+                    });
                 });
 
 
