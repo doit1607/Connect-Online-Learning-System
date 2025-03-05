@@ -132,6 +132,22 @@ public class DAOMentor extends DBConnection {
         }
         return list;
     }
+    public String getMentorName(int id){
+        String name = null;
+        String sql = "Select * from Mentor where user_id = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                name = rs.getString("name");
+                return name;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
 
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
@@ -139,22 +155,21 @@ public class DAOMentor extends DBConnection {
                 + "    u.fullname,\n"
                 + "    u.username,\n"
                 + "    m.expertise,\n"
-                + "	m.image,\n"
-                + "    COUNT(DISTINCT mr.mentee_id) AS total_mentees,\n"
-                + "    m.rating AS mentor_rating,\n"
-                + "    COUNT(mr.id) AS total_reviews,\n"
+                + "    m.image,\n"
                 + "    m.price_per_slot\n"
                 + "FROM Mentor m\n"
-                + "JOIN Users u ON m.user_id = u.id\n"
-                + "LEFT JOIN mentor_reviews mr ON m.id = mr.mentor_id\n"
-                + "GROUP BY u.fullname, u.username, m.expertise, m.rating, m.price_per_slot, m.image;";
+                + "JOIN Users u ON m.user_id = u.id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 list.add(new Mentor(rs.getString("fullname"),
-                        rs.getDouble("mentor_rating"), rs.getDouble("price_per_slot"),
-                        rs.getString("expertise"), rs.getString("image"),
-                        rs.getString("username"), rs.getInt("total_mentees"), rs.getInt("total_reviews"))
+                        0.0, 
+                        rs.getDouble("price_per_slot"),
+                        rs.getString("expertise"),
+                        rs.getString("image"),
+                        rs.getString("username"),
+                        0, 
+                        0) 
                 );
             }
 
