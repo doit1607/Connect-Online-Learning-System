@@ -34,7 +34,7 @@ public class ViewMentor_Mentee extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         DAOMentor dao = new DAOMentor();
+        DAOMentor dao = new DAOMentor();
         List<Mentor> list = dao.getMentorsSuggestion();
 
         HttpSession session = request.getSession();
