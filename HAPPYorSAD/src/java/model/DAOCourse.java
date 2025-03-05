@@ -74,6 +74,23 @@ public class DAOCourse extends DBConnection {
 //        }
 //        return false;
 //    }
+    public String getCourseName(int id) {
+        String name = null;
+        String sql = "Select * from Course where id = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("title");
+                return name;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
     public void createCourse(String title, String description, int majorId, String image, Double price) {
         String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [course_major_id], [image], [price]) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -91,7 +108,7 @@ public class DAOCourse extends DBConnection {
         }
     }
 
-   public List<Course> getAllCourseOrderByName() {
+    public List<Course> getAllCourseOrderByName() {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -162,18 +179,19 @@ public class DAOCourse extends DBConnection {
         }
         return listCourseHome;
     }
-    public double getPriceCourse(int id){
+
+    public double getPriceCourse(int id) {
         double price = 0;
         String sql = "Select * from Course where id = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 price = rs.getInt("price");
                 return price;
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,9 +274,7 @@ public class DAOCourse extends DBConnection {
         return false;
     }
 
-    
-
-  public Course getCourseById(int id) {
+    public Course getCourseById(int id) {
         String query = "SELECT [id]\n"
                 + "      ,[title]\n"
                 + "      ,[description]\n"
@@ -290,7 +306,7 @@ public class DAOCourse extends DBConnection {
                 String image = result.getString("image");
                 Double price = result.getDouble("price");
 
-                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image,price);
+                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
 
             }
             result.close();
@@ -313,7 +329,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
-                 + "     ,[price]\n"
+                + "     ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  where [mentor_id] = ?";
         try {
@@ -402,7 +418,6 @@ public class DAOCourse extends DBConnection {
 //        }
 //        return 0;
 //    }
-
     public int getTotalMentorsByCourse(int courseId) {
         String sql = "SELECT COUNT(DISTINCT c.mentor_id) AS total_mentors "
                 + "FROM Course c "
@@ -480,46 +495,45 @@ public class DAOCourse extends DBConnection {
         }
         return courses;
     }
+
     public List<Course> getCoursesByStatus(String username, String status) {
-    List<Course> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
-    // SQL Query to join Request, Course, Mentee, and Users tables
-    String sql = "SELECT c.id, c.title, c.description, c.manager_id, c.mentor_id, " +
-                 "c.status, c.created_at, c.updated_at, c.course_major_id, c.image, c.price " +
-                 "FROM Request r " +
-                 "JOIN Course c ON r.course_id = c.id " +
-                 "JOIN Mentee m ON r.mentee_id = m.id " +
-                 "JOIN Users u ON m.user_id = u.id " +
-                 "WHERE u.username = ? AND r.status = ?";
+        // SQL Query to join Request, Course, Mentee, and Users tables
+        String sql = "SELECT c.id, c.title, c.description, c.manager_id, c.mentor_id, "
+                + "c.status, c.created_at, c.updated_at, c.course_major_id, c.image, c.price "
+                + "FROM Request r "
+                + "JOIN Course c ON r.course_id = c.id "
+                + "JOIN Mentee m ON r.mentee_id = m.id "
+                + "JOIN Users u ON m.user_id = u.id "
+                + "WHERE u.username = ? AND r.status = ?";
 
-    try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, status);
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, status);
 
-        try (ResultSet rs = preparedStatement.executeQuery()) {
-            while (rs.next()) {
-                Course course = new Course();
-                course.setId(rs.getInt("id"));
-                course.setTitle(rs.getString("title"));
-                course.setDescription(rs.getString("description"));
-                course.setManagerId(rs.getInt("manager_id"));
-                course.setMentorId(rs.getInt("mentor_id"));
-                course.setStatus(rs.getString("status"));
-                course.setCourseMajorId(rs.getInt("course_major_id"));
-                course.setImage(rs.getString("image"));
-                course.setPrice(rs.getDouble("price"));
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course();
+                    course.setId(rs.getInt("id"));
+                    course.setTitle(rs.getString("title"));
+                    course.setDescription(rs.getString("description"));
+                    course.setManagerId(rs.getInt("manager_id"));
+                    course.setMentorId(rs.getInt("mentor_id"));
+                    course.setStatus(rs.getString("status"));
+                    course.setCourseMajorId(rs.getInt("course_major_id"));
+                    course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
 
-                courses.add(course);
+                    courses.add(course);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return courses;
     }
-
-    return courses;
-}
-
-
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
