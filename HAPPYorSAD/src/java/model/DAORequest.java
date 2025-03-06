@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import model.DBConnection;
 import static model.DBConnection.conn;
@@ -156,8 +157,6 @@ public class DAORequest extends DBConnection {
         ps.setInt(2, requestId);
         ps.executeUpdate();
     }
-    
-    
 
     public boolean insertRequest(Request request) {
         String sql = "INSERT INTO Request (mentee_id,mentor_id,title,total_slot,start_date,end_date,content,status,course_id,totalprice) "
@@ -291,7 +290,7 @@ public class DAORequest extends DBConnection {
     public List<Request> getAllRequest(int menteeId) {
         ArrayList<Request> listRequest = new ArrayList<>();
 
-      String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
+        String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
                 + "r.[total_slot], r.[start_date], r.[end_date], r.[content], r.[status], "
                 + "r.[created_at], r.[updated_at], r.[course_id], r.[totalPrice], "
                 + "c.[title] AS course_title, m.[name] AS mentor_name "
@@ -343,6 +342,108 @@ public class DAORequest extends DBConnection {
         }
 
         return listRequest;
+    }
+
+    // Hien thi cho manager tat ca request cua Mentee (Dung)
+    public List<Request> showAllRequest() {
+        List<Request> listReq = new ArrayList<>();
+        String sql = "SELECT r.id, u.username, r.title, r.status FROM Request r \n"
+                + "JOIN Mentee m ON r.mentee_id = m.id\n"
+                + "JOIN Users u ON m.user_id = u.id\n"
+                + "ORDER BY r.created_at DESC";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Request request = new Request();
+                request.setId(rs.getInt("id"));
+                request.setUserMentee(rs.getString("username"));
+                request.setTitle(rs.getString("title"));
+                request.setStatus(rs.getString("status"));
+                listReq.add(request);
+            }
+        } catch (Exception e) {
+        }
+        return listReq;
+    }
+
+    // Dung de tim kiem va loc (Dung)
+    public List<Request> getAllRequests(String search, String status, LocalDate startDate, LocalDate endDate) {
+        List<Request> listRep = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT r.id, u.username, r.title, r.status "
+                + "FROM Request r "
+                + "JOIN Mentee m ON r.mentee_id = m.id "
+                + "JOIN Users u ON m.user_id = u.id "
+                + "WHERE 1=1");
+
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND r.title LIKE ?");
+        }
+        if (status != null && !status.isEmpty()) {
+            sql.append(" AND r.status = ?");
+        }
+        if (startDate != null) {
+            sql.append(" AND CONVERT(DATE, r.start_date) >= ?");
+        }
+        if (endDate != null) {
+            sql.append(" AND CONVERT(DATE, r.end_date) <= ?");
+        }
+        sql.append(" ORDER BY r.created_at DESC");
+
+        try (PreparedStatement pre = conn.prepareStatement(sql.toString())) {
+            int index = 1;
+            if (search != null && !search.isEmpty()) {
+                pre.setString(index++, "%" + search + "%");
+            }
+            if (status != null && !status.isEmpty()) {
+                pre.setString(index++, status);
+            }
+            if (startDate != null) {
+                pre.setDate(index++, Date.valueOf(startDate));
+            }
+            if (endDate != null) {
+                pre.setDate(index++, Date.valueOf(endDate));
+            }
+
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
+                    Request request = new Request();
+                    request.setId(rs.getInt("id"));
+                    request.setUserMentee(rs.getString("username"));
+                    request.setTitle(rs.getString("title"));
+                    request.setStatus(rs.getString("status"));
+                    listRep.add(request);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listRep;
+    }
+
+    // Dung cho Request Detail by ID
+    public Request requestById(int id) {
+        String sql = "select u.username, c.title as [courseName], r.title,  r.content, r.total_slot, r.start_date, r.end_date, r.created_at from Request r\n"
+                + "join Course c on r.course_id = c.id\n"
+                + "join Mentee m on r.mentee_id = m.id\n"
+                + "join Users u on m.user_id = u.id where r.id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Request(rs.getString("username"),
+                        rs.getString("courseName"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("total_slot"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getTimestamp("created_at").toLocalDateTime());
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public boolean addRejectReason(int requestId, String reason) {
