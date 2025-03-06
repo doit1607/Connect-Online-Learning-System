@@ -85,13 +85,14 @@
         <div class="container" style="margin-top: 100px; margin-bottom: 100px">
             <div class = "row">
                 <!-- sidebar -->
+                <!-- sidebar -->
                 <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
                     <div class="settings-widget account-settings">
                         <div class="settings-menu">
                             <h3>Dashboard</h3>
                             <ul>
-                                <li class="nav-item">
+                                <li class="nav-item ">
                                     <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
                                         <i class="bx bxs-tachometer"></i>My Profile
                                     </a>
@@ -161,6 +162,9 @@
                                         Title:
                                         <input type="text" name="title" class="form-control" placeholder="Search title" value="${param.title}">
                                     </div>
+
+
+
 
 
                                     <div class="col-md-4">
@@ -265,7 +269,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="appointment-info" style="width: 50px">
+                                <li class="appointment-info" style="width: 300px">
                                     <p class="md-text">Title</p>
                                     <p><i class="isax isax-clock5"></i>${request.getTitle()}</p>
                                 </li>
@@ -277,6 +281,13 @@
                                     <p class="md-text">End Date</p>
                                     <p><i class="isax isax-clock5"></i>${request.getEndDate()}</p>
                                 </li>
+                                <!--            <li>
+                                                <button type="button" class="btn btn-outline-secondary" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#acceptAppointmentModal_${request.getId()}">
+                                                    <i class="fa-solid fa-info"></i>&nbsp;Details
+                                                </button>
+                                            </li>-->
                             </ul>
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-secondary" 
@@ -323,12 +334,10 @@
                                                         <img src="${course.image}" class="img-fluid rounded-start" alt="img">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        
                                                         <div class="card-body">
-
                                                             <h5 class="card-title">${course.title}</h5>
                                                             <p class="card-text">${course.description}</p>
-
+                                                            <a href="#" class="btn btn-primary">View details</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -349,7 +358,7 @@
                                                     <c:when test="${request.status eq 'Processing'}">
                                                     <li><span class="text-success"><i class="fa-solid fa-check"></i>Request Accepted</span></li>
                                                     </c:when>
-                                                    <c:when test="${fn:toLowerCase(request.status) eq 'open'}">
+                                                    <c:when test="${request.status eq 'Open'}">
                                                     <li>
                                                         <form action="viewRequest" method="POST">
                                                             <input type="hidden" name="id" value="${request.id}">
@@ -425,67 +434,67 @@
 
         <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
         <script>
-                                                                function confirmAccept(button) {
-                                                                    if (confirm("Are you sure you want to accept?")) {
-                                                                        let form = button.closest("form");
-                                                                        form.submit();
-                                                                    }
-                                                                }
+                            function confirmAccept(button) {
+                                if (confirm("Are you sure you want to accept?")) {
+                                    let form = button.closest("form");
+                                    form.submit();
+                                }
+                            }
 
-                                                                function confirmReject(button) {
-                                                                    let reason = prompt("Please enter the reason for rejection:");
-                                                                    if (reason) {
-                                                                        // Tìm form cha của nút Reject
-                                                                        let form = button.closest("form");
+                            function confirmReject(button) {
+                                let reason = prompt("Please enter the reason for rejection:");
+                                if (reason) {
+                                    // Tìm form cha của nút Reject
+                                    let form = button.closest("form");
 
-                                                                        // Thêm input ẩn để gửi lý do reject
-                                                                        let input = document.createElement("input");
-                                                                        input.type = "hidden";
-                                                                        input.name = "reject_reason";
-                                                                        input.value = reason;
-                                                                        form.appendChild(input);
+                                    // Thêm input ẩn để gửi lý do reject
+                                    let input = document.createElement("input");
+                                    input.type = "hidden";
+                                    input.name = "reject_reason";
+                                    input.value = reason;
+                                    form.appendChild(input);
 
-                                                                        // Gửi form
-                                                                        form.submit();
-                                                                    }
-                                                                }
-                                                                document.getElementById("toggleFilter").addEventListener("click", function () {
-                                                                    var filterContainer = document.getElementById("filterContainer");
-                                                                    var icon = this.querySelector("i");
+                                    // Gửi form
+                                    form.submit();
+                                }
+                            }
+                            document.getElementById("toggleFilter").addEventListener("click", function () {
+                                var filterContainer = document.getElementById("filterContainer");
+                                var icon = this.querySelector("i");
 
-                                                                    if (filterContainer.style.display === "none") {
-                                                                        filterContainer.style.display = "block";
-                                                                        icon.classList.remove("fa-chevron-down");
-                                                                        icon.classList.add("fa-chevron-up");
-                                                                    } else {
-                                                                        filterContainer.style.display = "none";
-                                                                        icon.classList.remove("fa-chevron-up");
-                                                                        icon.classList.add("fa-chevron-down");
-                                                                    }
-                                                                });
-                                                                document.addEventListener("DOMContentLoaded", function () {
-                                                                    var filterContainer = document.getElementById("filterContainer");
-                                                                    var toggleFilter = document.getElementById("toggleFilter");
+                                if (filterContainer.style.display === "none") {
+                                    filterContainer.style.display = "block";
+                                    icon.classList.remove("fa-chevron-down");
+                                    icon.classList.add("fa-chevron-up");
+                                } else {
+                                    filterContainer.style.display = "none";
+                                    icon.classList.remove("fa-chevron-up");
+                                    icon.classList.add("fa-chevron-down");
+                                }
+                            });
+                            document.addEventListener("DOMContentLoaded", function () {
+                                var filterContainer = document.getElementById("filterContainer");
+                                var toggleFilter = document.getElementById("toggleFilter");
 
-                                                                    // Kiểm tra localStorage để quyết định có hiển thị bộ lọc không
-                                                                    if (localStorage.getItem("filterVisible") === "true") {
-                                                                        filterContainer.style.display = "block";
-                                                                        toggleFilter.innerHTML = "&#9650;"; // Mũi tên hướng lên
-                                                                    }
+                                // Kiểm tra localStorage để quyết định có hiển thị bộ lọc không
+                                if (localStorage.getItem("filterVisible") === "true") {
+                                    filterContainer.style.display = "block";
+                                    toggleFilter.innerHTML = "&#9650;"; // Mũi tên hướng lên
+                                }
 
-                                                                    // Khi nhấn vào toggle, ẩn/hiện bộ lọc và lưu trạng thái
-                                                                    toggleFilter.addEventListener("click", function () {
-                                                                        if (filterContainer.style.display === "none") {
-                                                                            filterContainer.style.display = "block";
-                                                                            toggleFilter.innerHTML = "&#9650;";
-                                                                            localStorage.setItem("filterVisible", "true");
-                                                                        } else {
-                                                                            filterContainer.style.display = "none";
-                                                                            toggleFilter.innerHTML = "&#9660;";
-                                                                            localStorage.setItem("filterVisible", "false");
-                                                                        }
-                                                                    });
-                                                                });
+                                // Khi nhấn vào toggle, ẩn/hiện bộ lọc và lưu trạng thái
+                                toggleFilter.addEventListener("click", function () {
+                                    if (filterContainer.style.display === "none") {
+                                        filterContainer.style.display = "block";
+                                        toggleFilter.innerHTML = "&#9650;";
+                                        localStorage.setItem("filterVisible", "true");
+                                    } else {
+                                        filterContainer.style.display = "none";
+                                        toggleFilter.innerHTML = "&#9660;";
+                                        localStorage.setItem("filterVisible", "false");
+                                    }
+                                });
+                            });
         </script>
     </body>
 </html>
