@@ -62,13 +62,42 @@ public class DAOmentee extends DBConnection {
                         rs.getString("goals"),
                         rs.getTimestamp("created_at").toLocalDateTime(),
                         rs.getString("image")
-                        
                 );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int getMenteeUserid(int menteeId) {
+        String sql = "SELECT user_id FROM Mentee WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, menteeId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Trả về 0 nếu không tìm thấy
+    }
+
+    public String getMenteeUsername(int id) {
+        String sql = "SELECT username FROM Users WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
     }
 
     public static void main(String[] args) {
