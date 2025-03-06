@@ -22,6 +22,7 @@ public class Request {
     private int id;
     private int menteeId;
     private int mentorId;
+    private String userMentee;
     private String title;
     private double totalprice;
     private int totalSlot;
@@ -125,6 +126,26 @@ public class Request {
         this.status = status;
         this.courseId = courseId;
     }
+     
+    // dung cho showAllRequest ben DAORequest
+    public Request(int menteeId, String userMentee, String title, String status) {
+        this.menteeId = menteeId;
+        this.userMentee = userMentee;
+        this.title = title;
+        this.status = status;
+    }
+    
+    // dung cho Request detail
+    public Request(String userMentee, String courseName, String title, String content, int totalSlot, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt) {
+        this.userMentee = userMentee;
+        this.coursename = courseName;
+        this.title = title;
+        this.content = content;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdAt = createdAt;
+    }
     
      public Request(int menteeId, int mentorId, String title, int totalSlot, LocalDate startDate, LocalDate endDate, String content, int courseId) {
         this.menteeId = menteeId;
@@ -145,6 +166,13 @@ public class Request {
         this.slots = slots;
     }
 
+    public String getUserMentee() {
+        return userMentee;
+    }
+
+    public void setUserMentee(String userMentee) {
+        this.userMentee = userMentee;
+    }
      
     public double getTotalprice() {
         return totalprice;
