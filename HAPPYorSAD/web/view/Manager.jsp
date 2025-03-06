@@ -119,8 +119,8 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
+                                            <a href="ShowAllRequest" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Request of Mentee
                                             </a>
                                         </li>
                                         <li class="nav-item">
