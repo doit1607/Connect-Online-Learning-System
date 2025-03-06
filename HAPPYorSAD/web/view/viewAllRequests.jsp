@@ -153,7 +153,7 @@
                                 <form action="ShowAllRequest" method="GET" class="mb-3">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <input type="text" name="search" class="form-control" placeholder="Search">
+                                            <input type="text" name="search" class="form-control" placeholder="Search by Name">
                                         </div>
                                         <div class="col-md-3">
                                             <select name="status" class="form-control">
