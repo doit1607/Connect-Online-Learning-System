@@ -5,6 +5,7 @@
 package model;
 
 import entity.Request;
+import java.lang.System.Logger;
 import java.security.Timestamp;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -182,6 +183,8 @@ public class DAORequest extends DBConnection {
         }
         return false;
     }
+    
+
 
     public int insertRequestAndGetId(Request request) throws SQLException {
         String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, totalprice, start_date, end_date, content, status, course_id) "
@@ -199,6 +202,8 @@ public class DAORequest extends DBConnection {
         ps.setString(9, request.getStatus());
         ps.setInt(10, request.getCourseId());
 
+        System.out.println("sql" +sql+ "request" +request);
+        
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return rs.getInt(1); // Trả về ID của request vừa chèn
@@ -297,8 +302,7 @@ public class DAORequest extends DBConnection {
                 + "FROM [SWP1].[dbo].[Request] r "
                 + "JOIN [SWP1].[dbo].[Course] c ON r.course_id = c.id "
                 + "JOIN [SWP1].[dbo].[Mentor] m ON r.mentor_id = m.user_id "
-                + "WHERE r.mentee_id = ?"
-                + "ORDER BY r.created_at DESC";
+                + "WHERE r.mentee_id = ? order by created_at desc";
 
         try {
             PreparedStatement connect = conn.prepareStatement(query);
