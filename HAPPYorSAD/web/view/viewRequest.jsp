@@ -265,20 +265,19 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="appointment-info">
+                                <li class="appointment-info" style="width: 50px">
                                     <p class="md-text">Title</p>
-                                    <p><i class="isax isax-clock5"></i> ${request.getTitle()}</p>
+                                    <p><i class="isax isax-clock5"></i>${request.getTitle()}</p>
                                 </li>
                                 <li class="appointment-info">
                                     <p class="md-text">Start Date</p>
-                                    <p><i class="isax isax-clock5"></i> ${request.getStartDate()}</p>
+                                    <p><i class="isax isax-clock5"></i>${request.getStartDate()}</p>
                                 </li>
                                 <li class="appointment-info">
                                     <p class="md-text">End Date</p>
-                                    <p><i class="isax isax-clock5"></i> ${request.getEndDate()}</p>
+                                    <p><i class="isax isax-clock5"></i>${request.getEndDate()}</p>
                                 </li>
                             </ul>
-
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-secondary" 
                                         data-bs-toggle="modal" 
@@ -354,8 +353,6 @@
                                                     <li>
                                                         <form action="viewRequest" method="POST">
                                                             <input type="hidden" name="id" value="${request.id}">
-                                                            <input type="hidden" name="menteeid" value="${request.menteeid}">
-                                                            <input type="hidden" name="mentorid" value="${request.mentorid}">
                                                             <input type="hidden" name="status" value="Processing">
                                                             <button type="button" class="btn btn-success" onclick="confirmAccept(this)">
                                                                 <i class="fa-solid fa-check"></i> Accept
@@ -367,7 +364,7 @@
                                                             <input type="hidden" name="id" value="${request.id}">
                                                             <input type="hidden" name="status" value="Cancel">
                                                             <button type="button" class="btn btn-danger" onclick="return confirmReject(this)">
-                                                            <i class="fa-solid fa-xmark"></i> Reject
+                                                                <i class="fa-solid fa-xmark"></i> Reject
                                                             </button>
                                                         </form>
                                                     </li>
