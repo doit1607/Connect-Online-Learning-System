@@ -5,7 +5,6 @@
     Created on : Jan 19, 2025, 4:17:41 PM
     Author     : Ann
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -82,7 +81,7 @@
                                             <fmt:formatNumber value="${sessionScope.walletBalance}" 
                                                               type="number" 
                                                               pattern="#,##0" 
-                                                              currencySymbol="" /> đ
+                                                              currencySymbol="" /> ?
                                         </a>
                                         <a class="dropdown-item" href="/../HAPPYorSAD/LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                     </div>
