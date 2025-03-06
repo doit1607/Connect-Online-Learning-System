@@ -323,7 +323,7 @@
                                                         <img src="${course.image}" class="img-fluid rounded-start" alt="img">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <i>Updating</i>
+                                                        
                                                         <div class="card-body">
 
                                                             <h5 class="card-title">${course.title}</h5>
