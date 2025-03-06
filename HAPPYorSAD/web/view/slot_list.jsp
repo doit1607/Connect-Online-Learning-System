@@ -222,12 +222,12 @@
                                         <h3>Instructor</h3>
                                         <ul>
                                             <li class="nav-item">
-                                                <a href="instructor-course.html" class="nav-link ">
+                                                <a href="instructor-course.html" class="nav-link">
                                                     <i class="bx bxs-rocket"></i>My Courses
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="instructor-course.html" class="nav-link ">
+                                                <a href="instructor-course.html" class="nav-link">
                                                     <i class="bx bxs-rocket"></i>My Curriculum Vitae
                                                 </a>
                                             </li>
@@ -247,7 +247,7 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="instructor-withdraw.html" class="nav-link ">
+                                                <a href="instructor-withdraw.html" class="nav-link">
                                                     <i class="bx bxs-wallet"></i>Withdrawls
                                                 </a>
                                             </li>
@@ -261,7 +261,7 @@
                                         <h3>Account Settings</h3>
                                         <ul>
                                             <li class="nav-item">
-                                                <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link">
                                                     <i class="bx bxs-cog"></i>Settings
                                                 </a>
                                             </li>
@@ -293,7 +293,7 @@
                                 </div>
 
                                 <div class="tab-content pt-0 timing-content">
-                                    <!-- General Availability Tab (Dành cho mentor chỉnh sửa lịch) -->
+                                
                                     <div class="tab-pane fade show active" id="general-availability">
                                         <div class="card custom-card">
                                             <div class="card-body">
