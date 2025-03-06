@@ -58,6 +58,7 @@
                                                 <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="ViewMentor_Mentee">Mentor List</a></li>
+                                                    <li><a href="att">Attendance</a></li>
                                                 </ul>
                                             </li>	
                                             <c:if test="${sessionScope.usernameRole eq 'mentee'}">
@@ -68,6 +69,7 @@
                                                         <li><a href="/../HAPPYorSAD/EnrolledCourses">Enrolled Courses</a></li>
                                                         <li><a href="Schedule">Book</a></li>
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
+                                                        
                                                     </ul>
                                                 </li>	
                                                 <li class="has-submenu">
@@ -124,6 +126,7 @@
                                             </c:if>
                                             <c:if test ="${sessionScope.usernameRole eq 'mentor'}">
                                                 <a class="dropdown-item" href="/../HAPPYorSAD/updatementorprofile"><i class="feather-user me-1"></i> Profile</a>
+                                                
                                             </c:if>
 
 

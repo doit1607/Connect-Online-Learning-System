@@ -34,6 +34,7 @@ public class Request {
     private int courseId;
     private String mentorname;
     private String coursename;
+    private Slot slots;
     
 
     // Constructors
@@ -136,6 +137,15 @@ public class Request {
         this.courseId = courseId;
     }
 
+    public Slot getSlots() {
+        return slots;
+    }
+
+    public void setSlots(Slot slots) {
+        this.slots = slots;
+    }
+
+     
     public double getTotalprice() {
         return totalprice;
     }
@@ -270,21 +280,10 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{"
-                + "id=" + id
-                + ", menteeId=" + menteeId
-                + ", mentorId=" + mentorId
-                + ", title='" + title + '\''
-                + ", totalSlot=" + totalSlot
-                + ", startDate=" + startDate
-                + ", endDate=" + endDate
-                + ", content='" + content + '\''
-                + ", status='" + status + '\''
-                + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt
-                + ", courseIds='" + courseId + '\''
-                + '}';
+        return "Request{" + "id=" + id + ", menteeId=" + menteeId + ", mentorId=" + mentorId + ", title=" + title + ", totalprice=" + totalprice + ", totalSlot=" + totalSlot + ", startDate=" + startDate + ", endDate=" + endDate + ", content=" + content + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseId=" + courseId + ", mentorname=" + mentorname + ", coursename=" + coursename + ", slots=" + slots + '}';
     }
+
+   
     public List<Course> getRequestedCourses(){
         DAOCourse dao =  new DAOCourse();
         List<Course> list = new ArrayList<>();

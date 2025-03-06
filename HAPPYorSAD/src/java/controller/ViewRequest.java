@@ -14,9 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DAORequest;
+import model.DAOa;
+import model.DAOslot;
 import model.DAOuser;
 import model.TransactionDAO;
 
@@ -119,6 +124,8 @@ public class ViewRequest extends HttpServlet {
 //        session.setAttribute("limit", limit);
 //        session.setAttribute("totalPages", totalPages); // Gửi tổng số trang đến session
         List<Request> requests = daoReq.getRequestByMentor(mentorUsername, title, status, date, page, limit);
+        
+        
         request.setAttribute("requests", requests);
         request.setAttribute("currentPage", page);
         request.setAttribute("limit", limit);
@@ -141,18 +148,44 @@ public class ViewRequest extends HttpServlet {
         int requestId = Integer.parseInt(request.getParameter("id"));
         String status = request.getParameter("status");
         TransactionDAO trandao = new TransactionDAO();
-        
-        DAORequest dao = new DAORequest();
-        if (status.equals("Processing")) {
-            dao.updateRequestStatus(requestId, status);
-            
-        }
 
-        if (status.equals("Cancel")) {
-            dao.updateRequestStatus(requestId, status);
-            String reason = request.getParameter("reject_reason");
-            dao.addRejectReason(requestId, reason);
-        }
+        DAORequest dao = new DAORequest();
+
+        // *** Thêm xử lý điểm danh slot ***
+        String action = request.getParameter("action");
+        DAOslot slotDAO = new DAOslot();
+        DAOa attendanceDAO = new DAOa();
+
+//        if ("markDone".equals(action)) {
+//            int slotId = Integer.parseInt(request.getParameter("slotId"));
+//            int mentorId = Integer.parseInt(request.getParameter("mentorId"));
+//            try {
+//                attendanceDAO.markAttendance(slotId, mentorId, true);
+//            } catch (SQLException ex) {
+//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            try {
+//                slotDAO.updateSlotStatus(slotId, "Complete");
+//            } catch (SQLException ex) {
+//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//            try {
+//                // Kiểm tra nếu tất cả slot đã hoàn thành
+//                if (slotDAO.areAllSlotsComplete(requestId)) {
+//                    dao.updateRequestStatus(requestId, "Complete");
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } else if (status.equals("Processing")) {
+//            dao.updateRequestStatus(requestId, status);
+//        } else if (status.equals("Cancel")) {
+//            dao.updateRequestStatus(requestId, status);
+//            String reason = request.getParameter("reject_reason");
+//            dao.addRejectReason(requestId, reason);
+//        }
+
         response.sendRedirect("/HAPPYorSAD/viewRequest");
 
     }

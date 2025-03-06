@@ -1154,7 +1154,7 @@
                             console.log("Book Slots clicked - Handler triggered at " + new Date().toISOString());
 
                             if (tempSlotBooked.size === 0) {
-                                alert("Vui lòng chọn ít nhất một slot!");
+                                showNotification("Vui lòng chọn ít nhất một slot!");
                                 isBookProcessing = false;
                                 return;
                             }
@@ -1178,12 +1178,12 @@
                                     .then(data => {
                                         console.log("Raw response from Book:", data);
                                         const message = data.trim() || "Đã lưu tạm thành công nhưng không có phản hồi chi tiết từ server!";
-                                        alert(message);
+                                        showNotification(message);
                                         updateTempSlotUI();
                                     })
                                     .catch(error => {
                                         console.error("Lỗi khi gửi Book:", error);
-                                        alert("Lỗi khi lưu tạm: " + error.message);
+                                        showNotification("Lỗi khi lưu tạm: " + error.message);
                                     })
                                     .finally(() => {
                                         isBookProcessing = false;
@@ -1232,6 +1232,7 @@
                     // Gắn handler cho submitBtn nếu chưa gắn
                     if (!eventHandlersAttached.submitBtn) {
                         let isSubmitProcessing = false;
+                        // Thay thế phần submitBtn event listener trong script
                         submitBtn.addEventListener("click", function (event) {
                             event.preventDefault();
                             if (isSubmitProcessing)
@@ -1269,9 +1270,9 @@
                                         })
                                         .then(data => {
                                             console.log("Raw response from Submit:", data);
-                                            const message = data.trim() || "Submit thành công nhưng không có phản hồi chi tiết từ server!";
-                                            alert(message);
+                                            const message = data.trim();
                                             if (message.includes("successfully")) {
+                                                showNotification(message);
                                                 clearFormData();
                                                 tempSlotBooked.clear();
                                                 slotRepeatMap.clear();
@@ -1280,12 +1281,16 @@
                                                 totalSlots = 0;
                                                 totalPrice = 0;
                                                 updateUI();
-                                                window.location.href = "/HAPPYorSAD/request-list";
+                                                window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
+                                            } else if (message.includes("Failed") || message.includes("error")) {
+                                                showNotification(message);
+                                            } else {
+                                                showNotification("Submit thành công nhưng không có phản hồi chi tiết từ server!");
                                             }
                                         })
                                         .catch(error => {
                                             console.error("Lỗi khi gửi dữ liệu:", error);
-                                            alert("Lỗi khi submit: " + error.message);
+                                            showNotification("Lỗi khi submit: " + error.message);
                                         })
                                         .finally(() => {
                                             isSubmitProcessing = false;
@@ -1297,7 +1302,6 @@
                         });
                         eventHandlersAttached.submitBtn = true;
                     }
-
                     // Xử lý nút Save
                     saveBtn.addEventListener("click", function (event) {
                         if (bookingForm.checkValidity()) {

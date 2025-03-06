@@ -27,8 +27,10 @@ import model.DAOMentor;
 import model.DAORequest;
 import entity.Schedule;
 import entity.Transaction;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.Month;
+import java.util.logging.Level;
 import model.DAOCourse;
 import model.TransactionDAO;
 
@@ -141,7 +143,22 @@ public class test extends HttpServlet {
                         double balance = daowallet.getBalance(usernamementee);
                         session.setAttribute("walletBalance", balance);
                         Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
-                        daorequest.insertRequest(requests);
+
+                        // Sử dụng insertRequestAndGetId để lấy ID của request vừa chèn
+                        int newRequestId;
+                        try {
+                            if (!daorequest.insertRequest(requests)) { // Nếu insertRequest trả về false
+                                response.setContentType("text/plain");
+                                response.getWriter().write("Failed to create request.");
+                                return;
+                            }
+                            newRequestId = daorequest.insertRequestAndGetId(requests); // Lấy ID của request vừa chèn
+                        } catch (SQLException ex) {
+                            LOGGER.log(Level.SEVERE, "Error inserting request", ex);
+                            response.setContentType("text/plain");
+                            response.getWriter().write("Database error occurred.");
+                            return;
+                        }
 
                         // Đẩy slot vào database
                         int bookedCount = 0;
@@ -153,6 +170,11 @@ public class test extends HttpServlet {
                             if (slotId != null) {
                                 boolean success = daoSlot.bookSlot(slotId, menteeId);
                                 if (success) {
+                                    try {
+                                        daoSlot.updateRequestIdForSlot(slotId, newRequestId);
+                                    } catch (SQLException ex) {
+                                        LOGGER.log(Level.SEVERE, "Error updating slot request ID", ex);
+                                    }
                                     bookedCount++;
                                     LOGGER.info("Booked: " + slot);
                                 } else {
@@ -183,7 +205,12 @@ public class test extends HttpServlet {
                         existingRequest.setStatus("Open");
                         daorequest.updateRequest(existingRequest);
 
-                        // Đẩy slot vào database
+                        try {
+                            // Đẩy slot vào database
+                            daoSlot.removeRequestIdFromSlots(requestId); // Xóa request_id cũ (nếu cần)
+                        } catch (SQLException ex) {
+                            LOGGER.log(Level.SEVERE, "Error removing old slots", ex);
+                        }
                         int bookedCount = 0;
                         for (String slot : tempSlotBooked) {
                             String[] parts = slot.split("_");
@@ -193,6 +220,11 @@ public class test extends HttpServlet {
                             if (slotId != null) {
                                 boolean success = daoSlot.bookSlot(slotId, menteeId);
                                 if (success) {
+                                    try {
+                                        daoSlot.updateRequestIdForSlot(slotId, requestId);
+                                    } catch (SQLException ex) {
+                                        LOGGER.log(Level.SEVERE, "Error updating slot request ID", ex);
+                                    }
                                     bookedCount++;
                                     LOGGER.info("Booked: " + slot);
                                 } else {
@@ -229,7 +261,10 @@ public class test extends HttpServlet {
 
                 if (requestId_raw == null) {
                     Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Draft", courseId);
-                    daorequest.insertRequest(requests);
+                    if (!daorequest.insertRequest(requests)) {
+                        request.setAttribute("errorMessage", "Failed to save draft request.");
+                        LOGGER.warning("Failed to save draft request.");
+                    }
                     session.removeAttribute("tempSlotBooked");
                 } else {
                     int requestId = Integer.parseInt(requestId_raw);
@@ -242,7 +277,10 @@ public class test extends HttpServlet {
                         existingRequest.setTotalSlot(totalSlots);
                         existingRequest.settotalprice(totalprice);
                         existingRequest.setStatus("Draft");
-                        daorequest.updateRequest(existingRequest);
+                        if (!daorequest.updateRequest(existingRequest)) {
+                            request.setAttribute("errorMessage", "Failed to update draft request.");
+                            LOGGER.warning("Failed to update draft request: " + requestId);
+                        }
                         session.removeAttribute("tempSlotBooked");
                     } else {
                         request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");

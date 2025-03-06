@@ -446,110 +446,69 @@ public class DAOslot extends DBConnection {
     }
 
     public void updateSlotStatus(int slotId, String status) throws SQLException {
-        String sql = "UPDATE Mentee_Slot SET status = ? WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, status);
-            pstmt.setInt(2, slotId);
-            pstmt.executeUpdate();
-        }
+        String sql = "UPDATE Slot SET status = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
     }
 
-    public List<Object[]> getSlotsByMentor(int mentorId) throws SQLException {
-        String sql = "SELECT ms.id, ms.status, ms.booking_time, ms.slot_id AS schedule_id, m.username AS menteeName "
-                + "FROM Mentee_Slot ms "
-                + "JOIN Mentor_Schedule msched ON ms.slot_id = msched.id "
-                + "JOIN Mentee m ON ms.mentee_id = m.id "
-                + "WHERE msched.mentor_id = ? "
-                + "ORDER BY ms.booking_time";
-        List<Object[]> slots = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, mentorId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Object[] slot = new Object[5];
-                slot[0] = rs.getInt("id");
-                slot[1] = rs.getString("status");
-                slot[2] = rs.getTimestamp("booking_time");
-                slot[3] = rs.getString("schedule_id");
-                slot[4] = rs.getString("menteeName");
-                slots.add(slot);
-            }
+    public void updateSlotStatus1(int slotId, String status) throws SQLException {
+        String sql = "UPDATE Slot SET status = ?, updated_at = GETDATE() WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
+    }
+
+    public List<Slot> getSlotsByRequestId(int requestId) throws SQLException {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "SELECT * FROM Slot WHERE request_id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Slot slot = new Slot();
+            slot.setId(rs.getInt("id"));
+            slot.setStatus(rs.getString("status"));
+            // Các trường khác
+            slots.add(slot);
         }
         return slots;
     }
+    
 
-    public List<Object[]> getSlotsByMenteeAndMentor(int menteeId, int mentorId) throws SQLException {
-        String sql = "SELECT ms.id, ms.status, ms.booking_time, ms.slot_id AS schedule_id "
-                + "FROM Mentee_Slot ms "
-                + "JOIN Mentor_Schedule msched ON ms.slot_id = msched.id "
-                + "WHERE ms.mentee_id = ? AND msched.mentor_id = ? "
-                + "ORDER BY ms.booking_time";
-        List<Object[]> slots = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, menteeId);
-            pstmt.setInt(2, mentorId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Object[] slot = new Object[4];
-                slot[0] = rs.getInt("id");
-                slot[1] = rs.getString("status");
-                slot[2] = rs.getTimestamp("booking_time");
-                slot[3] = rs.getString("schedule_id");
-                slots.add(slot);
-            }
+
+    public boolean areAllSlotsComplete(int requestId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Slot WHERE request_id = ? AND status != 'Complete'";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) == 0; // Nếu không còn slot nào chưa complete
         }
-        return slots;
+        return false;
     }
 
-    public int getRequestIdFromSlot(int slotId) throws SQLException {
-        String sql = "SELECT request_id FROM Mentee_Slot WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, slotId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("request_id");
-            }
-            return -1;
-        }
+    // Cập nhật request_id cho slot
+    public void updateRequestIdForSlot(int slotId, int requestId) throws SQLException {
+        String sql = "UPDATE Slot SET request_id = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
     }
-    
-        public int getRequestIdByMenteeAndMentor(int menteeId, int mentorId) throws SQLException {
-        String sql = "SELECT r.id FROM Request r " +
-                     "JOIN Mentee_Slot ms ON r.id = ms.request_id " +
-                     "JOIN Mentor_Schedule msched ON ms.slot_id = msched.id " +
-                     "WHERE r.mentee_id = ? AND msched.mentor_id = ? " +
-                     "LIMIT 1";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, menteeId);
-            pstmt.setInt(2, mentorId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-            return -1;
-        }
+
+    // Xóa request_id khỏi tất cả slot liên quan đến request (đặt về NULL)
+    public void removeRequestIdFromSlots(int requestId) throws SQLException {
+        String sql = "UPDATE Slot SET request_id = NULL WHERE request_id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ps.executeUpdate();
     }
-    
-    public boolean areAllSlotsDone(int requestId) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM Mentee_Slot WHERE request_id = ? AND status != 'Done'";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, requestId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) == 0;
-            }
-            return false;
-        }
-    }
-    
-        public void clearSlotsForRequest(int requestId) throws SQLException {
-        String sql = "DELETE FROM Mentee_Slot WHERE request_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, requestId);
-            pstmt.executeUpdate();
-        }
-    }
-    
+
+
+
     public static void main(String[] args) {
 
         DAOslot slotDAO = new DAOslot();

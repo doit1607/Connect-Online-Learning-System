@@ -277,7 +277,6 @@
 
 
                             <div class="col-lg-9 col-xl-9">
-
                                 <div class="dashboard-header">
                                     <h3>Available Timings</h3>
                                 </div>
@@ -285,13 +284,16 @@
                                 <div class="appointment-tabs">
                                     <ul class="nav available-nav">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" href="#" data-bs-toggle="tab"
-                                               data-bs-target="#general-availability">General Availability</a>
+                                            <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#general-availability">General Availability</a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#your-schedule">Your Schedule</a>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="tab-content pt-0 timing-content">
 
+                                <div class="tab-content pt-0 timing-content">
+                                    <!-- General Availability Tab (Dành cho mentor chỉnh sửa lịch) -->
                                     <div class="tab-pane fade show active" id="general-availability">
                                         <div class="card custom-card">
                                             <div class="card-body">
@@ -307,7 +309,6 @@
                                                         <p class="text-muted">
                                                             <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
                                                         </p>
-
                                                     </div>
                                                     <div class="col-12 col-sm-8 col-md-6 text-sm-end">
                                                         <li><a class="dropdown-item text-primary" id="addSchedule">+ Add Schedule</a></li>
@@ -325,12 +326,96 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+
+                                                <div class="tab-content pt-0">
+                                                    <div class="row">
+                                                        <c:forEach var="day" items="${weekDates}" varStatus="status">
+                                                            <c:set var="formattedDay" value="${day}" /> 
+                                                            <div class="col-md">
+                                                                <div class="slot-box">
+                                                                    <div class="slot-header text-center">
+                                                                        <h5>
+                                                                            <span class="week-day">${weekDays[status.index]}</span>
+                                                                            <span style="display: none;">${day}</span>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="slot-body">
+                                                                        <table class="table table-bordered text-center">
+                                                                            <tbody>
+                                                                                <c:forEach var="i" begin="1" end="5">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <c:set var="slotFound" value="false" />
+                                                                                            <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
+                                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                                    <span><i></i> Slot ${slot.slotNumber}</span>
+                                                                                                    <c:set var="slotFound" value="true" />
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not empty sessionScope.tempSlotsByDate[formattedDay]}">
+                                                                                                <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[formattedDay]}">
+                                                                                                    <c:if test="${temp.slotNumber == i}">
+                                                                                                        <span class="temp-slot-item temp-slot-highlight">
+                                                                                                            <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
+                                                                                                        </span>
+                                                                                                        <c:set var="slotFound" value="true" />
+                                                                                                    </c:if>
+                                                                                                </c:forEach>
+                                                                                            </c:if>
+                                                                                            <c:if test="${not slotFound}">
+                                                                                                <span class="text-muted">Empty</span>
+                                                                                                <button type="button" class="btn btn-sm btn-success add-temp-slot" data-date="${formattedDay}" data-slot="${i}">+</button>
+                                                                                            </c:if>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </c:forEach>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="slot-footer mt-3 text-center">
+                                                                        <form action="Slot?action=delete" method="post" onsubmit="return confirm('Are you sure you want to delete all slots?');">
+                                                                            <input type="hidden" name="formattedDay" value="${formattedDay}"> 
+                                                                            <input type="hidden" name="mentorId" value="${mentorId}"> 
+                                                                            <input type="hidden" name="scheduleId" value="${scheduleId}"> 
+                                                                            <button type="submit" class="del-slot text-danger btn btn-link">Delete All</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="modal-btn text-end">
+                                                <form action="/HAPPYorSAD/Slot?action=save" method="post">
+                                                    <a href="#" class="btn btn-gray" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</a>
+                                                    <c:forEach var="day" items="${formattedWeekDates}">
+                                                        <input type="hidden" name="formattedDays" value="${day}">
+                                                    </c:forEach>
+                                                    <input type="hidden" name="scheduleId" value="${scheduleId}"> 
+                                                    <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
-
-
-                                            <div class="tab-content pt-0">
-
+                                    <!-- Your Schedule Tab (Dành cho mentor xem lịch đã xác nhận) -->
+                                    <div class="tab-pane fade" id="your-schedule">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <div class="card-header">
+                                                    <h3>Your Confirmed Schedule</h3>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h4 class="mb-1">
+                                                            <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
+                                                        </h4>
+                                                        <p class="text-muted">
+                                                            <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <c:forEach var="day" items="${weekDates}" varStatus="status">
                                                         <c:set var="formattedDay" value="${day}" /> 
@@ -341,7 +426,6 @@
                                                                         <span class="week-day">${weekDays[status.index]}</span>
                                                                         <span style="display: none;">${day}</span>
                                                                     </h5>
-
                                                                 </div>
                                                                 <div class="slot-body">
                                                                     <table class="table table-bordered text-center">
@@ -352,74 +436,25 @@
                                                                                         <c:set var="slotFound" value="false" />
                                                                                         <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
                                                                                             <c:if test="${slot.slotNumber == i}">
-                                                                                                <span><i ></i> Slot ${slot.slotNumber}</span>
+                                                                                                <span><i class="isax isax-clock"></i> Slot ${slot.slotNumber}</span>
                                                                                                 <c:set var="slotFound" value="true" />
                                                                                             </c:if>
                                                                                         </c:forEach>
-                                                                                        <c:if test="${not empty sessionScope.tempSlotsByDate[formattedDay]}">
-                                                                                            <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[formattedDay]}">
-                                                                                                <c:if test="${temp.slotNumber == i}">
-                                                                                                    <span class="temp-slot-item temp-slot-highlight">
-                                                                                                        <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
-                                                                                                    </span>
-                                                                                                    <c:set var="slotFound" value="true" />
-                                                                                                </c:if>
-                                                                                            </c:forEach>
-                                                                                        </c:if>
-
                                                                                         <c:if test="${not slotFound}">
                                                                                             <span class="text-muted">Empty</span>
-                                                                                            <button type="button" class="btn btn-sm btn-success add-temp-slot" data-date="${formattedDay}" data-slot="${i}">+</button>
                                                                                         </c:if>
-
-                                                                                        <!-- Form ẩn đặt ở cuối trang -->
-
-
-
                                                                                     </td>
                                                                                 </tr>
                                                                             </c:forEach>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
-                                                                <div class="slot-footer mt-3 text-center">
-                                                                    <form action="Slot?action=delete" method="post" onsubmit="return confirm('Are you sure you want to delete all slots?');">
-                                                                        <input type="hidden" name="formattedDay" value="${formattedDay}"> 
-                                                                        <input type="hidden" name="mentorId" value="${mentorId}"> 
-                                                                        <input type="hidden" name="scheduleId" value="${scheduleId}"> 
-                                                                        <button type="submit" class="del-slot text-danger btn btn-link">Delete All</button>
-                                                                    </form>
-                                                                </div>
-
-                                                                <!--                                                                    <div class="slot-add mt-3 text-center">
-                                                                                                                                        <form action="/HAPPYorSAD/Slot?action=add" method="post">
-                                                                                                                                            <input type="hidden" id="scheduleId" name="scheduleId" value="${scheduleId}">
-                                                                                                                                            <input type="hidden" name="slotDate" value="${formattedDay}">
-                                                                                                                                            <label>Choose slot:</label>
-                                                                                                                                            <select name="slot_number_id" class="form-control">
-                                                                <c:forEach var="slot" items="${availableSlotsByDate[formattedDay]}">
-                                                                    <option value="${slot.id}">Slot ${slot.slotNumber}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                            <button type="submit" class="btn btn-primary mt-2">Add Slot</button>
-                                                        </form>
-                                                    </div>-->
                                                             </div>
                                                         </div>
                                                     </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-btn text-end">
-                                        <form action="/HAPPYorSAD/Slot?action=save" method="post">
-                                            <a href="#" class="btn btn-gray" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</a>
-                                            <c:forEach var="day" items="${formattedWeekDates}">
-                                                <input type="hidden" name="formattedDays" value="${day}">
-                                            </c:forEach>
-                                            <input type="hidden" name="scheduleId" value="${scheduleId}"> 
-                                            <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -631,128 +666,6 @@
 
 
             </script>
-
-
-
-
-            <!--                <script data-cfasync="false">
-                                document.addEventListener("DOMContentLoaded", function () {
-                                const monthItems = document.querySelectorAll(".month-item");
-                                const selectedMonthSpan = document.getElementById("selectedMonth");
-                                $(document).on('click', '.available-tab ul.nav a', function (e) {
-                                e.preventDefault();
-                                console.log("Click event triggered on a day selection");
-                                let formattedDay = $(this).attr('href').split('=')[2]; // Lấy formattedDay
-                                console.log("Extracted formattedDay:", formattedDay);
-                                const scheduleIdElement = document.getElementById("scheduleId");
-                                if (!scheduleIdElement) {
-                                console.error("scheduleId element is missing in DOM!");
-                                return;
-                                }
-            
-                                const scheduleId = scheduleIdElement.value;
-                                if (!scheduleId) {
-                                console.error("scheduleId value is missing!");
-                                return;
-                                }
-                                console.log("Sending scheduleId:", scheduleId);
-                                $.ajax({
-                                url: '/HAPPYorSAD/Slot',
-                                        type: 'GET',
-                                        dataType: "html",
-                                        data: {scheduleId: scheduleId, formattedDay: formattedDay},
-                                        success: function (response) {
-                                        console.log("AJAX request successful, updating DOM");
-                                        $('.tab-content.pt-0').fadeOut(200, function () {
-                                        $('.tab-content.pt-0').html($(response).find('.tab-content.pt-0').html()).fadeIn(200);
-                                        });
-                                        },
-                                        error: function (xhr, status, error) {
-                                        console.error("AJAX request failed:", status, error);
-                                        }
-                                });
-                                });
-                                // Xử lý thêm slot mà không cần load lại trang
-                                $(document).off('submit', 'form[action="Slot?action=add"]').on('submit', 'form[action="Slot?action=add"]', function (e) {
-                                e.preventDefault();
-                                let formData = $(this).serialize();
-                                $.ajax({
-                                url: 'Slot?action=add',
-                                        type: 'POST',
-                                        data: formData,
-                                        success: function (response) {
-                                        $('.tab-content.pt-0').fadeOut(200, function () {
-                                        $('.tab-content.pt-0').html($(response).find('.tab-content.pt-0').html()).fadeIn(200);
-                                        attachEventHandlers(); // Gán lại sự kiện
-                                        });
-                                        }
-                                });
-                                });
-                                // Xử lý xóa slot
-                                $(document).off('submit', 'form[action="Slot?action=delete"]').on('submit', 'form[action="Slot?action=delete"]', function (e) {
-                                e.preventDefault();
-                                if (!confirm('Are you sure you want to delete all slots?'))
-                                        return;
-                                let formData = $(this).serialize();
-                                $.ajax({
-                                url: 'Slot?action=delete',
-                                        type: 'POST',
-                                        data: formData,
-                                        success: function (response) {
-                                        $('.tab-content.pt-0').fadeOut(200, function () {
-                                        $('.tab-content.pt-0').html($(response).find('.tab-content.pt-0').html()).fadeIn(200);
-                                        attachEventHandlers(); // Gán lại sự kiện
-                                        });
-                                        }
-                                });
-                                });
-                                });
-                                }
-            
-                                monthItems.forEach(item => {
-                                item.addEventListener("click", function (event) {
-                                event.preventDefault(); // Ngăn load lại trang
-            
-                                const selectedMonth = this.getAttribute("data-month");
-                                selectedMonthSpan.textContent = selectedMonth; // Cập nhật dropdown
-            
-                                const parts = selectedMonth.split(" ");
-                                if (parts.length === 2) {
-                                const year = parts[1];
-                                const month = parts[0];
-                                const params = new URLSearchParams();
-                                params.append("year", year);
-                                params.append("month", month);
-                                fetch("/HAPPYorSAD/Slot", {
-                                method: "POST",
-                                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                                        body: params.toString()
-                                })
-                                        .then(response => response.text()) // Nhận HTML từ servlet
-                                        .then(responseData => {
-                                        const tempDiv = document.createElement("div");
-                                        tempDiv.innerHTML = responseData;
-                                        const newNav = tempDiv.querySelector(".nav");
-                                        const newTimeSlots = tempDiv.querySelector(".time-slots");
-                                        if (newNav) {
-                                        document.querySelector(".nav").innerHTML = newNav.innerHTML;
-                                        }
-                                        if (newTimeSlots) {
-                                        document.querySelector(".time-slots").innerHTML = newTimeSlots.innerHTML;
-                                        }
-                                        })
-                                        .catch(error => {
-                                        console.error("Lỗi khi gửi dữ liệu:", error);
-                                        });
-                                } else {
-                                console.error("Định dạng tháng không hợp lệ.");
-                                }
-                                });
-                                });
-                                attachEventHandlers();
-                                });
-                            </script>-->
-
 
 
             <!-- /Add Slots -->

@@ -149,6 +149,16 @@ public class DAORequest extends DBConnection {
         }
     }
 
+    public void updateRequestStatus1(int requestId, String status) throws SQLException {
+        String sql = "UPDATE Request SET status = ?, updated_at = GETDATE() WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, requestId);
+        ps.executeUpdate();
+    }
+    
+    
+
     public boolean insertRequest(Request request) {
         String sql = "INSERT INTO Request (mentee_id,mentor_id,title,total_slot,start_date,end_date,content,status,course_id,totalprice) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
@@ -172,6 +182,29 @@ public class DAORequest extends DBConnection {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public int insertRequestAndGetId(Request request) throws SQLException {
+        String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, totalprice, start_date, end_date, content, status, course_id) "
+                + "OUTPUT INSERTED.id "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, request.getMenteeId());
+        ps.setInt(2, request.getMentorId());
+        ps.setString(3, request.getTitle());
+        ps.setInt(4, request.getTotalSlot());
+        ps.setDouble(5, request.getTotalprice());
+        ps.setObject(6, request.getStartDate());
+        ps.setObject(7, request.getEndDate());
+        ps.setString(8, request.getContent());
+        ps.setString(9, request.getStatus());
+        ps.setInt(10, request.getCourseId());
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1); // Trả về ID của request vừa chèn
+        }
+        return -1;
     }
 
     // Lấy request theo ID

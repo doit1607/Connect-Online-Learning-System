@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,9 +14,8 @@
         <title>Mentor Detail</title>
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
-
         <!-- Theme Settings Js -->
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
@@ -67,7 +68,6 @@
         <!-- Main Wrapper -->
         <div class="main-wrapper">
 
-
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar">
                 <div class="container">
@@ -78,9 +78,8 @@
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="Home">Home</a></li>
                                         <li class="breadcrumb-item" aria-current="page"><a href="ShowAllCourse">Courses</a></li>
-
                                         <li class="breadcrumb-item" aria-current="page">Course detail</li>
-                                        <li class="breadcrumb-item" aria-current="page">Course detail</li>
+                                        <li class="breadcrumb-item" aria-current="page">Mentor detail</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -116,7 +115,6 @@
             <!-- Course Content -->
             <section class="page-content course-sec">
                 <div class="container">
-
                     <div class="row">
                         <div class="col-lg-8">
 
@@ -140,11 +138,83 @@
                                             <h5><p>- ${mentor.bio}</p></h5>   
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                             <!-- /Overview -->
+
+                            <!-- Mentor's Schedule -->
+                            <div class="card overview-sec">
+                                <div class="card-body">
+                                    <h2 class="subs-title">Mentor's Schedule</h2>
+                                    <div class="row align-items-center">
+                                        <div class="col-12 col-sm-6">
+                                            <h4 class="mb-1" id="mentorScheduleMonthYear">
+                                                <fmt:formatDate value="<%= new java.util.Date() %>" pattern="MMMM yyyy"/>
+                                            </h4>
+                                            <p class="text-muted" id="mentorScheduleDay">
+                                                <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE, dd MMMM"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-sm-6 text-sm-end">
+                                            <button class="btn btn-outline-primary btn-sm me-2" onclick="changeMonth('prev')">Previous Month</button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="changeMonth('next')">Next Month</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="mentorScheduleSlots">
+                                        <c:forEach var="day" items="${weekDates}" varStatus="status">
+                                            <c:set var="formattedDay" value="${day}" /> 
+                                            <div class="col-md">
+                                                <div class="slot-box">
+                                                    <div class="slot-header text-center">
+                                                        <h5>
+                                                            <span class="week-day">${weekDays[status.index]}</span>
+                                                            <span style="display: none;">${day}</span>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="slot-body">
+                                                        <table class="table table-bordered text-center">
+                                                            <tbody>
+                                                                <c:forEach var="i" begin="1" end="5">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <c:set var="slotFound" value="false" />
+                                                                            <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
+                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                    <c:set var="slotFound" value="true" />
+                                                                                    <c:choose>
+                                                                                        <c:when test="${slot.isBooked == true}">
+                                                                                            <!-- Slot đã được booked -->
+                                                                                            <span class="text-danger">
+                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slotNumber} (Booked)
+                                                                                            </span>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <!-- Slot còn trống -->
+                                                                                            <span class="text-success">
+                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slotNumber}
+                                                                                            </span>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose>
+                                                                                </c:if>
+                                                                            </c:forEach>
+                                                                            <c:if test="${not slotFound}">
+                                                                                <span class="text-muted">Empty</span>
+                                                                            </c:if>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Mentor's Schedule -->
+
+                            <!-- List of Courses -->
                             <div class="row">
                                 <h2 class="subs-title">List of course mentor are training</h2>
                                 <c:forEach var="o" items="${sessionScope.list}"> 
@@ -161,8 +231,7 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="course-group d-flex">                                                 
-                                                        <div
-                                                            class="course-share d-flex align-items-center justify-content-center">
+                                                        <div class="course-share d-flex align-items-center justify-content-center">
                                                             <a href="#rate"><i class="fa-regular fa-heart"></i></a>
                                                         </div>
                                                     </div>
@@ -194,6 +263,7 @@
                                     </div>
                                 </c:forEach>
                             </div>
+                            <!-- /List of Courses -->
                         </div>	
 
                         <div class="col-lg-4">
@@ -211,9 +281,6 @@
                                                             <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
                                                             <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
                                                             <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
-                                                        </div>
-                                                        <div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -258,46 +325,60 @@
                                     </div>
                                 </div>
                                 <!-- /Features -->
-
                             </div>
                         </div>
                     </div>	
                 </div>
             </section>
             <!-- /Pricing Plan -->
-
         </div>
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
         <!-- jQuery -->
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 
         <!-- Bootstrap Core JS -->
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
         <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
 
         <!-- Ckeditor JS -->
-        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="text/javascript"></script>
 
         <!-- Dropzone JS -->
-        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
 
         <!-- Sticky Sidebar JS -->
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="text/javascript"></script>
 
         <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js" type="text/javascript"></script>
 
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
-        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
-        crossorigin="anonymous"></script>
+        <script>
+                                                // Hàm xử lý chuyển tháng
+                                                function changeMonth(direction) {
+                                                    let currentDate = new Date(document.getElementById("mentorScheduleMonthYear").innerText);
+                                                    if (direction === 'prev') {
+                                                        currentDate.setMonth(currentDate.getMonth() - 1);
+                                                    } else {
+                                                        currentDate.setMonth(currentDate.getMonth() + 1);
+                                                    }
+
+                                                    const month = currentDate.getMonth() + 1;
+                                                    const year = currentDate.getFullYear();
+
+                                                    // Cập nhật tiêu đề tháng/năm
+                                                    document.getElementById("mentorScheduleMonthYear").innerText = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
+
+                                                    // Gửi yêu cầu AJAX để lấy lịch mới
+                                                    fetch(`/HAPPYorSAD/Slot?action=getMentorSlots&mentorId=${"${requestScope.mentorId}"}&month=${month}&year=${year}`)
+                                                            .then(response => response.text())
+                                                            .then(data => {
+                                                                document.getElementById("mentorScheduleSlots").innerHTML = data;
+                                                            });
+                                                }
+        </script>
     </body>
-
-    <!-- Mirrored from dreamslms.dreamstechnologies.com/html/course-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:46 GMT -->
 </html>
-
-

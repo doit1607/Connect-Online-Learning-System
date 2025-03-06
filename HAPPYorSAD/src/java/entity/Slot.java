@@ -22,6 +22,8 @@ public class Slot {
     private Time endTime;
     private String day_of_week;
     private String period;
+    private String status;
+    private int request_id;
 
     // Constructor cho Slot Template
     public Slot(int slotNumber, Time startTime, Time endTime) {
@@ -33,7 +35,9 @@ public class Slot {
     public Slot(int id) {
         this.id = id;
     }
-    
+
+    public Slot() {
+    }
 
     public Slot(Date slotDate, int slotNumber, boolean isBooked, Time startTime, String day_of_week, String period) {
         this.slotDate = slotDate;
@@ -51,10 +55,6 @@ public class Slot {
         this.startTime = startTime;
         this.day_of_week = day_of_week;
     }
-    
-    
-    
-    
 
     // Constructor đầy đủ
     public Slot(int id, Date slotDate, int slotNumber, boolean isBooked) {
@@ -64,7 +64,7 @@ public class Slot {
         this.isBooked = isBooked;
     }
 
-    public Slot(int id,Date slotDate, int slotNumber,boolean isBooked, Time startTime, String day_of_week) {
+    public Slot(int id, Date slotDate, int slotNumber, boolean isBooked, Time startTime, String day_of_week) {
         this.id = id;
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
@@ -73,7 +73,6 @@ public class Slot {
         this.day_of_week = day_of_week;
     }
 
- 
     public Slot(int scheduleId, Date slotDate, int slotNumber) {
         this.scheduleId = scheduleId;
         this.slotDate = slotDate;
@@ -81,7 +80,6 @@ public class Slot {
     }
 
     // Getter & Setter
-
     public String getPeriod() {
         return period;
     }
@@ -89,8 +87,22 @@ public class Slot {
     public void setPeriod(String period) {
         this.period = period;
     }
-    
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getRequest_id() {
+        return request_id;
+    }
+
+    public void setRequest_id(int request_id) {
+        this.request_id = request_id;
+    }
 
     public String getDay_of_week() {
         return day_of_week;
@@ -99,8 +111,7 @@ public class Slot {
     public void setDay_of_week(String day_of_week) {
         this.day_of_week = day_of_week;
     }
-    
-    
+
     public int getId() {
         return id;
     }
@@ -167,7 +178,7 @@ public class Slot {
 
     @Override
     public String toString() {
-        return "Slot{" + "id=" + id + ", scheduleId=" + scheduleId + ", slotDate=" + slotDate + ", slotNumber=" + slotNumber + ", isBooked=" + isBooked + ", startTime=" + startTime + ", endTime=" + endTime + '}';
+        return "Slot{" + "id=" + id + ", scheduleId=" + scheduleId + ", slotDate=" + slotDate + ", slotNumber=" + slotNumber + ", isBooked=" + isBooked + ", startTime=" + startTime + ", endTime=" + endTime + ", day_of_week=" + day_of_week + ", period=" + period + ", status=" + status + ", request_id=" + request_id + '}';
     }
 
 }
