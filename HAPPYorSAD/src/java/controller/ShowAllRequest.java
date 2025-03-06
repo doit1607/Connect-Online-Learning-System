@@ -70,7 +70,7 @@ public class ShowAllRequest extends HttpServlet {
         if (search == null && status == null && startDate == null && endDate == null) {
             requestList = dao.showAllRequest(); // Gọi hàm mới
         } else {
-            requestList = dao.getAllRequests(search, status, startDate, endDate);
+            requestList = dao.getRequests(search, status, startDate, endDate);
         }
         //List<Request> requestList = dao.getAllRequests(search, status, startDate, endDate);
 
