@@ -74,7 +74,8 @@
                                     <div class="wallet-balance mb-4 text-center">
                                         <h5 class="fw-bold text-muted">Wallet Balance</h5>
                                         <p class="text-primary fs-4 mb-0">
-                                            ₫<fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" pattern="#.###"/>
+                                            <fmt:setLocale value="vi_VN"/>
+                                            <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
                                         </p>
                                     </div>
                                     <form id="walletForm" method="POST">
@@ -85,7 +86,7 @@
                                                 <input type="number" class="form-control" name="amount" min="1000" step="1000" required>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="mb-4 payment-methods">
                                             <label class="form-label fw-bold">Payment Method</label>
                                             <div class="method-option p-3 mb-2 rounded" onclick="document.getElementById('depositRadio').click()">
@@ -105,16 +106,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="mb-4" id="cardNumberInput" style="display: none;">
                                             <label class="form-label fw-bold">Card Number</label>
                                             <input type="text" class="form-control" name="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx">
                                         </div>
-                                        
+
                                         <c:if test="${requestScope.msg != null}">
                                             <div class="alert alert-info">${requestScope.msg}</div>
                                         </c:if>
-                                        
+
                                         <button class="btn btn-primary w-100 py-2" type="submit">
                                             <i class="fas fa-check me-2"></i>Proceed with Payment
                                         </button>
@@ -122,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Transactions Table -->
                         <div class="col-lg-7 col-md-6 mt-4 mt-md-0">
                             <div class="card transaction-card shadow-lg">
