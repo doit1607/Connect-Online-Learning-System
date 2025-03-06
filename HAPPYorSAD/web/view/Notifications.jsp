@@ -74,7 +74,7 @@
 
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                           
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -89,7 +89,7 @@
                                                 <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
-                                         <li class="nav-item">
+                                        <li class="nav-item">
                                             <a href="/../HAPPYorSAD/Slot" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Schedule
                                             </a>
@@ -143,23 +143,6 @@
                                     <div class="checkout-form personal-address">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <!--                                                <div class="d-flex instructor-noti-head align-items-center">
-                                                                                                    <div class="noti-mark-btns">
-                                                                                                        <ul>
-                                                                                                            <li>
-                                                                                                                <a href="#" class="btn"><i class="feather-check me-2"></i> Mark all as read</a>
-                                                                                                            </li>
-                                                                                                            <li>
-                                                                                                                <form action="Notifications" method="get">
-                                                                                                                    <input type="hidden" name="action" value="deleteNotification">
-                                                                                                                    <button type="submit" class="btn btn-delete">
-                                                                                                                        <i class="feather-trash-2 me-2"></i> Delete all
-                                                                                                                    </button>
-                                                                                                                </form>
-                                                                                                            </li>
-                                                                                                        </ul>
-                                                                                                    </div>
-                                                                                                </div>-->
 
                                                 <form action="Notifications" method="post">
                                                     <input type="hidden" name="action" value="viewNotifications">
