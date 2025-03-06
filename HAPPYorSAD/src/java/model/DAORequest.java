@@ -30,7 +30,7 @@ public class DAORequest extends DBConnection {
                 + "FROM Request r "
                 + "JOIN Mentor m ON r.mentor_id = m.id "
                 + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? "
+                + "WHERE u.username = ? and r.status != 'draft'"
         );
 
         // Add filters dynamically
@@ -291,14 +291,14 @@ public class DAORequest extends DBConnection {
     public List<Request> getAllRequest(int menteeId) {
         ArrayList<Request> listRequest = new ArrayList<>();
 
-        String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
+      String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
                 + "r.[total_slot], r.[start_date], r.[end_date], r.[content], r.[status], "
-                + "r.[created_at], r.[updated_at], r.[course_id], r.[totalPrice], " // Thêm totalPrice
+                + "r.[created_at], r.[updated_at], r.[course_id], r.[totalPrice], "
                 + "c.[title] AS course_title, m.[name] AS mentor_name "
                 + "FROM [SWP1].[dbo].[Request] r "
                 + "JOIN [SWP1].[dbo].[Course] c ON r.course_id = c.id "
                 + "JOIN [SWP1].[dbo].[Mentor] m ON r.mentor_id = m.user_id "
-                + "WHERE r.mentee_id = ? "
+                + "WHERE r.mentee_id = ?"
                 + "ORDER BY r.created_at DESC";
 
         try {
