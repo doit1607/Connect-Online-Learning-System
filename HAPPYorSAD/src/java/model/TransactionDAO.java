@@ -61,6 +61,18 @@ public class TransactionDAO extends DBConnection{
             e.printStackTrace();
         }
     }
+    
+    public void updateHoldAfterReject(String username , double hold){
+        String sql = "UPDATE Wallets SET hold = hold - ? WHERE username = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setDouble(1, hold);
+            st.setString(2, username);
+            st.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Deposit money to user's wallet
     public void depositToWallet(String username, double amount) {
