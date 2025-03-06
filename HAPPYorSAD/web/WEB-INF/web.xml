@@ -125,6 +125,10 @@
         <servlet-class>controller.MentorDetail</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ShowAllRequest</servlet-name>
+        <servlet-class>controller.ShowAllRequest</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>EnrolledCourses</servlet-name>
         <servlet-class>controller.EnrolledCourses</servlet-class>
     </servlet>
@@ -251,6 +255,10 @@
     <servlet-mapping>
         <servlet-name>Notifications</servlet-name>
         <url-pattern>/Notifications</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowAllRequest</servlet-name>
+        <url-pattern>/ShowAllRequest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MentorDetail</servlet-name>
