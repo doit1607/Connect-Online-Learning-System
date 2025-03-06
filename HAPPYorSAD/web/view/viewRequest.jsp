@@ -349,7 +349,7 @@
                                                     <c:when test="${request.status eq 'Processing'}">
                                                     <li><span class="text-success"><i class="fa-solid fa-check"></i>Request Accepted</span></li>
                                                     </c:when>
-                                                    <c:when test="${request.status eq 'Open'}">
+                                                    <c:when test="${fn:toLowerCase(request.status) eq 'open'}">
                                                     <li>
                                                         <form action="viewRequest" method="POST">
                                                             <input type="hidden" name="id" value="${request.id}">
