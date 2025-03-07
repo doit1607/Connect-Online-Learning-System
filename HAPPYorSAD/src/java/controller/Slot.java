@@ -115,8 +115,6 @@ public class Slot extends HttpServlet {
                         + " - " + schedule.getStart_date() + "</li>");
             }
             response.getWriter().write("</ul>");
-
-            // Lưu scheduleId đầu tiên vào session nếu có lịch trình
             scheduleId = schedules.get(0).getId();
             request.setAttribute("scheduleId", scheduleId);
         }
@@ -312,7 +310,8 @@ public class Slot extends HttpServlet {
 
             }
 //            response.sendRedirect("/HAPPYorSAD/Slot");
-            response.getWriter().write("success");
+            request.setAttribute("message", "success");
+            request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
             return;
 
         } else if ("save".equals(action)) {
@@ -320,33 +319,35 @@ public class Slot extends HttpServlet {
                 Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
                 if (tempSlotsByDate == null || tempSlotsByDate.isEmpty()) {
                     LOGGER.info("⚠ No slots to save.");
-                    return;
-                }
+                    request.setAttribute("message", "No slots to save."); // Thông báo nếu không có slot
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    for (Map.Entry<Date, List<TempSlot>> entry : tempSlotsByDate.entrySet()) {
+                        Date formattedDay = entry.getKey();
+                        List<TempSlot> tempSlots = entry.getValue();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                for (Map.Entry<Date, List<TempSlot>> entry : tempSlotsByDate.entrySet()) {
-                    Date formattedDay = entry.getKey();
-                    List<TempSlot> tempSlots = entry.getValue();
-
-                    for (TempSlot tempSlot : tempSlots) {
-                        try {
-                            int slotNumber = tempSlot.getSlotNumber();
-                            String formattedDate = sdf.format(formattedDay);
-                            daoSlot.addSlots(scheduleId, formattedDate, slotNumber);
-                            LOGGER.info("✅ Saved slot: " + formattedDate + " - Slot " + slotNumber);
-                        } catch (Exception e) {
-                            LOGGER.info("❌ Error saving slot on " + formattedDay + " - Slot: " + tempSlot.getSlotNumber());
+                        for (TempSlot tempSlot : tempSlots) {
+                            try {
+                                int slotNumber = tempSlot.getSlotNumber();
+                                String formattedDate = sdf.format(formattedDay);
+                                daoSlot.addSlots(scheduleId, formattedDate, slotNumber);
+                                LOGGER.info("✅ Saved slot: " + formattedDate + " - Slot " + slotNumber);
+                            } catch (Exception e) {
+                                LOGGER.info("❌ Error saving slot on " + formattedDay + " - Slot: " + tempSlot.getSlotNumber());
+                            }
                         }
                     }
+                    session.removeAttribute("tempSlotsByDate");
+                    LOGGER.info("🗑 Cleared temporary slots after saving.");
+                    request.setAttribute("message", "Slots saved successfully!"); // Thông báo thành công
                 }
-
-                session.removeAttribute("tempSlotsByDate");
-                LOGGER.info("🗑 Cleared temporary slots after saving.");
-
             } catch (Exception e) {
-                LOGGER.info("🚨 Error during slot saving process: ");
+                LOGGER.log(Level.SEVERE, "🚨 Error during slot saving process: ", e);
+                request.setAttribute("message", "Error saving slots: " + e.getMessage()); // Thông báo lỗi
             }
-
+            // Forward về trang hiện tại thay vì redirect
+            request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
+            return;
         } else if ("delete".equals(action)) {
             Date endTime = daoSc.getEndDateByScheduleId(scheduleId);
             if (endTime != null) {
@@ -407,8 +408,11 @@ public class Slot extends HttpServlet {
 //                response.sendRedirect("schedule.jsp?error=true");
 //            }
         }
-        session.setAttribute("scheduleId", scheduleId);
-        request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
+
+        session.setAttribute(
+                "scheduleId", scheduleId);
+        request.getRequestDispatcher(
+                "view/slot_list.jsp").forward(request, response);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -455,7 +459,8 @@ public class Slot extends HttpServlet {
         System.out.println("📌 slotNumber: " + slotNumber);
 
         if (slotDate == null || slotNumber == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters");
+            request.setAttribute("message", "Error: Missing parameters (slot_date or slotNumber)");
+            request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
             return;
         }
 

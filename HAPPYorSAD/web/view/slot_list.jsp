@@ -286,9 +286,9 @@
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#general-availability">General Availability</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
+<!--                                        <li class="nav-item" role="presentation">
                                             <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#your-schedule">Your Schedule</a>
-                                        </li>
+                                        </li>-->
                                     </ul>
                                 </div>
 
@@ -399,24 +399,24 @@
                                         </div>
                                     </div>
 
-                                    <!-- Your Schedule Tab (Dành cho mentor xem lịch đã xác nhận) -->
-                                    <div class="tab-pane fade" id="your-schedule">
-                                        <div class="card custom-card">
-                                            <div class="card-body">
-                                                <div class="card-header">
-                                                    <h3>Your Confirmed Schedule</h3>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h4 class="mb-1">
-                                                            <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
-                                                        </h4>
-                                                        <p class="text-muted">
-                                                            <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
+                                                    <!--                                     Your Schedule Tab (Dành cho mentor xem lịch đã xác nhận) 
+                                                                                        <div class="tab-pane fade" id="your-schedule">
+                                                                                            <div class="card custom-card">
+                                                                                                <div class="card-body">
+                                                                                                    <div class="card-header">
+                                                                                                        <h3>Your Confirmed Schedule</h3>
+                                                                                                    </div>
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-12">
+                                                                                                            <h4 class="mb-1">
+                                                    <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
+                                                </h4>
+                                                <p class="text-muted">
+                                                    <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                                     <c:forEach var="day" items="${weekDates}" varStatus="status">
                                                         <c:set var="formattedDay" value="${day}" /> 
                                                         <div class="col-md">
@@ -430,32 +430,32 @@
                                                                 <div class="slot-body">
                                                                     <table class="table table-bordered text-center">
                                                                         <tbody>
-                                                                            <c:forEach var="i" begin="1" end="5">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <c:set var="slotFound" value="false" />
-                                                                                        <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
-                                                                                            <c:if test="${slot.slotNumber == i}">
-                                                                                                <span><i class="isax isax-clock"></i> Slot ${slot.slotNumber}</span>
-                                                                                                <c:set var="slotFound" value="true" />
-                                                                                            </c:if>
-                                                                                        </c:forEach>
-                                                                                        <c:if test="${not slotFound}">
-                                                                                            <span class="text-muted">Empty</span>
-                                                                                        </c:if>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </c:forEach>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <c:forEach var="i" begin="1" end="5">
+                                                            <tr>
+                                                                <td>
+                                                            <c:set var="slotFound" value="false" />
+                                                            <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
+                                                                <c:if test="${slot.slotNumber == i}">
+                                                                    <span><i class="isax isax-clock"></i> Slot ${slot.slotNumber}</span>
+                                                                    <c:set var="slotFound" value="true" />
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <c:if test="${not slotFound}">
+                                                                <span class="text-muted">Empty</span>
+                                                            </c:if>
+                                                        </td>
+                                                    </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                                     </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>

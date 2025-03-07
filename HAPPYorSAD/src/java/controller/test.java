@@ -182,11 +182,6 @@ public class test extends HttpServlet {
                         int newRequestId;
                         try {
                             LOGGER.info("Attempting to insert new request: " + requests);
-                            if (!daorequest.insertRequest(requests)) {
-                                response.setContentType("text/plain");
-                                response.getWriter().write("Failed to create request.");
-                                return;
-                            }
                             newRequestId = daorequest.insertRequestAndGetId(requests);
                             LOGGER.info("Inserted new request with ID: " + newRequestId);
                         } catch (SQLException ex) {
@@ -418,13 +413,7 @@ public class test extends HttpServlet {
 
         // Xử lý weekOffset
         int weekOffset = Optional.ofNullable(request.getParameter("weekOffset")).map(Integer::parseInt).orElse(0);
-        if ("previousWeek".equals(action)) {
-            weekOffset = weekOffset - 1;
-            LOGGER.info("Moving to previous week. New weekOffset: " + weekOffset);
-        } else if ("nextWeek".equals(action)) {
-            weekOffset += 1;
-            LOGGER.info("Moving to next week. New weekOffset: " + weekOffset);
-        }
+
 
         // Tính toán ngày bắt đầu và kết thúc của tuần dựa trên startDate và weekOffset
         LocalDate firstDayOfWeek = startDate.toLocalDate().plusWeeks(weekOffset);
