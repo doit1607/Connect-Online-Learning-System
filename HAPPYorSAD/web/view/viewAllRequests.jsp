@@ -148,12 +148,12 @@
                         </div>
                         <div class="col-xl-9 col-lg-9">
                             <h1>List All Request</h1>
-                            
+
                             <div class="checkout-form">
                                 <form action="ShowAllRequest" method="GET" class="mb-3">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <input type="text" name="search" class="form-control" placeholder="Search by Name">
+                                            <input type="text" name="search" class="form-control" placeholder="Search">
                                         </div>
                                         <div class="col-md-3">
                                             <select name="status" class="form-control">

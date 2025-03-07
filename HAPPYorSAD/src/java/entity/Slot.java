@@ -39,6 +39,14 @@ public class Slot {
     public Slot() {
     }
 
+    public Slot(Date slotDate, int slotNumber, Time startTime, Time endTime, String status) {
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+    }
+
     public Slot(Date slotDate, int slotNumber, boolean isBooked, Time startTime, String day_of_week, String period) {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;

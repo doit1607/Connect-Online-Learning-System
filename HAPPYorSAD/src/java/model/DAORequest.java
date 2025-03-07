@@ -183,8 +183,6 @@ public class DAORequest extends DBConnection {
         }
         return false;
     }
-    
-
 
     public int insertRequestAndGetId(Request request) throws SQLException {
         String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, totalprice, start_date, end_date, content, status, course_id) "
@@ -202,8 +200,8 @@ public class DAORequest extends DBConnection {
         ps.setString(9, request.getStatus());
         ps.setInt(10, request.getCourseId());
 
-        System.out.println("sql" +sql+ "request" +request);
-        
+        System.out.println("sql" + sql + "request" + request);
+
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return rs.getInt(1); // Trả về ID của request vừa chèn
@@ -372,7 +370,7 @@ public class DAORequest extends DBConnection {
     }
 
     // Dung de tim kiem va loc (Dung)
-    public List<Request> getRequests(String search, String status, LocalDate startDate, LocalDate endDate) {
+    public List<Request> getAllRequests(String search, String status, LocalDate startDate, LocalDate endDate) {
         List<Request> listRep = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT r.id, u.username, r.title, r.status "
                 + "FROM Request r "
@@ -381,7 +379,7 @@ public class DAORequest extends DBConnection {
                 + "WHERE 1=1");
 
         if (search != null && !search.isEmpty()) {
-            sql.append(" AND u.username LIKE ?");
+            sql.append(" AND r.title LIKE ?");
         }
         if (status != null && !status.isEmpty()) {
             sql.append(" AND r.status = ?");
@@ -468,28 +466,26 @@ public class DAORequest extends DBConnection {
 
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
-        List<Request> list = dao.getAllRequest(1);
-        System.out.println(list);
 
-//        LocalDate validDate = LocalDate.of(2025, 2, 18);
-//        LocalDate validDate1 = LocalDate.of(2025, 2, 28);
-////
-////      dao.createRequest(3, "qqqqqqqqq", validDate, validTime, "tt", "open");
-////      System.out.println(getMenteeIdByUserId(1));
-//        int userId = 5; // Thay đổi giá trị này nếu cần test với user khác
-//        int menteeId = dao.getMenteeIdByUserId(userId);
+        LocalDate validDate = LocalDate.of(2025, 2, 18);
+        LocalDate validDate1 = LocalDate.of(2025, 2, 28);
 //
-//        if (menteeId == -1) {
-//            System.out.println("Không tìm thấy Mentee ID cho userId = " + userId);
-//        } else {
-//            System.out.println("Mentee ID tìm thấy: " + menteeId);
-//        }
-//        List<Request> request = dao.getAllRequest(2);
-//        for (Request request1 : request) {
-//            System.out.println(request1);
-//        }
-//        Request re = new Request(1, 1, "qqqqqqqqq", 5, validDate, validDate1, "yyyyyy", "Draft", 1);
-//        dao.insertRequest(re);
+//      dao.createRequest(3, "qqqqqqqqq", validDate, validTime, "tt", "open");
+//      System.out.println(getMenteeIdByUserId(1));
+        int userId = 5; // Thay đổi giá trị này nếu cần test với user khác
+        int menteeId = dao.getMenteeIdByUserId(userId);
+
+        if (menteeId == -1) {
+            System.out.println("Không tìm thấy Mentee ID cho userId = " + userId);
+        } else {
+            System.out.println("Mentee ID tìm thấy: " + menteeId);
+        }
+        List<Request> request = dao.getAllRequest(2);
+        for (Request request1 : request) {
+            System.out.println(request1);
+        }
+        Request re = new Request(1, 1, "qqqqqqqqq", 5, validDate, validDate1, "yyyyyy", "Draft", 1);
+        dao.insertRequest(re);
 //        System.out.println(dao);
     }
 

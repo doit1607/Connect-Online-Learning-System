@@ -275,8 +275,37 @@
                                                         <p><strong>Deadline Start:</strong> ${o.startDate}</p>
                                                         <p><strong>Deadline End:</strong> ${o.endDate}</p>
                                                         <p><strong>Status:</strong> ${o.status}</p>
-                                                        <p><strong>Schedule:</strong></p>
-                                                    </div>
+                                                        <div class="request-details">
+                                                            <p><strong>Mentor name:</strong> ${o.mentorname}</p>
+                                                            <p><strong>Course name:</strong> ${o.coursename}</p>
+                                                            <p><strong>Title:</strong> ${o.title}</p>
+                                                            <p><strong>Content:</strong> ${o.content}</p>
+                                                            <p><strong>Total Slots:</strong> ${o.totalSlot}</p> 
+                                                            <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />?</p>
+                                                            <p><strong>Deadline Start:</strong> ${o.startDate}</p>
+                                                            <p><strong>Deadline End:</strong> ${o.endDate}</p>
+                                                            <p><strong>Status:</strong> ${o.status}</p>
+                                                            <p><strong>Schedule:</strong></p>
+                                                            <div id="schedule-table-${o.id}"></div> <!-- Placeholder for schedule table -->
+                                                        </div>
+
+                                                        <!-- Add JavaScript to load the schedule table when the modal is shown -->
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                                const modal = document.getElementById('requestModal_${o.id}');
+                                                                modal.addEventListener('shown.bs.modal', function () {
+                                                                    fetch('view/FetchSlotsForRequest?requestId=${o.id}')
+                                                                            .then(response => response.text())
+                                                                            .then(data => {
+                                                                                document.getElementById('schedule-table-${o.id}').innerHTML = data;
+                                                                            })
+                                                                            .catch(error => {
+                                                                                console.error('Error loading schedule:', error);
+                                                                                document.getElementById('schedule-table-${o.id}').innerHTML = '<p>Error loading schedule.</p>';
+                                                                            });
+                                                                });
+                                                            });
+                                                        </script>                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

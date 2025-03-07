@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<fmt:setLocale value="en"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -146,20 +147,25 @@
                             <div class="card overview-sec">
                                 <div class="card-body">
                                     <h2 class="subs-title">Mentor's Schedule</h2>
-                                    <div class="row align-items-center">
-                                        <div class="col-12 col-sm-6">
-                                            <h4 class="mb-1" id="mentorScheduleMonthYear">
-                                                <fmt:formatDate value="<%= new java.util.Date() %>" pattern="MMMM yyyy"/>
-                                            </h4>
-                                            <p class="text-muted" id="mentorScheduleDay">
-                                                <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE, dd MMMM"/>
-                                            </p>
+                                    <form id="monthForm" action="/HAPPYorSAD/MentorDetail" method="GET">
+                                        <input type="hidden" name="action" value="getMentorSlots">
+                                        <input type="hidden" name="mentorId" value="${requestScope.mentorId}">
+                                        <input type="hidden" name="month" id="monthInput" value="${requestScope.selectedMonth}">
+                                        <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear}">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 col-sm-6">
+                                                <h4 class="mb-1" id="mentorScheduleMonthYear">
+                                                    ${formattedMonthYear}
+                                                </h4>
+                                                <p></p>
+                                            </div>
+                                            <div class="col-12 col-sm-6 text-sm-end">
+                                                <button type="submit" class="btn btn-outline-primary btn-sm me-2" name="direction" value="prev">Previous Month</button>
+                                                <button type="submit" class="btn btn-outline-primary btn-sm" name="direction" value="next">Next Month</button>
+                                            </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 text-sm-end">
-                                            <button class="btn btn-outline-primary btn-sm me-2" onclick="changeMonth('prev')">Previous Month</button>
-                                            <button class="btn btn-outline-primary btn-sm" onclick="changeMonth('next')">Next Month</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                    <p></p>
                                     <div class="row" id="mentorScheduleSlots">
                                         <c:forEach var="day" items="${weekDates}" varStatus="status">
                                             <c:set var="formattedDay" value="${day}" /> 
@@ -183,13 +189,11 @@
                                                                                     <c:set var="slotFound" value="true" />
                                                                                     <c:choose>
                                                                                         <c:when test="${slot.isBooked == true}">
-                                                                                            <!-- Slot đã được booked -->
                                                                                             <span class="text-danger">
                                                                                                 <i class="isax isax-clock"></i> Slot ${slot.slotNumber} (Booked)
                                                                                             </span>
                                                                                         </c:when>
                                                                                         <c:otherwise>
-                                                                                            <!-- Slot còn trống -->
                                                                                             <span class="text-success">
                                                                                                 <i class="isax isax-clock"></i> Slot ${slot.slotNumber}
                                                                                             </span>
@@ -297,14 +301,6 @@
                                         <div class="cat-title">
                                             <h4>Includes</h4>
                                         </div>
-                                        <ul>
-                                            <li><img src="assets/img/icon/import.svg" class="me-2" alt="Img"> 11 hours on-demand video</li>
-                                            <li><img src="assets/img/icon/play.svg" class="me-2" alt="Img"> 69 downloadable resources</li>
-                                            <li><img src="assets/img/icon/key.svg" class="me-2" alt="Img"> Full lifetime access</li>
-                                            <li><img src="assets/img/icon/mobile.svg" class="me-2" alt="Img"> Access on mobile and TV</li>
-                                            <li><img src="assets/img/icon/cloud.svg" class="me-2" alt="Img"> Assignments</li>
-                                            <li><img src="assets/img/icon/teacher.svg" class="me-2" alt="Img"> Certificate of Completion</li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <!-- /Include -->
@@ -315,13 +311,6 @@
                                         <div class="cat-title">
                                             <h4>Includes</h4>
                                         </div>
-                                        <ul>
-                                            <li><img src="assets/img/icon/users.svg" class="me-2" alt="Img"> Enrolled: <span>32 students</span></li>
-                                            <li><img src="assets/img/icon/timer.svg" class="me-2" alt="Img"> Duration: <span>20 hours</span></li>
-                                            <li><img src="assets/img/icon/chapter.svg" class="me-2" alt="Img"> Chapters: <span>15</span></li>
-                                            <li><img src="assets/img/icon/video.svg" class="me-2" alt="Img"> Video:<span> 12 hours</span></li>
-                                            <li><img src="assets/img/icon/chart.svg" class="me-2" alt="Img"> Level: <span>Beginner</span></li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <!-- /Features -->
@@ -332,6 +321,8 @@
             </section>
             <!-- /Pricing Plan -->
         </div>
+
+
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
         <!-- jQuery -->
@@ -355,30 +346,5 @@
 
         <!-- Custom JS -->
         <script src="/HAPPYorSAD/assets/js/script.js" type="text/javascript"></script>
-
-        <script>
-                                                // Hàm xử lý chuyển tháng
-                                                function changeMonth(direction) {
-                                                    let currentDate = new Date(document.getElementById("mentorScheduleMonthYear").innerText);
-                                                    if (direction === 'prev') {
-                                                        currentDate.setMonth(currentDate.getMonth() - 1);
-                                                    } else {
-                                                        currentDate.setMonth(currentDate.getMonth() + 1);
-                                                    }
-
-                                                    const month = currentDate.getMonth() + 1;
-                                                    const year = currentDate.getFullYear();
-
-                                                    // Cập nhật tiêu đề tháng/năm
-                                                    document.getElementById("mentorScheduleMonthYear").innerText = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
-
-                                                    // Gửi yêu cầu AJAX để lấy lịch mới
-                                                    fetch(`/HAPPYorSAD/Slot?action=getMentorSlots&mentorId=${"${requestScope.mentorId}"}&month=${month}&year=${year}`)
-                                                            .then(response => response.text())
-                                                            .then(data => {
-                                                                document.getElementById("mentorScheduleSlots").innerHTML = data;
-                                                            });
-                                                }
-        </script>
     </body>
 </html>
