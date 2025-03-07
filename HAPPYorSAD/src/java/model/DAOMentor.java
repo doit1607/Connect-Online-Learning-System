@@ -14,16 +14,16 @@ import java.sql.SQLException;
  * @author Dell
  */
 public class DAOMentor extends DBConnection {
-
+    
     public static DAOuser userDao = new DAOuser();
-
+    
     public List<Mentor1> getAllMentors(String search, int pageNumber, int pageSize) {
         List<Mentor1> list = new ArrayList<>();
-
+        
         if (pageSize <= 0) {
             pageSize = 10;
         }
-
+        
         int offset = (pageNumber - 1) * pageSize; // Tính toán offset
 
         String sql = "SELECT m.id, m.name, m.email, m.rating, m.is_deleted, "
@@ -32,7 +32,7 @@ public class DAOMentor extends DBConnection {
                 + "JOIN Users u ON m.user_id = u.id "
                 + "WHERE (LOWER(m.name) LIKE LOWER(?) OR LOWER(m.email) LIKE LOWER(?) OR LOWER(m.expertise) LIKE LOWER(?)) "
                 + "ORDER BY m.id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String searchParam = "%" + search.toLowerCase() + "%";
             stmt.setString(1, searchParam);
@@ -40,7 +40,7 @@ public class DAOMentor extends DBConnection {
             stmt.setString(3, searchParam);
             stmt.setInt(4, offset);
             stmt.setInt(5, pageSize);
-
+            
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Mentor1 mentor = new Mentor1();
@@ -57,30 +57,30 @@ public class DAOMentor extends DBConnection {
                     mentor.setBaseRate(rs.getDouble("base_rate"));
                     mentor.setMultiplier(rs.getDouble("multiplier"));
                     mentor.setImage(rs.getString("image"));
-
+                    
                     User user = userDao.getMentorById(rs.getInt("user_id"));
                     mentor.setUser(user);
-
+                    
                     list.add(mentor);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return list;
     }
-
+    
     public int getTotalMentors(String search) {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM Mentor WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) OR LOWER(expertise) LIKE LOWER(?)";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String searchParam = "%" + search.toLowerCase() + "%";
             stmt.setString(1, searchParam);
             stmt.setString(2, searchParam);
             stmt.setString(3, searchParam);
-
+            
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     total = rs.getInt(1);
@@ -89,10 +89,10 @@ public class DAOMentor extends DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return total;
     }
-
+    
     public void toggleMentorStatus(String userName, String newStatus) {
         String sql = "UPDATE Users SET status = ? WHERE username = ?";
         try (
@@ -104,7 +104,7 @@ public class DAOMentor extends DBConnection {
             e.printStackTrace();
         }
     }
-
+    
     public List<Mentor> getMentors() {
         List<Mentor> list = new ArrayList<>();
         String sql = "SELECT \n"
@@ -117,7 +117,7 @@ public class DAOMentor extends DBConnection {
                 + "LEFT JOIN Mentor_Reviews r ON m.id = r.mentor_id\n"
                 + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee'\n"
                 + "GROUP BY u.fullname, m.expertise, u.username, m.id";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -132,14 +132,15 @@ public class DAOMentor extends DBConnection {
         }
         return list;
     }
-    public String getMentorName(int id){
+    
+    public String getMentorName(int id) {
         String name = null;
         String sql = "Select * from Mentor where user_id = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 name = rs.getString("name");
                 return name;
             }
@@ -148,7 +149,7 @@ public class DAOMentor extends DBConnection {
         }
         return name;
     }
-
+    
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
         String sql = "SELECT \n"
@@ -160,26 +161,26 @@ public class DAOMentor extends DBConnection {
                 + "FROM Mentor m\n"
                 + "JOIN Users u ON m.user_id = u.id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-
+            
             while (rs.next()) {
                 list.add(new Mentor(rs.getString("fullname"),
-                        0.0, 
+                        0.0,
                         rs.getDouble("price_per_slot"),
                         rs.getString("expertise"),
                         rs.getString("image"),
                         rs.getString("username"),
-                        0, 
-                        0) 
+                        0,
+                        0)
                 );
             }
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return list;
     }
-
+    
     public List<Mentor> getCount() {
         ArrayList<Mentor> count = new ArrayList<>();
         String query = "SELECT COUNT(DISTINCT u_mentor.id) AS total_Mentor\n"
@@ -200,7 +201,7 @@ public class DAOMentor extends DBConnection {
         }
         return count;
     }
-
+    
     public List<Mentor> getMentorsHome() {
         List<Mentor> list = new ArrayList<>();
         String sql = "SELECT "
@@ -215,9 +216,9 @@ public class DAOMentor extends DBConnection {
                 + "LEFT JOIN Users u ON r.mentee_id = u.id AND u.role = 'mentee' "
                 + "GROUP BY m.image, m.name, m.expertise, m.rating "
                 + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-
+            
             while (rs.next()) {
                 list.add(new Mentor(rs.getString("name"),
                         rs.getDouble("rating"), rs.getString("expertise"),
@@ -225,14 +226,14 @@ public class DAOMentor extends DBConnection {
                         rs.getInt("rating_count"))
                 );
             }
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return list;
     }
-
+    
     public List<Mentor> getMentorsByCourse(String title) {
         List<Mentor> list = new ArrayList<>();
         String sql = "SELECT\n"
@@ -251,7 +252,7 @@ public class DAOMentor extends DBConnection {
                 + "  AND (c.title = ?) \n"
                 + "GROUP BY m.image, m.name, m.expertise, m.rating\n"
                 + "ORDER BY total_mentees DESC, rating_count DESC, rating DESC";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, title);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -269,10 +270,10 @@ public class DAOMentor extends DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return list;
     }
-
+    
     public static Integer getMentorIdByUserId(int userId) {
         String sql = "SELECT m.id \n"
                 + "FROM Users u join Mentor m on m.user_id = u.id\n"
@@ -290,7 +291,7 @@ public class DAOMentor extends DBConnection {
         }
         return -1;
     }
-
+    
     public void MentorCourse(int mentorId, int courseId) {
         String sql = "INSERT INTO MentorCourse (mentor_id, course_id) VALUES (?, ?)";
         try {
@@ -301,7 +302,7 @@ public class DAOMentor extends DBConnection {
         } catch (Exception e) {
         }
     }
-
+    
     public int getMentorByUserId(int userId) {
         String sql = "SELECT id \n"
                 + "FROM Mentor \n"
@@ -319,7 +320,7 @@ public class DAOMentor extends DBConnection {
         }
         return -1;
     }
-
+    
     public Mentor getMentorByID(int id) {
         Mentor mentor = null;
         String sql = "SELECT name, email, rating, bio, image FROM Mentor WHERE user_id = ?";
@@ -341,7 +342,36 @@ public class DAOMentor extends DBConnection {
         }
         return mentor;
     }
-
+    
+    public Mentor getMentorByIdd(int id) {
+        Mentor mentor = null;
+        String sql = "SELECT m.name, m.email, m.rating, m.image,m.expertise, u.phone_number, u.username\n"
+                + "FROM Mentor m\n"
+                + "join Users u on m.user_id = u.id\n"
+                + "WHERE m.id = ?\n"
+                + "\n"
+                + "group by m.name, m.email, m.rating,m.expertise, m.image, u.phone_number, u.username";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    mentor = new Mentor(rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getInt("rating"),
+                            rs.getString("expertise"),
+                            rs.getString("image"),
+                            rs.getString("phone_number"),
+                            rs.getString("username"));
+                    
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentor;
+    }
+    
     public boolean isMentorJoinedCourse(int mentorId, int courseId) {
         String sql = "SELECT COUNT(*) FROM MentorCourse WHERE mentor_id = ? AND course_id = ?";
         try {
@@ -357,7 +387,7 @@ public class DAOMentor extends DBConnection {
         }
         return false;
     }
-
+    
     public List<Integer> getJoinedCoursesByMentorId(int mentorId) {
         List<Integer> joinedCourses = new ArrayList<>();
         String sql = "SELECT course_id FROM MentorCourse WHERE mentor_id = ?";
@@ -373,7 +403,7 @@ public class DAOMentor extends DBConnection {
         }
         return joinedCourses;
     }
-
+    
     public Mentor1 getMentorById(int mentorId) {
         String query = "SELECT [id]\n"
                 + "      ,[user_id]\n"
@@ -393,10 +423,10 @@ public class DAOMentor extends DBConnection {
         Mentor1 mentor = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-
+            
             stmt.setInt(1, mentorId);
             ResultSet rs = stmt.executeQuery();
-
+            
             if (rs.next()) {
                 mentor = new Mentor1(
                         rs.getInt("id"),
@@ -418,16 +448,16 @@ public class DAOMentor extends DBConnection {
         }
         return mentor;
     }
-
+    
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
-
+        
         List<Mentor> list = dao.getMentorsByCourse("Business Strategy and Management");
-
+        
         for (Mentor mentor : list) {
             System.out.println(mentor);
         }
-
+        
     }
-
+    
 }

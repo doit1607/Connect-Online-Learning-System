@@ -58,22 +58,6 @@ public class DAOCourse extends DBConnection {
         return listCourse;
     }
 
-//    public boolean createCourse(String title, String description, String image) {
-//        String sql = "INSERT INTO [dbo].[Course] ([title], [description], [status], [image]) "
-//                + "VALUES (?, ?, ?, ?)";
-//
-//        try (PreparedStatement pre = conn.prepareStatement(sql)) {
-//            pre.setString(1, title);
-//            pre.setString(2, description);
-//            pre.setString(3, "active");
-//            pre.setString(4, image);
-//
-//            return pre.executeUpdate() > 0;
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return false;
-//    }
     public String getCourseName(int id) {
         String name = null;
         String sql = "Select * from Course where id = ?";
@@ -359,6 +343,29 @@ public class DAOCourse extends DBConnection {
         }
         return listCourse;
 
+    }
+
+    public Course getCourseByIdd(int id) {
+        Course course = null;
+        String sql = "SELECT Course.title, CourseMajor.name as name ,Course.image, Course.price "
+                + "FROM Course JOIN CourseMajor ON CourseMajor.id = Course.course_major_id "
+                + "WHERE Course.id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                course = new Course(
+                        rs.getString("title"), // Course.title
+                        rs.getString("name"), // Course.image
+                        rs.getString("image"), // CourseMajor.name (aliased as 'major')
+                        rs.getDouble("price") // Course.price
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return course;
     }
 
     public List<Mentor> getMentorByCourseTitle(String courseTitle) {

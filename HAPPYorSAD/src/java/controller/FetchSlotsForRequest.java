@@ -6,38 +6,68 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.List;
+import model.DAORequest;
 import model.DAOslot;
+import entity.Slot;
 
 @WebServlet("/FetchSlotsForRequest") // Map the servlet to this URL
 public class FetchSlotsForRequest extends HttpServlet {
 
-    private DAOslot slotDAO;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-    @Override
-    public void init() throws ServletException {
-        slotDAO = new DAOslot();
+        try {
+            String requestId = request.getParameter("requestId");
+            if (requestId == null || requestId.isEmpty()) {
+                out.println("<p>No request ID provided</p>");
+                return;
+            }
+
+            int requestIdd = Integer.parseInt(requestId);
+            DAOslot dao = new DAOslot();
+            // Assuming you have a method to get schedule details
+            // Replace this with your actual schedule retrieval logic
+            List<entity.Slot> scheduleList = dao.getSlotsByRequestId1(2);
+            
+            System.out.println("HElllooo");
+            if (scheduleList == null || scheduleList.isEmpty()) {
+                out.println("<p>No schedule available for this request</p>");
+            } else {
+                // Build HTML table for schedule
+                out.println("<table class='table table-bordered'>");
+                out.println("<thead><tr><th>Date</th><th>Time</th><th>Slot</th></tr></thead>");
+                out.println("<tbody>");
+
+                for (Slot Slot : scheduleList) {
+                    out.println("<tr>");
+                    out.println("<td>" + Slot.getSlotDate()+ "</td>");
+                    out.println("<td>" + Slot.getSlotNumber()+ "</td>");
+                    out.println("<td>" + Slot.getStartTime()+ "</td>");
+                     out.println("<td>" + Slot.getEndTime()+ "</td>");
+                    out.println("<td>" + Slot.getStatus()+ "</td>");
+                    out.println("</tr>");
+                }
+
+                out.println("</tbody>");
+                out.println("</table>");
+            }
+        } catch (NumberFormatException e) {
+            out.println("<p>Invalid request ID format</p>");
+        } catch (Exception e) {
+            out.println("<p>Error loading schedule: " + e.getMessage() + "</p>");
+        } finally {
+            out.close();
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String requestIdStr = request.getParameter("requestId");
-        if (requestIdStr == null || requestIdStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request ID is required");
-            return;
-        }
-
-        try {
-            int requestId = Integer.parseInt(requestIdStr);
-            List<entity.Slot> slots = slotDAO.getSlotsByRequestId(requestId);
-            request.setAttribute("slots", slots);
-            request.getRequestDispatcher("/scheduleTable.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Request ID format");
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching slots: " + e.getMessage());
-        }
+        processRequest(request, response);
     }
 
     @Override
@@ -46,24 +76,9 @@ public class FetchSlotsForRequest extends HttpServlet {
         processRequest(request, response);
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (java.io.PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FetchSlotsForRequest</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FetchSlotsForRequest at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Fetches schedule slots for a specific request";
     }
 }
+

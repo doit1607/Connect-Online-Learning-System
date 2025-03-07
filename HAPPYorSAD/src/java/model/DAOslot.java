@@ -477,6 +477,28 @@ public class DAOslot extends DBConnection {
         return slots;
     }
     
+        public List<Slot> getSlotsByRequestId1(int requestId) throws SQLException {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "SELECT s.slot_date, s.status, s.slot_number_id, st.start_time, st.end_time\n"
+                + "FROM Slot s\n"
+                + "join Slot_Template st on s.slot_number_id = st.id\n"
+                + "WHERE request_id = ?\n"
+                + "group by  s.slot_date, s.status, s.slot_number_id, st.start_time, st.end_time";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Slot slot = new Slot(rs.getDate("slot_Date"), 
+                    rs.getInt("slot_number_id"), 
+                    rs.getTime("start_time"),
+                    rs.getTime("end_time"), 
+                    rs.getString("status"));
+            
+            slots.add(slot);
+        }
+        return slots;
+    }
+
 
 
     public boolean areAllSlotsComplete(int requestId) throws SQLException {
@@ -509,26 +531,23 @@ public class DAOslot extends DBConnection {
 
 
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
         DAOslot slotDAO = new DAOslot();
 
         int testMentorId = 1; // Thay đổi ID này theo dữ liệu thực tế trong DB
-        int scheduleID = 1;
+        int scheduleID = 659;
 
-        List<Integer> slotIds = Arrays.asList(10, 11, 12);
-        boolean success = slotDAO.bookMultipleSlots(slotIds, scheduleID);
-
-        Date testDate = Date.valueOf("2025-03-08"); // Định dạng YYYY-MM-DD
-        int mentorId = 1;  // Đổi giá trị phù hợp
-        int scheduleId = 1;
-
-        boolean result = slotDAO.deleteSlot(testDate, mentorId, scheduleId);
-        if (result) {
-            System.out.println("✅ Slot deleted successfully for date: " + testDate);
-        } else {
-            System.out.println("❌ Failed to delete slot for date: " + testDate);
+        try {
+            List<Slot> sl = slotDAO.getSlotsByRequestId(scheduleID);
+            for (Slot slot : sl) {
+                System.out.println(slot);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOslot.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+       
 
     }
 

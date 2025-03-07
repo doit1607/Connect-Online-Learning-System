@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Course;
 import entity.Mentor;
 import entity.Request;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import model.DAObook;
 import model.DAOmentee;
 import model.DAOschedule;
 import model.DAOslot;
+import model.DAOCourse;
 import entity.Slot;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +43,7 @@ public class test extends HttpServlet {
     private static final DAOmentee daoMentee = new DAOmentee();
     private static final DAOslot daoSlot = new DAOslot();
     private static final DAObook daoB = new DAObook();
+    private static final DAOCourse daoC = new DAOCourse();
     private final DAOschedule daoSc = new DAOschedule();
     private static Map<String, Long> requestTimestamps = new HashMap<>();
     private static final Map<String, String> processedSubmissions = new HashMap<>(); // Track processed submission IDs
@@ -472,7 +475,12 @@ public class test extends HttpServlet {
         LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
 
         // Chuẩn bị dữ liệu tháng cho dropdown
+        Course c = daoC.getCourseByIdd(courseId);
+        Mentor m = daomentor.getMentorByIdd(mentorId);
+        System.out.println(m);
         Map<String, List<entity.Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
+        request.setAttribute("course", c);
+        request.setAttribute("mentorrequest", m);
         request.setAttribute("months", schedulesByMonth.keySet());
         request.setAttribute("schedulesByMonth", schedulesByMonth);
         request.setAttribute("weekDateInfoMap", weekDateInfoMap);

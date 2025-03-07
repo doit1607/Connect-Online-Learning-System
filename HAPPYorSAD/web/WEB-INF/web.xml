@@ -140,6 +140,10 @@
         <servlet-name>Att</servlet-name>
         <servlet-class>controller.Att</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>fetchSlot</servlet-name>
+        <servlet-class>controller.fetchSlot</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -279,6 +283,10 @@
     <servlet-mapping>
         <servlet-name>Att</servlet-name>
         <url-pattern>/att</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fetchSlot</servlet-name>
+        <url-pattern>/fetchSlot</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
