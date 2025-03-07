@@ -59,9 +59,11 @@ public class VNPayReturnServlet extends HttpServlet {
                 int id = transactionDAO.createTransaction(username, amount, "DEPOSIT");
                 transactionDAO.depositToWallet(username, amount);
                 double balance = transactionDAO.getBalance(username);
+                double totalbalance = transactionDAO.getTotalBalance(username);
                 transactionDAO.updateBalance(username, balance);
                 String msg = "Your payment is sucessfull!";
                 session.setAttribute("walletBalance", balance);
+                session.setAttribute("walletTotalbalance", totalbalance);
                 response.sendRedirect("Wallet?service=deposit");
             } else {
                 transactionDAO.updateTransactionStatus(Integer.parseInt(vnp_TxnRef), "FAILED");

@@ -72,11 +72,22 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="wallet-balance mb-4 text-center">
-                                        <h5 class="fw-bold text-muted">Wallet Balance</h5>
-                                        <p class="text-primary fs-4 mb-0">
-                                            <fmt:setLocale value="vi_VN"/>
-                                            <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
-                                        </p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h5 class="fw-bold text-muted">Total Balance</h5>
+                                                <p class="text-primary fs-4 mb-0">
+                                                    <fmt:setLocale value="vi_VN"/>
+                                                    <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletTotalbalance : 0}" type="currency" groupingUsed="true"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h5 class="fw-bold text-muted">Available Balance</h5>
+                                                <p class="text-success fs-4 mb-0">
+                                                    <fmt:setLocale value="vi_VN"/>
+                                                    <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                     <form id="walletForm" method="POST">
                                         <div class="mb-4">
@@ -207,13 +218,22 @@
                     border-radius: 12px;
                 }
 
+                .wallet-balance .row {
+                    align-items: center;
+                }
+
+                .wallet-balance .col-6 {
+                    padding: 0 15px;
+                }
+
                 .wallet-balance h5 {
-                    font-size: 1.1rem;
-                    margin-bottom: 0.5rem;
+                    font-size: 1rem;
+                    margin-bottom: 0.3rem;
                 }
 
                 .wallet-balance p {
                     font-weight: bold;
+                    margin-bottom: 0;
                 }
             </style>
 
