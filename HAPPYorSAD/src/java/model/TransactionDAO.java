@@ -140,7 +140,7 @@ public class TransactionDAO extends DBConnection{
         return transactionId;
     }
 
-    // Phương thức lấy số dư ví của người dùng
+  
     public double getBalance(String username) {
         double balance = 0.0;
         String query = "SELECT balance FROM Wallets WHERE username = ?";
@@ -152,6 +152,25 @@ public class TransactionDAO extends DBConnection{
             
             if (rs.next()) {
                 balance = rs.getDouble("balance");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return balance;
+    }
+    
+     public double getTotalBalance(String username) {
+        double balance = 0.0;
+        String query = "SELECT (balance + hold) AS total_balance FROM Wallets WHERE username = ?";
+        
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                balance = rs.getDouble("total_balance");
             }
         } catch (Exception e) {
             e.printStackTrace();
