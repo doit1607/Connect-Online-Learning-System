@@ -38,10 +38,6 @@ public class Wallet extends HttpServlet {
         TransactionDAO daotran = new TransactionDAO();
         List<Transaction> list = daotran.listTransactionByUsername(username);
         request.setAttribute("transaction", list);
-
-       
-        double balance = daotran.getBalance(username);
-        session.setAttribute("walletBalance", balance);
         String service = request.getParameter("service");
         String msg = null;
         if (service != null) {
