@@ -72,21 +72,21 @@ public class test extends HttpServlet {
         String sessionId = request.getSession().getId();
         long currentTime = System.currentTimeMillis();
         long lastRequestTime = requestTimestamps.getOrDefault(sessionId, 0L);
+        String submissionId = request.getParameter("submissionId");
         System.out.println("Received POST request at " + new java.util.Date() + " for session: " + sessionId + " with action: " + request.getParameter("service"));
 
+        // Check for duplicate based on timeout
         if (currentTime - lastRequestTime < REQUEST_TIMEOUT) {
-            System.out.println("Blocked duplicate request for session: " + sessionId);
-            response.getWriter().write("Request ignored: Duplicate submission detected.");
+            LOGGER.warning("Blocked duplicate request for session: " + sessionId + " within " + REQUEST_TIMEOUT + "ms");
+            response.setContentType("text/plain");
+            response.getWriter().write("Request ignored: Too frequent submission.");
             return;
         }
 
-        requestTimestamps.put(sessionId, currentTime);
-        System.out.println("Processing new request for session: " + sessionId);
-        String submissionId = request.getParameter("submissionId");
-
+        // Check for duplicate based on submissionId
         synchronized (processedSubmissions) {
             if (submissionId != null && processedSubmissions.containsKey(submissionId)) {
-                LOGGER.warning("Duplicate submission detected for submissionId: " + submissionId);
+                LOGGER.warning("Blocked duplicate request for session: " + sessionId + ", submissionId: " + submissionId);
                 response.setContentType("text/plain");
                 response.getWriter().write("Request ignored: Duplicate submission detected.");
                 return;
@@ -95,6 +95,7 @@ public class test extends HttpServlet {
                 processedSubmissions.put(submissionId, sessionId);
             }
         }
+        requestTimestamps.put(sessionId, currentTime);
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -413,7 +414,6 @@ public class test extends HttpServlet {
 
         // Xử lý weekOffset
         int weekOffset = Optional.ofNullable(request.getParameter("weekOffset")).map(Integer::parseInt).orElse(0);
-
 
         // Tính toán ngày bắt đầu và kết thúc của tuần dựa trên startDate và weekOffset
         LocalDate firstDayOfWeek = startDate.toLocalDate().plusWeeks(weekOffset);
