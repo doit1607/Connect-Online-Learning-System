@@ -60,7 +60,6 @@ public class VNPayReturnServlet extends HttpServlet {
                 transactionDAO.depositToWallet(username, amount);
                 double balance = transactionDAO.getBalance(username);
                 double totalbalance = transactionDAO.getTotalBalance(username);
-                transactionDAO.updateBalance(username, balance);
                 String msg = "Your payment is sucessfull!";
                 session.setAttribute("walletBalance", balance);
                 session.setAttribute("walletTotalbalance", totalbalance);
@@ -78,7 +77,6 @@ public class VNPayReturnServlet extends HttpServlet {
                 int id = transactionDAO.createTransaction(username, amount, "WITHDRAW");
                 transactionDAO.withdrawToWallet(username, amount);
                 double newBalance = transactionDAO.getBalance(username); 
-                transactionDAO.updateBalance(username, newBalance);
 
                 String msg = "Your payment is successful!";
                 session.setAttribute("walletBalance", newBalance); 
