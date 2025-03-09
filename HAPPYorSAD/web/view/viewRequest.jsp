@@ -149,7 +149,7 @@
                         <h3>Requests</h3>
                         <span id="toggleFilter" style="cursor: pointer;">
                             <i class="fas fa-chevron-down"></i>
-                            
+
                         </span>
                         Filter here
                     </div>
@@ -179,32 +179,32 @@
                                         </select>
                                     </div>
                                     <div class="col-md-12" style="margin-top: 8px">
-    <label>Status:</label><br>
-    
-    <input type="checkbox" name="status" value="Open" id="status-opening"
-        ${not empty status and fn:contains(fn:join(status, ','), 'Open') ? 'checked' : ''}>
-    <label for="status-opening">Opening</label>
-    &nbsp;&nbsp;&nbsp;
+                                        <label>Status:</label><br>
 
-    <input type="checkbox" name="status" value="Closed" id="status-closed"
-        ${not empty status and fn:contains(fn:join(status, ','), 'Closed') ? 'checked' : ''}>
-    <label for="status-closed">Closed</label>
-    &nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name="status" value="Open" id="status-opening"
+                                               ${not empty status and fn:contains(fn:join(status, ','), 'Open') ? 'checked' : ''}>
+                                        <label for="status-opening">Opening</label>
+                                        &nbsp;&nbsp;&nbsp;
 
-    <input type="checkbox" name="status" value="Cancel" id="status-cancelled"
-        ${not empty status and fn:contains(fn:join(status, ','), 'Cancel') ? 'checked' : ''}>
-    <label for="status-cancelled">Cancelled</label>
-    &nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name="status" value="Closed" id="status-closed"
+                                               ${not empty status and fn:contains(fn:join(status, ','), 'Closed') ? 'checked' : ''}>
+                                        <label for="status-closed">Closed</label>
+                                        &nbsp;&nbsp;&nbsp;
 
-    <input type="checkbox" name="status" value="Completed" id="status-completed"
-        ${not empty status and fn:contains(fn:join(status, ','), 'Completed') ? 'checked' : ''}>
-    <label for="status-completed">Completed</label>
-    &nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name="status" value="Cancel" id="status-cancelled"
+                                               ${not empty status and fn:contains(fn:join(status, ','), 'Cancel') ? 'checked' : ''}>
+                                        <label for="status-cancelled">Cancelled</label>
+                                        &nbsp;&nbsp;&nbsp;
 
-    <input type="checkbox" name="status" value="Processing" id="status-processing"
-        ${not empty status and fn:contains(fn:join(status, ','), 'Processing') ? 'checked' : ''}>
-    <label for="status-processing">Processing</label>
-</div>
+                                        <input type="checkbox" name="status" value="Completed" id="status-completed"
+                                               ${not empty status and fn:contains(fn:join(status, ','), 'Completed') ? 'checked' : ''}>
+                                        <label for="status-completed">Completed</label>
+                                        &nbsp;&nbsp;&nbsp;
+
+                                        <input type="checkbox" name="status" value="Processing" id="status-processing"
+                                               ${not empty status and fn:contains(fn:join(status, ','), 'Processing') ? 'checked' : ''}>
+                                        <label for="status-processing">Processing</label>
+                                    </div>
 
 
                                     <div class="col-md-12 mt-2">
