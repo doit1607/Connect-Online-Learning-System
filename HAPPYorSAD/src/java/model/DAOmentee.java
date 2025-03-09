@@ -82,7 +82,7 @@ public class DAOmentee extends DBConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0; // Trả về 0 nếu không tìm thấy
+        return 0; 
     }
 
     public String getMenteeUsername(int id) {
@@ -97,7 +97,7 @@ public class DAOmentee extends DBConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null; 
     }
 
     public static void main(String[] args) {
