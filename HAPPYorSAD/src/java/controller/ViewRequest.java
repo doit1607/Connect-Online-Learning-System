@@ -149,8 +149,7 @@ public class ViewRequest extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int requestId = Integer.parseInt(request.getParameter("id"));
-        TransactionDAO daotran = new TransactionDAO();
-        String status = request.getParameter("status");
+        TransactionDAO daotran = new TransactionDAO(); 
         DAORequest dao = new DAORequest();
         DAOmentee daomentee = new DAOmentee();
         Request newrequest = dao.getRequestById(requestId);  
@@ -158,8 +157,9 @@ public class ViewRequest extends HttpServlet {
         int menteeuser_id = daomentee.getMenteeUserid(menteeid);
         String usernamementee = daomentee.getMenteeUsername(menteeuser_id);            
         double totalprice = newrequest.gettotalprice();
+        String status = request.getParameter("status");
         if(status.equals("Processing")){
-            dao.updateRequestStatus(requestId, status);
+            dao.updateRequestStatus(requestId, "Pending");
         }
         if(status.equals("Cancel")){
             daotran.updateHoldAfterReject(usernamementee, totalprice);
