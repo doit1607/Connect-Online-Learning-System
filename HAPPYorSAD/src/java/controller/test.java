@@ -163,7 +163,6 @@ public class test extends HttpServlet {
 
         if ("submit".equals(service)) {
             String requestId_raw = request.getParameter("requestId");
-            @SuppressWarnings("unchecked")
             Set<String> tempSlotBooked = (Set<String>) session.getAttribute("tempSlotBooked");
             LOGGER.info("Processing submit with tempSlotBooked: " + tempSlotBooked);
             if (tempSlotBooked != null && !tempSlotBooked.isEmpty()) {
@@ -173,9 +172,11 @@ public class test extends HttpServlet {
                 if (requestId_raw == null) {
                     if (totalprice > 0 && walletbalance != null && walletbalance >= totalprice) {
                         daowallet.updateHold(usernamementee, totalprice);
-                        daowallet.withdrawToWallet(usernamementee, totalprice);
                         double balance = daowallet.getBalance(usernamementee);
+                        double totalbalance = daowallet.getTotalBalance(usernamementee);
+                        daowallet.createTransaction(usernamementee, totalprice, "WITHDRAW");
                         session.setAttribute("walletBalance", balance);
+                        session.setAttribute("walletTotalbalance", totalbalance);
                         Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
 
                         int newRequestId;
