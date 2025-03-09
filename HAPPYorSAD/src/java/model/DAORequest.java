@@ -5,6 +5,7 @@
 package model;
 
 import entity.Request;
+import entity.MentorSchedule;
 import java.lang.System.Logger;
 import java.security.Timestamp;
 import java.sql.Statement;
@@ -365,9 +366,10 @@ public class DAORequest extends DBConnection {
     // Hien thi cho manager tat ca request cua Mentee (Dung)
     public List<Request> showAllRequest() {
         List<Request> listReq = new ArrayList<>();
-        String sql = "SELECT r.id, u.username, r.title, r.status FROM Request r \n"
+        String sql = "SELECT r.id, u.username, r.title, r.totalPrice, r.status FROM Request r \n"
                 + "JOIN Mentee m ON r.mentee_id = m.id\n"
                 + "JOIN Users u ON m.user_id = u.id\n"
+                + "WHERE r.status != 'Draft'\n"
                 + "ORDER BY r.created_at DESC";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -377,6 +379,7 @@ public class DAORequest extends DBConnection {
                 request.setId(rs.getInt("id"));
                 request.setUserMentee(rs.getString("username"));
                 request.setTitle(rs.getString("title"));
+                request.setTotalprice(rs.getDouble("totalPrice"));
                 request.setStatus(rs.getString("status"));
                 listReq.add(request);
             }
@@ -395,7 +398,7 @@ public class DAORequest extends DBConnection {
                 + "WHERE 1=1");
 
         if (search != null && !search.isEmpty()) {
-            sql.append(" AND r.title LIKE ?");
+            sql.append(" AND u.username LIKE ?");
         }
         if (status != null && !status.isEmpty()) {
             sql.append(" AND r.status = ?");
@@ -541,6 +544,69 @@ public class DAORequest extends DBConnection {
 
         return requestData;
     }
+    
+    // Request cua mentor cho manager
+    public List<MentorSchedule> getMentorSchedule() {
+        List<MentorSchedule> schedule = new ArrayList<>();
+        String sql = "select ms.id as [schedule_id], u.username, Month(s.start_date) as [month], s.created_at, ms.status from Users u\n"
+                + "join Mentor m on u.id = m.user_id\n"
+                + "join Mentor_Schedule ms on m.id = ms.mentor_id\n"
+                + "join Schedule s on ms.schedule_id = s.id\n"
+                + "where ms.status = 'Pending' order by s.created_at desc";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                schedule.add(new MentorSchedule(
+                        rs.getInt("schedule_id"),
+                        rs.getString("username"),
+                        rs.getInt("month"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getString("status")));
+            }
+        } catch (Exception e) {
+        }
+        return schedule;
+    }
+
+    // update trang thai lich day cho Mentor
+    public boolean updateSchedule(int id, String status) {
+        String sql = "update Mentor_Schedule set status = ? where schedule_id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, status);
+            pre.setInt(2, id);
+            int rowsUpdated = pre.executeUpdate();
+            return rowsUpdated > 0; // tra ve true neu co it nhat 1 dong bi anh huong
+        } catch (Exception e) {
+        }
+        return false;
+    }
+    
+    // Reject schedule
+    public void rejectSchedule(String username, String reason) {
+        String sql = "UPDATE Mentor_Schedule SET status = 'Rejected' WHERE schedule_id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
+            pre.executeUpdate();
+//            saveNotification(username, "Schedule has been rejected. Reason: " + reason);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+//    // thong bao cho Mentor sau khi Schedule bi reject
+//    public void saveNotification(String username, String message) {
+//        String sql = "INSERT INTO NotificationForCV (username, message, created_at) VALUES (?, ?, GETDATE())";
+//        try {
+//            PreparedStatement pre = conn.prepareStatement(sql);
+//            pre.setString(1, username);
+//            pre.setString(2, message);
+//            pre.executeUpdate();
+//        } catch (Exception e) {
+//        }
+//    }
 
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
