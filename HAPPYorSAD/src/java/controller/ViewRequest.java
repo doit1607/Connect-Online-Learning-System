@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DAORequest;
 import model.DAOa;
+import model.DAOmentee;
 import model.DAOslot;
 import model.DAOuser;
 import model.TransactionDAO;
@@ -147,10 +148,24 @@ public class ViewRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         int requestId = Integer.parseInt(request.getParameter("id"));
+        int requestId = Integer.parseInt(request.getParameter("id"));
+        TransactionDAO daotran = new TransactionDAO();
         String status = request.getParameter("status");
         DAORequest dao = new DAORequest();
-        dao.updateRequestStatus(requestId, status);
+        DAOmentee daomentee = new DAOmentee();
+        Request newrequest = dao.getRequestById(requestId);  
+        int menteeid = newrequest.getMenteeId();
+        int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+        String usernamementee = daomentee.getMenteeUsername(menteeuser_id);            
+        double totalprice = newrequest.gettotalprice();
+        if(status.equals("Processing")){
+            dao.updateRequestStatus(requestId, status);
+        }
+        if(status.equals("Cancel")){
+            daotran.updateHoldAfterReject(usernamementee, totalprice);
+            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT");
+            dao.updateRequestStatus(requestId, status);
+        }
         response.sendRedirect("/HAPPYorSAD/viewRequest");
         
 //        int requestId = Integer.parseInt(request.getParameter("id"));
@@ -195,7 +210,6 @@ public class ViewRequest extends HttpServlet {
 //        }
 
 //        response.sendRedirect("/HAPPYorSAD/viewRequest");
-
     }
 
     /**
