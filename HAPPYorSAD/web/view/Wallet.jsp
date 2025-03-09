@@ -156,7 +156,19 @@
                                                 <c:forEach var="i" items="${requestScope.transaction}">
                                                     <tr>
                                                         <td><fmt:formatDate value="${i.transactionDate}" pattern="yyyy-MM-dd"/></td>
-                                                        <td>${i.type}</td>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${i.type == 'DEPOSIT'}">
+                                                                    <span class="deposit-color" style="font-weight: bold">${i.type}</span>
+                                                                </c:when>
+                                                                <c:when test="${i.type == 'WITHDRAW'}">
+                                                                    <span class="withdraw-color" style="font-weight: bold">${i.type}</span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    ${i.type}
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
                                                         <td>₫<fmt:formatNumber value="${i.amount}" pattern="#,###"/></td>
                                                         <td><span class="badge bg-success">${i.status}</span></td>
                                                     </tr>
@@ -178,6 +190,12 @@
 
             <!-- Custom CSS -->
             <style>
+                .deposit-color {
+                    color: #00cc00; /* Xanh tùy chỉnh */
+                }
+                .withdraw-color {
+                    color: #ff0000; /* Đỏ tùy chỉnh */
+                }
                 .payment-section {
                     background: #f8f9fa;
                 }
