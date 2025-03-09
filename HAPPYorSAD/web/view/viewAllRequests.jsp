@@ -39,6 +39,89 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
 
+        <style>
+            /* Định dạng hàng trạng thái */
+            .status-group {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                margin: 20px 0;
+                padding: 0 20px;
+            }
+
+            /* Thanh nối giữa các trạng thái */
+            .status-group::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 10%;
+                right: 10%;
+                height: 4px;
+                background: #ddd;
+                z-index: 0;
+            }
+
+            /* Định dạng từng trạng thái */
+            .status-group input {
+                display: none;
+            }
+
+            .status-group label {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #ddd;
+                border: 3px solid #ddd;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            /* Định dạng chữ dưới trạng thái */
+            .status-group label::after {
+                content: attr(for);
+                position: absolute;
+                top: 45px;
+                font-size: 14px;
+                color: #555;
+            }
+
+            /* Khi trạng thái được chọn */
+            .status-group input:checked + label {
+                background: #28a745;
+                border-color: #28a745;
+                color: white;
+            }
+
+            /* Hiệu ứng màu xanh cho đường nối */
+            .status-group input:checked + label::before {
+                content: "✔";
+            }
+
+            /* Nút Cancel tách riêng */
+            .cancel-status label {
+                display: inline-block;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-weight: bold;
+                color: red;
+                background: transparent;
+                transition: background 0.3s, color 0.3s;
+            }
+
+            /* Khi chọn "Cancel", đổi màu nền */
+            .cancel-status input:checked + label {
+                background: red;
+                color: white;
+            }
+        </style>
 
 
 
@@ -117,8 +200,8 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-reviews.html" class="nav-link">
-                                                <i class="bx bxs-star"></i>Reviews
+                                            <a href="RequestSchedule" class="nav-link">
+                                                <i class="bx bxs-star"></i>Request schedule
                                             </a>
                                         </li>
 
@@ -150,28 +233,56 @@
                             <h1>List All Request</h1>
 
                             <div class="checkout-form">
-                                <form action="ShowAllRequest" method="GET" class="mb-3">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="text" name="search" class="form-control" placeholder="Search">
+                                <form action="ShowAllRequest" method="get" class="mb-3">
+                                    <div class="container mt-4">
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center">
+                                                <label class="d-block mb-2 fw-bold">Status</label>
+                                                <div class="status-group">
+                                                    <input type="radio" name="status" value="Open" id="Open" hidden>
+                                                    <label for="Open">1</label>
+
+                                                    <input type="radio" name="status" value="Processing" id="Processing" hidden>
+                                                    <label for="Processing">2</label>
+
+                                                    <input type="radio" name="status" value="Complete" id="Complete" hidden>
+                                                    <label for="Complete">3</label>
+
+                                                    <input type="radio" name="status" value="Closed" id="Closed" hidden>
+                                                    <label for="Closed">4</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <select name="status" class="form-control">
-                                                <option value="">All Status</option>
-                                                <option value="Open">Open</option>
-                                                <option value="Cancel">Cancel</option>
-                                                <option value="Processing">Processing</option>
-                                                <option value="Stop">Stop</option>
-                                            </select>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center cancel-status">
+                                                <input type="radio" name="status" value="Cancel" id="Cancel" hidden>
+                                                <label for="Cancel">Cancel</label>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <input type="date" name="startDate" class="form-control">
+
+                                        <div class="row g-3 align-items-center">
+                                            <div class="col-md-4">
+                                                <label for="search" class="form-label">Search</label>
+                                                <input type="text" id="search" name="search" class="form-control" placeholder="Enter username">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="startDate" class="form-label">Start Date</label>
+                                                <input type="date" id="startDate" name="startDate" class="form-control">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="endDate" class="form-label">End Date</label>
+                                                <input type="date" id="endDate" name="endDate" class="form-control">
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <input type="date" name="endDate" class="form-control">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="submit" class="btn btn-primary">Search</button>
+
+                                        <!-- Nút tìm kiếm -->
+                                        <div class="row mt-3">
+                                            <div class="col-12 text-center">
+                                                <button type="submit" class="btn btn-primary px-4">🔎 Search</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -182,6 +293,7 @@
                                             <th>ID</th>
                                             <th>Username</th>
                                             <th>Title</th>
+                                            <th>Price</th>
                                             <th>Status</th>
                                         </tr>
                                         <c:forEach items="${requestScope.requestList}" var="o" varStatus="status1">
@@ -190,8 +302,12 @@
                                                 <td><a href="ShowAllRequest?action=detail&id=${o.id}">${o.id}</a></td>
                                                 <td>${o.getUserMentee()}</td>
                                                 <td>${o.title}</td>
+                                                <td>${o.totalprice}</td>
                                                 <td>
-                                                    <div style="background-color: ${o.status == 'Open' ? '#28a745' : (o.status == 'Pending' ? '#ffc107' : '#dc3545')};
+                                                    <div style="background-color: ${o.status == 'Open' ? '#28a745' : 
+                                                                                    (o.status == 'Processing' ? '#007bff' : 
+                                                                                    (o.status == 'Complete' ? '#6f42c1' :
+                                                                                    (o.status == 'Closed' ? '#dc3545' : '#ffc107')))};
                                                          color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
                                                         ${o.status}
                                                     </div>
