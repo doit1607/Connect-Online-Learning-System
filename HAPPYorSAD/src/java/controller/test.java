@@ -341,7 +341,7 @@ public class test extends HttpServlet {
         String selectedMonthStr = request.getParameter("month"); // Từ JSP
         String selectedYearStr = request.getParameter("year");   // Từ JSP
         String weekOffsetStr = request.getParameter("weekOffset"); // Từ JSP
-
+        String service = request.getParameter("service");
         int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
         int courseId = (courseIdStr != null && !courseIdStr.isEmpty()) ? Integer.parseInt(courseIdStr) : 0;
         int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
@@ -354,6 +354,13 @@ public class test extends HttpServlet {
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("courseId", courseId);
         request.setAttribute("price", price);
+        if ("update".equals(service)) {
+            request.setAttribute("title", request.getParameter("title"));
+            request.setAttribute("content", request.getParameter("content"));
+            request.setAttribute("startdate", request.getParameter("startdate"));
+            request.setAttribute("enddate", request.getParameter("enddate"));
+            request.setAttribute("requestId", request.getParameter("requestId"));
+        }
 
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {

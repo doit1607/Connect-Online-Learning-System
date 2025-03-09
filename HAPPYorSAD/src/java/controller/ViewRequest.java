@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DAORequest;
 import model.DAOa;
+import model.DAOmentee;
 import model.DAOslot;
 import model.DAOuser;
 import model.TransactionDAO;
@@ -66,7 +67,9 @@ public class ViewRequest extends HttpServlet {
 
         String dateFilterString = request.getParameter("date");
         String title = request.getParameter("title");
-        String status = request.getParameter("status");
+        if (title != null) title = title.trim();
+        String[] status = request.getParameterValues("status");
+        request.setAttribute("status", status);
         int dateFilter = 0;
 
         if (dateFilterString != null && !dateFilterString.isEmpty()) {
@@ -146,15 +149,35 @@ public class ViewRequest extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int requestId = Integer.parseInt(request.getParameter("id"));
+        TransactionDAO daotran = new TransactionDAO();
         String status = request.getParameter("status");
-        TransactionDAO trandao = new TransactionDAO();
-
         DAORequest dao = new DAORequest();
-
-        // *** Thêm xử lý điểm danh slot ***
-        String action = request.getParameter("action");
-        DAOslot slotDAO = new DAOslot();
-        DAOa attendanceDAO = new DAOa();
+        DAOmentee daomentee = new DAOmentee();
+        Request newrequest = dao.getRequestById(requestId);  
+        int menteeid = newrequest.getMenteeId();
+        int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+        String usernamementee = daomentee.getMenteeUsername(menteeuser_id);            
+        double totalprice = newrequest.gettotalprice();
+        if(status.equals("Processing")){
+            dao.updateRequestStatus(requestId, status);
+        }
+        if(status.equals("Cancel")){
+            daotran.updateHoldAfterReject(usernamementee, totalprice);
+            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT");
+            dao.updateRequestStatus(requestId, status);
+        }
+        response.sendRedirect("/HAPPYorSAD/viewRequest");
+        
+//        int requestId = Integer.parseInt(request.getParameter("id"));
+//        String status = request.getParameter("status");
+//        TransactionDAO trandao = new TransactionDAO();
+//
+//        DAORequest dao = new DAORequest();
+//
+//        // *** Thêm xử lý điểm danh slot ***
+//        String action = request.getParameter("action");
+//        DAOslot slotDAO = new DAOslot();
+//        DAOa attendanceDAO = new DAOa();
 
 //        if ("markDone".equals(action)) {
 //            int slotId = Integer.parseInt(request.getParameter("slotId"));
@@ -186,8 +209,7 @@ public class ViewRequest extends HttpServlet {
 //            dao.addRejectReason(requestId, reason);
 //        }
 
-        response.sendRedirect("/HAPPYorSAD/viewRequest");
-
+//        response.sendRedirect("/HAPPYorSAD/viewRequest");
     }
 
     /**

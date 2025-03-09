@@ -12076,7 +12076,7 @@ textarea:focus {
   background: #159f46;
   left: 6px;
 }
-.progress {
+/*.progress {
   width: 110px;
   height: 110px;
   line-height: 110px;
@@ -12084,8 +12084,8 @@ textarea:focus {
   margin: 0 auto;
   box-shadow: none;
   position: relative;
-}
-.progress:after {
+}*/
+/*.progress:after {
   content: "";
   width: 100%;
   height: 100%;
@@ -12094,7 +12094,7 @@ textarea:focus {
   position: absolute;
   top: 0;
   left: 0;
-}
+}*/
 .progress > span {
   width: 50%;
   height: 100%;
@@ -12106,7 +12106,7 @@ textarea:focus {
 .progress .progress-left {
   left: 0;
 }
-.progress .progress-bar {
+/*.progress .progress-bar {
   width: 100%;
   height: 100%;
   background: none;
@@ -12114,7 +12114,7 @@ textarea:focus {
   border-style: solid;
   position: absolute;
   top: 0;
-}
+}*/
 .progress .progress-left .progress-bar {
   left: 100%;
   border-top-right-radius: 80px;

@@ -14,14 +14,17 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Collections;
+import java.util.HashMap;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import model.DBConnection;
 import static model.DBConnection.conn;
 
 public class DAORequest extends DBConnection {
 
-    public List<Request> getRequestByMentor(String mentor, String title, String status, LocalDate date, int page, int limit) {
+    public List<Request> getRequestByMentor(String mentor, String title, String[] status, LocalDate date, int page, int limit) {
         List<Request> requests = new ArrayList<>();
         int offset = (page - 1) * limit;
 
@@ -32,15 +35,17 @@ public class DAORequest extends DBConnection {
                 + "FROM Request r "
                 + "JOIN Mentor m ON r.mentor_id = m.id "
                 + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? and r.status != 'draft'"
+                + "WHERE u.username = ? AND r.status != 'draft' "
         );
 
         // Add filters dynamically
         if (date != null) {
             sql.append("AND r.created_at >= ? ");
         }
-        if (status != null && !status.isEmpty()) {
-            sql.append("AND r.status = ? ");
+        if (status != null && status.length > 0) {
+            sql.append("AND r.status IN (");
+            sql.append(String.join(", ", Collections.nCopies(status.length, "?"))); // Tạo danh sách ?, ?, ?
+            sql.append(") ");
         }
         if (title != null && !title.isEmpty()) {
             sql.append("AND r.title LIKE ? ");
@@ -56,8 +61,10 @@ public class DAORequest extends DBConnection {
             if (date != null) {
                 preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
             }
-            if (status != null && !status.isEmpty()) {
-                preparedStatement.setString(index++, status);
+            if (status != null && status.length > 0) {
+                for (String s : status) {
+                    preparedStatement.setString(index++, s);
+                }
             }
             if (title != null && !title.isEmpty()) {
                 preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
@@ -91,7 +98,7 @@ public class DAORequest extends DBConnection {
         return requests;
     }
 
-    public int getRequestCount(String mentor, String title, String status, LocalDate date) {
+    public int getRequestCount(String mentor, String title, String[] status, LocalDate date) {
         int count = 0;
 
         StringBuilder sql = new StringBuilder(
@@ -106,8 +113,10 @@ public class DAORequest extends DBConnection {
         if (date != null) {
             sql.append("AND r.created_at >= ? ");
         }
-        if (status != null && !status.isEmpty()) {
-            sql.append("AND r.status = ? ");
+        if (status != null && status.length > 0) {
+            sql.append("AND r.status IN (");
+            sql.append(String.join(", ", Collections.nCopies(status.length, "?"))); // Dynamic placeholders
+            sql.append(") ");
         }
         if (title != null && !title.isEmpty()) {
             sql.append("AND r.title LIKE ? ");
@@ -120,8 +129,10 @@ public class DAORequest extends DBConnection {
             if (date != null) {
                 preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
             }
-            if (status != null && !status.isEmpty()) {
-                preparedStatement.setString(index++, status);
+            if (status != null && status.length > 0) {
+                for (String s : status) {
+                    preparedStatement.setString(index++, s);
+                }
             }
             if (title != null && !title.isEmpty()) {
                 preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
@@ -212,29 +223,34 @@ public class DAORequest extends DBConnection {
     // Lấy request theo ID
     public Request getRequestById(int id) {
         String sql = "SELECT * FROM Request WHERE id = ?";
+        Request request = new Request(); // Khởi tạo đối tượng rỗng
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
-                return new Request(
-                        rs.getInt("id"),
-                        rs.getInt("mentee_id"),
-                        rs.getInt("mentor_id"),
-                        rs.getString("title"),
-                        rs.getInt("total_slot"),
-                        rs.getDate("start_date").toLocalDate(),
-                        rs.getDate("end_date").toLocalDate(),
-                        rs.getString("content"),
-                        rs.getString("status"),
-                        rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getTimestamp("updated_at").toLocalDateTime(),
-                        rs.getInt("course_id")
-                );
+                request.setId(rs.getInt("id"));
+                request.setMenteeId(rs.getInt("mentee_id"));
+                request.setMentorId(rs.getInt("mentor_id"));
+                request.setTitle(rs.getString("title"));
+                request.setTotalSlot(rs.getInt("total_slot"));
+                request.setStartDate(rs.getDate("start_date").toLocalDate());
+                request.setEndDate(rs.getDate("end_date").toLocalDate());
+                request.setContent(rs.getString("content"));
+                request.setStatus(rs.getString("status"));
+                request.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                request.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                request.setCourseId(rs.getInt("course_id"));
+                request.setTotalprice(rs.getDouble("totalPrice"));
+
+                return request;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return null; // Trả về null nếu không tìm thấy request
     }
 
     public boolean updateRequest(Request req) {
@@ -462,6 +478,68 @@ public class DAORequest extends DBConnection {
         }
 
         return isUpdated;
+    }
+
+    public double getTotalReceivedAmountByMentor(String mentor) {
+        double totalAmount = 0.0;
+
+        String sql = "SELECT COALESCE(SUM(c.price), 0) AS total_received "
+                + "FROM Request r "
+                + "JOIN Mentor m ON r.mentor_id = m.id "
+                + "JOIN [Users] u ON m.user_id = u.id "
+                + "JOIN Course c ON r.course_id = c.id "
+                + "WHERE u.username = ? AND r.status = 'Closed'";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, mentor);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    totalAmount = rs.getDouble("total_received");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalAmount;
+    }
+
+    public List<Integer> getRequestByYear(String username, int year) {
+        // Khởi tạo danh sách với 12 tháng, mặc định là 0
+        List<Integer> requestData = new ArrayList<>(Collections.nCopies(12, 0));
+
+        String sql = "SELECT MONTH(r.created_at) AS month, COUNT(*) AS total_requests "
+                + "FROM Request r "
+                + "JOIN Mentor m ON m.id = r.mentor_id "
+                + "JOIN Users u ON u.id = m.user_id "
+                + "WHERE YEAR(r.created_at) = ? AND u.username = ? "
+                + "GROUP BY MONTH(r.created_at) "
+                + "ORDER BY MONTH(r.created_at)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setString(2, username);
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Sử dụng Map để lưu dữ liệu tạm thời
+            Map<Integer, Integer> monthData = new HashMap<>();
+            while (rs.next()) {
+                int month = rs.getInt("month");
+                int count = rs.getInt("total_requests");
+                monthData.put(month, count);
+            }
+
+            // Đưa dữ liệu từ Map vào List
+            for (int i = 1; i <= 12; i++) {
+                requestData.set(i - 1, monthData.getOrDefault(i, 0));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return requestData;
     }
 
     public static void main(String[] args) {
