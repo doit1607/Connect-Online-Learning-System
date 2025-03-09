@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Request" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -9,9 +9,7 @@
         <title>Dreams LMS</title>
 
         <!-- Favicon -->
-        <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-
 
         <!-- Theme Settings Js -->
         <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
@@ -37,7 +35,6 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-
 
         <style>
             /* Định dạng hàng trạng thái */
@@ -121,35 +118,43 @@
                 background: red;
                 color: white;
             }
+            .confirm-btn {
+                background-color: #007bff; /* Blue color */
+                color: white;
+                padding: 6px 12px 6px 10px; /* Adjusted padding for icon */
+                margin-left: 8px;
+                border: none;
+                border-radius: 15px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                display: inline-flex; /* For aligning icon and text */
+                align-items: center;
+                gap: 4px; /* Space between icon and text */
+            }
+
+            /* Hover effect */
+            .confirm-btn:hover {
+                background-color: #0056b3; /* Darker blue */
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            }
+
+            /* Active/Click effect */
+            .confirm-btn:active {
+                transform: translateY(1px);
+                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            }
+
+            /* Checkmark icon */
+            .confirm-btn::before {
+                content: "✓"; /* Unicode checkmark */
+                font-size: 14px;
+            }
         </style>
 
-
-
-
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Ckeditor JS -->
-        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Dropzone JS -->
-        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Sticky Sidebar JS -->
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
-        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
 
     </head>
     <body>
@@ -165,7 +170,6 @@
                         <div class="col-md-12 col-12">
                             <div class="breadcrumb-list">
                                 <h2 class="breadcrumb-title">Manager</h2>
-
                             </div>
                         </div>
                     </div>
@@ -184,16 +188,16 @@
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item ">
+                                        <li class="nav-item">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
                                                 <i class="fas fa-user"></i>Manage CV
                                             </a>
+                                        </li>
                                         <li class="nav-item">
                                             <a href="CourseManager" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Manage Course
                                             </a>
                                         </li>
-
                                         <li class="nav-item active">
                                             <a href="ShowAllRequest" class="nav-link">
                                                 <i class="bx bxs-heart"></i>Request of Mentee
@@ -204,21 +208,17 @@
                                                 <i class="bx bxs-star"></i>Request schedule
                                             </a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a href="instructor-referral.html" class="nav-link">
                                                 <i class="bx bxs-user-plus"></i>Referrals
                                             </a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a href="instructor-notifications.html" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
-
                                     </ul>
-
                                     <ul>
                                         <li class="nav-item">
                                             <a href="LoginUser?service=logout" class="nav-link">
@@ -304,12 +304,26 @@
                                                 <td>${o.title}</td>
                                                 <td>${o.totalprice}</td>
                                                 <td>
-                                                    <div style="background-color: ${o.status == 'Open' ? '#28a745' : 
-                                                                                    (o.status == 'Processing' ? '#007bff' : 
-                                                                                    (o.status == 'Complete' ? '#6f42c1' :
-                                                                                    (o.status == 'Closed' ? '#dc3545' : '#ffc107')))};
-                                                         color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
-                                                        ${o.status}
+                                                    <div style="display: inline-block; vertical-align: middle;">
+                                                        <div style="background-color: ${o.status == 'Open' ? '#28a745' : 
+                                                                                        (o.status == 'Processing' ? '#007bff' : 
+                                                                                        (o.status == 'Complete' ? '#6f42c1' :
+                                                                                        (o.status == 'Closed' ? '#dc3545' : '#ffc107')))};
+                                                             color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
+                                                            <span style="display: inline-block; vertical-align: middle;">
+                                                                ${o.status}
+                                                            </span>
+                                                        </div>
+                                                        <c:if test="${o.status == 'Pending'}">
+                                                            <form action="ShowAllRequest" method="get" style="display: inline;">
+                                                                <input type="hidden" name="service" value="confirm">
+                                                                <input type="hidden" name="requestid" value="${o.id}">
+                                                                <input type="hidden" name="totalprice" value="${o.totalprice}">
+                                                                <button type="submit" class="confirm-btn">
+                                                                    Confirm
+                                                                </button>
+                                                            </form>
+                                                        </c:if>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -326,4 +340,30 @@
             </div>
         </div>
     </body>
+
+    <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Select2 JS -->
+    <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Ckeditor JS -->
+    <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Dropzone JS -->
+    <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Sticky Sidebar JS -->
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <!-- Custom JS -->
+    <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+    <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+    data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
 </html>
