@@ -81,10 +81,11 @@ public class Slot {
         this.day_of_week = day_of_week;
     }
 
-    public Slot(int scheduleId, Date slotDate, int slotNumber) {
+    public Slot(int scheduleId, Date slotDate, int slotNumber, String status) {
         this.scheduleId = scheduleId;
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
+        this.status = status;
     }
 
     // Getter & Setter

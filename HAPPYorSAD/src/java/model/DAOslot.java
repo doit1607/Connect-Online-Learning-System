@@ -28,32 +28,6 @@ import java.util.logging.Logger;
  */
 public class DAOslot extends DBConnection {
 
-//    public boolean addSlot(int mentorId, String dayOfWeek, Time startTime, Time endTime, int duration) {
-//        String getScheduleIdQuery = "SELECT id FROM Schedule WHERE mentor_id = ? AND day_of_week = ?";
-//        String insertSlotQuery = "INSERT INTO Slot (schedule_id, starttime, endtime, duration, is_booked) VALUES (?, ?, ?, ?, 0)";
-//
-//        try (PreparedStatement ps1 = conn.prepareStatement(getScheduleIdQuery); PreparedStatement ps2 = conn.prepareStatement(insertSlotQuery)) {
-//            // Lấy schedule_id của ngày trong tuần
-//            ps1.setInt(1, mentorId);
-//            ps1.setString(2, dayOfWeek);
-//            ResultSet rs = ps1.executeQuery();
-//
-//            if (rs.next()) {
-//                int scheduleId = rs.getInt("id");
-//
-//                // Chèn slot mới vào bảng Slot
-//                ps2.setInt(1, scheduleId);
-//                ps2.setTime(2, startTime);
-//                ps2.setTime(3, endTime);
-//                ps2.setInt(4, duration);
-//
-//                return ps2.executeUpdate() > 0;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
     public List<Slot> getSlotsByDate2(Date date, int mentorId) {
         List<Slot> slots = new ArrayList<>();
 
@@ -104,12 +78,13 @@ public class DAOslot extends DBConnection {
         return false;
     }
 
-    public boolean addSlots(int scheduleId, String day, int slotNumber) {
-        String sql = "INSERT INTO Slot (schedule_id, slot_date , slot_number_id, is_booked) VALUES (?, ?, ?, 'false')";
+    public boolean addSlots(int scheduleId, String day, int slotNumber, String status) {
+        String sql = "INSERT INTO Slot (schedule_id, slot_date , slot_number_id, status) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, scheduleId);
             ps.setString(2, day);
             ps.setInt(3, slotNumber);
+            ps.setString(4, status);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

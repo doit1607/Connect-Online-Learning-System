@@ -2,6 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%
+java.util.Calendar cal = java.util.Calendar.getInstance();
+int currentMonth = cal.get(java.util.Calendar.MONTH) + 1; // Tháng bắt đầu từ 0 nên cộng 1
+int currentYear = cal.get(java.util.Calendar.YEAR);
+%>
 <fmt:setLocale value="en"/>
 
 <!DOCTYPE html>
@@ -39,18 +44,26 @@
                 align-items: center;
             }
             .slot-box {
-                width: 100%;
-                min-width: 120px;
-                text-align: center;
-                border: 1px solid #ddd;
-                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
+
             .slot-header {
                 font-size: 16px;
                 font-weight: bold;
                 padding: 10px;
-                background: #f8f9fa;
+                /*                background: #f8f9fa;*/
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%; /* Đảm bảo phần tử có chiều cao đầy đủ */
             }
+
+
             .slot-body {
                 padding: 5px;
             }
@@ -91,6 +104,25 @@
             .schedule-list {
                 margin-bottom: 20px;
             }
+
+            .week-navigation {
+                display: flex;
+                justify-content: space-between; /* Đẩy nút ra hai bên */
+                align-items: center; /* Căn giữa theo chiều dọc */
+                width: 100%;
+                max-width: 600px; /* Điều chỉnh độ rộng tối đa */
+                margin: 0 auto; /* Canh giữa nội dung */
+            }
+
+            .week-navigation form {
+                display: inline-block;
+            }
+
+            .week-navigation button {
+                font-size: 14px; /* Giảm kích thước chữ */
+                padding: 6px 12px; /* Thu nhỏ nút */
+            }
+
         </style>
 
         <script>
@@ -160,59 +192,23 @@
                             </div>
                         </div>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Thông báo</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-info">${message}</div>
-                                        </c:if>
-                                        <c:if test="${not empty errorMessage}">
-                                            <div class="alert alert-danger">${errorMessage}</div>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                let message = "${message}";
-                                let errorMessage = "${errorMessage}";
-
-                                if (message || errorMessage) {
-                                    let modal = new bootstrap.Modal(document.getElementById("messageModal"));
-                                    modal.show();
-
-                                    // Tự động ẩn sau 3 giây
-                                    setTimeout(function () {
-                                        modal.hide();
-                                    }, 3000);
-                                }
-                            });
-                        </script>
-
 
                         <!-- Main Content -->
                         <div class="col-lg-9 col-xl-9">
                             <div class="dashboard-header"><h3>Available Timings</h3></div>
                             <div class="appointment-tabs">
                                 <ul class="nav available-nav">
-                                    <li class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#general-availability">General Availability</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#your-schedule">Your Schedule</a></li>
+                                    <li class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#your-schedule">Your Schedule</a></li>
+                                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="tab" data-bs-target="#general-availability">General Availability</a></li>
                                 </ul>
                             </div>
 
                             <div class="tab-content pt-0 timing-content">
-                                <div class="tab-pane fade show active" id="general-availability">
+
+                                <div class="tab-pane fade show active" id="your-schedule">
                                     <div class="card custom-card">
                                         <div class="card-body">
-                                            <div class="card-header"><h3>Select Available Slots</h3></div>
+                                            <div class="card-header"><h3>Your Schedule</h3></div>
                                             <div class="row align-items-center mb-3">
                                                 <div class="col-12 col-sm-4 col-md-6">
                                                     <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
@@ -226,14 +222,109 @@
                                                             <i class="fas fa-chevron-down ms-2"></i>
                                                         </a>
                                                         <ul class="dropdown-menu" aria-labelledby="monthDropdown">
-                                                            <c:forEach var="i" begin="1" end="12">
+                                                            <c:forEach var="i" begin="1" end="<%=currentMonth%>">
                                                                 <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
                                                                 </c:forEach>
                                                         </ul>
                                                     </div>
-                                                    <!-- Tách nút Add Schedule ra ngoài -->
+                                                </div>
+                                            </div>
+                                            <!-- Week Navigation -->
+                                            <div class="row mb-3">
+                                                <div class="col-12 text-center">
+                                                    <form action="/HAPPYorSAD/Slot" method="get" style="display:inline;">
+                                                        <input type="hidden" name="weekOffset" value="${weekOffset - 1}">
+                                                        <input type="hidden" name="month" value="${selectedMonth}">
+                                                        <input type="hidden" name="year" value="${selectedYear}">
+                                                        <button type="submit" class="btn btn-primary me-2">Previous Week</button>
+                                                    </form>
+
+                                                    <span>Week of ${weekStartDate} - ${weekEndDate}</span>
+
+                                                    <form action="/HAPPYorSAD/Slot" method="get" style="display:inline;">
+                                                        <input type="hidden" name="weekOffset" value="${weekOffset + 1}">
+                                                        <input type="hidden" name="month" value="${selectedMonth}">
+                                                        <input type="hidden" name="year" value="${selectedYear}">
+                                                        <button type="submit" class="btn btn-primary ms-2">Next Week</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row slot-row">
+                                                <c:choose>
+                                                    <c:when test="${empty weekDates}">
+                                                        <div class="col-12"><p class="text-warning">No week dates available for this month.</p></div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:forEach var="day" items="${weekDates}" varStatus="status">
+                                                            <div class="col-md slot-column">
+                                                                <div class="slot-box">
+                                                                    <div class="slot-header">
+                                                                        <h5>${weekDays[status.index]}<span style="font-size: 0.8em; display: block;">${day.split('-')[2]}/${day.split('-')[1]}</span></h5>
+                                                                    </div>
+                                                                    <div class="slot-body">
+                                                                        <table class="table table-bordered text-center">
+                                                                            <tbody>
+                                                                                <c:forEach var="i" begin="1" end="5">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <c:set var="slotFound" value="false"/>
+                                                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                                    <span>Slot ${slot.slotNumber}</span>
+                                                                                                    <c:set var="slotFound" value="true"/>
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not slotFound}">
+                                                                                                <span class="text-muted">Empty</span>
+                                                                                            </c:if>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </c:forEach>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " id="general-availability">
+                                    <div class="card custom-card">
+                                        <div class="card-body">
+                                            <div class="card-header"><h3>Select Available Slots</h3></div>
+                                            <div class="row align-items-center mb-3">
+                                                <div class="col-12 col-sm-4 col-md-6">
+                                                    <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
+                                                    <p class="text-muted"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/></p>
+                                                </div>
+
+
+                                                <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                                                    <div class="dropdown d-inline-block">
+                                                        <a href="#" class="dropdown-toggle text-primary" id="monthDropdown" data-bs-toggle="dropdown">
+                                                            <i class="far fa-calendar-alt me-2"></i>
+                                                            <span id="selectedMonth">${selectedMonth} ${selectedYear}</span>
+                                                            <i class="fas fa-chevron-down ms-2"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu" aria-labelledby="monthDropdown">
+                                                            <c:forEach var="i" begin="<%=currentMonth%>" end="12">
+                                                                <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
+                                                                </c:forEach>
+                                                                <c:forEach var="i" begin="1" end="12">
+                                                                <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear+1}">${i} ${selectedYear+1}</a></li>
+                                                                </c:forEach>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- Nút Add Schedule -->
                                                     <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
                                                 </div>
+
                                             </div>
 
                                             <div class="row slot-row">
@@ -255,20 +346,31 @@
                                                                                     <tr>
                                                                                         <td>
                                                                                             <c:set var="slotFound" value="false"/>
+                                                                                            <!-- Hiển thị slot cố định -->
                                                                                             <c:forEach var="slot" items="${slotsByDay[day]}">
                                                                                                 <c:if test="${slot.slotNumber == i}">
                                                                                                     <span>Slot ${slot.slotNumber}</span>
                                                                                                     <c:set var="slotFound" value="true"/>
                                                                                                 </c:if>
                                                                                             </c:forEach>
+                                                                                            <!-- Hiển thị temp slot với nút xóa -->
                                                                                             <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
                                                                                                 <c:if test="${temp.slotNumber == i}">
                                                                                                     <span class="temp-slot-item temp-slot-highlight">
                                                                                                         <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
+                                                                                                        <!-- Thêm form để xóa temp slot riêng lẻ -->
+                                                                                                        <form action="/HAPPYorSAD/Slot?action=deleteTemp" method="post" style="display:inline;" 
+                                                                                                              onsubmit="return confirm('Are you sure you want to delete this slot?');">
+                                                                                                            <input type="hidden" name="formattedDay" value="${day}">
+                                                                                                            <input type="hidden" name="slotNumber" value="${temp.slotNumber}">
+                                                                                                            <input type="hidden" name="scheduleId" value="${scheduleId}">
+                                                                                                            <button type="submit" class="btn btn-link text-danger p-0 ms-1" style="font-size: 14px;">-</button>
+                                                                                                        </form>
                                                                                                     </span>
                                                                                                     <c:set var="slotFound" value="true"/>
                                                                                                 </c:if>
                                                                                             </c:forEach>
+                                                                                            <!-- Nếu không có slot nào, hiển thị nút thêm -->
                                                                                             <c:if test="${not slotFound}">
                                                                                                 <span class="text-muted">Empty</span>
                                                                                                 <button type="button" class="btn btn-sm btn-success add-temp-slot" 
@@ -304,14 +406,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="your-schedule">
-                                    <div class="card custom-card">
-                                        <div class="card-body">
-                                            <h3>Your Schedule</h3>
-                                            <p>Content for Your Schedule tab goes here.</p>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -442,6 +537,43 @@
                                     .catch(error => console.error("Error:", error));
                         });
 
+                    </script>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Thông báo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <c:if test="${not empty message}">
+                                        <div class="alert alert-info">${message}</div>
+                                    </c:if>
+                                    <c:if test="${not empty errorMessage}">
+                                        <div class="alert alert-danger">${errorMessage}</div>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let message = "${message}";
+                            let errorMessage = "${errorMessage}";
+
+                            if (message || errorMessage) {
+                                let modal = new bootstrap.Modal(document.getElementById("messageModal"));
+                                modal.show();
+
+                                // Tự động ẩn sau 3 giây
+                                setTimeout(function () {
+                                    modal.hide();
+                                }, 3000);
+                            }
+                        });
                     </script>
                     </body>
                     </html>

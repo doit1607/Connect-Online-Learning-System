@@ -5,7 +5,7 @@
 package model;
 
 import entity.Request;
-import entity.MentorSchedule;
+//import entity.MentorSchedule;
 import java.lang.System.Logger;
 import java.security.Timestamp;
 import java.sql.Statement;
@@ -545,29 +545,29 @@ public class DAORequest extends DBConnection {
         return requestData;
     }
     
-    // Request cua mentor cho manager
-    public List<MentorSchedule> getMentorSchedule() {
-        List<MentorSchedule> schedule = new ArrayList<>();
-        String sql = "select ms.id as [schedule_id], u.username, Month(s.start_date) as [month], s.created_at, ms.status from Users u\n"
-                + "join Mentor m on u.id = m.user_id\n"
-                + "join Mentor_Schedule ms on m.id = ms.mentor_id\n"
-                + "join Schedule s on ms.schedule_id = s.id\n"
-                + "where ms.status = 'Pending' order by s.created_at desc";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                schedule.add(new MentorSchedule(
-                        rs.getInt("schedule_id"),
-                        rs.getString("username"),
-                        rs.getInt("month"),
-                        rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getString("status")));
-            }
-        } catch (Exception e) {
-        }
-        return schedule;
-    }
+//    // Request cua mentor cho manager
+//    public List<MentorSchedule> getMentorSchedule() {
+//        List<MentorSchedule> schedule = new ArrayList<>();
+//        String sql = "select ms.id as [schedule_id], u.username, Month(s.start_date) as [month], s.created_at, ms.status from Users u\n"
+//                + "join Mentor m on u.id = m.user_id\n"
+//                + "join Mentor_Schedule ms on m.id = ms.mentor_id\n"
+//                + "join Schedule s on ms.schedule_id = s.id\n"
+//                + "where ms.status = 'Pending' order by s.created_at desc";
+//        try {
+//            PreparedStatement pre = conn.prepareStatement(sql);
+//            ResultSet rs = pre.executeQuery();
+//            while (rs.next()) {
+//                schedule.add(new MentorSchedule(
+//                        rs.getInt("schedule_id"),
+//                        rs.getString("username"),
+//                        rs.getInt("month"),
+//                        rs.getTimestamp("created_at").toLocalDateTime(),
+//                        rs.getString("status")));
+//            }
+//        } catch (Exception e) {
+//        }
+//        return schedule;
+//    }
 
     // update trang thai lich day cho Mentor
     public boolean updateSchedule(int id, String status) {

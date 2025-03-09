@@ -82,12 +82,27 @@ public class Slot extends HttpServlet {
         String[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         request.setAttribute("weekDays", weekDays);
 
-        java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+        // Lấy giá trị weekOffset từ request (mặc định là 0 nếu không có)
+        int weekOffset = 0;
+        String weekOffsetStr = request.getParameter("weekOffset");
+        if (weekOffsetStr != null) {
+            try {
+                weekOffset = Integer.parseInt(weekOffsetStr);
+            } catch (NumberFormatException e) {
+                LOGGER.warning("Invalid weekOffset, defaulting to 0: " + e.getMessage());
+            }
+        }
+
+        // Tính toán ngày bắt đầu dựa trên weekOffset và startDate của schedule
         List<String> weekDates = new ArrayList<>();
+        java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if (startDate != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(startDate);
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            calendar.add(Calendar.WEEK_OF_YEAR, weekOffset); // Dịch chuyển tuần theo weekOffset
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); // Đảm bảo tuần bắt đầu từ thứ Hai
+
             for (int i = 0; i < 7; i++) {
                 weekDates.add(new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter));
                 calendar.add(Calendar.DATE, 1);
@@ -95,11 +110,21 @@ public class Slot extends HttpServlet {
         }
         request.setAttribute("weekDates", weekDates);
 
+        // Cập nhật weekStartDate và weekEndDate
+        String weekStartDate = weekDates.isEmpty() ? "" : weekDates.get(0);
+        String weekEndDate = weekDates.isEmpty() ? "" : weekDates.get(6);
+        request.setAttribute("weekOffset", weekOffset);
+        request.setAttribute("weekStartDate", weekStartDate);
+        request.setAttribute("weekEndDate", weekEndDate);
+
         // Slots by day
         Map<String, List<entity.Slot>> slotsByDay = new HashMap<>();
         if (startDate != null && mentorId != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(startDate);
+            calendar.add(Calendar.WEEK_OF_YEAR, weekOffset); // Dịch chuyển tuần theo weekOffset
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); // Đảm bảo tuần bắt đầu từ thứ Hai
+
             for (int i = 0; i < 7; i++) {
                 java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
                 String formattedDate = date.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -116,8 +141,8 @@ public class Slot extends HttpServlet {
         } else if ("save".equals(action)) {
             handleSaveSlots(request, response, session, scheduleId);
             return;
-        } else if ("delete".equals(action)) {
-            handleDeleteSlots(request, response, scheduleId, mentorId);
+        } else if ("deleteTemp".equals(action)) {
+            handleDeleteTempSlot(request, response, session, scheduleId);
             return;
         } else if ("addSchedule".equals(action)) {
             LOGGER.info("Before handleAddSchedule: selectedMonth = " + selectedMonth + ", selectedYear = " + selectedYear);
@@ -138,25 +163,61 @@ public class Slot extends HttpServlet {
         String slotNumberStr = request.getParameter("slotNumber");
         Map<Integer, String> slotTimeMap = Map.of(1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00");
 
+        LOGGER.info("Received slotDateStr: " + slotDateStr + ", slotNumberStr: " + slotNumberStr);
+
         if (slotDateStr != null && slotNumberStr != null) {
-            Date formattedDay = Date.valueOf(slotDateStr);
+            Date selectedDate = Date.valueOf(slotDateStr);
             int slotNumber = Integer.parseInt(slotNumberStr);
             String startTime = slotTimeMap.get(slotNumber);
+            LOGGER.info("Parsed selectedDate: " + selectedDate + ", slotNumber: " + slotNumber + ", startTime: " + startTime);
 
             Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
             if (tempSlotsByDate == null) {
                 tempSlotsByDate = new HashMap<>();
             }
-            List<TempSlot> tempSlots = tempSlotsByDate.getOrDefault(formattedDay, new ArrayList<>());
 
-            if (!tempSlots.stream().anyMatch(slot -> slot.getSlotNumber() == slotNumber)) {
-                tempSlots.add(new TempSlot(scheduleId, formattedDay, slotNumber, startTime));
-                tempSlotsByDate.put(formattedDay, tempSlots);
-                session.setAttribute("tempSlotsByDate", tempSlotsByDate);
-                response.getWriter().write("success");
-            } else {
-                response.getWriter().write("Slot already exists");
+            java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+            if (startDate == null) {
+                LOGGER.warning("Invalid schedule ID: " + scheduleId);
+                response.getWriter().write("Invalid schedule");
+                return;
             }
+            LOGGER.info("Fetched startDate from DB: " + startDate);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(startDate);
+            int month = cal.get(Calendar.MONTH);
+            int year = cal.get(Calendar.YEAR);
+
+            cal.setTime(selectedDate);
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            LOGGER.info("Selected date corresponds to dayOfWeek: " + dayOfWeek);
+
+            cal.setTime(startDate);
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            while (cal.get(Calendar.MONTH) == month && cal.get(Calendar.YEAR) == year) {
+                if (cal.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
+                    Date date = new Date(cal.getTimeInMillis());
+                    List<TempSlot> tempSlots = tempSlotsByDate.getOrDefault(date, new ArrayList<>());
+
+                    if (tempSlots.stream().noneMatch(slot -> slot.getSlotNumber() == slotNumber)) {
+                        TempSlot newSlot = new TempSlot(scheduleId, date, slotNumber, startTime, "Available");
+                        tempSlots.add(newSlot);
+                        tempSlotsByDate.put(date, tempSlots);
+                        LOGGER.info("Added TempSlot: " + newSlot);
+                    } else {
+                        LOGGER.info("Slot already exists for date: " + date + ", slotNumber: " + slotNumber);
+                    }
+                }
+                cal.add(Calendar.DATE, 1);
+            }
+
+            session.setAttribute("tempSlotsByDate", tempSlotsByDate);
+            LOGGER.info("Updated tempSlotsByDate in session");
+            response.getWriter().write("success");
+        } else {
+            LOGGER.warning("Invalid input: slotDateStr or slotNumberStr is null");
+            response.getWriter().write("Invalid input");
         }
     }
 
@@ -168,7 +229,7 @@ public class Slot extends HttpServlet {
             for (Map.Entry<Date, List<TempSlot>> entry : tempSlotsByDate.entrySet()) {
                 Date date = entry.getKey();
                 for (TempSlot slot : entry.getValue()) {
-                    daoSlot.addSlots(scheduleId, sdf.format(date), slot.getSlotNumber());
+                    daoSlot.addSlots(scheduleId, sdf.format(date), slot.getSlotNumber(), "Available");
                 }
             }
             session.removeAttribute("tempSlotsByDate");
@@ -179,17 +240,35 @@ public class Slot extends HttpServlet {
         request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
     }
 
-    private void handleDeleteSlots(HttpServletRequest request, HttpServletResponse response, int scheduleId, Integer mentorId)
+    private void handleDeleteTempSlot(HttpServletRequest request, HttpServletResponse response, HttpSession session, int scheduleId)
             throws ServletException, IOException {
         String formattedDayStr = request.getParameter("formattedDay");
-        if (formattedDayStr != null) {
+        String slotNumberStr = request.getParameter("slotNumber");
+
+        if (formattedDayStr != null && slotNumberStr != null) {
             Date formattedDay = Date.valueOf(formattedDayStr);
-            boolean isDeleted = daoSlot.deleteSlot(formattedDay, mentorId, scheduleId);
-            if (isDeleted) {
-                request.setAttribute("message", "Slots deleted successfully!");
+            int slotNumber = Integer.parseInt(slotNumberStr);
+
+            Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
+            if (tempSlotsByDate != null && tempSlotsByDate.containsKey(formattedDay)) {
+                List<TempSlot> tempSlots = tempSlotsByDate.get(formattedDay);
+                boolean removed = tempSlots.removeIf(slot -> slot.getSlotNumber() == slotNumber);
+                if (removed) {
+                    if (tempSlots.isEmpty()) {
+                        tempSlotsByDate.remove(formattedDay);
+                    } else {
+                        tempSlotsByDate.put(formattedDay, tempSlots);
+                    }
+                    session.setAttribute("tempSlotsByDate", tempSlotsByDate);
+                    request.setAttribute("message", "Temp slot deleted successfully!");
+                } else {
+                    request.setAttribute("message", "Temp slot not found.");
+                }
             } else {
-                request.setAttribute("message", "Failed to delete slots.");
+                request.setAttribute("message", "No temp slots found for this date.");
             }
+        } else {
+            request.setAttribute("message", "Invalid date or slot number.");
         }
         request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
     }
@@ -197,21 +276,17 @@ public class Slot extends HttpServlet {
     private void handleAddSchedule(HttpServletRequest request, HttpServletResponse response, int mentorId, int selectedMonth, int selectedYear) throws IOException {
         LOGGER.info("Starting handleAddSchedule for mentorId: " + mentorId + ", selectedMonth: " + selectedMonth + ", selectedYear: " + selectedYear);
 
-        // Lấy schedule của tháng đã chọn
         int scheduleId = daoSc.getScheduleIdByMonth(selectedMonth, selectedYear);
         LOGGER.info("Before scheduleId: " + scheduleId);
 
         java.sql.Date start_date = daoSc.getStartDateByScheduleId(scheduleId);
-
         LOGGER.info("Current scheduleId: " + scheduleId + ", startDate: " + start_date);
 
-        // Tính toán tháng tiếp theo dựa trên selectedMonth thay vì tháng hiện tại
         int nextMonth = (selectedMonth % 12) + 1;
         int nextYear = (selectedMonth == 12) ? selectedYear + 1 : selectedYear;
 
         LOGGER.info("Next month: " + nextMonth + ", Next year: " + nextYear);
 
-        // Lấy scheduleId của tháng tiếp theo
         int nextScheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
         LOGGER.info("Next scheduleId found: " + nextScheduleId);
         if (scheduleId == -1) {
@@ -219,7 +294,6 @@ public class Slot extends HttpServlet {
             return;
         }
 
-        // Liên kết Mentor với lịch trình của tháng tiếp theo
         boolean success = daoSc.addSchedule(mentorId, nextScheduleId);
         if (success) {
             LOGGER.info("Mentor linked successfully to scheduleId: " + nextScheduleId);
