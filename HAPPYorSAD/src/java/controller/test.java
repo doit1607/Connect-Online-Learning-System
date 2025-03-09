@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeParseException;
 import model.DAOMentor;
 import model.DAORequest;
@@ -33,7 +35,6 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.logging.Level;
-import model.DAOCourse;
 import model.TransactionDAO;
 
 @MultipartConfig
@@ -46,7 +47,7 @@ public class test extends HttpServlet {
     private static final DAOCourse daoC = new DAOCourse();
     private final DAOschedule daoSc = new DAOschedule();
     private static Map<String, Long> requestTimestamps = new HashMap<>();
-    private static final Map<String, String> processedSubmissions = new HashMap<>(); // Track processed submission IDs
+    private static final Map<String, String> processedSubmissions = new HashMap<>();
     private static final long REQUEST_TIMEOUT = 2000;
 
     @Override
@@ -56,7 +57,7 @@ public class test extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Existing doPost logic remains unchanged
+        // Giữ nguyên logic doPost hiện tại
         HttpSession session = request.getSession();
         DAORequest daorequest = new DAORequest();
         TransactionDAO daowallet = new TransactionDAO();
@@ -75,7 +76,6 @@ public class test extends HttpServlet {
         String submissionId = request.getParameter("submissionId");
         System.out.println("Received POST request at " + new java.util.Date() + " for session: " + sessionId + " with action: " + request.getParameter("service"));
 
-        // Check for duplicate based on timeout
         if (currentTime - lastRequestTime < REQUEST_TIMEOUT) {
             LOGGER.warning("Blocked duplicate request for session: " + sessionId + " within " + REQUEST_TIMEOUT + "ms");
             response.setContentType("text/plain");
@@ -83,7 +83,6 @@ public class test extends HttpServlet {
             return;
         }
 
-        // Check for duplicate based on submissionId
         synchronized (processedSubmissions) {
             if (submissionId != null && processedSubmissions.containsKey(submissionId)) {
                 LOGGER.warning("Blocked duplicate request for session: " + sessionId + ", submissionId: " + submissionId);
@@ -163,7 +162,6 @@ public class test extends HttpServlet {
         }
 
         if ("submit".equals(service)) {
-            // Existing submit logic remains unchanged
             String requestId_raw = request.getParameter("requestId");
             @SuppressWarnings("unchecked")
             Set<String> tempSlotBooked = (Set<String>) session.getAttribute("tempSlotBooked");
@@ -270,7 +268,6 @@ public class test extends HttpServlet {
                         try {
                             LOGGER.info("Removing old slots for request ID: " + requestId);
                             daoSlot.removeRequestIdFromSlots(requestId);
-
                         } catch (SQLException ex) {
                             LOGGER.log(Level.SEVERE, "Error removing old slots", ex);
                         }
@@ -336,107 +333,83 @@ public class test extends HttpServlet {
         HttpSession session = request.getSession();
         DAOMentor daomentor = new DAOMentor();
         DAOCourse daocourse = new DAOCourse();
+
+        // Lấy các tham số từ request (bao gồm từ JSP)
         String mentorIdStr = request.getParameter("mentorId");
         String courseIdStr = request.getParameter("courseId");
+        String selectedMonthStr = request.getParameter("month"); // Từ JSP
+        String selectedYearStr = request.getParameter("year");   // Từ JSP
+        String weekOffsetStr = request.getParameter("weekOffset"); // Từ JSP
+
         int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
         int courseId = (courseIdStr != null && !courseIdStr.isEmpty()) ? Integer.parseInt(courseIdStr) : 0;
+        int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
+
         Mentor mentor = daomentor.getMentorByID(mentorId);
+        double price = daocourse.getPriceCourse(courseId);
+
+        // Gán các giá trị cơ bản vào request
         request.setAttribute("mentorrequest", mentor);
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("courseId", courseId);
-        double price = daocourse.getPriceCourse(courseId);
         request.setAttribute("price", price);
 
-        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
-
+        Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
             LOGGER.warning("User not logged in. Redirecting to login.");
             redirect(response, "view/LoginUser.jsp");
             return;
         }
-        String action = Optional.ofNullable(request.getParameter("action")).orElse("");
-        LOGGER.info("Action received: " + action);
+
         Integer menteeId = DAOmentee.getMenteeIdByUserId(userId);
         LOGGER.info("Mentee ID retrieved: " + menteeId);
 
-        // Lấy scheduleId từ request nếu có, mặc định là 1 nếu không cung cấp
-        String scheduleIdStr = request.getParameter("scheduleId");
-        int scheduleId = (scheduleIdStr != null && !scheduleIdStr.isEmpty()) ? Integer.parseInt(scheduleIdStr) : 1;
-
-        // Lấy thông tin tháng và năm từ request
-        String selectedMonthStr = request.getParameter("month");
-        String selectedYearStr = request.getParameter("year");
-        int selectedMonth, selectedYear;
+        // Xử lý tháng và năm từ request hoặc mặc định là hiện tại
+        int selectedMonth;
+        int selectedYear;
 
         if (selectedMonthStr != null && selectedYearStr != null && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
             try {
-                selectedMonth = Integer.parseInt(selectedMonthStr);
-            } catch (NumberFormatException e) {
-                try {
-                    Month monthEnum = Month.valueOf(selectedMonthStr.toUpperCase());
-                    selectedMonth = monthEnum.getValue();
-                } catch (IllegalArgumentException ex) {
-                    selectedMonth = LocalDate.now().getMonthValue();
-                    LOGGER.info("Invalid month parameter: " + selectedMonthStr + ". Defaulting to current month: " + selectedMonth);
-                }
-            }
-            try {
+                selectedMonth = Month.valueOf(selectedMonthStr.toUpperCase()).getValue(); // Chuyển từ tên tháng sang số
                 selectedYear = Integer.parseInt(selectedYearStr);
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
+                selectedMonth = LocalDate.now().getMonthValue();
                 selectedYear = LocalDate.now().getYear();
-                LOGGER.info("Invalid year parameter: " + selectedYearStr + ". Defaulting to current year: " + selectedYear);
-            }
-            LOGGER.info("Selected Month = " + selectedMonth + ", Selected Year = " + selectedYear);
-
-            // Tìm scheduleId tương ứng với tháng/năm đã chọn
-            List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
-            if (!schedules.isEmpty()) {
-                scheduleId = schedules.get(0).getId(); // Lấy scheduleId đầu tiên của tháng
-                LOGGER.info("Updated scheduleId to " + scheduleId + " based on selected month/year: " + selectedMonth + "/" + selectedYear);
-            } else {
-                LOGGER.warning("No schedules found for " + selectedMonth + "/" + selectedYear + ". Keeping scheduleId: " + scheduleId);
+                LOGGER.info("Invalid month/year parameters: " + selectedMonthStr + "/" + selectedYearStr + ". Defaulting to current: " + selectedMonth + "/" + selectedYear);
             }
         } else {
             selectedMonth = LocalDate.now().getMonthValue();
             selectedYear = LocalDate.now().getYear();
-            LOGGER.info("Defaulting to current month/year: " + selectedMonth + "/" + selectedYear);
+            LOGGER.info("No month/year provided. Defaulting to current: " + selectedMonth + "/" + selectedYear);
         }
 
-        // Lấy startDate và endDate từ scheduleId
+        // Lấy schedule dựa trên tháng/năm hoặc mặc định
+        List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
+        int scheduleId = schedules.isEmpty() ? 1 : schedules.get(0).getId(); // Lấy schedule đầu tiên nếu có
+
         java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
         java.sql.Date endDate = daoSc.getEndDateByScheduleId(scheduleId);
-        LOGGER.info("Date " + startDate + " - " + endDate);
         if (startDate == null || endDate == null) {
             LOGGER.severe("Schedule start or end date not found for scheduleId: " + scheduleId);
             redirect(response, "test1.jsp");
             return;
         }
 
-        // Xử lý weekOffset
-        int weekOffset = Optional.ofNullable(request.getParameter("weekOffset")).map(Integer::parseInt).orElse(0);
+        // Tính toán tuần dựa trên weekOffset
+        LocalDate baseDate = LocalDate.of(selectedYear, selectedMonth, 1); // Ngày đầu tháng
+        LocalDate firstDayOfWeek = baseDate.plusWeeks(weekOffset); // Ngày đầu tuần dựa trên offset
+        LocalDate lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
 
-        // Tính toán ngày bắt đầu và kết thúc của tuần dựa trên startDate và weekOffset
-        LocalDate firstDayOfWeek = startDate.toLocalDate().plusWeeks(weekOffset);
-        LocalDate lastDayOfWeek = firstDayOfWeek.plusDays(6).isAfter(endDate.toLocalDate()) ? endDate.toLocalDate() : firstDayOfWeek.plusDays(6);
+        // Điều chỉnh ranh giới tuần
+        weekOffset = adjustWeekBoundaries(startDate.toLocalDate(), endDate.toLocalDate(), firstDayOfWeek, lastDayOfWeek, weekOffset);
 
-        // Ngăn chặn vượt quá giới hạn của schedule
-        if (firstDayOfWeek.isBefore(startDate.toLocalDate())) {
-            firstDayOfWeek = startDate.toLocalDate();
-            lastDayOfWeek = firstDayOfWeek.plusDays(6).isAfter(endDate.toLocalDate()) ? endDate.toLocalDate() : firstDayOfWeek.plusDays(6);
-            weekOffset = 0;
-            LOGGER.info("Adjusted to start of schedule: " + firstDayOfWeek + " to " + lastDayOfWeek);
-        } else if (lastDayOfWeek.isAfter(endDate.toLocalDate())) {
-            lastDayOfWeek = endDate.toLocalDate();
-            firstDayOfWeek = lastDayOfWeek.minusDays(6).isBefore(startDate.toLocalDate()) ? startDate.toLocalDate() : lastDayOfWeek.minusDays(6);
-            weekOffset = (int) ((endDate.toLocalDate().toEpochDay() - startDate.toLocalDate().toEpochDay()) / 7);
-            LOGGER.info("Adjusted to end of schedule: " + firstDayOfWeek + " to " + lastDayOfWeek);
-        }
+        // Cập nhật lại firstDayOfWeek và lastDayOfWeek sau khi điều chỉnh
+        firstDayOfWeek = baseDate.plusWeeks(weekOffset);
+        lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
 
-        LOGGER.info("Final week of schedule: " + firstDayOfWeek + " to " + lastDayOfWeek);
-
-        // Populate slots và dữ liệu tuần
+        // Tạo dữ liệu cho JSP
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Map<String, List<Slot>> slotsByDay = new HashMap<>();
+        Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
         Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
         List<String> formattedWeekDates = new ArrayList<>();
 
@@ -447,13 +420,13 @@ public class test extends HttpServlet {
             List<Slot> slots = daoSlot.getSlotsByDate2(sqlDate, mentorId);
             slotsByDay.put(formattedDate, slots);
 
-            Map<String, String> dateInfo = new HashMap<>();
-            dateInfo.put("dayOfWeek", currentDay.getDayOfWeek().toString());
-            dateInfo.put("day", String.valueOf(currentDay.getDayOfMonth()));
-            dateInfo.put("month", currentDay.getMonth().toString());
-            dateInfo.put("year", String.valueOf(currentDay.getYear()));
+            Map<String, String> dateInfo = Map.of(
+                    "dayOfWeek", currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                    "day", String.valueOf(currentDay.getDayOfMonth()),
+                    "month", currentDay.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                    "year", String.valueOf(currentDay.getYear())
+            );
             weekDateInfoMap.put(formattedDate, dateInfo);
-
             formattedWeekDates.add(formattedDate);
             currentDay = currentDay.plusDays(1);
         }
@@ -461,13 +434,12 @@ public class test extends HttpServlet {
         Map<Integer, String> slotTimeMap = Map.of(
                 1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00"
         );
-        LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
 
-        // Chuẩn bị dữ liệu tháng cho dropdown
+        // Gán dữ liệu vào request
         Course c = daoC.getCourseByIdd(courseId);
         Mentor m = daomentor.getMentorByIdd(mentorId);
-        System.out.println(m);
         Map<String, List<entity.Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
+
         request.setAttribute("course", c);
         request.setAttribute("mentorrequest", m);
         request.setAttribute("months", schedulesByMonth.keySet());
@@ -480,8 +452,32 @@ public class test extends HttpServlet {
         request.setAttribute("scheduleId", scheduleId);
         request.setAttribute("selectedYear", selectedYear);
         request.setAttribute("selectedMonth", selectedMonth);
+        request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH)); // Để hiển thị trên JSP
 
         request.getRequestDispatcher("test1.jsp").forward(request, response);
+    }
+
+    // Các hàm helper mới
+    private LocalDate calculateLastDayOfWeek(LocalDate firstDay, LocalDate endDate) {
+        LocalDate potentialLastDay = firstDay.plusDays(6);
+        return potentialLastDay.isAfter(endDate) ? endDate : potentialLastDay;
+    }
+
+    private int adjustWeekBoundaries(LocalDate startDate, LocalDate endDate,
+            LocalDate firstDayOfWeek, LocalDate lastDayOfWeek, int weekOffset) {
+        int adjustedOffset = weekOffset; // Sử dụng tham số weekOffset được truyền vào
+        if (firstDayOfWeek.isBefore(startDate)) {
+            firstDayOfWeek = startDate;
+            lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate);
+            adjustedOffset = 0;
+        } else if (lastDayOfWeek.isAfter(endDate)) {
+            lastDayOfWeek = endDate;
+            firstDayOfWeek = lastDayOfWeek.minusDays(6).isBefore(startDate)
+                    ? startDate
+                    : lastDayOfWeek.minusDays(6);
+            adjustedOffset = (int) ChronoUnit.WEEKS.between(startDate, firstDayOfWeek);
+        }
+        return adjustedOffset;
     }
 
     private List<java.sql.Date> getDatesWithSameWeekday(java.sql.Date slotDate, java.sql.Date startDate, java.sql.Date endDate) {
