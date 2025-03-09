@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller;
 
@@ -63,12 +63,10 @@ public class Slot extends HttpServlet {
         int userId = (Integer) session.getAttribute("userId");
         Integer mentorId = DAOMentor.getMentorIdByUserId(userId);
 
-//        Integer scheduleId = 5;
         System.out.println("User ID: " + userId);
         System.out.println("Mentor ID: " + mentorId);
         String scheduleIdStr = request.getParameter("scheduleId");
         int scheduleId = -1; // Mặc định nếu không có ID
-        // Lấy scheduleId từ request nếu có
 
         int selectedMonth, selectedYear;
 
@@ -149,7 +147,6 @@ public class Slot extends HttpServlet {
             closestWeekDates.put(i + 1, new java.sql.Date(calendar.getTimeInMillis()));
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-//        LOGGER.info("Closest Week Dates: " + closestWeekDates);
         List<String> formattedWeekDates = new ArrayList<>();
 
         Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
@@ -186,16 +183,8 @@ public class Slot extends HttpServlet {
                 dateInfo.put("month", localDate.getMonth().toString());
                 dateInfo.put("year", String.valueOf(localDate.getYear()));
                 weekDateInfoMap.put(formattedDate, dateInfo);
-//                LOGGER.info("formattedDate: " + formattedDate + " | dateInfo: " + dateInfo);
-//                LOGGER.info("Date: " + formattedDate + " | Slots: " + slots);
                 LOGGER.info("Stored Slots for " + formattedDate + ": " + slotsByDay.get(formattedDate));
-
             }
-
-        }
-//        LOGGER.info("slotsByDay set as request attribute: " + slotsByDay);
-        for (String key : slotsByDay.keySet()) {
-//            LOGGER.info("Key: " + key + " | Value: " + slotsByDay.get(key));
         }
         request.setAttribute("slotsByDay", slotsByDay);
 
@@ -211,11 +200,6 @@ public class Slot extends HttpServlet {
         }
 
         request.setAttribute("availableSlotsByDate", availableSlotsByDate);
-
-//        LOGGER.info("slotsByDay Map: " + slotsByDay);
-        for (Map.Entry<String, List<entity.Slot>> entry : slotsByDay.entrySet()) {
-            LOGGER.info("Date: " + entry.getKey() + " | Slots Count: " + entry.getValue().size());
-        }
 
         request.setAttribute("weekDateInfoMap", weekDateInfoMap);
         request.setAttribute("formattedWeekDates", formattedWeekDates);
@@ -298,7 +282,6 @@ public class Slot extends HttpServlet {
                     session.setAttribute("tempSlotsByDate", tempSlotsByDate);
                     for (TempSlot tempSlot : tempSlots) {
                         LOGGER.info("ifnorrr: " + tempSlot);
-
                     }
                     LOGGER.info("Total days stored: " + tempSlotsByDate.size());
                     response.getWriter().write("success");
@@ -307,9 +290,7 @@ public class Slot extends HttpServlet {
                     LOGGER.log(Level.SEVERE, "Error parsing slot number: " + e.getMessage(), e);
                 }
                 LOGGER.info("Received: scheduleId=" + scheduleId + ", date=" + formattedDay + ", slot=" + slotNumberStr);
-
             }
-//            response.sendRedirect("/HAPPYorSAD/Slot");
             request.setAttribute("message", "success");
             request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
             return;
@@ -396,52 +377,68 @@ public class Slot extends HttpServlet {
             } else {
                 System.out.println("Error: endTime is null.");
             }
-//        } else if ("addSchedule".equals(action)) {
-//            String startDateSchedule = request.getParameter("startDate");
-//            String endDateSchedule = request.getParameter("endDate");
-//
-//            boolean isAdded = daoSc.addSchedule(mentorId, startDateSchedule, endDateScheduledDate);
-//
-//            if (isAdded) {
-//                response.sendRedirect("schedule.jsp?success=true");
-//            } else {
-//                response.sendRedirect("schedule.jsp?error=true");
-//            }
+        } else if ("addSchedule".equals(action)) {
+            // Lấy scheduleId hiện tại từ request hoặc session
+            if (scheduleIdStr == null || scheduleIdStr.isEmpty()) {
+                scheduleIdStr = String.valueOf(session.getAttribute("scheduleId"));
+            }
+            if (scheduleIdStr == null || scheduleIdStr.equals("-1")) {
+                LOGGER.info("No current schedule found.");
+                response.setContentType("application/json");
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"No current schedule found.\"}");
+                return;
+            }
+            int currentScheduleId = Integer.parseInt(scheduleIdStr);
+
+            // Lấy thông tin tháng và năm hiện tại từ scheduleId hiện tại
+            if (startDate == null) {
+                LOGGER.info("Invalid current schedule ID: " + currentScheduleId);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"Invalid current schedule.\"}");
+                return;
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(startDate);
+            int currentMonth = cal.get(Calendar.MONTH) + 1; // Tháng bắt đầu từ 0
+            int currentYear = cal.get(Calendar.YEAR);
+
+            // Tính tháng và năm tiếp theo
+            cal.add(Calendar.MONTH, 1);
+            int nextMonth = cal.get(Calendar.MONTH) + 1;
+            int nextYear = cal.get(Calendar.YEAR);
+            String nextMonthName = Month.of(nextMonth).toString(); // Lấy tên tháng (ví dụ: "April")
+
+            // Kiểm tra xem lịch cho tháng tiếp theo đã tồn tại chưa
+            scheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
+            // Thêm bản ghi vào bảng Mentor_schedule
+            boolean isAdded = daoSc.addSchedule(mentorId, scheduleId);
+            if (isAdded) {
+                LOGGER.info("Added new entry to Mentor_schedule with mentorId: " + mentorId + ", scheduleId: " + scheduleId);
+                session.setAttribute("scheduleId", scheduleId);
+                request.setAttribute("scheduleId", scheduleId);
+                request.setAttribute("selectedMonth", nextMonth);
+                request.setAttribute("selectedYear", nextYear);
+
+                // Trả về JSON với thông tin tháng và năm vừa thêm
+                response.setContentType("application/json");
+                response.getWriter().write("{\"status\":\"success\",\"month\":\"" + nextMonthName + "\",\"year\":" + nextYear + "}");
+            } else {
+                LOGGER.info("Failed to add new schedule to Mentor_schedule.");
+                response.setContentType("application/json");
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"Failed to add schedule.\"}");
+            }
         }
 
-        session.setAttribute(
-                "scheduleId", scheduleId);
-        request.getRequestDispatcher(
-                "view/slot_list.jsp").forward(request, response);
+        session.setAttribute("scheduleId", scheduleId);
+        request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-//        int numberOfRanges = 5;
-//        List<Map<String, Object>> dateRanges = generateDateRanges(numberOfRanges);
-//        request.setAttribute("dateRanges", dateRanges);
-//        request.getRequestDispatcher("/dateFilterDropdown.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -463,22 +460,10 @@ public class Slot extends HttpServlet {
             request.getRequestDispatcher("view/slot_list.jsp").forward(request, response);
             return;
         }
-
-//        String selectedDateRange = request.getParameter("dateFilter");
-//        request.setAttribute("selectedDateRange", selectedDateRange);
-//        List<Map<String, Object>> dateRanges = generateDateRanges(5); // Gọi lại để dropdown được tạo lại với dữ liệu
-//        request.setAttribute("dateRanges", dateRanges); // Truyền lại danh sách dateRanges
-//        request.getRequestDispatcher("/dateFilterDropdown.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

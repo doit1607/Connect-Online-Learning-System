@@ -42,6 +42,49 @@ public class DAOschedule extends DBConnection {
         return null;
     }
 
+    public int getLatestScheduleIdByMentorId(int mentorId) {
+        // Truy vấn SQL để lấy scheduleId mới nhất của mentorId
+        String sql = "SELECT id FROM Schedule WHERE mentorId = ? ORDER BY id DESC LIMIT 1";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu thất bại
+    }
+
+    public boolean addSchedule(int mentorId, int scheduleId) {
+        String sql = "INSERT INTO Mentor_Schedule (mentor_id, schedule_id) VALUES (?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ps.setInt(2, scheduleId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getScheduleIdByMonth(int month, int year) {
+        String sql = "SELECT id FROM Schedule WHERE MONTH(start_date) = ? AND YEAR(start_date) = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, month);
+            ps.setInt(2, year);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu không tìm thấy
+    }
+
     public int addSchedule(String startDate, String endDate) throws SQLException {
         String sql = "INSERT INTO Schedule (start_date, end_date) VALUES (?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -291,8 +334,6 @@ public class DAOschedule extends DBConnection {
         }
         return null;
     }
-
-
 
     public static void main(String[] args) {
         DAOschedule scheduleDAO = new DAOschedule();

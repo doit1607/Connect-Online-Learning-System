@@ -5830,7 +5830,7 @@ table.table tbody tr:last-child {
 table.table tbody tr td {
   color: #465D7C;
   font-size: 14px;
-  padding: 12px 12px;
+  padding: 13px 0px;
   color: #465D7C;
 }
 table.table tbody tr td .table-action a {

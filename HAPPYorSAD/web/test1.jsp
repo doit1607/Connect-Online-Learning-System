@@ -480,7 +480,62 @@
                 color: white;
             }
 
+            /* Sửa lỗi cú pháp cho date picker */
+            .date-container input[type="date"]::-webkit-calendar-picker-indicator {
+                width: 40px;
+                height: 40px;
+                padding: 0;
+            }
 
+            /* Style cho mentor-course-info */
+            .mentor-course-info .card {
+                border: 1px solid #e6e8ee;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .mentor-course-info .card-header {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #e6e8ee;
+                padding: 10px 20px;
+            }
+            .mentor-course-info .card-title {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 600;
+                color: #333;
+            }
+            .mentor-course-info .card-body {
+                padding: 20px;
+            }
+            .mentor-course-info img {
+                object-fit: cover;
+            }
+            .mentor-course-info h5 {
+                font-size: 18px;
+                margin-bottom: 10px;
+                color: #007bff;
+            }
+            .mentor-course-info p {
+                margin: 5px 0;
+                font-size: 14px;
+                color: #757575;
+            }
+            .mentor-course-info .rating .fas.fa-star.filled {
+                color: #f4c150;
+            }
+            .mentor-course-info .rating .fas.fa-star {
+                color: #e6e8ee;
+            }
+            .mentor-course-info .rating .average-rating {
+                margin-left: 5px;
+                font-size: 14px;
+                color: #757575;
+            }
+            @media (max-width: 767.96px) {
+                .mentor-course-info .col-md-6 {
+                    margin-bottom: 20px;
+                }
+            }
 
         </style>
 
@@ -578,33 +633,61 @@
             <div class="content doctor-content">
                 <div class="container">
 
+                    <!-- Mentor and Course Info Section -->
+                    <div class="mentor-course-info mb-4">
+                        <div class="row">
+                            <!-- Course Info (Left Side) -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Course Information</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${requestScope.course.image}" alt="Course Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
+                                            <div>
+                                                <h5>${requestScope.course.title}</h5>
+                                                <p><strong>Major:</strong> ${requestScope.course.courseMajor}</p>
+                                                <p><strong>Price:</strong> <span class="text-success">${requestScope.price}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Mentor Info (Right Side) -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Mentor Information</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${requestScope.mentorrequest.image}" alt="Mentor Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
+                                            <div>
+                                                <h5>${requestScope.mentorrequest.name}</h5>
+                                                <p><strong>Username:</strong> ${requestScope.mentorrequest.username}</p>
+                                                <p><strong>Expertise:</strong> ${requestScope.mentorrequest.expertise}</p>
+                                                <p><strong>Email:</strong> ${requestScope.mentorrequest.email}</p>
+                                                <p><strong>Phone:</strong> ${requestScope.mentorrequest.phone_number}</p>
+                                                <div class="rating">
+                                                    <strong>Rating:</strong>
+                                                    <c:forEach begin="1" end="5" var="i">
+                                                        <i class="fas fa-star ${i <= requestScope.mentorrequest.rating ? 'filled' : ''}"></i>
+                                                    </c:forEach>
+                                                    <span class="d-inline-block average-rating">(${requestScope.mentorrequest.rating})</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Mentor and Course Info Section -->
+
                     <div class="row">
                         <div class="col-12">
 
-                            <!--                            <div class="card">
-                                                            <div class="card-body"> 
-                                                                <form action="/../HAPPYorSAD/test" method="post">
-                                                                    <input type="hidden" name="mentorId" value="${requestScope.mentorId}"> 
-                                                                    <input type="hidden" name="courseId" value="${requestScope.courseId}"> 
-                                                                    <input type="hidden" name="price" value="${requestScope.price}"> 
-                                                                    <div class="booking-doc-info">
-                                                                        <img src="${requestScope.mentorrequest.image}" alt="User Image">
-                            
-                                                                        <div class="booking-info">
-                                                                            <h4><a href="">${requestScope.mentorrequest.name}</a></h4>
-                                                                            <div class="rating">
-                                                                                <i class="fas fa-star filled"></i>
-                                                                                <i class="fas fa-star filled"></i>
-                                                                                <i class="fas fa-star filled"></i>
-                                                                                <i class="fas fa-star filled"></i>
-                                                                                <i class="fas fa-star"></i>
-                                                                                <span class="d-inline-block average-rating">${requestScope.mentorrequest.rating}</span>
-                                                                            </div>
-                                                                            <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>${requestScope.mentorrequest.bio}</p>
-                                                                        </div>
-                                                                    </div>
-                                                            </div>
-                                                        </div>-->
                             <form id="bookingForm" action="/../HAPPYorSAD/test" method="post">
                                 <input type="hidden" name="mentorId" value= "${requestScope.mentorId}">   
                                 <input type="hidden" name="courseId" value="${requestScope.courseId}">   
@@ -701,14 +784,10 @@
                                                                 <i class="fa fa-chevron-right"></i>
                                                             </a>
                                                         </li>
-
-
                                                     </ul>
                                                 </div>
                                                 <!-- /Day Slot -->
 
-                                                <script>
-                                                </script>
 
                                             </div>
                                         </div>
@@ -842,71 +921,66 @@
                 <input type="hidden" name="price" id="hiddenPrice">
                 <input type="hidden" name="year" id="hiddenYear">
                 <input type="hidden" name="month" id="hiddenMonth">
+                <input type="hidden" name="weekOffset" id="weekOffset" value="${weekOffset}">
                 <input type="hidden" name="service" id="hiddenService">
             </form>
 
+            <!-- Đảm bảo có phần tử hiển thị tháng/năm hiện tại với ID -->
+            <span id="selectedMonth" style="display:none;">${currentMonth} ${currentYear}</span>
+
+            <script type="text/javascript">
+                function changeWeek(offsetChange) {
+                    console.log('Changing week with offset:', offsetChange);
+                    let currentOffset = parseInt(document.getElementById("weekOffset").value) || 0;
+                    let newOffset = currentOffset + offsetChange;
+                    // Logic reset weekOffset khi thay đổi tháng (nếu cần)
+                    if (typeof changeMonthTriggered !== 'undefined' && changeMonthTriggered) {
+                        newOffset = 0; // Reset weekOffset về 0 khi tháng thay đổi
+                        delete window.changeMonthTriggered; // Xóa flag sau khi xử lý
+                    }
+
+                    const selectedMonthElement = document.getElementById("selectedMonth");
+                    if (!selectedMonthElement) {
+                        console.error('Element with ID "selectedMonth" not found');
+                        return;
+                    }
+
+                    const selectedMonth = selectedMonthElement.textContent.trim();
+                    console.log('Selected month:', selectedMonth);
+
+                    const parts = selectedMonth.split(" ");
+                    if (parts.length !== 2) {
+                        console.error('Invalid month format. Expected format: "Month Year" (e.g., "March 2025")');
+                        return;
+                    }
+
+
+                    const month = parts[0];
+                    const year = parts[1];
+
+                    try {
+                        document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']")?.value || "";
+                        document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']")?.value || "";
+                        document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']")?.value || "";
+                        document.getElementById("hiddenYear").value = year;
+                        document.getElementById("hiddenMonth").value = month;
+                        document.getElementById("weekOffset").value = newOffset;
+
+                        console.log('Submitting form with offset:', newOffset);
+                        document.getElementById("hiddenForm").submit();
+                    } catch (error) {
+                        console.error('Error while submitting form:', error);
+                    }
+                }
+            </script>
 
             <script>
-// Hàm debounce để ngăn double-click
-                function debounce(func, wait) {
-                    let timeout;
-                    return function (...args) {
-                        console.log("Debounce triggered, waiting for " + wait + "ms");
-                        clearTimeout(timeout);
-                        timeout = setTimeout(() => {
-                            console.log("Debounce executed after " + wait + "ms");
-                            func.apply(this, args);
-                        }, wait);
-                    };
-                }
-
 // Hàm hiển thị thông báo
                 function showNotification(message) {
                     alert(message);
                 }
 
-// Hàm chuyển tuần
-                function changeWeek(offset) {
-                    let currentOffset = parseInt(document.getElementById("currentWeekOffset").value);
-                    let newOffset = currentOffset + offset;
-                    document.getElementById("currentWeekOffset").value = newOffset;
-
-                    let formData = new FormData();
-                    formData.append("action", "changeWeek");
-                    formData.append("weekOffset", newOffset);
-                    formData.append("mentorId", document.querySelector("input[name='mentorId']").value);
-                    formData.append("courseId", document.querySelector("input[name='courseId']").value);
-
-                    fetch("/HAPPYorSAD/test", {
-                        method: "POST",
-                        body: formData,
-                        credentials: "same-origin"
-                    })
-                            .then(response => {
-                                if (!response.ok)
-                                    throw new Error("Network response was not ok " + response.status);
-                                return response.text();
-                            })
-                            .then(data => {
-                                console.log("Raw response from changeWeek:", data);
-                                const parser = new DOMParser();
-                                const doc = parser.parseFromString(data, "text/html");
-                                const newWeekList = doc.querySelector(".week-list").innerHTML;
-                                const newTimeSlot = doc.querySelector(".time-slot").innerHTML;
-
-                                document.querySelector("#weekList").innerHTML = newWeekList;
-                                document.getElementById("timeSlotContainer").innerHTML = newTimeSlot;
-
-                                window.timeSlots = document.querySelectorAll(".timing");
-                                updateTempSlotUI();
-                            })
-                            .catch(error => {
-                                console.error("Lỗi khi đổi tuần:", error);
-                                showNotification("Lỗi khi đổi tuần: " + error.message);
-                            });
-                }
-
-// Biến toàn cục
+// Biến toàn cục (no change here)
                 const eventHandlersAttached = {
                     submitBtn: false,
                     bookSlotsBtn: false,
@@ -916,7 +990,7 @@
                 };
 
                 document.addEventListener("DOMContentLoaded", function () {
-                    // Khai báo các biến cần thiết
+                    // Khai báo các biến cần thiết (no change here)
                     const timeSlots = document.querySelectorAll(".timing");
                     const priceDisplay = document.querySelector(".price-amount");
                     const pricePerSlot = ${requestScope.price};
@@ -953,7 +1027,7 @@
                     let isSaveProcessing = false;
                     let isClearProcessing = false;
 
-                    // Khôi phục dữ liệu form từ sessionStorage
+                    // Khôi phục dữ liệu form từ sessionStorage (no change here)
                     function restoreFormData() {
                         const savedTitle = sessionStorage.getItem("requestTitle");
                         const savedContent = sessionStorage.getItem("requestContent");
@@ -970,7 +1044,7 @@
                             endDate.value = savedEndDate;
                     }
 
-                    // Lưu dữ liệu form vào sessionStorage
+                    // Lưu dữ liệu form vào sessionStorage (no change here)
                     function saveFormData() {
                         sessionStorage.setItem("requestTitle", requestTitle.value);
                         sessionStorage.setItem("requestContent", requestContent.value);
@@ -979,7 +1053,7 @@
                         sessionStorage.setItem("tempSlotBooked", Array.from(tempSlotBooked).join(","));
                     }
 
-                    // Xóa dữ liệu form khỏi sessionStorage sau khi submit thành công
+                    // Xóa dữ liệu form khỏi sessionStorage sau khi submit thành công (no change here)
                     function clearFormData() {
                         sessionStorage.removeItem("requestTitle");
                         sessionStorage.removeItem("requestContent");
@@ -988,7 +1062,7 @@
                         sessionStorage.removeItem("tempSlotBooked");
                     }
 
-                    // Cập nhật lịch đã đặt
+                    // Cập nhật lịch đã đặt (no change here)
                     function updateBookedSchedule() {
                         bookedSlotsContainer.innerHTML = "";
                         tempSlotBooked.forEach(slot => {
@@ -1036,7 +1110,7 @@
                         });
                     }
 
-                    // Cập nhật UI
+                    // Cập nhật UI (no change here)
                     function updateUI() {
                         priceDisplay.textContent = totalPrice;
                         totalSlotsInput.value = totalSlots;
@@ -1056,7 +1130,7 @@
                         }
                     }
 
-                    // Cập nhật giao diện slot tạm
+                    // Cập nhật giao diện slot tạm (no change here)
                     function updateTempSlotUI() {
                         timeSlots.forEach(slot => {
                             let slotInfo = slot.dataset.slotInfo;
@@ -1069,10 +1143,10 @@
                         totalSlots = tempSlotBooked.size;
                         totalPrice = totalSlots * pricePerSlot;
                         updateUI();
-                        updateBookedSchedule(); // Cập nhật bảng lịch đã đặt
+                        updateBookedSchedule();
                     }
 
-                    // Tạo slot lặp lại
+                    // Tạo slot lặp lại (no change here)
                     function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
                         let repeatedSlots = new Set();
                         let [dateStr, slotNumber] = slot.split("_");
@@ -1106,7 +1180,7 @@
                         return Array.from(repeatedSlots);
                     }
 
-                    // Hiển thị/ẩn tùy chọn repeat
+                    // Hiển thị/ẩn tùy chọn repeat (no change here)
                     repeatCheckbox.addEventListener("change", function () {
                         repeatOptions.style.display = this.checked ? "block" : "none";
                     });
@@ -1125,12 +1199,12 @@
                         }
                     });
 
-                    // Lưu dữ liệu form khi thay đổi
+                    // Lưu dữ liệu form khi thay đổi (no change here)
                     [requestTitle, requestContent, startDate, endDate].forEach(input => {
                         input.addEventListener("input", saveFormData);
                     });
 
-                    // Gắn handler cho timeSlots (đã được sửa để hiển thị ngay thông tin slot)
+                    // Gắn handler cho timeSlots (no change here)
                     if (!eventHandlersAttached.timeSlots) {
                         timeSlots.forEach(slot => {
                             slot.addEventListener("click", function (event) {
@@ -1157,16 +1231,16 @@
                                 saveFormData();
                                 totalSlots = tempSlotBooked.size;
                                 totalPrice = totalSlots * pricePerSlot;
-                                updateTempSlotUI(); // Gọi updateTempSlotUI() ngay tại đây để cập nhật bảng
+                                updateTempSlotUI();
                             });
                         });
                         eventHandlersAttached.timeSlots = true;
                     }
 
-                    // Gắn handler cho bookSlotsBtn
+                    // Gắn handler cho bookSlotsBtn (removed debounce)
                     if (!eventHandlersAttached.bookSlotsBtn && bookSlotsBtn) {
                         console.log("Attaching handler for bookSlotsBtn at " + new Date().toISOString());
-                        bookSlotsBtn.addEventListener("click", debounce(function (event) {
+                        bookSlotsBtn.addEventListener("click", function (event) {
                             event.preventDefault();
                             console.log("Book Slots clicked - Handler triggered at " + new Date().toISOString());
 
@@ -1205,6 +1279,7 @@
                                         console.log("Raw response from Book:", data);
                                         if (!data.includes("error")) {
                                             updateTempSlotUI();
+                                            showNotification(`Đã đặt thành công ${tempSlotBooked.size} slot!`);
                                         }
                                     })
                                     .catch(error => {
@@ -1219,14 +1294,14 @@
                                     });
 
                             saveFormData();
-                        }, 300));
+                        });
                         eventHandlersAttached.bookSlotsBtn = true;
                     }
 
-                    // Gắn handler cho clearAllBtn
+                    // Gắn handler cho clearAllBtn (removed debounce)
                     if (!eventHandlersAttached.clearAllBtn && clearAllBtn) {
                         console.log("Attaching handler for clearAllBtn at " + new Date().toISOString());
-                        clearAllBtn.addEventListener("click", debounce(function (event) {
+                        clearAllBtn.addEventListener("click", function (event) {
                             event.preventDefault();
                             console.log("Clear clicked - Handler triggered at " + new Date().toISOString());
 
@@ -1270,13 +1345,13 @@
                                         clearAllBtn.classList.remove("disabled");
                                         console.log("Clear processing completed");
                                     });
-                        }, 300));
+                        });
                         eventHandlersAttached.clearAllBtn = true;
                     }
 
-                    // Gắn handler cho submitBtn
+                    // Gắn handler cho submitBtn (removed debounce)
                     if (!eventHandlersAttached.submitBtn && submitBtn) {
-                        submitBtn.addEventListener("click", debounce(function (event) {
+                        submitBtn.addEventListener("click", function (event) {
                             event.preventDefault();
                             console.log("Submit clicked - Handler triggered at " + new Date().toISOString());
 
@@ -1326,6 +1401,7 @@
                                                 totalSlots = 0;
                                                 totalPrice = 0;
                                                 updateUI();
+                                                showNotification("Đã tạo request thành công!");
                                                 window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
                                             }
                                         })
@@ -1345,14 +1421,14 @@
                                 submitBtn.disabled = false;
                                 submitBtn.classList.remove("disabled");
                             }
-                        }, 300));
+                        });
                         eventHandlersAttached.submitBtn = true;
                     }
 
-                    // Gắn handler cho saveBtn
+                    // Gắn handler cho saveBtn (removed debounce)
                     if (!eventHandlersAttached.saveBtn && saveBtn) {
                         console.log("Attaching handler for saveBtn at " + new Date().toISOString());
-                        saveBtn.addEventListener("click", debounce(function (event) {
+                        saveBtn.addEventListener("click", function (event) {
                             event.preventDefault();
                             console.log("Save clicked - Handler triggered at " + new Date().toISOString());
 
@@ -1382,11 +1458,11 @@
                                 saveBtn.disabled = false;
                                 saveBtn.classList.remove("disabled");
                             }
-                        }, 300));
+                        });
                         eventHandlersAttached.saveBtn = true;
                     }
 
-                    // Xử lý chọn tháng
+                    // Xử lý chọn tháng (no change here)
                     monthItems.forEach(item => {
                         item.addEventListener("click", function (event) {
                             event.preventDefault();
@@ -1394,6 +1470,7 @@
                             document.getElementById("selectedMonth").textContent = selectedMonth;
 
                             localStorage.setItem("selectedMonth", selectedMonth);
+                            window.changeMonthTriggered = true; // Đặt flag để báo hiệu thay đổi tháng
 
                             const parts = selectedMonth.split(" ");
                             if (parts.length === 2) {
@@ -1409,13 +1486,14 @@
                         });
                     });
 
-                    // Khởi tạo UI
+
+                    // Khởi tạo UI (no change here)
                     window.addEventListener("load", function () {
                         const savedMonth = localStorage.getItem("selectedMonth");
                         const currentDate = new Date();
                         const currentMonth = currentDate.toLocaleString("en-US", {month: "long"});
                         const currentYear = currentDate.getFullYear();
-                        const defaultMonth = `${currentMonth} ${currentYear}`; // Ví dụ: "March 2025"
+                        const defaultMonth = `${currentMonth} ${currentYear}`;
 
                                     if (savedMonth) {
                                         document.getElementById("selectedMonth").textContent = savedMonth;
