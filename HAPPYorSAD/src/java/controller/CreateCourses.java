@@ -94,8 +94,28 @@ public class CreateCourses extends HttpServlet {
         // URL để lưu vào DB
         String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
 
+        String priceStr = request.getParameter("price");
+        double price;
+        try {
+            if (isEmpty(priceStr)) {
+                request.setAttribute("error", "Price is required.");
+                request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+                return;
+            }
+            price = Double.parseDouble(priceStr);
+            if (price < 0) {
+                request.setAttribute("error", "Price must be a positive number.");
+                request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid price format.");
+            request.getRequestDispatcher("/CRUD/createCourse.jsp").forward(request, response);
+            return;
+        }
+
         // Lưu vào DB
-        dao.createCourse(title, description, majorId, fileUrl);
+        dao.createCourse(title, description, majorId, fileUrl, price);
 
         request.setAttribute("successMessage", "Course created successfully!");
         response.sendRedirect("CreateCourses?success=true");

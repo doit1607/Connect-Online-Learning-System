@@ -56,7 +56,7 @@ public class AcceptCV extends HttpServlet {
         DaoCV dao1 = new DaoCV();
         DAOuser dao2 = new DAOuser();
 
-        String type = request.getParameter("status");
+        String status = request.getParameter("status");
         String action = request.getParameter("action");
         String username = request.getParameter("username");
 
@@ -72,7 +72,7 @@ public class AcceptCV extends HttpServlet {
         }
 
         // lay ra list CV da duoc approved
-        if ("approved".equals(type)) {
+        if ("approved".equals(status)) {
             String searchQuery = request.getParameter("searchQuery");
             if (searchQuery != null) {
                 searchQuery = searchQuery.trim().toLowerCase();
@@ -93,7 +93,7 @@ public class AcceptCV extends HttpServlet {
         }
 
         // lay ra list CV bi reject
-        if ("rejected".equals(type)) {
+        if ("rejected".equals(status)) {
             String searchQuery = request.getParameter("searchQuery");
             if (searchQuery != null) {
                 searchQuery = searchQuery.trim().toLowerCase();

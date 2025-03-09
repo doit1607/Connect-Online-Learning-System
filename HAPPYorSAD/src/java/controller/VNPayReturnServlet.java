@@ -59,14 +59,15 @@ public class VNPayReturnServlet extends HttpServlet {
                 int id = transactionDAO.createTransaction(username, amount, "DEPOSIT");
                 transactionDAO.depositToWallet(username, amount);
                 double balance = transactionDAO.getBalance(username);
-                transactionDAO.updateBalance(username, balance);
+                double totalbalance = transactionDAO.getTotalBalance(username);
                 String msg = "Your payment is sucessfull!";
                 session.setAttribute("walletBalance", balance);
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                session.setAttribute("walletTotalbalance", totalbalance);
+                response.sendRedirect("Wallet?service=deposit");
             } else {
                 transactionDAO.updateTransactionStatus(Integer.parseInt(vnp_TxnRef), "FAILED");
                 String msg = "Your payment is failed!";
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                response.sendRedirect("Wallet?service=error&msg="+msg);
             }
         }
         if ("withdraw".equalsIgnoreCase(service)) {
@@ -76,16 +77,14 @@ public class VNPayReturnServlet extends HttpServlet {
                 int id = transactionDAO.createTransaction(username, amount, "WITHDRAW");
                 transactionDAO.withdrawToWallet(username, amount);
                 double newBalance = transactionDAO.getBalance(username); 
-                transactionDAO.updateBalance(username, newBalance);
 
                 String msg = "Your payment is successful!";
                 session.setAttribute("walletBalance", newBalance); 
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
+                response.sendRedirect("Wallet?service=withdraw&msg="+msg);
 
             } else {
                 String msg = "Your withdrawal request was unsuccessful due to insufficient funds in your wallet.";
-                response.sendRedirect("http://localhost:9999/HAPPYorSAD/view/Wallet.jsp?msg=" + msg);
-            }
+                response.sendRedirect("Wallet?service=error&msg="+msg);            }
 
         }
 

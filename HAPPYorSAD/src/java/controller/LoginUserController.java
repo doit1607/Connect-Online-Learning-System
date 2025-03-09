@@ -74,18 +74,22 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
-                        response.sendRedirect("Home");
+                        session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
+                        response.sendRedirect("ProfileServlet");
                     }
                     if (role.equalsIgnoreCase("Mentee")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
+                        session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Manager")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
+                        session.setAttribute("walletBalance", userwallet.getBalance(username));
+                        session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
                         response.sendRedirect("Manager");
                     }
                 } else {

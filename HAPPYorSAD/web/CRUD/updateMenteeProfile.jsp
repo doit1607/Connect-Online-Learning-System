@@ -76,55 +76,31 @@
                     <c:if test="${sessionScope.usernameRole eq 'mentee'}">
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
-                                            <a href="" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
                                         <li class="nav-item ">
-                                            <a href="instructor-profile.html" class="nav-link">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
                                                 <i class="bx bxs-user"></i>My Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-reviews.html" class="nav-link">
-                                                <i class="bx bxs-star"></i>Reviews
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
-                                            </a>
-                                        </li>
-
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
-
                                     </ul>
-
                                     <h3>Account Settings</h3>
                                     <ul>
-                                        <li class="nav-item">
-                                            <a href="updatementeeprofile" class="nav-link ">
+                                        <li class="nav-item active">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
@@ -140,29 +116,14 @@
                     </c:if>
                     <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                           
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
-                                            <a href="instructor-dashboard.html" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Dashboard
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a href="instructor-profile.html" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
-                                            </a>
-                                        </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Enrolled Courses
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>My Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -170,13 +131,11 @@
                                                 <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Schedule
                                             </a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
@@ -187,46 +146,20 @@
                                     <h3>Instructor</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
-                                                <i class="bx bxs-rocket"></i>My Courses
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-course.html" class="nav-link ">
+                                            <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
                                                 <i class="bx bxs-rocket"></i>My Curriculum Vitae
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
+                                            <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Inviting Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Statistic Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-announcements.html" class="nav-link">
-                                                <i class="bx bxs-volume-full"></i>Announcements
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-withdraw.html" class="nav-link ">
-                                                <i class="bx bxs-wallet"></i>Withdrawls
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-earnings.html" class="nav-link">
-                                                <i class="bx bxs-badge-dollar"></i>Earnings
                                             </a>
                                         </li>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
-                                        <li class="nav-item">
-                                            <a href="updatementeeprofile" class="nav-link ">
+                                        <li class="nav-item active">
+                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
@@ -255,7 +188,6 @@
                                     <ul class="settings-pg-links">
                                         <li><a href="updatementorprofile?username=${mentor.username}" class="active"><i class="bx bx-edit"></i>Edit Profile</a></li>
                                         <li><a href="/HAPPYorSAD/view/ChangePassword.jsp"><i class="bx bx-lock"></i>Change Password</a></li>
-                                        <li><a href="mentor-notifications.html"><i class="bx bx-bell"></i>Notifications</a></li>
                                     </ul>
                                 </div>
                                 <form action="updatementeeprofile" method="post" class="checkout-form settings-wrap" enctype="multipart/form-data">

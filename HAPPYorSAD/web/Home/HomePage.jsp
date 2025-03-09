@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
     Document   : HomePage
     Created on : Jan 19, 2025, 4:50:17 PM
@@ -24,7 +25,7 @@
 
         <div class="main-wrapper">
             <div class="all-container">
-                <%@include file="../sourcesHome/homeHeader.jsp" %>
+                <%@include file="../sourcesHome/homeHeader.jsp" %>            
                 <%@include file="../sourcesHome/homeDetail.jsp" %>
                 <%@include file="../sourcesHome/homeFooter.jsp" %>
             </div>

@@ -34,6 +34,7 @@ public class Mentor {
     private int CurentlyRequests;
     private int completed;
     private int total_Mentor;
+    private String phone_number;
 
     // Constructor
     public Mentor(int id, int mentorId, int userId, String name, String email, double rating, String reviews,
@@ -66,8 +67,15 @@ public class Mentor {
         this.image = image;
     }
 
-    
-    
+    public Mentor(String name, String email, double rating, String expertise, String image, String phone_number, String username) {
+        this.name = name;
+        this.email = email;
+        this.rating = rating;
+        this.expertise = expertise;
+        this.image = image;
+        this.phone_number = phone_number;
+        this.username = username;
+    }
 
     public Mentor(int total_Mentor) {
         this.total_Mentor = total_Mentor;
@@ -282,9 +290,17 @@ public class Mentor {
         this.total_reviews = total_reviews;
     }
 
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
+
     @Override
     public String toString() {
-        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + ", total_reviews=" + total_reviews + ", username=" + username + ", CurentlyRequests=" + CurentlyRequests + ", completed=" + completed + ", total_Mentor=" + total_Mentor + '}';
+        return "Mentor{" + "id=" + id + ", mentorId=" + mentorId + ", userId=" + userId + ", name=" + name + ", email=" + email + ", rating=" + rating + ", reviews=" + reviews + ", pricePerSlot=" + pricePerSlot + ", expertise=" + expertise + ", bio=" + bio + ", createdAt=" + createdAt + ", baseRate=" + baseRate + ", multiplier=" + multiplier + ", is_deleted=" + is_deleted + ", image=" + image + ", total_mentees=" + total_mentees + ", rating_count=" + rating_count + ", total_reviews=" + total_reviews + ", username=" + username + ", CurentlyRequests=" + CurentlyRequests + ", completed=" + completed + ", total_Mentor=" + total_Mentor + ", phone_number=" + phone_number + '}';
     }
 
 }

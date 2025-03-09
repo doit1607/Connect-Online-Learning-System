@@ -54,6 +54,43 @@ public class DAOslot extends DBConnection {
 //        }
 //        return false;
 //    }
+    public List<Slot> getSlotsByDate2(Date date, int mentorId) {
+        List<Slot> slots = new ArrayList<>();
+
+        String query = "SELECT sl.id, sl.slot_date, st.slot_number, sl.is_booked, st.start_time,\n"
+                + "       CASE \n"
+                + "           WHEN st.start_time BETWEEN '06:00:00' AND '11:59:59' THEN 'Morning'\n"
+                + "           WHEN st.start_time BETWEEN '12:00:00' AND '17:59:59' THEN 'Afternoon'\n"
+                + "           ELSE 'Evening'\n"
+                + "       END AS period\n"
+                + "FROM Slot sl\n"
+                + "JOIN Schedule sc ON sl.schedule_id = sc.id\n"
+                + "JOIN Mentor_Schedule ms ON ms.schedule_id = sc.id  -- Thay đổi theo mối quan hệ mới\n"
+                + "JOIN Mentor m ON ms.mentor_id = m.id  -- Liên kết với bảng Mentor thông qua Mentor_Schedule\n"
+                + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
+                + "WHERE sl.slot_date = ?\n"
+                + "AND ms.mentor_id = ? and sl.is_booked=0  -- Thay vì sc.mentor_id, dùng ms.mentor_id theo quan hệ mới\n"
+                + "ORDER BY st.start_time;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDate(1, date);
+            stmt.setInt(2, mentorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                slots.add(new Slot(rs.getInt("id"),
+                        rs.getDate("slot_date"),
+                        rs.getInt("slot_number"),
+                        rs.getBoolean("is_booked"),
+                        rs.getTime("start_time"),
+                        rs.getString("period")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
+
     public boolean addSlot(int scheduleId, Time startTime, Time endTime) {
         String sql = "INSERT INTO Slot (schedule_id, start_time, end_time, is_booked) VALUES (?, ?, ?, false)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -116,28 +153,6 @@ public class DAOslot extends DBConnection {
         }
     }
 
-//    public List<Slot> getSlotsByDay(int mentorId, String dayOfWeek) {
-//        List<Slot> slots = new ArrayList<>();
-//        String sql = "SELECT s.starttime, s.endtime, s.is_booked \n"
-//                + "                FROM Slot s \n"
-//                + "                JOIN Schedule sc ON s.schedule_id = sc.id \n"
-//                + "                WHERE sc.mentor_id = ? AND sc.day_of_week = ?";
-//
-//        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, mentorId);
-//            ps.setString(2, dayOfWeek);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                slots.add(new Slot(
-//                        rs.getTime("starttime"),
-//                        rs.getTime("endtime"),
-//                        rs.getBoolean("is_booked")
-//                ));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return slots;
     public List<Slot> getSlotTemplates() {
         List<Slot> slots = new ArrayList<>();
         String query = "SELECT slot_number, start_time, end_time FROM Slot_Template";
@@ -407,26 +422,132 @@ public class DAOslot extends DBConnection {
         return -1; // Trả về -1 nếu không có schedule cho tháng hiện tại
     }
 
-    public static void main(String[] args) {
+    public boolean bookSlot1(int scheduleId, int menteeId) {
+        String sql = "INSERT INTO Mentee_Slot (slot_id, mentee_id, status) VALUES (?, ?, 'Pending')";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, scheduleId);
+            pstmt.setInt(2, menteeId);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void bookSlotForMentee(int scheduleId, int menteeId, String status) throws SQLException {
+        String sql = "INSERT INTO Mentee_Slot (slot_id, mentee_id, status) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, scheduleId);
+            pstmt.setInt(2, menteeId);
+            pstmt.setString(3, status);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void updateSlotStatus(int slotId, String status) throws SQLException {
+        String sql = "UPDATE Slot SET status = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
+    }
+
+    public void updateSlotStatus1(int slotId, String status) throws SQLException {
+        String sql = "UPDATE Slot SET status = ?, updated_at = GETDATE() WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
+    }
+
+    public List<Slot> getSlotsByRequestId(int requestId) throws SQLException {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "SELECT * FROM Slot WHERE request_id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Slot slot = new Slot();
+            slot.setId(rs.getInt("id"));
+            slot.setStatus(rs.getString("status"));
+            // Các trường khác
+            slots.add(slot);
+        }
+        return slots;
+    }
+    
+        public List<Slot> getSlotsByRequestId1(int requestId) throws SQLException {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "SELECT s.slot_date, s.status, s.slot_number_id, st.start_time, st.end_time\n"
+                + "FROM Slot s\n"
+                + "join Slot_Template st on s.slot_number_id = st.id\n"
+                + "WHERE request_id = ?\n"
+                + "group by  s.slot_date, s.status, s.slot_number_id, st.start_time, st.end_time";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Slot slot = new Slot(rs.getDate("slot_Date"), 
+                    rs.getInt("slot_number_id"), 
+                    rs.getTime("start_time"),
+                    rs.getTime("end_time"), 
+                    rs.getString("status"));
+            
+            slots.add(slot);
+        }
+        return slots;
+    }
+
+
+
+    public boolean areAllSlotsComplete(int requestId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Slot WHERE request_id = ? AND status != 'Complete'";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) == 0; // Nếu không còn slot nào chưa complete
+        }
+        return false;
+    }
+
+    // Cập nhật request_id cho slot
+    public void updateRequestIdForSlot(int slotId, int requestId) throws SQLException {
+        String sql = "UPDATE Slot SET request_id = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ps.setInt(2, slotId);
+        ps.executeUpdate();
+    }
+
+    // Xóa request_id khỏi tất cả slot liên quan đến request (đặt về NULL)
+    public void removeRequestIdFromSlots(int requestId) throws SQLException {
+        String sql = "UPDATE Slot SET request_id = NULL WHERE request_id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ps.executeUpdate();
+    }
+
+
+
+  public static void main(String[] args) {
 
         DAOslot slotDAO = new DAOslot();
 
         int testMentorId = 1; // Thay đổi ID này theo dữ liệu thực tế trong DB
-        int scheduleID = 1;
+        int scheduleID = 659;
 
-        List<Integer> slotIds = Arrays.asList(10, 11, 12);
-        boolean success = slotDAO.bookMultipleSlots(slotIds, scheduleID);
-
-        Date testDate = Date.valueOf("2025-03-08"); // Định dạng YYYY-MM-DD
-        int mentorId = 1;  // Đổi giá trị phù hợp
-        int scheduleId = 1;
-
-        boolean result = slotDAO.deleteSlot(testDate, mentorId, scheduleId);
-        if (result) {
-            System.out.println("✅ Slot deleted successfully for date: " + testDate);
-        } else {
-            System.out.println("❌ Failed to delete slot for date: " + testDate);
+        try {
+            List<Slot> sl = slotDAO.getSlotsByRequestId(scheduleID);
+            for (Slot slot : sl) {
+                System.out.println(slot);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOslot.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+       
 
     }
 

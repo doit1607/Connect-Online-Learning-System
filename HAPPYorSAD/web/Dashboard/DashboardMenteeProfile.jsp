@@ -81,34 +81,15 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-enrolled-course.html" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Enrolled Courses
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-reviews.html" class="nav-link">
-                                                <i class="bx bxs-star"></i>Reviews
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
-                                            </a>
-                                        </li>
-
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
-
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>

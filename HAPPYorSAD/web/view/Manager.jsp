@@ -11,7 +11,7 @@
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:22 GMT -->
     <head>
-<meta charset="utf-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Dreams LMS</title>
 
@@ -80,7 +80,7 @@
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <!-- Header -->
-            <%@include file="/../sourcesHome/homeHeader.jsp" %>
+            <%@include file="/../sourcesHome/headerManager.jsp" %>
             <!-- /Header -->
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar breadcrumb-bar-info">
@@ -119,8 +119,8 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-wishlist.html" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Wishlist
+                                            <a href="ShowAllRequest" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Request of Mentee
                                             </a>
                                         </li>
                                         <li class="nav-item">

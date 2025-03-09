@@ -40,14 +40,13 @@ public class Home extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Category course
+        
         DAOmajor daoM = new DAOmajor();
         DAOMentor daoMe = new DAOMentor();
         DAOMenteeStatistic daoMentee = new DAOMenteeStatistic();
         List<Major> listM = daoM.getMajorHome();
         HttpSession session = request.getSession();
         session.setAttribute("listMajor", listM);
-
-        // Feature course
         DAOCourse daoC = new DAOCourse();
         List<Course> listC = daoC.getAllCourseHome();
         List<Course> listT = daoC.getAllCourseHome2();
@@ -56,11 +55,8 @@ public class Home extends HttpServlet {
         List<Mentor> listCountMentor = daoMe.getCount();
         List<Mentee> listCountMentee = daoMentee.getCount();
         //Count course and menteees
-        System.out.println("Hello");
-
         session.setAttribute("listFCourse", listC);
         session.setAttribute("listTCourse", listT);
-        System.out.println("Check1");
         session.setAttribute("listMentor", listMe);
         session.setAttribute("listCountC", listCountC);
         session.setAttribute("listCountMentor", listCountMentor);

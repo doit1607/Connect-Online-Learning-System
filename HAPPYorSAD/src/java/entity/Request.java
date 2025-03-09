@@ -22,6 +22,7 @@ public class Request {
     private int id;
     private int menteeId;
     private int mentorId;
+    private String userMentee;
     private String title;
     private double totalprice;
     private int totalSlot;
@@ -32,10 +33,25 @@ public class Request {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int courseId;
+    private String mentorname;
+    private String coursename;
+    private Slot slots;
     
 
     // Constructors
     public Request() {
+    }
+
+    public Request(String title, double totalprice, int totalSlot, LocalDate startDate, LocalDate endDate, String content, String status, String mentorname, String coursename) {
+        this.title = title;
+        this.totalprice = totalprice;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.content = content;
+        this.status = status;
+        this.mentorname = mentorname;
+        this.coursename = coursename;
     }
 
     public Request(int id, int menteeId, int mentorId, String title, LocalDate startDate, LocalDate endDate, String content, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseId) {
@@ -110,6 +126,26 @@ public class Request {
         this.status = status;
         this.courseId = courseId;
     }
+     
+    // dung cho showAllRequest ben DAORequest
+    public Request(int menteeId, String userMentee, String title, String status) {
+        this.menteeId = menteeId;
+        this.userMentee = userMentee;
+        this.title = title;
+        this.status = status;
+    }
+    
+    // dung cho Request detail
+    public Request(String userMentee, String courseName, String title, String content, int totalSlot, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt) {
+        this.userMentee = userMentee;
+        this.coursename = courseName;
+        this.title = title;
+        this.content = content;
+        this.totalSlot = totalSlot;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdAt = createdAt;
+    }
     
      public Request(int menteeId, int mentorId, String title, int totalSlot, LocalDate startDate, LocalDate endDate, String content, int courseId) {
         this.menteeId = menteeId;
@@ -121,6 +157,47 @@ public class Request {
         this.content = content;
         this.courseId = courseId;
     }
+
+    public Slot getSlots() {
+        return slots;
+    }
+
+    public void setSlots(Slot slots) {
+        this.slots = slots;
+    }
+
+    public String getUserMentee() {
+        return userMentee;
+    }
+
+    public void setUserMentee(String userMentee) {
+        this.userMentee = userMentee;
+    }
+     
+    public double getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(double totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public String getMentorname() {
+        return mentorname;
+    }
+
+    public void setMentorname(String mentorname) {
+        this.mentorname = mentorname;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+     
     public User getMentee(){
         DAOuser dao = new DAOuser();
         return dao.getMenteeById(this.menteeId);
@@ -231,21 +308,10 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{"
-                + "id=" + id
-                + ", menteeId=" + menteeId
-                + ", mentorId=" + mentorId
-                + ", title='" + title + '\''
-                + ", totalSlot=" + totalSlot
-                + ", startDate=" + startDate
-                + ", endDate=" + endDate
-                + ", content='" + content + '\''
-                + ", status='" + status + '\''
-                + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt
-                + ", courseIds='" + courseId + '\''
-                + '}';
+        return "Request{" + "id=" + id + ", menteeId=" + menteeId + ", mentorId=" + mentorId + ", title=" + title + ", totalprice=" + totalprice + ", totalSlot=" + totalSlot + ", startDate=" + startDate + ", endDate=" + endDate + ", content=" + content + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseId=" + courseId + ", mentorname=" + mentorname + ", coursename=" + coursename + ", slots=" + slots + '}';
     }
+
+   
     public List<Course> getRequestedCourses(){
         DAOCourse dao =  new DAOCourse();
         List<Course> list = new ArrayList<>();
