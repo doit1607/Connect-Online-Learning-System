@@ -11,9 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 import model.DAORequest;
+import model.DAOmentee;
+import model.TransactionDAO;
 
 /**
  *
@@ -34,12 +37,33 @@ public class ShowAllRequest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         DAORequest dao = new DAORequest();
+
+        TransactionDAO daotran = new TransactionDAO();
+        DAOmentee daomentee = new DAOmentee();
+
         String action = request.getParameter("action");
         String search = request.getParameter("search");
         String status = request.getParameter("status");
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
+        String service = request.getParameter("service");
+        if ("confirm".equals(service)) {
+            int requestId = Integer.parseInt(request.getParameter("requestid"));
+            Request newrequest = dao.getRequestById(requestId);
+            int menteeid = newrequest.getMenteeId();
+            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
+            double totalprice = newrequest.gettotalprice();
+            dao.updateRequestStatus(requestId, "Processing");
+            daotran.updateHoldAfterReject(usernamementee, totalprice);
+            daotran.withdrawToWallet(usernamementee, totalprice);
+            daotran.depositToWallet((String)session.getAttribute("usernameUser"), totalprice);
+            daotran.createTransaction((String)session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
+            double balance = daotran.getBalance((String)session.getAttribute("usernameUser"));
+            session.setAttribute("walletBalance", balance);
+        }
 
         LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) ? LocalDate.parse(startDateStr) : null;
         LocalDate endDate = (endDateStr != null && !endDateStr.isEmpty()) ? LocalDate.parse(endDateStr) : null;
