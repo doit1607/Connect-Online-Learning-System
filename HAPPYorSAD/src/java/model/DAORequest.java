@@ -24,123 +24,133 @@ import static model.DBConnection.conn;
 
 public class DAORequest extends DBConnection {
 
-    public List<Request> getRequestByMentor(String mentor, String title, String status, LocalDate date, int page, int limit) {
-        List<Request> requests = new ArrayList<>();
-        int offset = (page - 1) * limit;
+    public List<Request> getRequestByMentor(String mentor, String title, String[] status, LocalDate date, int page, int limit) {
+    List<Request> requests = new ArrayList<>();
+    int offset = (page - 1) * limit;
 
-        StringBuilder sql = new StringBuilder(
-                "SELECT r.id, r.mentee_id, r.mentor_id, u.username AS mentor_name, "
-                + "r.title, r.start_date, r.end_date, r.content, r.status, "
-                + "r.created_at, r.updated_at, r.course_id "
-                + "FROM Request r "
-                + "JOIN Mentor m ON r.mentor_id = m.id "
-                + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? and r.status != 'draft'"
-        );
+    StringBuilder sql = new StringBuilder(
+            "SELECT r.id, r.mentee_id, r.mentor_id, u.username AS mentor_name, "
+            + "r.title, r.start_date, r.end_date, r.content, r.status, "
+            + "r.created_at, r.updated_at, r.course_id "
+            + "FROM Request r "
+            + "JOIN Mentor m ON r.mentor_id = m.id "
+            + "JOIN [Users] u ON m.user_id = u.id "
+            + "WHERE u.username = ? AND r.status != 'draft' "
+    );
 
-        // Add filters dynamically
-        if (date != null) {
-            sql.append("AND r.created_at >= ? ");
-        }
-        if (status != null && !status.isEmpty()) {
-            sql.append("AND r.status = ? ");
-        }
-        if (title != null && !title.isEmpty()) {
-            sql.append("AND r.title LIKE ? ");
-        }
-
-        // Add pagination
-        sql.append("ORDER BY r.end_date ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
-            int index = 1;
-            preparedStatement.setString(index++, mentor);
-
-            if (date != null) {
-                preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
-            }
-            if (status != null && !status.isEmpty()) {
-                preparedStatement.setString(index++, status);
-            }
-            if (title != null && !title.isEmpty()) {
-                preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
-            }
-
-            preparedStatement.setInt(index++, offset);
-            preparedStatement.setInt(index, limit);
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    Request request = new Request(
-                            rs.getInt("id"),
-                            rs.getInt("mentee_id"),
-                            rs.getInt("mentor_id"),
-                            rs.getString("title"),
-                            rs.getDate("start_date").toLocalDate(),
-                            rs.getDate("end_date").toLocalDate(),
-                            rs.getString("content"),
-                            rs.getString("status"),
-                            rs.getTimestamp("created_at").toLocalDateTime(),
-                            rs.getTimestamp("updated_at").toLocalDateTime(),
-                            rs.getInt("course_id")
-                    );
-                    requests.add(request);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return requests;
+    // Add filters dynamically
+    if (date != null) {
+        sql.append("AND r.created_at >= ? ");
+    }
+    if (status != null && status.length > 0) {
+        sql.append("AND r.status IN (");
+        sql.append(String.join(", ", Collections.nCopies(status.length, "?"))); // Tạo danh sách ?, ?, ?
+        sql.append(") ");
+    }
+    if (title != null && !title.isEmpty()) {
+        sql.append("AND r.title LIKE ? ");
     }
 
-    public int getRequestCount(String mentor, String title, String status, LocalDate date) {
-        int count = 0;
+    // Add pagination
+    sql.append("ORDER BY r.end_date ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
 
-        StringBuilder sql = new StringBuilder(
-                "SELECT COUNT(*) AS total_count "
-                + "FROM Request r "
-                + "JOIN Mentor m ON r.mentor_id = m.id "
-                + "JOIN [Users] u ON m.user_id = u.id "
-                + "WHERE u.username = ? "
-        );
+    try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
+        int index = 1;
+        preparedStatement.setString(index++, mentor);
 
-        // Add filters dynamically
         if (date != null) {
-            sql.append("AND r.created_at >= ? ");
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
         }
-        if (status != null && !status.isEmpty()) {
-            sql.append("AND r.status = ? ");
+        if (status != null && status.length > 0) {
+            for (String s : status) {
+                preparedStatement.setString(index++, s);
+            }
         }
         if (title != null && !title.isEmpty()) {
-            sql.append("AND r.title LIKE ? ");
+            preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
         }
 
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
-            int index = 1;
-            preparedStatement.setString(index++, mentor);
+        preparedStatement.setInt(index++, offset);
+        preparedStatement.setInt(index, limit);
 
-            if (date != null) {
-                preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
+        try (ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                Request request = new Request(
+                        rs.getInt("id"),
+                        rs.getInt("mentee_id"),
+                        rs.getInt("mentor_id"),
+                        rs.getString("title"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getString("content"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        rs.getInt("course_id")
+                );
+                requests.add(request);
             }
-            if (status != null && !status.isEmpty()) {
-                preparedStatement.setString(index++, status);
-            }
-            if (title != null && !title.isEmpty()) {
-                preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
-            }
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    count = rs.getInt("total_count");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return count;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return requests;
+}
+
+
+    public int getRequestCount(String mentor, String title, String[] status, LocalDate date) {
+    int count = 0;
+
+    StringBuilder sql = new StringBuilder(
+            "SELECT COUNT(*) AS total_count "
+            + "FROM Request r "
+            + "JOIN Mentor m ON r.mentor_id = m.id "
+            + "JOIN [Users] u ON m.user_id = u.id "
+            + "WHERE u.username = ? "
+    );
+
+    // Add filters dynamically
+    if (date != null) {
+        sql.append("AND r.created_at >= ? ");
+    }
+    if (status != null && status.length > 0) {
+        sql.append("AND r.status IN (");
+        sql.append(String.join(", ", Collections.nCopies(status.length, "?"))); // Dynamic placeholders
+        sql.append(") ");
+    }
+    if (title != null && !title.isEmpty()) {
+        sql.append("AND r.title LIKE ? ");
+    }
+
+    try (PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
+        int index = 1;
+        preparedStatement.setString(index++, mentor);
+
+        if (date != null) {
+            preparedStatement.setDate(index++, java.sql.Date.valueOf(date));
+        }
+        if (status != null && status.length > 0) {
+            for (String s : status) {
+                preparedStatement.setString(index++, s);
+            }
+        }
+        if (title != null && !title.isEmpty()) {
+            preparedStatement.setString(index++, "%" + title + "%"); // Fix LIKE query
+        }
+
+        try (ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total_count");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return count;
+}
+
 
     public void updateRequestStatus(int requestId, String newStatus) {
         String sql = "UPDATE Request SET status = ? WHERE id = ?";

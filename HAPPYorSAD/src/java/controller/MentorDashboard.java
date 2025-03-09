@@ -63,15 +63,15 @@ public class MentorDashboard extends HttpServlet {
         HttpSession session = request.getSession();
         String mentorUsername = (String)session.getAttribute("usernameUser");
         List<Course> myCourses = dAOCourse.getCourseByMentor(mentorUsername);
-                int courseOpen = dAORequest.getRequestCount(mentorUsername, null, "Open", null);
-                int courseClosed = dAORequest.getRequestCount(mentorUsername, null, "Closed", null);
-                int courseProcessing = dAORequest.getRequestCount(mentorUsername, null, "Processing", null);
-                int courseCanceled = dAORequest.getRequestCount(mentorUsername, null, "Canceled", null);
+                int courseOpen = dAORequest.getRequestCount(mentorUsername, null, new String[]{"Open"}, null);
+                int courseClosed = dAORequest.getRequestCount(mentorUsername, null, new String[]{"Closed"}, null);
+                int courseProcessing = dAORequest.getRequestCount(mentorUsername, null, new String[]{"Processing"}, null);
+                int courseCanceled = dAORequest.getRequestCount(mentorUsername, null, new String[]{"Canceled"}, null);
 
 
         Double balance = dAOTransaction.getBalance(mentorUsername);
         Double earning = dAORequest.getTotalReceivedAmountByMentor(mentorUsername)*0.8;
-        int requestCompleted = dAORequest.getRequestCount(mentorUsername, "", "Closed", null);
+        int requestCompleted = dAORequest.getRequestCount(mentorUsername, "", new String[]{"Closed"}, null);
         List<MentorReview> reviews = dAORateMentor.getReviewsByMentor(mentorUsername);
 //                request.setAttribute("username", mentorUsername);
 double totalRating = reviews.stream().mapToInt(MentorReview::getRating).sum();

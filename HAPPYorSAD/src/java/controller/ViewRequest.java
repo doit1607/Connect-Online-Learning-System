@@ -66,7 +66,9 @@ public class ViewRequest extends HttpServlet {
 
         String dateFilterString = request.getParameter("date");
         String title = request.getParameter("title");
-        String status = request.getParameter("status");
+        if (title != null) title = title.trim();
+        String[] status = request.getParameterValues("status");
+        request.setAttribute("status", status);
         int dateFilter = 0;
 
         if (dateFilterString != null && !dateFilterString.isEmpty()) {
@@ -145,16 +147,22 @@ public class ViewRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int requestId = Integer.parseInt(request.getParameter("id"));
+         int requestId = Integer.parseInt(request.getParameter("id"));
         String status = request.getParameter("status");
-        TransactionDAO trandao = new TransactionDAO();
-
         DAORequest dao = new DAORequest();
-
-        // *** Thêm xử lý điểm danh slot ***
-        String action = request.getParameter("action");
-        DAOslot slotDAO = new DAOslot();
-        DAOa attendanceDAO = new DAOa();
+        dao.updateRequestStatus(requestId, status);
+        response.sendRedirect("/HAPPYorSAD/viewRequest");
+        
+//        int requestId = Integer.parseInt(request.getParameter("id"));
+//        String status = request.getParameter("status");
+//        TransactionDAO trandao = new TransactionDAO();
+//
+//        DAORequest dao = new DAORequest();
+//
+//        // *** Thêm xử lý điểm danh slot ***
+//        String action = request.getParameter("action");
+//        DAOslot slotDAO = new DAOslot();
+//        DAOa attendanceDAO = new DAOa();
 
 //        if ("markDone".equals(action)) {
 //            int slotId = Integer.parseInt(request.getParameter("slotId"));
@@ -186,7 +194,7 @@ public class ViewRequest extends HttpServlet {
 //            dao.addRejectReason(requestId, reason);
 //        }
 
-        response.sendRedirect("/HAPPYorSAD/viewRequest");
+//        response.sendRedirect("/HAPPYorSAD/viewRequest");
 
     }
 
