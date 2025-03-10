@@ -391,7 +391,7 @@ public class DAORequest extends DBConnection {
     // Dung de tim kiem va loc (Dung)
     public List<Request> getAllRequests(String search, String status, LocalDate startDate, LocalDate endDate) {
         List<Request> listRep = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT r.id, u.username, r.title, r.status "
+        StringBuilder sql = new StringBuilder("SELECT r.id, u.username, r.title, r.totalPrice, r.status "
                 + "FROM Request r "
                 + "JOIN Mentee m ON r.mentee_id = m.id "
                 + "JOIN Users u ON m.user_id = u.id "
@@ -432,6 +432,7 @@ public class DAORequest extends DBConnection {
                     request.setId(rs.getInt("id"));
                     request.setUserMentee(rs.getString("username"));
                     request.setTitle(rs.getString("title"));
+                    request.setTotalprice(rs.getDouble("totalPrice"));
                     request.setStatus(rs.getString("status"));
                     listRep.add(request);
                 }
