@@ -260,12 +260,12 @@
                                             </div>
                                         </div>
 
-<!--                                        <div class="row mb-3">
-                                            <div class="col-12 text-center cancel-status">
-                                                <input type="radio" name="status" value="Cancel" id="Cancel" hidden>
-                                                <label for="Cancel">Cancel</label>
-                                            </div>
-                                        </div>-->
+                                        <!--                                        <div class="row mb-3">
+                                                                                    <div class="col-12 text-center cancel-status">
+                                                                                        <input type="radio" name="status" value="Cancel" id="Cancel" hidden>
+                                                                                        <label for="Cancel">Cancel</label>
+                                                                                    </div>
+                                                                                </div>-->
 
                                         <div class="row g-3 align-items-center">
                                             <div class="col-md-4">
@@ -304,7 +304,7 @@
                                         </tr>
                                         <c:forEach items="${requestScope.requestList}" var="o" varStatus="status1">
                                             <tr>
-                                                <td><div class="STT text-center"><h6>${status1.index + 1}</h6></div></td>
+                                                <td><div class="STT treadxt-center"><h6>${status1.index + 1}</h6></div></td>
                                                 <td><a href="ShowAllRequest?action=detail&id=${o.id}">${o.id}</a></td>
                                                 <td>${o.getUserMentee()}</td>
                                                 <td>${o.title}</td>
@@ -329,9 +329,52 @@
                                                                 </button>
                                                             </form>
                                                         </c:if>
+                                                        <c:if test="${o.status == 'Completed'}">
+                                                            <!-- Thay nút Closed bằng nút kích hoạt modal -->
+                                                            <button type="button" class="confirm-btn" data-bs-toggle="modal" data-bs-target="#closeModal_${o.id}">
+                                                                Closed
+                                                            </button>
+                                                        </c:if>
                                                     </div>
                                                 </td>
                                             </tr>
+                                        </c:forEach>
+
+
+                                        <c:forEach items="${requestScope.requestList}" var="o">
+                                            <div class="modal fade" id="closeModal_${o.id}" tabindex="-1" 
+                                                 aria-labelledby="closeModalLabel_${o.id}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="closeModalLabel_${o.id}">Confirm Close Request</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to close this request?</p>
+                                                            <p><strong>Mentor name:</strong> ${o.mentorname}</p>
+                                                            <p><strong>Course name:</strong> ${o.coursename}</p>
+                                                            <p><strong>Title:</strong> ${o.title}</p>
+                                                            <p><strong>Content:</strong> ${o.content}</p>
+                                                            <p><strong>Total Slots:</strong> ${o.totalSlot}</p> 
+                                                            <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />₫</p>
+                                                            <p style="color: #e74c3c; font-size: 18px; font-weight: bold;"><strong>Final Price (80% of Total):</strong> <fmt:formatNumber value="${o.totalprice * 0.8}" type="number" groupingUsed="true" />₫</p>                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <form action="ShowAllRequest" method="get" style="display: inline;">
+                                                                <input type="hidden" name="service" value="closed">
+                                                                <input type="hidden" name="requestid" value="${o.id}">
+                                                                <input type="hidden" name="totalprice" value="${o.totalprice}">
+                                                                <input type="hidden" name="finalprice" value="${o.totalprice * 0.8}">
+                                                                <button type="submit" class="btn btn-danger">Confirm Close</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                window.history.replaceState({}, document.title, window.location.pathname);
+                                            </script>
                                         </c:forEach>
                                         <c:if test="${empty requestScope.requestList}">
                                             <tr><td colspan="5" class="text-center">No requests found</td></tr>
