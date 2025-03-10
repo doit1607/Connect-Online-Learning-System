@@ -1,0 +1,60 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Mar 2025, 2:03:20 am
+    Author     : Acer
+*/
+
+/* Định dạng tổng thể cho container */
+.col-xl-9.col-lg-9 {
+    padding: 20px;
+    max-width: 100%;
+}
+
+/* Định dạng tiêu đề */
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Định dạng form checkout */
+.checkout-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Định dạng custom-detail */
+.custom-detail {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Định dạng từng mục detail-item */
+.detail-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-item:last-child {
+    border-bottom: none; /* Loại bỏ đường viền dưới của mục cuối cùng */
+}
+
+.detail-item strong {
+    color: #555;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+/* Định dạng khi không có dữ liệu */
+.no-data {
+    font-size: 18px;
+    color: #888;
+    padding: 20px;
+}
