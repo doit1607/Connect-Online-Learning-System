@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
 <!DOCTYPE html> 
@@ -248,7 +249,7 @@
                                                         <p><strong>Title:</strong> ${o.title}</p>
                                                         <p><strong>Content:</strong> ${o.content}</p>
                                                         <p><strong>Total Slots:</strong> ${o.totalSlot}</p> 
-                                                        <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />?</p>
+                                                        <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />₫</p>
                                                         <p><strong>Deadline Start:</strong> ${o.startDate}</p>
                                                         <p><strong>Deadline End:</strong> ${o.endDate}</p>
                                                         <p><strong>Status:</strong> ${o.status}</p>
