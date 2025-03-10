@@ -5,6 +5,7 @@
 package controller;
 
 import entity.Course;
+import entity.Major;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 import java.util.List;
 import model.DAOCourse;
-
+import model.DAOmajor;
 
 /**
  *
@@ -34,18 +35,36 @@ public class ShowAllCourse extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOCourse dao = new DAOCourse();
-        HttpSession session = request.getSession();
-        List<Course> listAllCousre = dao.getAllCourseOrderByName();
+        DAOmajor daoM = new DAOmajor();
+//        List<Course> listAllCousre = dao.getAllCourseOrderByName();
+        List<Major> listAllMaojor = daoM.getListAllMajor();
+
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+
+        int count = dao.getTotalCourse();
+        int endPage = count / 2;
+        if (count % 2 != 0) {
+            endPage++;
+        }
+
+        List<Course> listAllCousre = dao.pagingCourse(index);
         int id = 0;
         for (Course course : listAllCousre) {
-            id = course.getId();   
-            
+            id = course.getId();
+
         }
         int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
-        session.setAttribute("countMentorOfCourse", countMentorOfCourse);
-        session.setAttribute("listAllCousre", listAllCousre);       
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("tag", index);
+        request.setAttribute("listAllMaojor", listAllMaojor);
+        request.setAttribute("countMentorOfCourse", countMentorOfCourse);
+        request.setAttribute("listAllCousre", listAllCousre);
         request.getRequestDispatcher("view/Course.jsp").forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,6 +80,10 @@ public class ShowAllCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        //        int majorId = Integer.parseInt(request.getParameter("Mid"));
+        //        List<Course> listCourseByMajorId = daoM.getListAllCourseByMajorId(majorId);
+        //        request.setAttribute("listCourseByMajorId", listCourseByMajorId);
+
     }
 
     /**
