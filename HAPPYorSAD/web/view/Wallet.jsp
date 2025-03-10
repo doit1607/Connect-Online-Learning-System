@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -39,7 +40,13 @@
         <div class="main-wrapper">
 
             <!-- Header -->
-            <%@include file="../sourcesHome/homeHeader.jsp" %>
+            <c:if test="${usernameRole != 'manager'}" >
+                <%@include file="../sourcesHome/homeHeader.jsp" %>
+            </c:if>
+            <c:if test="${usernameRole == 'manager'}" >
+                <%@include file="../sourcesHome/headerManager.jsp" %>
+            </c:if>
+
             <!-- /Header -->
 
             <!-- Breadcrumb -->
@@ -73,20 +80,22 @@
                                 <div class="card-body">
                                     <div class="wallet-balance mb-4 text-center">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div <c:if test = "${sessionScope.usernameRole != 'manager'}">class="col-6"</c:if>>
                                                 <h5 class="fw-bold text-muted">Total Balance</h5>
                                                 <p class="text-primary fs-4 mb-0">
                                                     <fmt:setLocale value="vi_VN"/>
                                                     <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletTotalbalance : 0}" type="currency" groupingUsed="true"/>
                                                 </p>
                                             </div>
-                                            <div class="col-6">
-                                                <h5 class="fw-bold text-muted">Available Balance</h5>
-                                                <p class="text-success fs-4 mb-0">
-                                                    <fmt:setLocale value="vi_VN"/>
-                                                    <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
-                                                </p>
-                                            </div>
+                                                    <c:if test = "${sessionScope.usernameRole != 'manager'}">
+                                                <div class="col-6">
+                                                    <h5 class="fw-bold text-muted">Available Balance</h5>
+                                                    <p class="text-success fs-4 mb-0">
+                                                        <fmt:setLocale value="vi_VN"/>
+                                                        <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
+                                                    </p>
+                                                </div>
+                                            </c:if>  
                                         </div>
                                     </div>
                                     <form id="walletForm" method="POST">
