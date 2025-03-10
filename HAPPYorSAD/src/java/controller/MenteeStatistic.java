@@ -34,24 +34,32 @@ public class MenteeStatistic extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOMenteeStatistic dao = new DAOMenteeStatistic();
-        String indexPage = request.getParameter("index");
-        if (indexPage == null) {
-            indexPage = "1";
+         String searchKeyword = request.getParameter("txt");
+
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+             List<Mentee> mentees = dao.searchMenteeByName(searchKeyword);
+             request.setAttribute("mentees", mentees);
+        }else{
+            String indexPage = request.getParameter("index");
+            if (indexPage == null) {
+                indexPage = "1";
+            }
+            int index = Integer.parseInt(indexPage);
+
+            int count = dao.getTotalMentee();
+            int endPage = count / 2;
+            if (count % 2 != 0) {
+                endPage++;
+            }
+
+            List<Mentee> mentees = dao.pagingMentee(index);
+
+            request.setAttribute("mentees", mentees);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("tag", index);
+            
         }
-        int index = Integer.parseInt(indexPage);
-
-        int count = dao.getTotalMentee();
-        int endPage = count / 2;
-        if (count % 2 != 0) {
-            endPage++;
-        }
-
-        List<Mentee> mentees = dao.pagingMentee(index);
-
-        request.setAttribute("mentees", mentees);
-        request.setAttribute("endPage", endPage);
-        request.setAttribute("tag", index);
-        request.getRequestDispatcher("view/MenteeStatistic.jsp").forward(request, response);
+        request.getRequestDispatcher("view/MenteeStatistic.jsp").forward(request, response);  
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
