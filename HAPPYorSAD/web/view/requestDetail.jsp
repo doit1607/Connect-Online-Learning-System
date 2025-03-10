@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Request" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -167,7 +167,7 @@
                                     </c:choose>
                                 </div>
 
-                                <!-- NÃºt Back -->
+                                <!-- Nút Back -->
                                 <a href="ShowAllRequest" class="btn btn-secondary mt-3">Back to List</a>
                             </div>
                         </div>
