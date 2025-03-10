@@ -96,7 +96,7 @@ public class DAOmajor extends DBConnection {
             
             while (result.next()) {
                 Course course = new Course();
-                course.setId(result.getInt(id));
+                course.setId(result.getInt("id"));
                 course.setTitle(result.getString("title"));
                 course.setDescription(result.getString("description"));
                 course.setManagerId(result.getInt("manager_id"));
@@ -119,9 +119,9 @@ public class DAOmajor extends DBConnection {
         DAOmajor dao = new DAOmajor();
 
         List<Major> list = dao.getMajorHome();
-        List<Course> listCourse = dao.getListAllCourseByMajorId(1);
+        List<Course> listCourse = dao.getListAllCourseByMajorId(2);
          
-        System.out.println(listCourse);
+        System.out.println(listCourse+" \n");
 
     }
 
