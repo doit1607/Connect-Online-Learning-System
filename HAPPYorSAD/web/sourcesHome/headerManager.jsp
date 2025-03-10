@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%-- 
     Document   : homeHeader
     Created on : Jan 19, 2025, 4:17:41 PM
@@ -77,11 +78,9 @@
                                             </div>
                                         </div>
                                         <a class="dropdown-item" href="/../HAPPYorSAD/view/Wallet.jsp">
-                                            <i class="feather-star me-1"></i> Wallet:
-                                            <fmt:formatNumber value="${sessionScope.walletBalance}" 
-                                                              type="number" 
-                                                              pattern="#,##0" 
-                                                              currencySymbol="" /> ?
+                                            <i class="feather-star me-1"></i> 
+                                            Wallet: <span id="walletAmount"><fmt:formatNumber value="${sessionScope.walletBalance}" pattern="#,##0" /></span> <span id="currencySymbol"></span>
+
                                         </a>
                                         <a class="dropdown-item" href="/../HAPPYorSAD/LoginUser?service=logout"><i class="feather-log-out me-1"></i> Logout</a>
                                     </div>
@@ -94,6 +93,11 @@
             </header>
             <!-- /Header -->
     </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("currencySymbol").innerHTML = "đ";
+        });
 
+    </script>
 </html>
 
