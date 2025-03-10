@@ -222,8 +222,7 @@
                                                     <c:if test="${o.status eq 'Draft'}">                                                           
                                                         <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" class="updatebtn">Update</a>
                                                     </c:if>
-                                                    <c:if test="${o.status eq 'Open'}">
-
+                                                    <c:if test="${o.status != 'Draft'}">
                                                         <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">
                                                             View
                                                         </button>
