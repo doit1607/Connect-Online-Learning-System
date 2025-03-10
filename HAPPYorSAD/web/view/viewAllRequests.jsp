@@ -248,8 +248,8 @@
                                                     <input type="radio" name="status" value="Processing" id="Processing" hidden>
                                                     <label for="Processing">3</label>
 
-                                                    <input type="radio" name="status" value="Complete" id="Complete" hidden>
-                                                    <label for="Complete">4</label>
+                                                    <input type="radio" name="status" value="Completed" id="Completed" hidden>
+                                                    <label for="Completed">4</label>
 
                                                     <input type="radio" name="status" value="Closed" id="Closed" hidden>
                                                     <label for="Closed">5</label>
@@ -311,7 +311,7 @@
                                                         <div style="background-color: ${o.status == 'Open' ? '#28a745' : 
                                                                                         (o.status == 'Pending' ? '#fd7e14' : 
                                                                                         (o.status == 'Processing' ? '#007bff' : 
-                                                                                        (o.status == 'Complete' ? '#6f42c1' :
+                                                                                        (o.status == 'Completed' ? '#6f42c1' :
                                                                                         (o.status == 'Closed' ? '#6c757d' : '#dc3545'))))};
                                                              color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
                                                             ${o.status}
