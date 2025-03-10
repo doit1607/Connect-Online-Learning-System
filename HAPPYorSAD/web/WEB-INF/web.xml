@@ -121,8 +121,8 @@
         <servlet-class>controller.UpdateRequest</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateRequest</servlet-name>
-        <servlet-class>controller.CreateRequest</servlet-class>
+        <servlet-name>RequestSchedule</servlet-name>
+        <servlet-class>controller.RequestSchedule</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MentorDetail</servlet-name>
@@ -277,8 +277,8 @@
         <url-pattern>/JoinCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateRequest</servlet-name>
-        <url-pattern>/CreateRequest</url-pattern>
+        <servlet-name>RequestSchedule</servlet-name>
+        <url-pattern>/RequestSchedule</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Notifications</servlet-name>
