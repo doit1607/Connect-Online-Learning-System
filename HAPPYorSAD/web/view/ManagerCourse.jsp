@@ -79,7 +79,7 @@
             .form-container {
                 background-color: #ffffff;
                 padding: 20px;
-                width: 400px;
+                width: 50%;
                 border-radius: 8px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }
