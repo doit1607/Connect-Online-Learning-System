@@ -253,16 +253,19 @@
 
                                                     <input type="radio" name="status" value="Closed" id="Closed" hidden>
                                                     <label for="Closed">5</label>
+
+                                                    <input type="radio" name="status" value="Cancel" id="Cancel" hidden>
+                                                    <label for="Cancel">6</label>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3">
+<!--                                        <div class="row mb-3">
                                             <div class="col-12 text-center cancel-status">
                                                 <input type="radio" name="status" value="Cancel" id="Cancel" hidden>
                                                 <label for="Cancel">Cancel</label>
                                             </div>
-                                        </div>
+                                        </div>-->
 
                                         <div class="row g-3 align-items-center">
                                             <div class="col-md-4">
