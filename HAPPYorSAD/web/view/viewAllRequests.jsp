@@ -209,8 +209,8 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
+                                            <a href="menteestatistic" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Static Mentee
                                             </a>
                                         </li>
                                         <li class="nav-item">
