@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,12 +36,7 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-
-
-
-
-
-
+        <<link rel="stylesheet" href="/HAPPYorSAD/css/cssCourseManager/CourseManager.css"/>
         <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Bootstrap Core JS -->
@@ -63,11 +57,104 @@
 
         <!-- Custom JS -->
         <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-
         <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
         data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
         <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        <style>
+            /* Overlay background */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Làm m? n?n */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
 
+            /* Form container */
+            .form-container {
+                background-color: #ffffff;
+                padding: 20px;
+                width: 400px;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Tiêu ?? form */
+            .form-container h2 {
+                text-align: center;
+                font-size: 20px;
+                margin-bottom: 15px;
+                color: #333;
+            }
+
+            /* Label */
+            .form-container label {
+                font-size: 14px;
+                color: #555;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+            /* Input fields và select */
+            .form-container input[type="text"],
+            .form-container input[type="number"],
+            .form-container input[type="file"],
+            .form-container textarea,
+            .form-container select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                box-sizing: border-box;
+                transition: border-color 0.2s ease;
+            }
+
+            /* Focus effect */
+            .form-container input:focus,
+            .form-container textarea:focus,
+            .form-container select:focus {
+                border-color: #007bff;
+            }
+
+            /* Nút b?m */
+            .form-container button {
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                margin-top: 10px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+            /* Nút L?u */
+            .form-container button[type="submit"] {
+                background-color: #28a745;
+            }
+
+            .form-container button[type="submit"]:hover {
+                background-color: #218838;
+            }
+
+            /* Nút H?y */
+            .form-container .btn-cancel {
+                background-color: #dc3545;
+            }
+
+            .form-container .btn-cancel:hover {
+                background-color: #c82333;
+            }
+
+        </style>
     </head>
     <body>
 
@@ -96,7 +183,6 @@
                 <div class="container">
                     <div class="row">
 
-                        <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
@@ -118,8 +204,8 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
-                                                <i class="bx bxs-star"></i>Request schedule
+                                            <a href="instructor-reviews.html" class="nav-link">
+                                                <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
 
@@ -149,27 +235,37 @@
                         </div>
                         <div class="col-xl-9 col-lg-9">
                             <h1>Course List</h1>
-                            <div class="d-flex justify-content-end">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <form action="SearchCourse" method="get" class="d-flex "> 
+                                    <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Course Name...">
+                                     <button type="submit" class="btn btn-primary px-4">Search</button>
+                                </form>                             
+                               
+                            
                                 <a href="CreateCourses" class="btn btn-success">Add New Course</a>
                             </div>
                             <div class="checkout-form">
                                 <div class="table-responsive custom-table">
-
                                     <table class="table table-nowrap mb-0">
                                         <tr>
                                             <th>No.</th>
-                                            <th>Course ID</th>
+                                            <th>Image</th>
                                             <th>Course Name</th>
+                                            <th>Update At</th>
+                                            <th>Price</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
-
-
                                         <c:forEach items="${sessionScope.listAllCourse}" var="o" varStatus="status1">
                                             <tr>
                                                 <td><div class="STT text-center"> <h6>${status1.index + 1}</h6></div></td>
-                                                <td>${o.id}</td>
-                                                <td>${o.title}</td>
+                                                <td><img  class="img-fluid" alt="Img" src="${o.image}"></td>
+                                                <td> 
+                                                    <a href="DetailCourseManager?Cid=${o.id}">${o.title}</a>
+                                                </td>
+                                                <td>${o.updatedAt}</td>
+                                                <td>${o.price}</td>
                                                 <td>
                                                     <div style="background-color: ${o.status == 'active' ? '#28a745' : '#dc3545'};
                                                          color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
@@ -177,96 +273,103 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button onclick="showEditForm('${o.id}', '${o.title}', '${o.status}')" class="resut-badge badge-light-danger approve">Edit</button>
+                                                    <button onclick="showEditForm('${o.id}', '${o.title}', '${o.description}', '${o.status}', '${o.courseMajorId}', '${o.price}', '${o.image}')" 
+                                                            class="resut-badge badge-light-danger approve">Edit</button>
+
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Pagination -->
+                                    <div class="pagination">
+                                        <c:if test="${tag > 1}">
+                                            <li class="page-item">
+                                                <a href="CourseManager?index=${tag-1}" class="page-link">Previous</a>
+                                            </li>
+                                        </c:if>
 
+                                        <c:forEach begin="1" end="${endPage}" var="i">
+                                            <a class="page-link ${tag == i?'active':''}" href="CourseManager?index=${i}">${i}</a>
+                                        </c:forEach>
+
+                                        <c:if test="${tag < endPage}">
+                                            <li class="page-item">
+                                                <a href="CourseManager?index=${tag+1}" class="page-link">Next</a>
+                                            </li>
+                                        </c:if>
+                                    </div>
+                                    <!-- /Pagination -->                              
+                                </div>
+                            </div>
+                        </div>
                         <!-- Overlay for Edit Form -->
                         <div class="overlay" id="editFormOverlay" style="display: none;">
                             <div class="form-container">
-                                <h3>Edit Course</h3>
-                                <form action="UpdateCourse" method="post">
-                                    <input type="hidden" id="editId" name="id">
+                                <h2>Update Course</h2>
 
-                                    <label for="editName">Title</label>
-                                    <input type="text" id="editName" name="title" placeholder="Course Name" required>
+                                <form action="UpdateCourse" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" >
 
+                                    <label>Title:</label>
+                                    <input type="text" name="title" required>
+
+                                    <label>Description:</label>
+                                    <textarea name="description" required></textarea>
+
+                                    <label>Status:</label>
                                     <select id="editStatus" name="status"> 
                                         <option value="active" selected>Active</option>
-                                        <option value="Inactive" selected>Inactive</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
 
-                                    <button type="submit" class="btn-save">OK</button>
-                                    <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- Overlay for Edit Form -->
-                        <div class="overlay" id="editFormOverlay1" style="display: none;">
-                            <div class="form-container">
-                                <h3>Edit Course</h3>
-                                <form action="UpdateCourse" method="post">
-                                    <input type="hidden" id="editId1" name="id">
-
-                                    <label for="editName">Title</label>
-                                    <input type="text" id="editName1" name="title" placeholder="Course Name" required readonly>
-
-
-                                    <select id="editStatus1" name="status"> 
-                                        <option value="active" selected>Active</option>
-                                        <option value="Inactive" selected>Inactive</option>
+                                    <label>Major:</label>
+                                    <select name="course_major_id" required>
+                                        <c:forEach var="major" items="${listAllMaojor}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>
                                     </select>
 
-                                    <button type="submit" class="btn-save">OK</button>
-                                    <button type="button" class="btn-delete" onclick="hideEditForm()">Cancel</button>
+                                    <label>Price:</label>
+                                    <input type="number" name="price" step="0.01" required>
+
+                                    <label>Upload Image:</label>
+                                    <input type="file" name="image">
+
+                                    <button type="submit">Update</button>
+                                    <button type="button" class="btn-cancel" onclick="hideEditForm()">Cancel</button>
                                 </form>
+
                             </div>
                         </div>
+                        <!-- Overlay for Edit Form -->                    
                     </div>
                 </div>
             </div>
             <script>
 
-                function showEditForm(id, name, status) {
+                function showEditForm(id, title, description, status, courseMajorId, price, image) {
                     document.getElementById("editFormOverlay").style.display = "flex";
                     document.body.classList.add("overlay-active");
 
-                    document.getElementById("editId").value = id;
-                    document.getElementById("editName").value = name;
+                    // Gán giá tr? cho các tr??ng trong form
+                    document.querySelector("input[name='id']").value = id;
+                    document.querySelector("input[name='title']").value = title;
+                    document.querySelector("textarea[name='description']").value = description;
+                    document.querySelector("select[name='status']").value = status;
+                    document.querySelector("select[name='course_major_id']").value = courseMajorId;
+                    document.querySelector("input[name='price']").value = price;
 
-                    let statusSelect = document.getElementById("editStatus");
-                    statusSelect.value = status.toLowerCase();
                 }
 
-                function showEditForm1(id, name, status) {
-                    document.getElementById("editFormOverlay1").style.display = "flex";
-                    document.body.classList.add("overlay-active");
 
-                    document.getElementById("editId1").value = id;
-                    document.getElementById("editName1").value = name;
-
-                    let statusSelect = document.getElementById("editStatus1");
-                    statusSelect.value = status.toLowerCase();
-                }
 
                 function hideEditForm() {
                     document.getElementById("editFormOverlay").style.display = "none";
                     document.body.classList.remove("overlay-active");
-                }
-                function toggleState(courseId) {
-                    var button = document.getElementById("toggleButton" + courseId);
-                    if (button.innerText === "active") {
-                        button.innerText = "Inactive";
-                        button.classList.add("Inactive");
-                    } else {
-                        button.innerText = "active";
-                        button.classList.remove("Inactive");
-                    }
                 }
 
             </script>
