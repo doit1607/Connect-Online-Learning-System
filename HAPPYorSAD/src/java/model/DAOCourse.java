@@ -580,7 +580,56 @@ public class DAOCourse extends DBConnection {
 
     }
 
+    public int getTotalCourse() {
+        String sql = "select count(*) from Course";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+    public List<Course> pagingCourse(int index) {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "      ,[price]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "order by [title]\n"
+                + "offset ? rows fetch next 5 rows only";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 5);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                 Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));
+                course.setManagerId(rs.getInt("manager_id"));
+                course.setMentorId(rs.getInt("mentor_id"));
+                course.setStatus(rs.getString("status"));
+                course.setCourseMajorId(rs.getInt("course_major_id"));
+                course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
 
+                list.add(course);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
