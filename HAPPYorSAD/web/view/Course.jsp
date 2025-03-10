@@ -68,12 +68,12 @@
                                                                         </div>-->
                                     <div class="col-lg-6">
                                         <div class="show-filter add-course-info ">
-                                            <form action="#">
+                                            <form action="ShowAllCourse" method="get">
                                                 <div class="row gx-2 align-items-center">
                                                     <div class="col-md-6 col-item">
                                                         <div class=" search-group">
                                                             <i class="feather-search"></i>
-                                                            <input type="text" class="form-control"
+                                                            <input name="txt" type="text" class="form-control"
                                                                    placeholder="Search our courses">
                                                         </div>
                                                     </div>
