@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Request" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
         <meta charset="utf-8">
@@ -97,7 +98,7 @@
 
             /* Hi?u ?ng m?u xanh cho ???ng n?i */
             .status-group input:checked + label::before {
-                content: "?";
+                content: "✔";
             }
 
             /* N?t Cancel t?ch ri?ng */
@@ -149,7 +150,7 @@
 
             /* Checkmark icon */
             .confirm-btn::before {
-                content: "?"; /* Unicode checkmark */
+                content: "✔"; /* Unicode checkmark */
                 font-size: 14px;
             }
         </style>
@@ -283,7 +284,7 @@
                                         <!-- N?t t?m ki?m -->
                                         <div class="row mt-3">
                                             <div class="col-12 text-center">
-                                                <button type="submit" class="btn btn-primary px-4">? Search</button>
+                                                <button type="submit" class="btn btn-primary px-4">Search</button>
                                             </div>
                                         </div>
                                     </div>
