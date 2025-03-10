@@ -32,9 +32,8 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-
+        <link rel="stylesheet" href="/HAPPYorSAD/css/cssCourse/cssCourse.css"/>
     </head>
-
     <body>
 
         <!-- Main Wrapper -->
@@ -44,26 +43,6 @@
             <%@include file="/../sourcesHome/homeHeader.jsp" %>
             <!-- /Header -->
 
-            <!-- Breadcrumb -->
-            <div class="breadcrumb-bar">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-12">
-                            <div class="breadcrumb-list">
-                                <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                        <li class="breadcrumb-item" aria-current="page">Courses</li>
-                                        <li class="breadcrumb-item active" aria-current="page">All Courses</li>
-                                    </ol>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Breadcrumb -->
-
             <!-- Course -->
             <section class="course-content">
                 <div class="container">
@@ -72,21 +51,21 @@
                             <!-- Filter -->
                             <div class="showing-list">
                                 <div class="row">
-<!--                                    <div class="col-lg-6">
-                                        <div class="d-flex align-items-center">
-                                            <div class="view-icons">
-                                                <a href="course-grid.html" class="grid-view">
-                                                    <i class="feather-grid"></i>
-                                                </a>
-                                                <a href="course-list.html" class="list-view active">
-                                                    <i class="feather-list"></i>
-                                                </a>
-                                            </div>
-                                            <div class="show-result">
-                                                <h4>Showing 1-9 of 50 results</h4>
-                                            </div>
-                                        </div>
-                                    </div>-->
+                                    <!--                                    <div class="col-lg-6">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <div class="view-icons">
+                                                                                    <a href="course-grid.html" class="grid-view">
+                                                                                        <i class="feather-grid"></i>
+                                                                                    </a>
+                                                                                    <a href="course-list.html" class="list-view active">
+                                                                                        <i class="feather-list"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="show-result">
+                                                                                    <h4>Showing 1-9 of 50 results</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>-->
                                     <div class="col-lg-6">
                                         <div class="show-filter add-course-info ">
                                             <form action="#">
@@ -98,16 +77,6 @@
                                                                    placeholder="Search our courses">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-item">
-                                                        <div class="input-block select-form mb-0">
-                                                            <select class="form-select select" name="sellist1">
-                                                                <option>Newly published </option>
-                                                                <option>published 1</option>
-                                                                <option>published 2</option>
-                                                                <option>published 3</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -116,7 +85,7 @@
                             </div>
                             <!-- /Filter -->
                             <div class="row">
-                                <c:forEach items="${sessionScope.listAllCousre}" var="o">
+                                <c:forEach items="${listAllCousre}" var="o">
                                     <div class="col-lg-12 col-md-12 d-flex">
                                         <div class="course-box course-design list-course d-flex">
                                             <div class="product">
@@ -158,111 +127,49 @@
                             <!-- /pagination -->
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="pagination lms-page">
-                                        <li class="page-item prev">
-                                            <a class="page-link" href="javascript:void(0)" tabindex="-1">
-                                                <i class="fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item first-page active">
-                                            <a class="page-link" href="javascript:void(0)">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0)">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0)">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0)">4</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0)">5</a>
-                                        </li>
-                                        <li class="page-item next">
-                                            <a class="page-link" href="javascript:void(0)">
-                                                <i class="fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <!-- Pagination -->
+                                    <div class="pagination">
+                                        <c:if test="${tag > 1}">
+                                            <li class="page-item">
+                                                <a href="ShowAllCourse?index=${tag-1}" class="page-link">Previous</a>
+                                            </li>
+                                        </c:if>
+
+                                        <c:forEach begin="1" end="${endPage}" var="i">
+                                            <a class="page-link ${tag == i?'active':''}" href="ShowAllCourse?index=${i}">${i}</a>
+                                        </c:forEach>
+
+                                        <c:if test="${tag < endPage}">
+                                            <li class="page-item">
+                                                <a href="ShowAllCourse?index=${tag+1}" class="page-link">Next</a>
+                                            </li>
+                                        </c:if>
+                                    </div>
+                                    <!-- /Pagination -->                              
                                 </div>
                             </div>
                             <!-- /pagination -->
 
                         </div>
-                        <div class="col-lg-3 theiaStickySidebar">
-                            <div class="filter-clear">
-                                <div class="clear-filter d-flex align-items-center">
-                                    <h4><i class="feather-filter"></i>Filters</h4>
-                                    <div class="clear-text">
-                                        <p>CLEAR</p>
-                                    </div>
-                                </div>
+                        <div class="col-md-3">
+                            <table class="tablecontent">
+                                <thead>
+                                    <tr>
+                                        <th>Course Major</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${listAllMaojor}" var="o">
+                                        <tr>
+                                            <td><a href="ShowAllCourseByMajorId?Mid=${o.id}">${o.name}</a></td>
+                                        </tr>                                  
+                                    </c:forEach>
 
-                                <!-- Search Filter -->
-                                <div class="card search-filter categories-filter-blk">
-                                    <div class="card-body">
-                                        <div class="filter-widget mb-0">
-                                            <div class="categories-head d-flex align-items-center">
-                                                <h4>Course categories</h4>
-                                                <i class="fas fa-angle-down"></i>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Backend (3)
+                                </tbody>
+                            </table>
 
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> CSS (2)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Frontend (2)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist" checked>
-                                                    <span class="checkmark"></span> General (2)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist" checked>
-                                                    <span class="checkmark"></span> IT & Software (2)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Photography (2)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Programming Language (3)
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label class="custom_check mb-0">
-                                                    <input type="checkbox" name="select_specialist">
-                                                    <span class="checkmark"></span> Technology (2)
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Search Filter -->                                                        
-                          
-                            </div>
                         </div>
+
                     </div>
                 </div>
             </section>
