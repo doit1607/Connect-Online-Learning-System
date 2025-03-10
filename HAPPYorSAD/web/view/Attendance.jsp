@@ -262,6 +262,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                         <c:forEach var="i" begin="1" end="5">
                                                                             <tr>
                                                                                 <td>
+                                                                                    <c:set var="slotFound" value="false"/>
                                                                                     <c:forEach var="slot" items="${slotsByDay[day]}">
                                                                                         <c:if test="${slot.slotNumber == i}">
                                                                                             <c:choose>
@@ -282,8 +283,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                             </c:choose>
                                                                                             <c:set var="slotFound" value="true"/>
                                                                                         </c:if>
-                                                                                    </c:forEach> <c:set var="slotFound" value="false"/>
-
+                                                                                    </c:forEach>
                                                                                     <c:if test="${not slotFound}">
                                                                                         <span class="text-muted">Empty</span>
                                                                                     </c:if>
