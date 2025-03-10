@@ -36,7 +36,7 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
         <style>
-            /* ??nh d?ng hàng tr?ng thái */
+            /* ??nh d?ng h?ng tr?ng th?i */
             .status-group {
                 display: flex;
                 justify-content: space-between;
@@ -46,7 +46,7 @@
                 padding: 0 20px;
             }
 
-            /* Thanh n?i gi?a các tr?ng thái */
+            /* Thanh n?i gi?a c?c tr?ng th?i */
             .status-group::before {
                 content: "";
                 position: absolute;
@@ -58,7 +58,7 @@
                 z-index: 0;
             }
 
-            /* ??nh d?ng t?ng tr?ng thái */
+            /* ??nh d?ng t?ng tr?ng th?i */
             .status-group input {
                 display: none;
             }
@@ -79,7 +79,7 @@
                 font-weight: bold;
             }
 
-            /* ??nh d?ng ch? d??i tr?ng thái */
+            /* ??nh d?ng ch? d??i tr?ng th?i */
             .status-group label::after {
                 content: attr(for);
                 position: absolute;
@@ -88,19 +88,19 @@
                 color: #555;
             }
 
-            /* Khi tr?ng thái ???c ch?n */
+            /* Khi tr?ng th?i ???c ch?n */
             .status-group input:checked + label {
                 background: #28a745;
                 border-color: #28a745;
                 color: white;
             }
 
-            /* Hi?u ?ng màu xanh cho ???ng n?i */
+            /* Hi?u ?ng m?u xanh cho ???ng n?i */
             .status-group input:checked + label::before {
                 content: "?";
             }
 
-            /* Nút Cancel tách riêng */
+            /* N?t Cancel t?ch ri?ng */
             .cancel-status label {
                 display: inline-block;
                 padding: 8px 16px;
@@ -112,7 +112,7 @@
                 transition: background 0.3s, color 0.3s;
             }
 
-            /* Khi ch?n "Cancel", ??i màu n?n */
+            /* Khi ch?n "Cancel", ??i m?u n?n */
             .cancel-status input:checked + label {
                 background: red;
                 color: white;
@@ -241,14 +241,17 @@
                                                     <input type="radio" name="status" value="Open" id="Open" hidden>
                                                     <label for="Open">1</label>
 
+                                                    <input type="radio" name="status" value="Pending" id="Pending" hidden>
+                                                    <label for="Pending">2</label>
+
                                                     <input type="radio" name="status" value="Processing" id="Processing" hidden>
-                                                    <label for="Processing">2</label>
+                                                    <label for="Processing">3</label>
 
                                                     <input type="radio" name="status" value="Complete" id="Complete" hidden>
-                                                    <label for="Complete">3</label>
+                                                    <label for="Complete">4</label>
 
                                                     <input type="radio" name="status" value="Closed" id="Closed" hidden>
-                                                    <label for="Closed">4</label>
+                                                    <label for="Closed">5</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +280,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Nút tìm ki?m -->
+                                        <!-- N?t t?m ki?m -->
                                         <div class="row mt-3">
                                             <div class="col-12 text-center">
                                                 <button type="submit" class="btn btn-primary px-4">? Search</button>
@@ -305,13 +308,12 @@
                                                 <td>
                                                     <div style="display: inline-block; vertical-align: middle;">
                                                         <div style="background-color: ${o.status == 'Open' ? '#28a745' : 
+                                                                                        (o.status == 'Pending' ? '#fd7e14' : 
                                                                                         (o.status == 'Processing' ? '#007bff' : 
                                                                                         (o.status == 'Complete' ? '#6f42c1' :
-                                                                                        (o.status == 'Closed' ? '#dc3545' : '#ffc107')))};
+                                                                                        (o.status == 'Closed' ? '#6c757d' : '#dc3545'))))};
                                                              color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
-                                                            <span style="display: inline-block; vertical-align: middle;">
-                                                                ${o.status}
-                                                            </span>
+                                                            ${o.status}
                                                         </div>
                                                         <c:if test="${o.status == 'Pending'}">
                                                             <form action="ShowAllRequest" method="get" style="display: inline;">
@@ -334,6 +336,16 @@
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const urlParams = new URLSearchParams(window.location.search);
+                                const selectedStatus = urlParams.get("status");
+
+                                if (selectedStatus) {
+                                    document.getElementById(selectedStatus).checked = true;
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
