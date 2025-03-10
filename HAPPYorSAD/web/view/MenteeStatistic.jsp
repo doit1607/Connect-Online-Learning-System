@@ -141,6 +141,10 @@
                         </div>
                         <div class="col-xl-9 col-lg-9">
                             <h1>Static Mentee</h1>
+                             <form action="menteestatistic" method="post" class="d-flex "> 
+                                    <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Mentee Name...">
+                                     <button type="submit" class="btn btn-primary px-4">Search</button>
+                                </form>  
                             <div class="checkout-form">
                                 <div class="table-responsive custom-table">
 
