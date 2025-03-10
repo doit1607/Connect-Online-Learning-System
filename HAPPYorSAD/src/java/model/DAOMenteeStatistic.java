@@ -173,9 +173,56 @@ public class DAOMenteeStatistic extends DBConnection {
     public static void main(String[] args) {
         DAOMenteeStatistic dao = new DAOMenteeStatistic();
 
-        List<Mentee> listMentee1 = dao.pagingMentee(2);
+        List<Mentee> listMentee1 = dao.searchMenteeByName("ja");
         for (Mentee mentee : listMentee1) {
             System.out.println(mentee);
         }
+    }
+
+    public List<Mentee> searchMenteeByName(String keyword) {
+
+        List<Mentee> list = new ArrayList<>();
+        String query = "SELECT \n"
+                + "    m.id,\n"
+                + "    m.user_id,\n"
+                + "    m.name,\n"
+                + "    m.email,\n"
+                + "    u.username,\n"
+                + "    m.image,\n"
+                + "    SUM(COALESCE(r.total_slot * 2.5, 0)) AS total_hours,\n"
+                + "    COUNT(DISTINCT r.course_id) AS total_courses\n"
+                + "FROM \n"
+                + "    Mentee m\n"
+                + "JOIN \n"
+                + "    Users u ON m.user_id = u.id\n"
+                + "LEFT JOIN \n"
+                + "    Request r ON m.id = r.mentee_id\n"
+                + "WHERE \n"
+                + "    LOWER(name) LIKE LOWER(?)\n"
+                + "GROUP BY \n"
+                + "    m.id, m.user_id, m.name, m.email, u.username, m.image\n"
+                + "ORDER BY \n"
+                + "    m.name ASC;  ";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Mentee mentee = new Mentee();
+                mentee.setId(rs.getInt("id"));
+                mentee.setName(rs.getString("name"));
+                mentee.setEmail(rs.getString("email"));
+                mentee.setUserName(rs.getString("username"));
+                mentee.setImage(rs.getString("image"));
+                mentee.setTotalHours(rs.getDouble("total_hours"));
+                mentee.setTotalCourses(rs.getInt("total_courses"));
+                list.add(mentee);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
     }
 }
