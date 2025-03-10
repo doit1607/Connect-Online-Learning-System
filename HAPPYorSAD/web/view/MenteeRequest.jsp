@@ -8,40 +8,21 @@
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/student-tickets.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:22 GMT -->
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <title>Dreams LMS</title>
-
-        <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-
-        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
-
-        <!-- FontAwesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!-- Feather Icons CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
-
-        <!-- BoxIcons CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
-
-        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-
-        <!-- Dropzone CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
-
-        <!-- Owl Carousel CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
-
-        <!-- Slick CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
 
@@ -55,95 +36,94 @@
         <!-- Theme Settings JS -->
         <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
-    </head>
-    <style>
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 1000;
-        }
+        <style>
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: red;
+                color: white;
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                z-index: 1000;
+            }
 
-        .notification.show {
-            opacity: 1;
-        }
+            .notification.show {
+                opacity: 1;
+            }
 
-        .notification p {
-            margin: 0;
-        }
-        .updatebtn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
+            .notification p {
+                margin: 0;
+            }
+            .updatebtn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                font-size: 14px;
+                font-weight: bold;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
 
-        .updatebtn:hover {
-            background-color: #0056b3;
-        }
+            .updatebtn:hover {
+                background-color: #0056b3;
+            }
 
-        .updatebtn i {
-            text-decoration: none;
-        }
-        .viewbtn {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
+            .updatebtn i {
+                text-decoration: none;
+            }
+            .viewbtn {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                font-size: 14px;
+                font-weight: bold;
+                text-decoration: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
 
-        .viewbtn:hover {
-            background-color: #1e7e34;
-        }
+            .viewbtn:hover {
+                background-color: #1e7e34;
+            }
 
-        .viewbtn i {
-            text-decoration: none;
-        }
-
-
-    </style>
-    <c:if test="${not empty sessionScope.msg}">
+            .viewbtn i {
+                text-decoration: none;
+            }
+        </style>
+        <c:if test="${not empty sessionScope.msg}">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    showNotification("${sessionScope.msg}");
+                });
+            </script>
+            <c:remove var="msg" scope="session"/> 
+        </c:if>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                showNotification("${sessionScope.msg}");
-            });
+            function showNotification(message) {
+                const notification = document.getElementById("notification");
+                const notificationMessage = document.getElementById("notification-message");
+
+                notificationMessage.textContent = message;
+                notification.classList.add("show");
+
+
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 3000);
+            }
         </script>
-        <c:remove var="msg" scope="session"/> 
-    </c:if>
-    <script>
-        function showNotification(message) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
+    </head>
 
-            notificationMessage.textContent = message;
-            notification.classList.add("show");
-
-
-            setTimeout(() => {
-                notification.classList.remove("show");
-            }, 3000);
-        }
-    </script>
     <body>
         <div id="notification" class="notification">
             <p id="notification-message"></p>
@@ -154,9 +134,7 @@
         <div class="page-content">
             <div class="container">
                 <div class="row">
-
                     <!-- sidebar -->
-
                     <!-- Breadcrumb -->
                     <div class="breadcrumb-bar breadcrumb-bar-info">
                         <div class="container">
@@ -218,7 +196,6 @@
                     <div class="col-md-9"> 
                         <div class="formcontent">
                             <div>  
-
                                 <table class="tablecontent">
                                     <thead>
                                         <tr>

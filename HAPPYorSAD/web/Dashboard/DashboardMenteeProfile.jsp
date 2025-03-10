@@ -85,6 +85,11 @@
                                                 <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Attendance
+                                            </a>
+                                        </li>
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications

@@ -21,6 +21,7 @@ public class Mentee {
     private LocalDateTime createdAt;
     private int total_Mentee;
     private String image;
+    
     public Mentee() {
     }
 
@@ -36,6 +37,11 @@ public class Mentee {
         this.image = image;
     }
 
+    public Mentee(String name, String email, String image) {
+        this.name = name;
+        this.email = email;
+        this.image = image;
+    }
     public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt, String image) {
         this.id = id;
         this.user_id = user_id;

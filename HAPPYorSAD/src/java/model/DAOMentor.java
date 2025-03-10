@@ -71,6 +71,28 @@ public class DAOMentor extends DBConnection {
         return list;
     }
     
+        public Mentor getMentorBySlotId(String slotDate, int slotNumberId) {
+        String sql = "SELECT m.name, m.image, m.email \n"
+                + "FROM Slot sl \n"
+                + "JOIN Mentor m ON m.id = sl.mentor_id \n"
+                + "WHERE sl.slot_date = ? and sl.slot_number_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, slotDate);
+            stmt.setInt(2, slotNumberId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Mentor(
+                            rs.getString("name"),
+                            rs.getString("image"),
+                            rs.getString("email")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý lỗi hoặc log lỗi
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
     public int getTotalMentors(String search) {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM Mentor WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) OR LOWER(expertise) LIKE LOWER(?)";

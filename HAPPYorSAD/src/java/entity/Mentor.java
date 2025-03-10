@@ -59,6 +59,14 @@ public class Mentor {
     public Mentor() {
     }
 
+    public Mentor(String name, String email, String image) {
+        this.name = name;
+        this.email = email;
+        this.image = image;
+    }
+
+    
+    
     public Mentor(String name, String email, double rating, String bio, String image) {
         this.name = name;
         this.email = email;

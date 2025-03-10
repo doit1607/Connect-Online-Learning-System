@@ -144,6 +144,18 @@
         <servlet-name>fetchSlot</servlet-name>
         <servlet-class>controller.fetchSlot</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Attendance</servlet-name>
+        <servlet-class>controller.Attendance</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CompleteAllSlotRequest</servlet-name>
+        <servlet-class>controller.CompleteRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceMentee</servlet-name>
+        <servlet-class>controller.AttendanceMentee</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -287,6 +299,18 @@
     <servlet-mapping>
         <servlet-name>fetchSlot</servlet-name>
         <url-pattern>/fetchSlot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Attendance</servlet-name>
+        <url-pattern>/Attendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompleteAllSlotRequest</servlet-name>
+        <url-pattern>/CompleteAllSlotRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceMentee</servlet-name>
+        <url-pattern>/AttendanceMentee</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

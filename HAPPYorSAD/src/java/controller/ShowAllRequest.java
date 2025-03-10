@@ -12,11 +12,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DAORequest;
 import model.DAOmentee;
+import model.DAOslot;
 import model.TransactionDAO;
+import entity.Slot;
 
 /**
  *
@@ -39,6 +44,7 @@ public class ShowAllRequest extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         DAORequest dao = new DAORequest();
+        DAOslot daoSl = new DAOslot();
 
         TransactionDAO daotran = new TransactionDAO();
         DAOmentee daomentee = new DAOmentee();
@@ -54,14 +60,26 @@ public class ShowAllRequest extends HttpServlet {
             Request newrequest = dao.getRequestById(requestId);
             int menteeid = newrequest.getMenteeId();
             int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+            try {
+                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId); // Lấy slotId từ requestId
+                for (entity.Slot slot : slots) {
+                    System.out.println(slot);
+                    int slotId = slot.getId(); // Lấy slotId từ đối tượng Slot
+                    daoSl.updateSlotStatus(slotId, "Studying");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
             double totalprice = newrequest.gettotalprice();
             dao.updateRequestStatus(requestId, "Processing");
+
             daotran.updateHoldAfterReject(usernamementee, totalprice);
             daotran.withdrawToWallet(usernamementee, totalprice);
-            daotran.depositToWallet((String)session.getAttribute("usernameUser"), totalprice);
-            daotran.createTransaction((String)session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
-            double balance = daotran.getBalance((String)session.getAttribute("usernameUser"));
+            daotran.depositToWallet((String) session.getAttribute("usernameUser"), totalprice);
+            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
+            double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
             session.setAttribute("walletBalance", balance);
         }
 

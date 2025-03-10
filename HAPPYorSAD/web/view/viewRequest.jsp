@@ -356,8 +356,77 @@
                                                 </div>
                                             </div>
                                         </c:forEach>
+
                                         <h3 style="margin-bottom: 18px">Schedule</h3>
-                                        <i>Updating</i>
+                                        <div id="schedule-table-${request.id}" class="schedule-container">
+                                            <p>Loading schedule...</p>
+                                            <!-- Debug -->
+                                            <script>console.log("JSP Generated Schedule ID: schedule-table-${request.id}");</script>
+                                        </div>
+
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const modals = document.querySelectorAll('.modal[id^="acceptAppointmentModal_"]');
+                                                if (modals.length === 0) {
+                                                    console.warn("No modals found with ID pattern 'acceptAppointmentModal_'");
+                                                    return;
+                                                }
+                                                modals.forEach(modal => {
+                                                    const requestIdMatch = modal.id.match(/acceptAppointmentModal_(\d+)/);
+                                                    const requestId = requestIdMatch ? requestIdMatch[1] : null;
+                                                    if (!requestId) {
+                                                        console.error(`Could not extract requestId from modal ID: ${modal.id}`);
+                                                        return;
+                                                    }
+                                                    modal.addEventListener('shown.bs.modal', function () {
+                                                        const safeRequestId = requestId; // Avoid any potential redefinition
+                                                        const fullId = 'schedule-table-' + safeRequestId; // Explicit concatenation
+                                                        const scheduleContainer = document.getElementById(fullId);
+
+                                                        scheduleContainer.innerHTML = '<p>Loading schedule...</p>';
+                                                        const fetchUrl = `fetchSlot?requestId=${request.id}`;
+                                                        console.log("Fetching URL:", fetchUrl);
+
+                                                        fetch(fetchUrl)
+                                                                .then(response => {
+                                                                    console.log(`Fetch response status for requestId ${safeRequestId}:`, response.status);
+                                                                    if (!response.ok) {
+                                                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                                                    }
+                                                                    return response.text();
+                                                                })
+                                                                .then(data => {
+                                                                    console.log(`Schedule data loaded for requestId ${safeRequestId}`);
+                                                                    scheduleContainer.innerHTML = data;
+                                                                    scheduleContainer.dataset.loaded = "true";
+                                                                })
+                                                                .catch(error => {
+                                                                    console.error(`Error loading schedule for requestId ${safeRequestId}:`, error);
+                                                                    scheduleContainer.innerHTML = '<p>Failed to load schedule. Please try again later.</p>';
+                                                                });
+                                                    });
+                                                    modal.addEventListener('hidden.bs.modal', function () {
+                                                        const scheduleContainer = document.getElementById('schedule-table-' + requestId);
+                                                        if (scheduleContainer) {
+                                                            scheduleContainer.dataset.loaded = "false";
+                                                            console.log(`Reset loaded flag for requestId ${requestId}`);
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+
+
+                                        <style>
+                                            .schedule-container {
+                                                min-height: 100px;
+                                                padding: 15px;
+                                                background: #f8f9fa;
+                                                border-radius: 5px;
+                                            }
+                                        </style>
+
                                     </div>
                                     <div class="modal-footer">
                                         <ul class="request-action">
@@ -375,7 +444,7 @@
                                                     <li>
                                                         <form action="viewRequest" method="POST">
                                                             <input type="hidden" name="id" value="${request.id}">
-                                                            <input type="hidden" name="status" value="Processing">
+                                                            <input type="hidden" name="status" value="Pending">
                                                             <button type="button" class="btn btn-success" onclick="confirmAccept(this)">
                                                                 <i class="fa-solid fa-check"></i> Accept
                                                             </button>
@@ -398,6 +467,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                     </c:forEach>
 
                     <nav>
@@ -410,104 +481,138 @@
                         </ul>
 
                     </nav>
+
+                    <!-- Modal xác nhận hoàn thành request -->
+                    <div class="modal fade" id="completeRequestModal" tabindex="-1" aria-labelledby="completeRequestModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="completeRequestModalLabel">Xác nhận hoàn thành Request</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <c:if test="${not empty selectedRequest}">
+                                        <div class="patinet-information">
+                                            <img src="${selectedRequest.getMentee().getAvatarPath()}" alt="img" class="rounded-circle me-3" width="40" height="40">
+                                            <div class="patient-info">
+                                                <p>Mentee</p>
+                                                <h6>${selectedRequest.getMentee().getFullname()}</h6>
+                                            </div>
+                                        </div>
+                                        <h3 class="mt-3">${selectedRequest.getTitle()}</h3>
+                                        <p><strong>Start Date:</strong> ${selectedRequest.getStartDate()}</p>
+                                        <p><strong>End Date:</strong> ${selectedRequest.getEndDate()}</p>
+                                        <p><strong>Content:</strong> ${selectedRequest.getContent()}</p>
+                                        <p>Tất cả các slot của request này đã được đánh dấu "Present". Bạn có muốn xác nhận hoàn thành không?</p>
+                                    </c:if>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <form action="/HAPPYorSAD/CompleteAllSlotRequest" method="POST" style="display:inline;">
+                                        <input type="hidden" name="requestId" value="${param.requestId}">
+                                        <button type="submit" class="btn btn-success">Complete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>  
             </div>
 
         </div>
 
 
+
+
+
         <%@include file="../sourcesHome/homeFooter.jsp" %>    
-
-
-        <!-- /Footer -->
-
-        <!-- /Main Wrapper -->
-
-        <!-- jQuery -->
         <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
         <script src="assets/js/bootstrap.bundle.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Select2 JS -->
         <script src="assets/plugins/select2/js/select2.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Ckeditor JS -->
         <script src="assets/js/ckeditor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Dropzone JS -->
         <script src="assets/plugins/dropzone/dropzone.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Sticky Sidebar JS -->
         <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
         <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
-        <!-- Custom JS -->
         <script src="assets/js/script.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
-
         <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+
         <script>
-                                                                function confirmAccept(button) {
-                                                                    if (confirm("Are you sure you want to accept?")) {
-                                                                        let form = button.closest("form");
-                                                                        form.submit();
-                                                                    }
-                                                                }
-
-                                                                function confirmReject(button) {
-                                                                    let reason = prompt("Please enter the reason for rejection:");
-                                                                    if (reason) {
-                                                                        // Tìm form cha của nút Reject
-                                                                        let form = button.closest("form");
-
-                                                                        // Thêm input ẩn để gửi lý do reject
-                                                                        let input = document.createElement("input");
-                                                                        input.type = "hidden";
-                                                                        input.name = "reject_reason";
-                                                                        input.value = reason;
-                                                                        form.appendChild(input);
-
-                                                                        // Gửi form
-                                                                        form.submit();
-                                                                    }
-                                                                }
-                                                                document.getElementById("toggleFilter").addEventListener("click", function () {
-                                                                    var filterContainer = document.getElementById("filterContainer");
-                                                                    var icon = this.querySelector("i");
-
-                                                                    if (filterContainer.style.display === "none") {
-                                                                        filterContainer.style.display = "block";
-                                                                        icon.classList.remove("fa-chevron-down");
-                                                                        icon.classList.add("fa-chevron-up");
-                                                                    } else {
-                                                                        filterContainer.style.display = "none";
-                                                                        icon.classList.remove("fa-chevron-up");
-                                                                        icon.classList.add("fa-chevron-down");
-                                                                    }
-                                                                });
                                                                 document.addEventListener("DOMContentLoaded", function () {
-                                                                    var filterContainer = document.getElementById("filterContainer");
-                                                                    var toggleFilter = document.getElementById("toggleFilter");
+                                                                    // Kiểm tra URL có chứa requestId không
+                                                                    const urlParams = new URLSearchParams(window.location.search);
+                                                                    const requestId = urlParams.get("requestId");
 
-                                                                    // Kiểm tra localStorage để quyết định có hiển thị bộ lọc không
-                                                                    if (localStorage.getItem("filterVisible") === "true") {
-                                                                        filterContainer.style.display = "block";
-                                                                        toggleFilter.innerHTML = "&#9650;"; // Mũi tên hướng lên
+                                                                    if (requestId) {
+                                                                        // Tự động mở modal completeRequestModal nếu requestId tồn tại
+                                                                        const modal = new bootstrap.Modal(document.getElementById("completeRequestModal"));
+                                                                        modal.show();
                                                                     }
-
-                                                                    // Khi nhấn vào toggle, ẩn/hiện bộ lọc và lưu trạng thái
-                                                                    toggleFilter.addEventListener("click", function () {
-                                                                        if (filterContainer.style.display === "none") {
-                                                                            filterContainer.style.display = "block";
-                                                                            toggleFilter.innerHTML = "&#9650;";
-                                                                            localStorage.setItem("filterVisible", "true");
-                                                                        } else {
-                                                                            filterContainer.style.display = "none";
-                                                                            toggleFilter.innerHTML = "&#9660;";
-                                                                            localStorage.setItem("filterVisible", "false");
-                                                                        }
-                                                                    });
                                                                 });
         </script>
+        <script>
+            function confirmAccept(button) {
+                if (confirm("Are you sure you want to accept?")) {
+                    let form = button.closest("form");
+                    form.submit();
+                }
+            }
+
+            function confirmReject(button) {
+                let reason = prompt("Please enter the reason for rejection:");
+                if (reason) {
+                    // Tìm form cha của nút Reject
+                    let form = button.closest("form");
+                    // Thêm input ẩn để gửi lý do reject
+                    let input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "reject_reason";
+                    input.value = reason;
+                    form.appendChild(input);
+                    // Gửi form
+                    form.submit();
+                }
+            }
+            document.getElementById("toggleFilter").addEventListener("click", function () {
+                var filterContainer = document.getElementById("filterContainer");
+                var icon = this.querySelector("i");
+                if (filterContainer.style.display === "none") {
+                    filterContainer.style.display = "block";
+                    icon.classList.remove("fa-chevron-down");
+                    icon.classList.add("fa-chevron-up");
+                } else {
+                    filterContainer.style.display = "none";
+                    icon.classList.remove("fa-chevron-up");
+                    icon.classList.add("fa-chevron-down");
+                }
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                var filterContainer = document.getElementById("filterContainer");
+                var toggleFilter = document.getElementById("toggleFilter");
+                // Kiểm tra localStorage để quyết định có hiển thị bộ lọc không
+                if (localStorage.getItem("filterVisible") === "true") {
+                    filterContainer.style.display = "block";
+                    toggleFilter.innerHTML = "&#9650;"; // Mũi tên hướng lên
+                }
+
+                // Khi nhấn vào toggle, ẩn/hiện bộ lọc và lưu trạng thái
+                toggleFilter.addEventListener("click", function () {
+                    if (filterContainer.style.display === "none") {
+                        filterContainer.style.display = "block";
+                        toggleFilter.innerHTML = "&#9650;";
+                        localStorage.setItem("filterVisible", "true");
+                    } else {
+                        filterContainer.style.display = "none";
+                        toggleFilter.innerHTML = "&#9660;";
+                        localStorage.setItem("filterVisible", "false");
+                    }
+                });
+            });
+
+
+        </script>
+
+
+
+
     </body>
 </html>
