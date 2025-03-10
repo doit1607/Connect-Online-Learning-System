@@ -6,34 +6,59 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : 8 Feb 2025, 3:47:39 pm
     Author     : Acer
 */
-.course-container {
+.pagination {
     display: flex;
-    flex-wrap: wrap;
-
-}
-
-.course-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background: linear-gradient(to right, #fadede, #e5f4fd)
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
 }
 
-.course-card img {
-    width: 80%;
-    height: 100%;
-    margin-left: 40px;
-    object-fit: cover;
+.pagination a {
+    color: rgb(217, 102, 137);
+    padding: 8px 16px;
+    margin: 0 4px;
+    text-decoration: none;
+    border: 1px solid rgb(217, 102, 137);
+    border-radius: 4px;
+    transition: background 0.3s;
 }
-.course-card .card-body {
-    flex-grow: 1; /* Giúp nội dung kéo giãn chiều cao bằng nhau */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+
+.pagination a.active {
+    background: rgb(217, 102, 137);
+    color: #fff;
+    border-color: rgb(217, 102, 137);
 }
-.STT {
-    margin: 10px;
-    background: linear-gradient(to right, #fadede, #e5f4fd)
+
+.pagination a:hover {
+    background: #0056b3;
+    color: #fff;
+    border-color: #0056b3;
+}
+.tablecontent {
+    width: 100%;
+
+    margin-top: 20px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.tablecontent thead tr {
+    background-color: #f36980;  /*Header màu ?? nh?t */
+    color: white;
+    padding-right: 50px;
+}
+
+.tablecontent th, .tablecontent td {
+    border: 1px solid #ddd;  /*??ng vi?n m?ng màu xám nh?t*/
+    padding: 10px;
+}
+
+.tablecontent tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Hàng ch?n có màu n?n nh?t */
+}
+
+.tablecontent tbody tr:hover {
+    background-color: #f1f1f1;  /*Hover làm n?i b?t */
 }
 
 
