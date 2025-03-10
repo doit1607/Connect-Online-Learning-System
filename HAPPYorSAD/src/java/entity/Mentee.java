@@ -15,16 +15,29 @@ public class Mentee {
     private int id;
     private int user_id;
     private String name;
+    private String userName;
     private int is_deleted;
     private String email;
     private String goals;
     private LocalDateTime createdAt;
     private int total_Mentee;
     private String image;
+    private double totalHours;
+    private int totalCourses;
     
     public Mentee() {
     }
 
+    public Mentee(int id, String name, String userName, String email, String image, double totalHours, int totalCourses) {
+        this.id = id;
+        this.name = name;
+        this.userName = userName;
+        this.email = email;
+        this.image = image;
+        this.totalHours = totalHours;
+        this.totalCourses = totalCourses;
+    }
+    
     public Mentee(int id, int user_id, String name, int is_deleted, String email, String goals, LocalDateTime createdAt, int total_Mentee, String image) {
         this.id = id;
         this.user_id = user_id;
@@ -140,11 +153,34 @@ public class Mentee {
     public void setImage(String image) {
         this.image = image;
     }
-    
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public double getTotalHours() {
+        return totalHours;
+    }
+
+    public void setTotalHours(double totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    public int getTotalCourses() {
+        return totalCourses;
+    }
+
+    public void setTotalCourses(int totalCourses) {
+        this.totalCourses = totalCourses;
+    }
+
     @Override
     public String toString() {
-        return "Mentee{" + "id=" + id + ", user_id=" + user_id + ", name=" + name + ", is_deleted=" + is_deleted + ", email=" + email + ", goals=" + goals + ", createdAt=" + createdAt + ", total_Mentee=" + total_Mentee + '}';
+        return "Mentee{" + "id=" + id + ", user_id=" + user_id + ", name=" + name + ", userName=" + userName + ", is_deleted=" + is_deleted + ", email=" + email + ", goals=" + goals + ", createdAt=" + createdAt + ", total_Mentee=" + total_Mentee + ", image=" + image + ", totalHours=" + totalHours + ", totalCourses=" + totalCourses + '}';
     }
-    
-    
+            
 }
