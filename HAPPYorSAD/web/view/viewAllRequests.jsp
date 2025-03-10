@@ -1,7 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Request" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -37,7 +36,7 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
         <style>
-            /* Định dạng hàng trạng thái */
+            /* ??nh d?ng h�ng tr?ng th�i */
             .status-group {
                 display: flex;
                 justify-content: space-between;
@@ -47,7 +46,7 @@
                 padding: 0 20px;
             }
 
-            /* Thanh nối giữa các trạng thái */
+            /* Thanh n?i gi?a c�c tr?ng th�i */
             .status-group::before {
                 content: "";
                 position: absolute;
@@ -59,7 +58,7 @@
                 z-index: 0;
             }
 
-            /* Định dạng từng trạng thái */
+            /* ??nh d?ng t?ng tr?ng th�i */
             .status-group input {
                 display: none;
             }
@@ -80,7 +79,7 @@
                 font-weight: bold;
             }
 
-            /* Định dạng chữ dưới trạng thái */
+            /* ??nh d?ng ch? d??i tr?ng th�i */
             .status-group label::after {
                 content: attr(for);
                 position: absolute;
@@ -89,19 +88,19 @@
                 color: #555;
             }
 
-            /* Khi trạng thái được chọn */
+            /* Khi tr?ng th�i ???c ch?n */
             .status-group input:checked + label {
                 background: #28a745;
                 border-color: #28a745;
                 color: white;
             }
 
-            /* Hiệu ứng màu xanh cho đường nối */
+            /* Hi?u ?ng m�u xanh cho ???ng n?i */
             .status-group input:checked + label::before {
-                content: "✔";
+                content: "?";
             }
 
-            /* Nút Cancel tách riêng */
+            /* N�t Cancel t�ch ri�ng */
             .cancel-status label {
                 display: inline-block;
                 padding: 8px 16px;
@@ -113,7 +112,7 @@
                 transition: background 0.3s, color 0.3s;
             }
 
-            /* Khi chọn "Cancel", đổi màu nền */
+            /* Khi ch?n "Cancel", ??i m�u n?n */
             .cancel-status input:checked + label {
                 background: red;
                 color: white;
@@ -150,7 +149,7 @@
 
             /* Checkmark icon */
             .confirm-btn::before {
-                content: "✓"; /* Unicode checkmark */
+                content: "?"; /* Unicode checkmark */
                 font-size: 14px;
             }
         </style>
@@ -278,10 +277,10 @@
                                             </div>
                                         </div>
 
-                                        <!-- Nút tìm kiếm -->
+                                        <!-- N�t t�m ki?m -->
                                         <div class="row mt-3">
                                             <div class="col-12 text-center">
-                                                <button type="submit" class="btn btn-primary px-4">🔎 Search</button>
+                                                <button type="submit" class="btn btn-primary px-4">? Search</button>
                                             </div>
                                         </div>
                                     </div>
