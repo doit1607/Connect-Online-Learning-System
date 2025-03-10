@@ -172,6 +172,36 @@ public class DAOMentor extends DBConnection {
         return name;
     }
     
+    public int getMentorUserid(int mentorId) {
+        String sql = "SELECT user_id FROM Mentor WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, mentorId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public String getMentorUsername(int id) {
+        String sql = "SELECT username FROM Users WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<Mentor> getMentorsSuggestion() {
         List<Mentor> list = new ArrayList<>();
         String sql = "SELECT \n"
