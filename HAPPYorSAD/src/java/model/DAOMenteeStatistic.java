@@ -84,23 +84,88 @@ public class DAOMenteeStatistic extends DBConnection {
 
     public List<Mentee> pagingMentee(int index) {
         List<Mentee> list = new ArrayList<>();
-        String sql = "select * from Mentee\n"
-                + "order by [name]\n"
-                + "offset ? rows fetch next 2 rows only";
+        String sql = "SELECT \n"
+                + "    m.id,\n"
+                + "    m.user_id,\n"
+                + "    m.name,\n"
+                + "    m.email,\n"
+                + "    u.username,\n"
+                + "    m.image,\n"
+                + "    SUM(COALESCE(r.total_slot * 2.5, 0)) AS total_hours,\n"
+                + "    COUNT(DISTINCT r.course_id) AS total_courses\n"
+                + "FROM \n"
+                + "    Mentee m\n"
+                + "JOIN \n"
+                + "    Users u ON m.user_id = u.id\n"
+                + "LEFT JOIN \n"
+                + "    Request r ON m.id = r.mentee_id\n"
+                + "WHERE \n"
+                + "    m.is_deleted = 0 OR m.is_deleted IS NULL\n"
+                + "GROUP BY \n"
+                + "    m.id, m.user_id, m.name, m.email, u.username, m.image\n"
+                + "ORDER BY \n"
+                + "    m.name ASC\n"
+                + "OFFSET ? ROWS FETCH NEXT 7 ROWS ONLY";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, (index - 1) * 2);
+            pre.setInt(1, (index - 1) * 7);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                list.add(new Mentee(rs.getInt(1),
-                        rs.getInt(2),
-                        rs.getString(3),
-                        rs.getInt(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getTimestamp(7).toLocalDateTime()));
+                Mentee mentee = new Mentee();
+                mentee.setId(rs.getInt("id"));
+                mentee.setName(rs.getString("name"));
+                mentee.setEmail(rs.getString("email"));
+                mentee.setUserName(rs.getString("username"));
+                mentee.setImage(rs.getString("image"));
+                mentee.setTotalHours(rs.getDouble("total_hours"));
+                mentee.setTotalCourses(rs.getInt("total_courses"));
+                list.add(mentee);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Mentee> getMenteeInfo() {
+        ArrayList<Mentee> list = new ArrayList<>();
+        String sql = "SELECT \n"
+                + "    m.id,\n"
+                + "    m.user_id,\n"
+                + "    m.name,\n"
+                + "    m.email,\n"
+                + "    u.username,\n"
+                + "    m.image,\n"
+                + "    SUM(COALESCE(r.total_slot * 2.5, 0)) AS total_hours,\n"
+                + "    COUNT(DISTINCT r.course_id) AS total_courses\n"
+                + "FROM \n"
+                + "    Mentee m\n"
+                + "JOIN \n"
+                + "    Users u ON m.user_id = u.id\n"
+                + "LEFT JOIN \n"
+                + "    Request r ON m.id = r.mentee_id\n"
+                + "WHERE \n"
+                + "    m.is_deleted = 0 OR m.is_deleted IS NULL\n"
+                + "GROUP BY \n"
+                + "    m.id, m.user_id, m.name, m.email, u.username, m.image\n"
+                + "ORDER BY \n"
+                + "    m.name ASC;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Mentee mentee = new Mentee();
+                mentee.setId(rs.getInt("id"));
+                mentee.setName(rs.getString("name"));
+                mentee.setEmail(rs.getString("email"));
+                mentee.setUserName(rs.getString("username"));
+                mentee.setImage(rs.getString("image"));
+                mentee.setTotalHours(rs.getDouble("total_hours"));
+                mentee.setTotalCourses(rs.getInt("total_courses"));
+                list.add(mentee);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -108,7 +173,7 @@ public class DAOMenteeStatistic extends DBConnection {
     public static void main(String[] args) {
         DAOMenteeStatistic dao = new DAOMenteeStatistic();
 
-        List<Mentee> listMentee1 = dao.getCount();
+        List<Mentee> listMentee1 = dao.pagingMentee(2);
         for (Mentee mentee : listMentee1) {
             System.out.println(mentee);
         }
