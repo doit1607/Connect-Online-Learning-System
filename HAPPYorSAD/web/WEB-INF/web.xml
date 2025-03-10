@@ -160,6 +160,14 @@
         <servlet-name>ShowAllCourseByMajorId</servlet-name>
         <servlet-class>controller.ShowAllCourseByMajorId</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailCourseManager</servlet-name>
+        <servlet-class>controller.DetailCourseManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchCourse</servlet-name>
+        <servlet-class>controller.SearchCourse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -319,6 +327,14 @@
     <servlet-mapping>
         <servlet-name>ShowAllCourseByMajorId</servlet-name>
         <url-pattern>/ShowAllCourseByMajorId</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailCourseManager</servlet-name>
+        <url-pattern>/DetailCourseManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCourse</servlet-name>
+        <url-pattern>/SearchCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
