@@ -169,7 +169,7 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td>₫<fmt:formatNumber value="${i.amount}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${i.amount}" pattern="#,###"/>₫</td>
                                                         <td><span class="badge bg-success">${i.status}</span></td>
                                                     </tr>
                                                 </c:forEach>
