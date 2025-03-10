@@ -366,9 +366,13 @@ public class DAORequest extends DBConnection {
     // Hien thi cho manager tat ca request cua Mentee (Dung)
     public List<Request> showAllRequest() {
         List<Request> listReq = new ArrayList<>();
-        String sql = "SELECT r.id, u.username, r.title, r.totalPrice, r.status FROM Request r \n"
+        String sql = "SELECT r.id, u.username, r.title AS request_title, r.totalPrice, r.status, "
+                + "c.title AS course_title, m2.name AS mentor_name "
+                + "FROM Request r \n"
                 + "JOIN Mentee m ON r.mentee_id = m.id\n"
                 + "JOIN Users u ON m.user_id = u.id\n"
+                + "JOIN Course c ON r.course_id = c.id\n"
+                + "JOIN Mentor m2 ON r.mentor_id = m2.user_id\n"
                 + "WHERE r.status != 'Draft'\n"
                 + "ORDER BY r.created_at DESC";
         try {
@@ -378,12 +382,15 @@ public class DAORequest extends DBConnection {
                 Request request = new Request();
                 request.setId(rs.getInt("id"));
                 request.setUserMentee(rs.getString("username"));
-                request.setTitle(rs.getString("title"));
+                request.setTitle(rs.getString("request_title"));
                 request.setTotalprice(rs.getDouble("totalPrice"));
                 request.setStatus(rs.getString("status"));
+                request.setCoursename(rs.getString("course_title"));
+                request.setMentorname(rs.getString("mentor_name"));
                 listReq.add(request);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return listReq;
     }
@@ -391,10 +398,13 @@ public class DAORequest extends DBConnection {
     // Dung de tim kiem va loc (Dung)
     public List<Request> getAllRequests(String search, String status, LocalDate startDate, LocalDate endDate) {
         List<Request> listRep = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT r.id, u.username, r.title, r.totalPrice, r.status "
+        StringBuilder sql = new StringBuilder("SELECT r.id, r.content, r.total_slot ,u.username, r.title AS request_title, r.totalPrice, r.status, "
+                + "c.title AS course_title, m2.name AS mentor_name "
                 + "FROM Request r "
                 + "JOIN Mentee m ON r.mentee_id = m.id "
                 + "JOIN Users u ON m.user_id = u.id "
+                + "JOIN Course c ON r.course_id = c.id "
+                + "JOIN Mentor m2 ON r.mentor_id = m2.user_id "
                 + "WHERE 1=1");
 
         if (search != null && !search.isEmpty()) {
@@ -431,9 +441,13 @@ public class DAORequest extends DBConnection {
                     Request request = new Request();
                     request.setId(rs.getInt("id"));
                     request.setUserMentee(rs.getString("username"));
-                    request.setTitle(rs.getString("title"));
+                    request.setTitle(rs.getString("request_title")); 
                     request.setTotalprice(rs.getDouble("totalPrice"));
                     request.setStatus(rs.getString("status"));
+                    request.setCoursename(rs.getString("course_title")); 
+                    request.setMentorname(rs.getString("mentor_name"));  
+                    request.setContent(rs.getString("content"));
+                    request.setTotalSlot(rs.getInt("total_slot"));
                     listRep.add(request);
                 }
             }
@@ -545,7 +559,7 @@ public class DAORequest extends DBConnection {
 
         return requestData;
     }
-    
+
 //    // Request cua mentor cho manager
 //    public List<MentorSchedule> getMentorSchedule() {
 //        List<MentorSchedule> schedule = new ArrayList<>();
@@ -569,7 +583,6 @@ public class DAORequest extends DBConnection {
 //        }
 //        return schedule;
 //    }
-
     // update trang thai lich day cho Mentor
     public boolean updateSchedule(int id, String status) {
         String sql = "update Mentor_Schedule set status = ? where schedule_id = ?";
@@ -583,7 +596,7 @@ public class DAORequest extends DBConnection {
         }
         return false;
     }
-    
+
     // Reject schedule
     public void rejectSchedule(String username, String reason) {
         String sql = "UPDATE Mentor_Schedule SET status = 'Rejected' WHERE schedule_id = ?";
@@ -596,7 +609,7 @@ public class DAORequest extends DBConnection {
             e.printStackTrace();
         }
     }
-    
+
 //    // thong bao cho Mentor sau khi Schedule bi reject
 //    public void saveNotification(String username, String message) {
 //        String sql = "INSERT INTO NotificationForCV (username, message, created_at) VALUES (?, ?, GETDATE())";
@@ -608,7 +621,6 @@ public class DAORequest extends DBConnection {
 //        } catch (Exception e) {
 //        }
 //    }
-
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
 
