@@ -381,6 +381,23 @@
                                         </c:if>
                                     </table>
                                 </div>
+                                <div class="pagination">
+                                    <c:if test="${tag > 1}">
+                                        <li class="page-item">
+                                            <a href="ShowAllRequest?index=${tag-1}" class="page-link">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-link ${tag == i?'active':''}" href="ShowAllRequest?index=${i}">${i}</a>
+                                    </c:forEach>
+
+                                    <c:if test="${tag < endPage}">
+                                        <li class="page-item">
+                                            <a href="ShowAllRequest?index=${tag+1}" class="page-link">Next</a>
+                                        </li>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                         <script>
