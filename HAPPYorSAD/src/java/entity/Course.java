@@ -25,10 +25,11 @@ public class Course {
     private int total_Mentor, total_Mentee;
     private String image;
     private int total_Courses;
+    private Double price;
     public Course() {
     }
 
-    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String courseMajor, int total_Mentor, int total_Mentee, String image, int total_Courses) {
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String courseMajor, int total_Mentor, int total_Mentee, String image, int total_Courses, Double price) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,16 +44,33 @@ public class Course {
         this.total_Mentee = total_Mentee;
         this.image = image;
         this.total_Courses = total_Courses;
+        this.price = price;
     }
 
-    public Course(String title, String courseMajor, String image) {
+    public Course(String title, String courseMajor, String image, Double price) {
         this.title = title;
         this.courseMajor = courseMajor;
         this.image = image;
+        this.price = price;
     }
     
     
 
+    public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String image, Double price) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.managerId = managerId;
+        this.mentorId = mentorId;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.courseMajorId = courseMajorId;
+        this.image = image;
+        this.price = price;
+    }
+    
+    
     public Course(int id, String title, String description, int managerId, int mentorId, String status, LocalDateTime createdAt, LocalDateTime updatedAt, int courseMajorId, String image) {
         this.id = id;
         this.title = title;
@@ -65,7 +83,6 @@ public class Course {
         this.courseMajorId = courseMajorId;
         this.image = image;
     }
-    
 
     public Course(int total_Mentee, int total_Courses) {
         this.total_Mentee = total_Mentee;
@@ -217,12 +234,18 @@ public class Course {
         this.courseMajorId = courseMajorId;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + ", total_Courses=" + total_Courses + '}';
+    public Double getPrice() {
+        return price;
     }
 
-    
-    
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" + "id=" + id + ", title=" + title + ", description=" + description + ", managerId=" + managerId + ", mentorId=" + mentorId + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", courseMajorId=" + courseMajorId + ", courseMajor=" + courseMajor + ", total_Mentor=" + total_Mentor + ", total_Mentee=" + total_Mentee + ", image=" + image + ", total_Courses=" + total_Courses + ", price=" + price + '}';
+    }
+
    
 }
