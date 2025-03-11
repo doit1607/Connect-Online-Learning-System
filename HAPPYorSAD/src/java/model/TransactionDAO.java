@@ -18,14 +18,15 @@ import java.util.List;
 public class TransactionDAO extends DBConnection{
 
     // Create a new transaction
-    public int createTransaction(String username, double amount, String type) {
+    public int createTransaction(String username, double amount, String type,String description) {
         int transactionId = 0;
         try {
-            String query = "INSERT INTO Transactions (username, type, amount) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Transactions (username, type, amount , Description) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, type);
             stmt.setDouble(3, amount);
+            stmt.setString(4, description);
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -116,30 +117,16 @@ public class TransactionDAO extends DBConnection{
                 String status = rs.getString("status");
                 int courseId = rs.getInt("course_id");
                 String managerUsername = rs.getString("manager_username");
+                String description = rs.getString("Description");
 
-                transaction = new Transaction(transactionId, username, type, amount, transactionDate, status, courseId, managerUsername);
+                transaction = new Transaction(transactionId, username, type, amount, transactionDate, status, courseId, managerUsername,description);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return transaction;
     }
-        public int createWithdrawTransaction(String username, double amount, String type) {
-        int transactionId = -1;
-        double balance = getBalance(username);  
-        if (balance >= amount) {
-            transactionId = createTransaction(username, amount, type);  
-            if (transactionId != -1) {
-                updateBalance(username, balance - amount);  
-            }
-        } else {
-            System.out.println("Insufficient balance");
-            return -1;  
-        }
-        
-        return transactionId;
-    }
-
+ 
   
     public double getBalance(String username) {
         double balance = 0.0;
@@ -178,6 +165,25 @@ public class TransactionDAO extends DBConnection{
         
         return balance;
     }
+     
+     public double getHold(String username) {
+        double balance = 0.0;
+        String query = "SELECT hold FROM Wallets WHERE username = ?";
+        
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                balance = rs.getDouble("hold");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return balance;
+    }
 
     // Phương thức cập nhật số dư ví của người dùng
     public void updateBalance(String username, double newBalance) {
@@ -201,10 +207,11 @@ public class TransactionDAO extends DBConnection{
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Transaction trans = new Transaction();
-                trans.setTransactionDate(rs.getDate("transaction_date"));
+                trans.setTransactionDate(rs.getTimestamp("transaction_date"));
                 trans.setType(rs.getString("type"));
                 trans.setAmount(rs.getDouble("amount"));
                 trans.setStatus(rs.getString("status"));
+                trans.setDescription(rs.getString("Description"));
                 transactionList.add(trans);
             }
             
