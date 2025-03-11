@@ -68,7 +68,6 @@ public class UpdateCourse extends HttpServlet {
         course.setDescription(description);
         course.setStatus(status);
         course.setCourseMajorId(courseMajorId);
-        course.setPrice(price);
         if (fileName != null) {
             course.setImage("uploads/" + fileName);
         }
