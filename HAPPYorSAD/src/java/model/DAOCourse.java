@@ -243,27 +243,26 @@ public class DAOCourse extends DBConnection {
     }
 
     public boolean updateCourse(Course course) {
-        String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
-                + "updated_at = GETDATE(), course_major_id = ?, image = ?, price = ? "
-                + "WHERE id = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+    String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
+               + "updated_at = GETDATE(), course_major_id = ?, image = ? "
+               + "WHERE id = ?";
+    try {
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, course.getTitle());
+        ps.setString(2, course.getDescription());
+        ps.setString(3, course.getStatus());
+        ps.setInt(4, course.getCourseMajorId());
+        ps.setString(5, course.getImage());
+        ps.setInt(6, course.getId());
 
-            ps.setString(1, course.getTitle());
-            ps.setString(2, course.getDescription());
-            ps.setString(3, course.getStatus());
-            ps.setInt(4, course.getCourseMajorId());
-            ps.setString(5, course.getImage());
-            ps.setDouble(6, course.getPrice());
-            ps.setInt(7, course.getId());
-
-            int rowsUpdated = ps.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        int rowsUpdated = ps.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return false;
+}
+
 
     public Course getCourseById(int id) {
         String query = "SELECT [id]\n"
