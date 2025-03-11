@@ -45,7 +45,7 @@ public class LoginUserController extends HttpServlet {
         DAORequest daoRequest = new DAORequest();
         TransactionDAO userwallet = new TransactionDAO();
         String service = request.getParameter("service");
- 
+
         if ("login".equals(service)) {
 
             String username = request.getParameter("usernameLogin");
@@ -75,6 +75,7 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
                         session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
+                        session.setAttribute("userEmail", userDAO.getEmail(username));
                         response.sendRedirect("ProfileServlet");
                     }
                     if (role.equalsIgnoreCase("Mentee")) {
@@ -83,6 +84,8 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
                         session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
+                        session.setAttribute("userEmail", userDAO.getEmail(username));
+
                         response.sendRedirect("Home");
                     }
                     if (role.equalsIgnoreCase("Manager")) {
@@ -90,6 +93,8 @@ public class LoginUserController extends HttpServlet {
                         session.setAttribute("usernameRole", role);
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
                         session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));
+                        session.setAttribute("userEmail", userDAO.getEmail(username));
+
                         response.sendRedirect("Manager");
                     }
                 } else {
@@ -140,7 +145,7 @@ public class LoginUserController extends HttpServlet {
                     java.sql.Timestamp createdAt = java.sql.Timestamp.valueOf(formattedDate);
                     User newUser = new User(null, username, fullname, password, "Inactive", email, phone, address, dateOfBirth, createdAt, gender, role, false);
                     userDAO.addUser(newUser);
-                   
+
                     String verificationLink = "http://localhost:9999/HAPPYorSAD/LoginUser?service=activate&email=" + email;
                     em.sendVerificationEmail(email, username, verificationLink);
                     request.setAttribute("msg", "Registration successful! Check your email to activate your account.");
