@@ -36,7 +36,6 @@ public class CourseDetails extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("Cid"));
         DAOCourse dao = new DAOCourse();
         Course course = dao.getCourseById(id);
-        double price = dao.getPriceCourse(id);
         String courseName = course.getTitle();
         List<Mentor> list = dao.getMentorByCourseTitle(courseName);
 //        int countMenteOfCourse = dao.getTotalMenteesByCourse(id);
@@ -51,7 +50,6 @@ public class CourseDetails extends HttpServlet {
             }
         }
         HttpSession session = request.getSession();
-        session.setAttribute("price", price);
         session.setAttribute("listAllMentorByCourse", list);
         session.setAttribute("detail", course);
 //        session.setAttribute("countMenteOfCourse", countMenteOfCourse);
