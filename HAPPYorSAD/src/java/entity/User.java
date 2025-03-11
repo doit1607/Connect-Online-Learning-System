@@ -19,10 +19,12 @@ public class User {
     private boolean isGuest;
     private String bio;
     private int id;
+    private double pricePerSlot;
 
     public User() {
     }
-        public User(int id) {
+
+    public User(int id) {
         this.id = id;
     }
 
@@ -40,19 +42,18 @@ public class User {
         this.role = role;
         this.isGuest = isGuest;
     }
-        
-        
 
-    public User(String username, String fullname, String email, String phoneNumber, Date createdAt, String bio) {
+    public User(String username, String fullname, String email, String phoneNumber, Date createdAt, String bio, Double pricePerSlot) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.bio = bio;
+        this.pricePerSlot = pricePerSlot;
     }
-    
-     public User(String username, String fullname, String email, String phoneNumber, Date createdAt) {
+
+    public User(String username, String fullname, String email, String phoneNumber, Date createdAt) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
@@ -60,10 +61,6 @@ public class User {
         this.createdAt = createdAt;
     }
     
-    
-    
-    
-
     public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, Date createdAt, String gender, String role, boolean isGuest) {
         this.avatarPath = avatarPath;
         this.username = username;
@@ -80,6 +77,23 @@ public class User {
         this.isGuest = isGuest;
     }
 
+    public User(String avatarPath, String username, String fullname, String password, String status, String email, String phoneNumber, String address, Date dateOfBirth, Date createdAt, String gender, String role, boolean isGuest, double pricePerSlot) {
+        this.avatarPath = avatarPath;
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
+        this.status = status;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.createdAt = createdAt;
+        this.gender = gender;
+        this.role = role;
+        this.isGuest = isGuest;
+        this.pricePerSlot = pricePerSlot;
+    }
+
     public String getBio() {
         return bio;
     }
@@ -87,8 +101,6 @@ public class User {
     public void setBio(String bio) {
         this.bio = bio;
     }
-    
-    
 
     public String getAvatarPath() {
         return avatarPath;
@@ -194,11 +206,17 @@ public class User {
         this.isGuest = isGuest;
     }
 
+    public double getPricePerSlot() {
+        return pricePerSlot;
+    }
+
+    public void setPricePerSlot(double pricePerSlot) {
+        this.pricePerSlot = pricePerSlot;
+    }
+
     @Override
     public String toString() {
         return "User{" + "avatarPath=" + avatarPath + ", username=" + username + ", fullname=" + fullname + ", password=" + password + ", status=" + status + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", createdAt=" + createdAt + ", gender=" + gender + ", role=" + role + ", isGuest=" + isGuest + ", bio=" + bio + ", id=" + id + '}';
     }
 
-   
-    
 }
