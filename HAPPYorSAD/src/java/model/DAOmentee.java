@@ -82,7 +82,30 @@ public class DAOmentee extends DBConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0; // Trả về 0 nếu không tìm thấy
+        return 0;
+    }
+
+    public Mentee getMenteeBySlotId(String slotDate, int slotNumberId) {
+        String sql = "SELECT m.name, m.image, m.email \n"
+                + "FROM Slot sl \n"
+                + "JOIN Mentee m ON m.id = sl.mentee_id \n"
+                + "WHERE sl.slot_date = ? and sl.slot_number_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, slotDate);
+            stmt.setInt(2, slotNumberId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Mentee(
+                            rs.getString("name"),
+                            rs.getString("image"),
+                            rs.getString("email")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý lỗi hoặc log lỗi
+        }
+        return null; // Trả về null nếu không tìm thấy
     }
 
     public String getMenteeUsername(int id) {
@@ -97,7 +120,7 @@ public class DAOmentee extends DBConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null;
     }
 
     public static void main(String[] args) {

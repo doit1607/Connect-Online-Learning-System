@@ -39,18 +39,29 @@ public class Slot {
     public Slot() {
     }
 
-    public Slot(Date slotDate, int slotNumber, Time startTime, Time endTime, String status) {
+    public Slot(Date slotDate, int slotNumber, Time startTime, Time endTime, String status, int request_id) {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
+        this.request_id = request_id;
     }
 
     public Slot(Date slotDate, int slotNumber, boolean isBooked, Time startTime, String day_of_week, String period) {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
         this.isBooked = isBooked;
+        this.startTime = startTime;
+        this.day_of_week = day_of_week;
+        this.period = period;
+    }
+    
+        public Slot(Date slotDate, int slotNumber, boolean isBooked,String status, Time startTime, String day_of_week, String period) {
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.isBooked = isBooked;
+        this.status = status;
         this.startTime = startTime;
         this.day_of_week = day_of_week;
         this.period = period;
@@ -80,11 +91,24 @@ public class Slot {
         this.startTime = startTime;
         this.day_of_week = day_of_week;
     }
+    
+        public Slot(int id, Date slotDate, int slotNumber, boolean isBooked,String status ,Time startTime, String day_of_week) {
+        this.id = id;
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.isBooked = isBooked;
+        this.status = status;
+        this.startTime = startTime;
+        this.day_of_week = day_of_week;
+    }
 
-    public Slot(int scheduleId, Date slotDate, int slotNumber) {
+
+    public Slot(int scheduleId, Date slotDate, int slotNumber, String status, int request_id) {
         this.scheduleId = scheduleId;
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
+        this.status = status;
+        this.request_id = request_id;
     }
 
     // Getter & Setter

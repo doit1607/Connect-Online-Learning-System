@@ -194,7 +194,7 @@ public class TransactionDAO extends DBConnection{
     
     public List<Transaction> listTransactionByUsername(String username){
         List<Transaction> transactionList = new ArrayList<>();
-        String sql = "Select * from Transactions where username = ? ";
+        String sql = "Select * from Transactions where username = ? order by transaction_date desc";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, username);

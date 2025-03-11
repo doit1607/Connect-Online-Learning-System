@@ -11,9 +11,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DAORequest;
+import model.DAOmentee;
+import model.DAOslot;
+import model.TransactionDAO;
+import entity.Slot;
+import model.DAOMentor;
 
 /**
  *
@@ -34,12 +43,62 @@ public class ShowAllRequest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         DAORequest dao = new DAORequest();
+        DAOslot daoSl = new DAOslot();
+        DAOMentor daomentor = new DAOMentor();
+
+        TransactionDAO daotran = new TransactionDAO();
+        DAOmentee daomentee = new DAOmentee();
+
         String action = request.getParameter("action");
         String search = request.getParameter("search");
         String status = request.getParameter("status");
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
+        String service = request.getParameter("service");
+        if ("confirm".equals(service)) {
+            int requestId = Integer.parseInt(request.getParameter("requestid"));
+            Request newrequest = dao.getRequestById(requestId);
+            int menteeid = newrequest.getMenteeId();
+            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+            try {
+                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId);
+                for (entity.Slot slot : slots) {
+                    System.out.println(slot);
+                    int slotId = slot.getId();
+                    daoSl.updateSlotStatus(slotId, "Studying");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
+            double totalprice = newrequest.gettotalprice();
+            dao.updateRequestStatus(requestId, "Processing");
+
+            daotran.updateHoldAfterReject(usernamementee, totalprice);
+            daotran.withdrawToWallet(usernamementee, totalprice);
+            daotran.depositToWallet((String) session.getAttribute("usernameUser"), totalprice);
+            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
+            double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
+            session.setAttribute("walletBalance", balance);
+        }
+        if ("closed".equals(service)) {
+            int requestId = Integer.parseInt(request.getParameter("requestid"));
+            Request newrequest = dao.getRequestById(requestId);
+            int mentorid = newrequest.getMentorId();
+            int mentoruser_id = daomentor.getMentorUserid(mentorid);
+            double finalprice = Double.parseDouble(request.getParameter("finalprice"));
+            String usernamementor = daomentor.getMentorUsername(mentoruser_id);
+            dao.updateRequestStatus(requestId, "Closed");
+            daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), finalprice);
+            daotran.createTransaction((String) (String) session.getAttribute("usernameUser"), finalprice, "WITHDRAW");
+            daotran.depositToWallet(usernamementor, finalprice);
+            daotran.createTransaction((String) usernamementor, finalprice, "DEPOSIT");
+            double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
+            session.setAttribute("walletBalance", balance);            
+        }
 
         LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) ? LocalDate.parse(startDateStr) : null;
         LocalDate endDate = (endDateStr != null && !endDateStr.isEmpty()) ? LocalDate.parse(endDateStr) : null;

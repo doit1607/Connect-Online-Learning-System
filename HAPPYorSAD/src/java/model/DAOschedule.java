@@ -84,6 +84,25 @@ public class DAOschedule extends DBConnection {
         }
         return -1; // Trả về -1 nếu không tìm thấy
     }
+    
+    public List<Schedule> getSchedulesByMonth(int year, int month) {
+    List<Schedule> schedules = new ArrayList<>();
+    String query = "SELECT * FROM Schedule WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?";
+    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, year);
+        stmt.setInt(2, month);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Schedule schedule = new Schedule();
+            schedule.setId(rs.getInt("id"));
+            schedule.setStart_date(rs.getDate("start_date"));
+            schedules.add(schedule);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return schedules;
+}
 
     public int addSchedule(String startDate, String endDate) throws SQLException {
         String sql = "INSERT INTO Schedule (start_date, end_date) VALUES (?, ?)";
@@ -300,28 +319,6 @@ public class DAOschedule extends DBConnection {
         return schedulesByMonth;
     }
 
-    public List<Schedule> getSchedulesByMonth(int year, int month) {
-        List<Schedule> schedules = new ArrayList<>();
-        String sql = "SELECT * FROM schedule\n"
-                + "WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?\n"
-                + "ORDER BY start_date ASC;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, year);
-            stmt.setInt(2, month);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Schedule schedule = new Schedule();
-                schedule.setId(rs.getInt("id"));
-                schedule.setStart_date(rs.getDate("start_date"));
-                schedules.add(schedule);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log lỗi hoặc sử dụng LOGGER.warning(e.getMessage())
-        }
-
-        return schedules;
-    }
 
     public Integer getScheduleIdByNearestStartDate() {
         String sql = "SELECT id FROM Schedule where start_date='?'\n";

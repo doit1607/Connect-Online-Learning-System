@@ -31,6 +31,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
@@ -46,8 +47,8 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
-
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                Double price = result.getDouble("price");
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
                 listCourse.add(course);
             }
             result.close();
@@ -241,18 +242,24 @@ public class DAOCourse extends DBConnection {
         return list;
     }
 
-    public boolean updateCourse(int id, String title, String status) {
-        String query = "UPDATE Course SET title = ?, status = ? WHERE id = ?";
+    public boolean updateCourse(Course course) {
+        String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
+                + "updated_at = GETDATE(), course_major_id = ?, image = ?, price = ? "
+                + "WHERE id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
 
-        try (PreparedStatement connect = conn.prepareStatement(query)) {
-            connect.setString(1, title);
-            connect.setString(2, status);
-            connect.setInt(3, id);
+            ps.setString(1, course.getTitle());
+            ps.setString(2, course.getDescription());
+            ps.setString(3, course.getStatus());
+            ps.setInt(4, course.getCourseMajorId());
+            ps.setString(5, course.getImage());
+            ps.setDouble(6, course.getPrice());
+            ps.setInt(7, course.getId());
 
-            int rowsUpdated = connect.executeUpdate();
-            return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
-
-        } catch (SQLException e) {
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -544,13 +551,13 @@ public class DAOCourse extends DBConnection {
 
     public ArrayList<Course> getCourseByMentor(String username) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT c.[id], c.[title], c.[description], c.[manager_id], c.[mentor_id], " +
-                   "       u.[username] AS mentor_username, c.[status], c.[created_at], " +
-                   "       c.[updated_at], c.[course_major_id], c.[image], c.[price] " +
-                   "FROM [SWP1].[dbo].[Course] c " +
-                   "JOIN [SWP1].[dbo].[Mentor] m ON c.mentor_id = m.id " +
-                   "JOIN [SWP1].[dbo].[Users] u ON m.user_id = u.id " +
-                   "WHERE u.[username] = ?";
+        String query = "SELECT c.[id], c.[title], c.[description], c.[manager_id], c.[mentor_id], "
+                + "       u.[username] AS mentor_username, c.[status], c.[created_at], "
+                + "       c.[updated_at], c.[course_major_id], c.[image], c.[price] "
+                + "FROM [SWP1].[dbo].[Course] c "
+                + "JOIN [SWP1].[dbo].[Mentor] m ON c.mentor_id = m.id "
+                + "JOIN [SWP1].[dbo].[Users] u ON m.user_id = u.id "
+                + "WHERE u.[username] = ?";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             connect.setString(1, username);
@@ -580,12 +587,119 @@ public class DAOCourse extends DBConnection {
 
     }
 
+    public int getTotalCourse() {
+        String sql = "select count(*) from Course";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
 
+    public List<Course> pagingCourse(int index) {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[manager_id]\n"
+                + "      ,[mentor_id]\n"
+                + "      ,[status]\n"
+                + "      ,[created_at]\n"
+                + "      ,[updated_at]\n"
+                + "      ,[course_major_id]\n"
+                + "      ,[image]\n"
+                + "      ,[price]\n"
+                + "  FROM [SWP1].[dbo].[Course]\n"
+                + "order by [title]\n"
+                + "offset ? rows fetch next 5 rows only";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 5);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));
+                course.setManagerId(rs.getInt("manager_id"));
+                course.setMentorId(rs.getInt("mentor_id"));
+                course.setStatus(rs.getString("status"));
+                course.setCourseMajorId(rs.getInt("course_major_id"));
+                course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
 
+                list.add(course);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public List<Course> pagingCourseManager(int index) {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT [id], [title], [description], [manager_id], [mentor_id], "
+                + "[status], [created_at], [updated_at], [course_major_id], [image], [price] "
+                + "FROM [SWP1].[dbo].[Course] "
+                + "ORDER BY [id] "
+                + "OFFSET ? ROWS FETCH NEXT 7 ROWS ONLY";
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setInt(1, (index - 1) * 7);
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course();
+                    course.setId(rs.getInt("id"));
+                    course.setTitle(rs.getString("title"));
+                    course.setDescription(rs.getString("description"));
+                    course.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    course.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    course.setStatus(rs.getString("status"));
+                    course.setCourseMajorId(rs.getInt("course_major_id"));
+                    course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
+
+                    list.add(course);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public List<Course> searchCourseByTitle(String keyword) {
+        List<Course> list = new ArrayList<>();
+        String query = "SELECT * FROM Course WHERE LOWER(title) LIKE LOWER(?)";
+        
+        try {
+             PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                 Course course = new Course();
+                    course.setId(rs.getInt("id"));
+                    course.setTitle(rs.getString("title"));
+                    course.setDescription(rs.getString("description"));
+                    course.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    course.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    course.setStatus(rs.getString("status"));
+                    course.setCourseMajorId(rs.getInt("course_major_id"));
+                    course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
+
+                    list.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-//        List<Course> listCourseHome = dao.getAllCourseHome();
+        List<Course> listCourseHome = dao.searchCourseByTitle("intro");
 //
 //        for (Course course : listCourseHome) {
 //            System.out.println(course);
@@ -600,13 +714,16 @@ public class DAOCourse extends DBConnection {
 //        } else {
 //            System.out.println("Create failed!");
 //        }
-        Course course = dao.getCourseById(1);
-//        int a = dao.getTotalMenteesByCourse(2);
-        int b = dao.getTotalMentorsByCourse(2);
-        String str = dao.getCourseMajor(2);
-//        System.out.println(a);
-        System.out.println(b);
-        System.out.println(str);
-        System.out.println(course);
+//        Course course = dao.getCourseById(1);
+////        int a = dao.getTotalMenteesByCourse(2);
+//        int b = dao.getTotalMentorsByCourse(2);
+//        String str = dao.getCourseMajor(2);
+////        System.out.println(a);
+//        System.out.println(b);
+//        System.out.println(str);
+        for (Course course : listCourseHome) {
+            System.out.println(course);
+        }
+
     }
 }

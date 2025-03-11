@@ -121,8 +121,8 @@
         <servlet-class>controller.UpdateRequest</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateRequest</servlet-name>
-        <servlet-class>controller.CreateRequest</servlet-class>
+        <servlet-name>RequestSchedule</servlet-name>
+        <servlet-class>controller.RequestSchedule</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MentorDetail</servlet-name>
@@ -143,6 +143,30 @@
     <servlet>
         <servlet-name>fetchSlot</servlet-name>
         <servlet-class>controller.fetchSlot</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Attendance</servlet-name>
+        <servlet-class>controller.Attendance</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CompleteAllSlotRequest</servlet-name>
+        <servlet-class>controller.CompleteRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceMentee</servlet-name>
+        <servlet-class>controller.AttendanceMentee</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowAllCourseByMajorId</servlet-name>
+        <servlet-class>controller.ShowAllCourseByMajorId</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DetailCourseManager</servlet-name>
+        <servlet-class>controller.DetailCourseManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchCourse</servlet-name>
+        <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
@@ -261,8 +285,8 @@
         <url-pattern>/JoinCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateRequest</servlet-name>
-        <url-pattern>/CreateRequest</url-pattern>
+        <servlet-name>RequestSchedule</servlet-name>
+        <url-pattern>/RequestSchedule</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Notifications</servlet-name>
@@ -287,6 +311,30 @@
     <servlet-mapping>
         <servlet-name>fetchSlot</servlet-name>
         <url-pattern>/fetchSlot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Attendance</servlet-name>
+        <url-pattern>/Attendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompleteAllSlotRequest</servlet-name>
+        <url-pattern>/CompleteAllSlotRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceMentee</servlet-name>
+        <url-pattern>/AttendanceMentee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowAllCourseByMajorId</servlet-name>
+        <url-pattern>/ShowAllCourseByMajorId</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailCourseManager</servlet-name>
+        <url-pattern>/DetailCourseManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCourse</servlet-name>
+        <url-pattern>/SearchCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

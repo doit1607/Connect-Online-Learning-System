@@ -111,6 +111,11 @@
                                         </li>
                                         <li class="nav-item">
                                             <a href="/../HAPPYorSAD/att" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Att
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Attendance" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Attendance
                                             </a>
                                         </li>

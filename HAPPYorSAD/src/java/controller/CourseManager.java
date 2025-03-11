@@ -5,6 +5,7 @@
 package controller;
 
 import entity.Course;
+import entity.Major;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 import java.util.List;
 import model.DAOCourse;
-
+import model.DAOmajor;
 
 /**
  *
@@ -34,15 +35,28 @@ public class CourseManager extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOCourse dao = new DAOCourse();
-        List<Course> list = dao.getAllCourse();
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
 
+        int count = dao.getTotalCourse();
+        int endPage = count / 2;
+        if (count % 2 != 0) {
+            endPage++;
+        }
+        List<Course> list = dao.pagingCourseManager(index);
+              DAOmajor daoM = new DAOmajor();
+        List<Major> listAllMaojor = daoM.getListAllMajor();    
         HttpSession session = request.getSession();
         session.setAttribute("listAllCourse", list);
-
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("tag", index);
+        request.setAttribute("listAllMaojor", listAllMaojor);
         request.getRequestDispatcher("view/ManagerCourse.jsp").forward(request, response);
     }
 
-   
     /**
      * Handles the HTTP <code>GET</code> method.
      *

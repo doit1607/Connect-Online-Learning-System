@@ -16,6 +16,7 @@ public class TempSlot {
     private Date selectedDate;
     private int slotNumber;
     private String startTime; // Thêm thuộc tính này
+    private String status;
 
     public TempSlot(int scheduleId, Date selectedDate, int slotNumber, String startTime) {
         this.scheduleId = scheduleId;
@@ -24,7 +25,23 @@ public class TempSlot {
         this.startTime = startTime;
     }
 
+    public TempSlot(int scheduleId, Date selectedDate, int slotNumber, String startTime, String status) {
+        this.scheduleId = scheduleId;
+        this.selectedDate = selectedDate;
+        this.slotNumber = slotNumber;
+        this.startTime = startTime;
+        this.status = status;
+    }
+
     // Getter & Setter
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getStartTime() {
         return startTime;
     }
@@ -56,15 +73,10 @@ public class TempSlot {
     public void setSlotNumber(int slotNumber) {
         this.slotNumber = slotNumber;
     }
-    
 
     @Override
     public String toString() {
-        return "TempSlot{"
-                + "scheduleId=" + scheduleId
-                + ", selectedDate=" + selectedDate
-                + ", slotNumber=" + slotNumber
-                + ", startTime='" + startTime + '\''
-                + '}';
+        return "TempSlot{" + "scheduleId=" + scheduleId + ", selectedDate=" + selectedDate + ", slotNumber=" + slotNumber + ", startTime=" + startTime + ", status=" + status + '}';
     }
+
 }

@@ -71,6 +71,28 @@ public class DAOMentor extends DBConnection {
         return list;
     }
     
+        public Mentor getMentorBySlotId(String slotDate, int slotNumberId) {
+        String sql = "SELECT m.name, m.image, m.email \n"
+                + "FROM Slot sl \n"
+                + "JOIN Mentor m ON m.id = sl.mentor_id \n"
+                + "WHERE sl.slot_date = ? and sl.slot_number_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, slotDate);
+            stmt.setInt(2, slotNumberId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Mentor(
+                            rs.getString("name"),
+                            rs.getString("image"),
+                            rs.getString("email")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý lỗi hoặc log lỗi
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
     public int getTotalMentors(String search) {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM Mentor WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) OR LOWER(expertise) LIKE LOWER(?)";
@@ -148,6 +170,36 @@ public class DAOMentor extends DBConnection {
             e.printStackTrace();
         }
         return name;
+    }
+    
+    public int getMentorUserid(int mentorId) {
+        String sql = "SELECT user_id FROM Mentor WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, mentorId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public String getMentorUsername(int id) {
+        String sql = "SELECT username FROM Users WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
     public List<Mentor> getMentorsSuggestion() {

@@ -69,17 +69,17 @@
                                                         <li><a href="/../HAPPYorSAD/EnrolledCourses">Enrolled Courses</a></li>
                                                         <li><a href="Schedule">Book</a></li>
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
-                                                        
+
                                                     </ul>
                                                 </li>	
                                                 <li class="has-submenu">
-                                                <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
-                                                </ul>
-                                            </li>
+                                                    <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
+                                                    <ul class="submenu">
+                                                        <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
+                                                    </ul>
+                                                </li>
                                             </c:if>
-                                            
+
 
                                         </ul>
                                     </c:if>
@@ -114,19 +114,19 @@
                                                 </div>
                                             </div>
                                             <a class="dropdown-item" href="/../HAPPYorSAD/Wallet">
-                                                <i class="feather-star me-1"></i> Wallet:
-                                                <fmt:formatNumber value="${sessionScope.walletBalance}" 
-                                                                  type="number" 
-                                                                  pattern="#,##0" 
-                                                                  currencySymbol="" /> đ
+                                                <i class="feather-star me-1"></i> 
+                                                Wallet: <span id="walletAmount"><fmt:formatNumber value="${sessionScope.walletBalance}" pattern="#,##0" /></span> <span id="currencySymbol"></span>
+
                                             </a>
+
+
                                             <a class="dropdown-item" href="/../HAPPYorSAD/ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
                                             <c:if test ="${sessionScope.usernameRole eq 'mentee'}">
                                                 <a class="dropdown-item" href="/../HAPPYorSAD/updatementeeprofile"><i class="feather-user me-1"></i> Profile</a>
                                             </c:if>
                                             <c:if test ="${sessionScope.usernameRole eq 'mentor'}">
                                                 <a class="dropdown-item" href="/../HAPPYorSAD/updatementorprofile"><i class="feather-user me-1"></i> Profile</a>
-                                                
+
                                             </c:if>
 
 
@@ -255,3 +255,9 @@
         </body>
     </html>
 </c:if>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("currencySymbol").innerHTML = "đ";
+    });
+
+</script>

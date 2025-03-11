@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Request" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -116,14 +116,14 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="instructor-reviews.html" class="nav-link">
-                                                <i class="bx bxs-star"></i>Reviews
+                                            <a href="RequestSchedule" class="nav-link">
+                                                <i class="bx bxs-star"></i>Request schedule
                                             </a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="instructor-referral.html" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Referrals
+                                            <a href="menteestatistic" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Static Mentee
                                             </a>
                                         </li>
 
@@ -167,7 +167,7 @@
                                     </c:choose>
                                 </div>
 
-                                <!-- NÃºt Back -->
+                                <!-- Nút Back -->
                                 <a href="ShowAllRequest" class="btn btn-secondary mt-3">Back to List</a>
                             </div>
                         </div>

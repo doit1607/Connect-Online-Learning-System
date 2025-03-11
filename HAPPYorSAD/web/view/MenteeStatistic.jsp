@@ -1,214 +1,185 @@
-<%-- 
-    Document   : MenteeStatistic
-    Created on : Jan 25, 2025, 12:02:18 AM
-    Author     : admin
---%>
-
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
-    <link href="css/cssStatistic/MenteeStatistic.css" rel="stylesheet" type="text/css"/>
+<html lang="en">
     <head>
-        <meta charset="utf-8">         
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">         
-        <title>Dreams LMS</title>          
 
-        <!-- Favicon -->         
-        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">          
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Dreams LMS</title>
+        <!-- Favicon -->
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
-        <!-- Theme Settings Js -->         
-        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>          
 
-        <!-- Bootstrap CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">          
+        <!-- Theme Settings Js -->
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
-        <!-- Fontawesome CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">          
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
 
-        <!-- Owl Carousel CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">          
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
 
-        <!-- Feathericon CSS -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/feather/feather.css">          
+        <!-- Feather CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
 
-        <!-- Main CSS  -->         
-        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css"> 
+        <!-- Select2 CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+        <<link rel="stylesheet" href="/HAPPYorSAD/css/cssStatistic/MenteeStatistic.css"/>
+        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Bootstrap Core JS -->
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Select2 JS -->
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Ckeditor JS -->
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Dropzone JS -->
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Sticky Sidebar JS -->
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <!-- Custom JS -->
+        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
+        
     </head>
     <body>
+
+        <!-- Main Wrapper -->
         <div class="main-wrapper">
-            <header class="header">
-                <div class="header-fixed">
-                    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <a id="mobile_btn" href="javascript:void(0);">
-                                    <span class="bar-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </span>
-                                </a>
-                                <a href="Home" class="navbar-brand logo">
-                                    <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                </a>
-                            </div>
-                            <div class="main-menu-wrapper">
-                                <div class="menu-header">
-                                    <a href="index-2.html" class="menu-logo">
-                                        <img src="/HAPPYorSAD/assets/img/logo.svg" class="img-fluid" alt="Logo">
-                                    </a>
-                                    <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </div>
-                                <ul class="main-nav">
-                                    <li class="has-submenu ">
-                                        <a class="" href="Home">Home <i class="fas fa-chevron-down"></i></a>
-
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="ViewMentor_Mentee">Instructor <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li class="has-submenu">
-                                                <a href="ViewMentor_Mentee">Instructor</a>
-                                                <ul class="submenu">
-                                                    <li><a href="ViewMentor_Mentee">List</a></li>
-                                                    <li><a href="ViewMentor_Mentee">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="instructor-dashboard.html">Dashboard</a></li>
-                                            <li><a href="instructor-profile.html">My Profile</a></li>
-                                            <li><a href="instructor-course.html">My Course</a></li>
-                                            <li><a href="instructor-reviews.html">Reviews</a></li>
-                                            <li><a href="instructor-referral.html">Wallet</a></li>
-                                            <li><a href="instructor-notifications.html">Notifications</a></li>
-                                            <li><a href="instructor-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Student <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu first-submenu">
-                                            <li class="has-submenu">
-                                                <a href="students-list.html">Mentees</a>
-                                                <ul class="submenu">
-                                                    <li><a href="students-list.html">List</a></li>
-                                                    <li><a href="students-grid.html">Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="student-dashboard.html">Dashboard</a></li>
-                                            <li><a href="student-profile.html">My Profile</a></li>
-                                            <li><a href="student-courses.html">Enrolled Courses</a></li>
-                                            <li><a href="student-reviews.html">Reviews</a></li>
-                                            <li><a href="student-order-history.html">Orders</a></li>
-                                            <li><a href="student-referral.html">Wallet</a></li>
-                                            <li><a href="student-settings.html">Settings</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-                                        <ul class="submenu">
-                                            <li><a href="notifications.html">Notification</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li class="has-submenu">
-                                                <a href="course-list.html">Course</a>
-                                                <ul class="submenu">
-                                                    <li><a href="CreateCourses">Add Course</a></li>
-                                                    <li><a href="ShowAllCourse">Course List</a></li>
-                                                    <li><a href="ShowAllCourse">Course Grid</a></li>
-                                                    <!--                                                    <li><a href="course-details.html">Course Details</a></li>-->
-                                                </ul>
-                                            </li>
-                                            <li class="has-submenu">
-                                                <a href="come-soon.html">Error</a>
-                                                <ul class="submenu">
-                                                    <li><a href="come-soon.html">Coming Soon</a></li>
-                                                    <li><a href="error-404.html">404</a></li>
-                                                    <li><a href="error-500.html">500</a></li>
-                                                    <li><a href="under-construction.html">Under Construction</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                            <li><a href="support.html">Support</a></li>
-                                            <li><a href="job-category.html">Major</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                            <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                            <li><a href="#">Forgot Password</a></li>
-                                        </ul>
-                                    </li>
-                                    <!--                                    <li class="has-submenu">
-                                                                            <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-                                                                            <ul class="submenu">
-                                                                                <li><a href="blog-list.html">Blog List</a></li>
-                                                                                <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                                                <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                                                                <li><a href="blog-modern.html">Blog Modern</a></li>
-                                                                                <li><a href="blog-details.html">Blog Details</a></li>
-                                                                            </ul>
-                                                                        </li>-->
-                                    <li class="login-link">
-                                        <a href="/HAPPYorSAD/view/LoginUser.jsp">Login / Signup</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <ul class="nav header-navbar-rht">
-                                <li class="nav-item">
-                                    <div>
-                                        <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                            <i class="fa-solid fa-moon"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                            <i class="fa-solid fa-sun"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link header-sign" href="/HAPPYorSAD/view/LoginUser.jsp">Signin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link header-login" href="/HAPPYorSAD/view/RegisterUser.jsp">Signup</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-
-            <section class="course-content">
+            <!-- Header -->
+            <%@include file="/../sourcesHome/headerManager.jsp" %>
+            <!-- /Header -->
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-bar breadcrumb-bar-info">
                 <div class="container">
-                    <div class="card wish-card">
-                        <div class="card-header">
-                            <h5>Mentee Statistics</h5>
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <div class="breadcrumb-list">
+                                <h2 class="breadcrumb-title">Manager</h2>
+
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table mentee-table">
-                                        <thead>
+                    </div>
+                </div>
+            </div>
+            <!-- /Breadcrumb -->	
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="container">
+                    <div class="row">
+
+                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item ">
+                                            <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
+                                                <i class="fas fa-user"></i>Manage CV
+                                            </a>
+                                        <li class="nav-item ">
+                                            <a href="CourseManager" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Manage Course
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="ShowAllRequest" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Request of Mentee
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="RequestSchedule" class="nav-link">
+                                                <i class="bx bxs-star"></i>Request schedule
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item active">
+                                            <a href="menteestatistic" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Static Mentee
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="instructor-notifications.html" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-9">
+                            <h1>Static Mentee</h1>
+                             <form action="menteestatistic" method="post" class="d-flex "> 
+                                    <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Mentee Name...">
+                                     <button type="submit" class="btn btn-primary px-4">Search</button>
+                                </form>  
+                            <div class="checkout-form">
+                                <div class="table-responsive custom-table">
+
+                                    <table class="table table-nowrap mb-0">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>ID</th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Total Hours</th>
+                                            <th>Total Courses</th>
+                                        </tr>
+
+
+                                        <c:forEach items="${mentees}" var="o" varStatus="status1">
                                             <tr>
-                                                <th>No.</th>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Goals</th>
+                                                <td><div class="STT text-center"> <h6>${status1.index + 1}</h6></div></td>
+                                                <td>${o.id}</td>
+                                                <td> <img  class="img-fluid" alt="Img" src="${o.image}"></td>
+                                                <td>${o.name}</td>
+                                                <td>${o.userName}</td>
+                                                <td>${o.email}</td>
+                                                <td>${o.totalHours}</td>
+                                                <td>${o.totalCourses}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="mentee" items="${listM}" varStatus="status">
-                                                <tr>
-                                                    <td>${status.index + 1}</td>
-                                                    <td>${mentee.id}</td>
-                                                    <td>${mentee.name}</td>
-                                                    <td>${mentee.email}</td>
-                                                    <td>${mentee.goals}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
+                                        </c:forEach>
                                     </table>
 
+                                </div>                               
+                            </div>
+                            <!-- /pagination -->
+                            <div class="row">
+                                <div class="col-md-12">
                                     <!-- Pagination -->
                                     <div class="pagination">
                                         <c:if test="${tag > 1}">
@@ -227,166 +198,15 @@
                                             </li>
                                         </c:if>
                                     </div>
-                                    <!-- /Pagination -->
-
+                                    <!-- /Pagination -->                              
                                 </div>
                             </div>
+                            <!-- /pagination -->
                         </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /Statistic Section -->
-
-            <footer class="footer">
-
-                <!-- Footer Top -->
-                <div class="footer-top aos" data-aos="fade-up">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-about">
-                                    <div class="footer-logo">
-                                        <img src="/HAPPYorSAD/assets/img/logo.svg" alt="logo">
-                                    </div>
-                                    <div class="footer-about-content">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat mauris</p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Instructor</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="ViewMentor_Mentee">Mentor</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-menu">
-                                    <h2 class="footer-title">For Student</h2>
-                                    <ul>
-                                        <li><a href="instructor-profile.html">Profile</a></li>
-                                        <li><a href="/HAPPYorSAD/view/LoginUser.jsp">Login</a></li>
-                                        <li><a href="/HAPPYorSAD/view/RegisterUser.jsp">Register</a></li>
-                                        <li><a href="#">Mentee</a></li>
-                                        <li><a href="instructor-dashboard.html"> Dashboard</a></li>
-                                    </ul>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-6">
-
-                                <!-- Footer Widget -->
-                                <div class="footer-widget footer-contact">
-                                    <h2 class="footer-title">News letter</h2>
-                                    <div class="news-letter">
-                                        <form>
-                                            <input type="text" class="form-control" placeholder="Enter your email address"
-                                                   name="email">
-                                        </form>
-                                    </div>
-                                    <div class="footer-contact-info">
-                                        <div class="footer-address">
-                                            <img src="assets/img/icon/icon-20.svg" alt="Img" class="img-fluid">
-                                            <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
-                                        </div>
-                                        <p>
-                                            <img src="assets/img/icon/icon-19.svg" alt="Img" class="img-fluid">
-                                            <a href="https://dreamslms.dreamstechnologies.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="41253324202c322d2c32012439202c312d246f222e2c">[email&#160;protected]</a>
-                                        </p>
-                                        <p class="mb-0">
-                                            <img src="assets/img/icon/icon-21.svg" alt="Img" class="img-fluid">
-                                            +19 123-456-7890
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- /Footer Widget -->
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /Footer Top -->
-
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
-                    <div class="container">
-
-                        <!-- Copyright -->
-                        <div class="copyright">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="privacy-policy">
-                                        <ul>
-                                            <li><a href="term-condition.html">Terms</a></li>
-                                            <li><a href="privacy-policy.html">Privacy</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="copyright-text">
-                                        <p class="mb-0">&copy; 2024 DreamsLMS. All rights reserved.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Copyright -->
 
                     </div>
                 </div>
-                <!-- /Footer Bottom -->
-
-            </footer>
-            <!-- /Footer -->
+            </div>          
         </div>
-        <!-- jQuery -->
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- counterup JS -->
-        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Select2 JS -->
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Owl Carousel -->
-        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Slick Slider -->
-        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Aos -->
-        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-        <!-- Custom JS -->
-        <script src="/HAPPYorSAD/assets/js/script.js" type="1d433aff6b2b8dd82abe2a72-text/javascript"></script>
-
-
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1d433aff6b2b8dd82abe2a72-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"910743f1baeee2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
     </body>
-
-
 </html>
