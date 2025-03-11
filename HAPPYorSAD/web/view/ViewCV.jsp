@@ -129,7 +129,7 @@
 
                         <div class="settings-widget card-details mb-0">
                             <div class="settings-menu p-0">
-                                
+
                                 <div class="checkout-form personal-address">
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -217,6 +217,10 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="input-block">
+                                                    <label>Price</label>
+                                                    <textarea name="price" rows="3" readonly>${cv.price}</textarea>
+                                                </div>
                                                 <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
                                             </form>
