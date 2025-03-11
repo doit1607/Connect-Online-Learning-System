@@ -161,6 +161,7 @@ public class ViewRequest extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int requestId = Integer.parseInt(request.getParameter("id"));
+        HttpSession session = request.getSession();
         System.out.println("Request ID: " + requestId);
 
         TransactionDAO daotran = new TransactionDAO();
@@ -176,39 +177,34 @@ public class ViewRequest extends HttpServlet {
         }
 
         int menteeid = newrequest.getMenteeId();
-        System.out.println("Mentee ID: " + menteeid);
-
         int menteeuser_id = daomentee.getMenteeUserid(menteeid);
-        System.out.println("Mentee User ID: " + menteeuser_id);
-
         String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
-        System.out.println("Mentee Username: " + usernamementee);
-
         double totalprice = newrequest.gettotalprice();
-        System.out.println("Total Price: " + totalprice);
-
         String status = request.getParameter("status");
-        System.out.println("Status: " + status);
-
         if (status.equals("Pending")) {
-            System.out.println("Updating request status to Pending");
             dao.updateRequestStatus(requestId, "Pending");
             try {
-                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId); // Lấy slotId từ requestId
+                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId); 
                 for (entity.Slot slot : slots) {
                     System.out.println(slot);
-                    int slotId = slot.getId(); // Lấy slotId từ đối tượng Slot
+                    int slotId = slot.getId(); 
                     daoSl.updateSlotStatus(slotId, "Pending");
                     System.out.println(slotId);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
             }
+            daotran.updateHoldAfterReject(usernamementee, totalprice);
+            daotran.withdrawToWallet(usernamementee, totalprice);
+            daotran.depositToWallet("robert_jones", totalprice);
+            daotran.createTransaction("robert_jones", totalprice, "DEPOSIT", "Tien dang ky khoa hoc cua mentee " + usernamementee);
         } else if (status.equals("Cancel")) {
             System.out.println("Updating request status to Cancel");
             daotran.updateHoldAfterReject(usernamementee, totalprice);
-            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT");
+            double hold = daotran.getHold(usernamementee);
+            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT" , "Mentor tu choi khoa hoc");
             dao.updateRequestStatus(requestId, status);
+            session.setAttribute("walletHold", hold);
         } else {
             System.out.println("Error: Invalid status received - " + status);
         }
