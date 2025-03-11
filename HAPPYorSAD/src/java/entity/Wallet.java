@@ -13,6 +13,7 @@ import java.util.Date;
 public class Wallet {
     private String username;
     private double balance;
+    
 
     // Constructor
     public Wallet(String username, double balance) {
