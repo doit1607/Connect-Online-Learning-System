@@ -46,7 +46,6 @@ public class UpdateCourse extends HttpServlet {
         String description = request.getParameter("description");
         String status = request.getParameter("status");
         int courseMajorId = Integer.parseInt(request.getParameter("course_major_id"));
-        double price = Double.parseDouble(request.getParameter("price"));
         
         DAOCourse courseDAO = new DAOCourse();
          Part filePart = request.getPart("image");
