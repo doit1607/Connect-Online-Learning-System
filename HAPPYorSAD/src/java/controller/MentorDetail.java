@@ -63,6 +63,7 @@ public class MentorDetail extends HttpServlet {
         DAOMentor dao = new DAOMentor();
         DAOCourse daoC = new DAOCourse();
         Mentor1 mentor = dao.getMentorById(mentorIdDetail);
+        Double priceperslot = mentor.getPricePerSlot();
         ArrayList<Course> list = daoC.getCourseByMentorId(mentorIdDetail);
         HttpSession session = request.getSession();
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
@@ -70,6 +71,7 @@ public class MentorDetail extends HttpServlet {
         session.setAttribute("mentor", mentor);
         session.setAttribute("list", list);
         request.setAttribute("mentorId", mentorId);
+        request.setAttribute("priceperslot", priceperslot);
         request.setAttribute("courseId", courseId);
 
         // Default to current month/year if not provided
