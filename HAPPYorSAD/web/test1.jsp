@@ -1,3 +1,5 @@
+
+</html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -7,7 +9,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <meta charset="UTF-8">
         <title>DreamLMS</title>
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
@@ -546,51 +547,40 @@
                 3: "13:00-15:00",
                 4: "15:30-17:30",
                 5: "19:30-21:30"
-
             };
             var timeToSlotMap = Object.fromEntries(
                     Object.entries(slotTimeMap).map(([key, value]) => [value, key])
                     );
-        </script> 
+        </script>
+
         <script>
             function showNotification(message) {
                 const notification = document.getElementById("notification");
                 const notificationMessage = document.getElementById("notification-message");
 
                 notificationMessage.textContent = message;
-                notification.classList.add("show"); // Hiển thị popup
+                notification.classList.add("show");
 
-                // Tự động ẩn sau 3 giây (tùy chỉnh)
                 setTimeout(() => {
                     notification.classList.remove("show");
                 }, 3000);
             }
+
             document.addEventListener("DOMContentLoaded", function () {
-                const startDateInput = document.getElementById("start-date");
                 const endDateInput = document.getElementById("end-date");
 
-                startDateInput.addEventListener("change", function () {
+                // Chỉ kiểm tra endDate so với startDate (nếu có) và ngày hiện tại
+                endDateInput.addEventListener("change", function () {
                     const today = new Date();
                     today.setHours(0, 0, 0, 0);
-                    const startDate = new Date(this.value);
-
-                    if (startDate < today) {
-                        showNotification("Start Date cannot be in the past!"); // Thay alert()
-                        this.value = "";
-                    }
-                });
-
-                endDateInput.addEventListener("change", function () {
-                    const startDate = new Date(startDateInput.value);
                     const endDate = new Date(this.value);
 
-                    if (startDateInput.value && endDate < startDate) {
-                        showNotification("End Date cannot be earlier than Start Date!"); // Thay alert()
+                    if (endDate < today) {
+                        showNotification("End Date cannot be in the past!");
                         this.value = "";
                     }
                 });
             });
-
         </script>
     </head>
     <div id="notification" class="notification">
@@ -627,12 +617,9 @@
                 </div>
             </div>
 
-
-
             <!-- Page Content -->
             <div class="content doctor-content">
                 <div class="container">
-
                     <!-- Mentor and Course Info Section -->
                     <div class="mentor-course-info mb-4">
                         <div class="row">
@@ -687,20 +674,18 @@
 
                     <div class="row">
                         <div class="col-12">
-
                             <form id="bookingForm" action="/../HAPPYorSAD/test" method="post">
-                                <input type="hidden" name="mentorId" value= "${requestScope.mentorId}">   
-                                <input type="hidden" name="courseId" value="${requestScope.courseId}">   
-                                <input type="hidden" name="price" value="${requestScope.price}">   
+                                <input type="hidden" name="mentorId" value="${requestScope.mentorId}">
+                                <input type="hidden" name="courseId" value="${requestScope.courseId}">
+                                <input type="hidden" name="price" value="${requestScope.price}">
                                 <c:if test="${not empty requestScope.requestId}">
                                     <input type="hidden" name="requestId" value="${requestScope.requestId}">
                                 </c:if>
-                                <input type="hidden" id="currentWeekOffset" value="0"> 
-
+                                <input type="hidden" id="currentWeekOffset" value="0">
 
                                 <div class="title-container">
                                     <label for="request-title">Title:</label>
-                                    <input type="text" id="request-title" name="title"<c:if test="${requestScope.title != null}">value="${requestScope.title}" </c:if>required>
+                                    <input type="text" id="request-title" name="title" <c:if test="${requestScope.title != null}">value="${requestScope.title}"</c:if> required>
                                     </div>
 
                                     <div class="content-container">
@@ -709,31 +694,17 @@
                                     </div>
                                     <div class="date-container">
                                         <div>
-                                            <label for="start-date">Deadline Start:</label>
-                                            <input type="date" id="start-date" name="startdate" 
-                                                   value="${requestScope.startdate}" 
-                                            required>
-                                    </div>
-                                    <div>
-                                        <label for="end-date">Deadline End:</label>
-                                        <input type="date" id="end-date" name="enddate" 
-                                               value="${requestScope.enddate}" 
-                                               required>
+                                            <label for="end-date">Deadline Expected Confirm:</label>
+                                            <input type="date" id="end-date" name="enddate" value="${requestScope.enddate}" required>
                                     </div>
                                 </div>
                         </div>
-
-
 
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6">
                                 <h4 class="mb-1">
                                     <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/>
                                 </h4>
-                                <!--                                    <p class="text-muted">
-                                <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/>
-                            </p>-->
-
                             </div>
                             <div class="col-12 col-sm-8 col-md-6 text-sm-end">
                                 <div class="dropdown">
@@ -754,14 +725,11 @@
                         </div>
                         <input type="hidden" name="totalSlots" id="totalSlots" value="0">
                         <!-- Schedule Widget -->
-                        <!-- Schedule Widget -->
                         <div class="card booking-schedule schedule-widget">
-
                             <!-- Schedule Header -->
                             <div class="schedule-header">
                                 <div class="row">
                                     <div class="col-md-12">
-
                                         <!-- Day Slot -->
                                         <div class="day-slot">
                                             <ul class="week-list">
@@ -773,7 +741,7 @@
                                                 <c:forEach var="entry" items="${weekDateInfoMap}">
                                                     <li>
                                                         <span>${entry.value['dayOfWeek']}</span>
-                                                        <span class="slot-date">${entry.value['day']} ${entry.value['month']} 
+                                                        <span class="slot-date">${entry.value['day']} ${entry.value['month']}
                                                             <small class="slot-year">${entry.value['year']}</small>
                                                         </span>
                                                     </li>
@@ -786,13 +754,10 @@
                                             </ul>
                                         </div>
                                         <!-- /Day Slot -->
-
-
                                     </div>
                                 </div>
                             </div>
                             <!-- /Schedule Header -->
-
                             <!-- Schedule Content -->
                             <div class="schedule-cont">
                                 <div class="row">
@@ -804,32 +769,32 @@
                                                     <li>
                                                         <c:choose>
                                                             <c:when test="${not empty slotsByDay[entry.key]}">
-                                                                <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
                                                                 <c:forEach var="slotNumber" begin="1" end="5">
-                                                                    <div class="slot-row"> <!-- Thêm div để chia thành từng hàng -->
+                                                                    <div class="slot-row">
                                                                         <c:set var="slotFound" value="false" />
                                                                         <c:forEach var="slot" items="${slotsByDay[entry.key]}">
                                                                             <c:if test="${slot.slotNumber == slotNumber}">
                                                                                 <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
-                                                                                    <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                        </a>
-                                                                                    <c:set var="slotFound" value="true" />
-                                                                                </c:if>
-                                                                            </c:forEach>
-                                                                            <c:if test="${not slotFound}">
-                                                                            <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
-
-                                                                                <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                    </a>
+                                                                                    <span>Slot ${slotNumber}</span>
+                                                                                </a>
+                                                                                <c:set var="slotFound" value="true" />
                                                                             </c:if>
+                                                                        </c:forEach>
+                                                                        <c:if test="${not slotFound}">
+                                                                            <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;">
+                                                                                <span>Slot ${slotNumber}</span>
+                                                                            </a>
+                                                                        </c:if>
                                                                     </div>
                                                                 </c:forEach>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div class="slot-row">
-                                                                    <!-- Nếu không có slot nào, hiển thị 5 hàng disabled -->
                                                                     <c:forEach var="slotNumber" begin="1" end="5">
-                                                                        <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
-                                                                            <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                            </a>
-                                                                        </c:forEach>
+                                                                        <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;">
+                                                                            <span>Slot ${slotNumber}</span>
+                                                                        </a>
+                                                                    </c:forEach>
                                                                 </div>
                                                             </c:otherwise>
                                                         </c:choose>
@@ -860,7 +825,7 @@
                                             </div>
                                             <div id="slotsOption" style="display: none;">
                                                 <label for="maxSlots">Số lượng slot tối đa: </label>
-                                                +<input type="number" id="maxSlots" min="1" max="20" value="5">
+                                                <input type="number" id="maxSlots" min="1" max="20" value="5">
                                             </div>
                                         </div>
                                         <button id="bookSlots" type="button">Book Selected Slots</button>
@@ -869,9 +834,7 @@
                                 </div>
                             </div>
                             <!-- /Schedule Content -->
-
-                            <!-- Schedule hiển thị slot đã book (thời khóa biểu) -->
-                            <!-- Schedule hiển thị slot đã book (thời khóa biểu) -->
+                            <!-- Schedule hiển thị slot đã book -->
                             <div id="bookedSchedule">
                                 <h3>Thời Khóa Biểu của Bạn</h3>
                                 <table class="schedule-table">
@@ -881,7 +844,7 @@
                                             <th>Ngày</th>
                                             <th>Tháng</th>
                                             <th>Năm</th>
-                                            <th>Slot</th> <!-- Thêm cột Slot -->
+                                            <th>Slot</th>
                                             <th>Thời Gian</th>
                                             <th>Trạng Thái</th>
                                         </tr>
@@ -891,9 +854,7 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div><!-- /Schedule Widget -->
-
                         <div class="price-display">
                             Total Price: <span class="price-amount">0</span>
                         </div>
@@ -906,12 +867,9 @@
                         </div>
                         <!-- /Submit Section -->
                     </div>
-
                     </form>
-
                 </div>
             </div>
-
         </div>
 
         <form id="hiddenForm" action="/HAPPYorSAD/test" method="GET">
@@ -924,7 +882,6 @@
             <input type="hidden" name="service" id="hiddenService">
         </form>
 
-        <!-- Đảm bảo có phần tử hiển thị tháng/năm hiện tại với ID -->
         <span id="selectedMonth" style="display:none;">${currentMonth} ${currentYear}</span>
 
         <script type="text/javascript">
@@ -932,10 +889,9 @@
                 console.log('Changing week with offset:', offsetChange);
                 let currentOffset = parseInt(document.getElementById("weekOffset").value) || 0;
                 let newOffset = currentOffset + offsetChange;
-                // Logic reset weekOffset khi thay đổi tháng (nếu cần)
                 if (typeof changeMonthTriggered !== 'undefined' && changeMonthTriggered) {
-                    newOffset = 0; // Reset weekOffset về 0 khi tháng thay đổi
-                    delete window.changeMonthTriggered; // Xóa flag sau khi xử lý
+                    newOffset = 0;
+                    delete window.changeMonthTriggered;
                 }
 
                 const selectedMonthElement = document.getElementById("selectedMonth");
@@ -952,7 +908,6 @@
                     console.error('Invalid month format. Expected format: "Month Year" (e.g., "March 2025")');
                     return;
                 }
-
 
                 const month = parts[0];
                 const year = parts[1];
@@ -974,12 +929,11 @@
         </script>
 
         <script>
-// Hàm hiển thị thông báo
+            // Hàm hiển thị thông báo
             function showNotification(message) {
                 alert(message);
             }
 
-// Biến toàn cục (no change here)
             const eventHandlersAttached = {
                 submitBtn: false,
                 bookSlotsBtn: false,
@@ -989,7 +943,6 @@
             };
 
             document.addEventListener("DOMContentLoaded", function () {
-                // Khai báo các biến cần thiết (no change here)
                 const timeSlots = document.querySelectorAll(".timing");
                 const priceDisplay = document.querySelector(".price-amount");
                 const pricePerSlot = ${requestScope.price};
@@ -1011,7 +964,6 @@
                 const bookedSlotsContainer = document.getElementById("bookedSlotsContainer");
                 const requestTitle = document.getElementById("request-title");
                 const requestContent = document.getElementById("request-content");
-                const startDate = document.getElementById("start-date");
                 const endDate = document.getElementById("end-date");
                 const clearAllBtn = document.getElementById("clearAllBtn");
                 const bookingForm = document.getElementById("bookingForm");
@@ -1026,42 +978,33 @@
                 let isSaveProcessing = false;
                 let isClearProcessing = false;
 
-                // Khôi phục dữ liệu form từ sessionStorage (no change here)
                 function restoreFormData() {
                     const savedTitle = sessionStorage.getItem("requestTitle");
                     const savedContent = sessionStorage.getItem("requestContent");
-                    const savedStartDate = sessionStorage.getItem("startDate");
                     const savedEndDate = sessionStorage.getItem("endDate");
 
                     if (savedTitle)
                         requestTitle.value = savedTitle;
                     if (savedContent)
                         requestContent.value = savedContent;
-                    if (savedStartDate)
-                        startDate.value = savedStartDate;
                     if (savedEndDate)
                         endDate.value = savedEndDate;
                 }
 
-                // Lưu dữ liệu form vào sessionStorage (no change here)
                 function saveFormData() {
                     sessionStorage.setItem("requestTitle", requestTitle.value);
                     sessionStorage.setItem("requestContent", requestContent.value);
-                    sessionStorage.setItem("startDate", startDate.value);
                     sessionStorage.setItem("endDate", endDate.value);
                     sessionStorage.setItem("tempSlotBooked", Array.from(tempSlotBooked).join(","));
                 }
 
-                // Xóa dữ liệu form khỏi sessionStorage sau khi submit thành công (no change here)
                 function clearFormData() {
                     sessionStorage.removeItem("requestTitle");
                     sessionStorage.removeItem("requestContent");
-                    sessionStorage.removeItem("startDate");
                     sessionStorage.removeItem("endDate");
                     sessionStorage.removeItem("tempSlotBooked");
                 }
 
-                // Cập nhật lịch đã đặt (no change here)
                 function updateBookedSchedule() {
                     bookedSlotsContainer.innerHTML = "";
                     tempSlotBooked.forEach(slot => {
@@ -1109,7 +1052,6 @@
                     });
                 }
 
-                // Cập nhật UI (no change here)
                 function updateUI() {
                     priceDisplay.textContent = totalPrice;
                     totalSlotsInput.value = totalSlots;
@@ -1129,7 +1071,6 @@
                     }
                 }
 
-                // Cập nhật giao diện slot tạm (no change here)
                 function updateTempSlotUI() {
                     timeSlots.forEach(slot => {
                         let slotInfo = slot.dataset.slotInfo;
@@ -1145,7 +1086,6 @@
                     updateBookedSchedule();
                 }
 
-                // Tạo slot lặp lại (no change here)
                 function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
                     let repeatedSlots = new Set();
                     let [dateStr, slotNumber] = slot.split("_");
@@ -1179,7 +1119,6 @@
                     return Array.from(repeatedSlots);
                 }
 
-                // Hiển thị/ẩn tùy chọn repeat (no change here)
                 repeatCheckbox.addEventListener("change", function () {
                     repeatOptions.style.display = this.checked ? "block" : "none";
                 });
@@ -1198,12 +1137,10 @@
                     }
                 });
 
-                // Lưu dữ liệu form khi thay đổi (no change here)
-                [requestTitle, requestContent, startDate, endDate].forEach(input => {
+                [requestTitle, requestContent, endDate].forEach(input => {
                     input.addEventListener("input", saveFormData);
                 });
 
-                // Gắn handler cho timeSlots (no change here)
                 if (!eventHandlersAttached.timeSlots) {
                     timeSlots.forEach(slot => {
                         slot.addEventListener("click", function (event) {
@@ -1236,7 +1173,6 @@
                     eventHandlersAttached.timeSlots = true;
                 }
 
-                // Gắn handler cho bookSlotsBtn (removed debounce)
                 if (!eventHandlersAttached.bookSlotsBtn && bookSlotsBtn) {
                     console.log("Attaching handler for bookSlotsBtn at " + new Date().toISOString());
                     bookSlotsBtn.addEventListener("click", function (event) {
@@ -1297,7 +1233,6 @@
                     eventHandlersAttached.bookSlotsBtn = true;
                 }
 
-                // Gắn handler cho clearAllBtn (removed debounce)
                 if (!eventHandlersAttached.clearAllBtn && clearAllBtn) {
                     console.log("Attaching handler for clearAllBtn at " + new Date().toISOString());
                     clearAllBtn.addEventListener("click", function (event) {
@@ -1348,7 +1283,6 @@
                     eventHandlersAttached.clearAllBtn = true;
                 }
 
-                // Gắn handler cho submitBtn (removed debounce)
                 if (!eventHandlersAttached.submitBtn && submitBtn) {
                     submitBtn.addEventListener("click", function (event) {
                         event.preventDefault();
@@ -1424,7 +1358,6 @@
                     eventHandlersAttached.submitBtn = true;
                 }
 
-                // Gắn handler cho saveBtn (removed debounce)
                 if (!eventHandlersAttached.saveBtn && saveBtn) {
                     console.log("Attaching handler for saveBtn at " + new Date().toISOString());
                     saveBtn.addEventListener("click", function (event) {
@@ -1461,7 +1394,6 @@
                     eventHandlersAttached.saveBtn = true;
                 }
 
-                // Xử lý chọn tháng (no change here)
                 monthItems.forEach(item => {
                     item.addEventListener("click", function (event) {
                         event.preventDefault();
@@ -1469,7 +1401,7 @@
                         document.getElementById("selectedMonth").textContent = selectedMonth;
 
                         localStorage.setItem("selectedMonth", selectedMonth);
-                        window.changeMonthTriggered = true; // Đặt flag để báo hiệu thay đổi tháng
+                        window.changeMonthTriggered = true;
 
                         const parts = selectedMonth.split(" ");
                         if (parts.length === 2) {
@@ -1485,8 +1417,6 @@
                     });
                 });
 
-
-                // Khởi tạo UI (no change here)
                 window.addEventListener("load", function () {
                     const savedMonth = localStorage.getItem("selectedMonth");
                     const currentDate = new Date();
@@ -1512,7 +1442,7 @@
                                             item.classList.remove("active");
                                         }
                                     });
-                                    localStorage.setItem("selectedMonth", defaultMonth);
+                                    localStorage.setItem("savedMonth", defaultMonth);
                                 }
                                 updateTempSlotUI();
                                 restoreFormData();
@@ -1528,29 +1458,24 @@
                     showNotification("${sessionScope.msg}");
                 });
             </script>
-            <c:remove var="msg" scope="session"/> 
+            <c:remove var="msg" scope="session"/>
         </c:if>
-
 
         <!-- /Page Content -->
         <%@include file="/sourcesHome/homeFooter.jsp" %>
-
-
-        </div>
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
-        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
-        crossorigin="anonymous"></script>
-        
-<!--        aaa-->
-    </body>
-
+    </div>
+    <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+    data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
+    crossorigin="anonymous"></script>
+</body>
 </html>
