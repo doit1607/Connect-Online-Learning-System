@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DaoCV extends DBConnection {
 
-    public void createCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username) {
+    public void createCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username, Double price) {
         String sql = "INSERT INTO [dbo].[CV]\n"
                 + "           ([profession]\n"
                 + "           ,[professionIntro]\n"
@@ -29,8 +29,9 @@ public class DaoCV extends DBConnection {
                 + "           ,[achievementDescription]\n"
                 + "           ,[created_at]\n"
                 + "           ,[username]\n"
-                + "           ,[status])\n"
-                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                + "           ,[status]\n"
+                + "           ,[price])\n"
+                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, profession);
@@ -41,6 +42,7 @@ public class DaoCV extends DBConnection {
             pre.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             pre.setString(7, username);
             pre.setString(8, "draft");
+            pre.setDouble(9, price);
             pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +82,7 @@ public class DaoCV extends DBConnection {
                 return new CV(
                         rs.getString("username"), rs.getString("profession"),
                         rs.getString("professionIntro"), courses, rs.getString("serviceDescription"),
-                        rs.getString("achievementDescription"), createdAt, "Pending"
+                        rs.getString("achievementDescription"), createdAt, "Pending", rs.getDouble("price")
                 );
             }
         } catch (Exception e) {
@@ -124,13 +126,14 @@ public class DaoCV extends DBConnection {
         return listApproved;
     }
 
-    public void updateCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username) {
+    public void updateCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username, Double price) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [profession] = ?\n"
                 + "      ,[professionIntro] = ?\n"
                 + "      ,[courses] = ?\n"
                 + "      ,[serviceDescription] = ?\n"
                 + "      ,[achievementDescription] = ?\n"
+                + "      ,[price] = ?\n"
                 + " WHERE [username] = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -140,7 +143,8 @@ public class DaoCV extends DBConnection {
             pre.setString(3, coursesStr);
             pre.setString(4, serviceDescription);
             pre.setString(5, achievementDescription);
-            pre.setString(6, username);
+            pre.setDouble(6, price);
+            pre.setString(7, username);
 
             pre.executeUpdate();
         } catch (Exception e) {
@@ -191,7 +195,7 @@ public class DaoCV extends DBConnection {
                 Arrays.asList("Business Administration", "Graphic Design"),
                 "Freelance software development",
                 "Built multiple web applications",
-                "dungtm");
+                "nancy_miller", 140.00);
 
     }
 }
