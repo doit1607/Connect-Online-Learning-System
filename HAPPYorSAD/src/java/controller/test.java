@@ -347,7 +347,7 @@ public class test extends HttpServlet {
         int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
 
         Mentor mentor = daomentor.getMentorByID(mentorId);
-        double price = daocourse.getPriceCourse(courseId);
+        double price = Double.parseDouble(request.getParameter("priceperslot"));
 
         // Gán các giá trị cơ bản vào request
         request.setAttribute("mentorrequest", mentor);
