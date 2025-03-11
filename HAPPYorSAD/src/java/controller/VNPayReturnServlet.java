@@ -56,7 +56,7 @@ public class VNPayReturnServlet extends HttpServlet {
         String service = request.getParameter("service");
         if ("deposit".equalsIgnoreCase(service)) {
             if ("00".equals(vnp_ResponseCode)) {
-                int id = transactionDAO.createTransaction(username, amount, "DEPOSIT");
+                int id = transactionDAO.createTransaction(username, amount, "DEPOSIT" , "Nap tien thanh cong");
                 transactionDAO.depositToWallet(username, amount);
                 double balance = transactionDAO.getBalance(username);
                 double totalbalance = transactionDAO.getTotalBalance(username);
@@ -74,7 +74,7 @@ public class VNPayReturnServlet extends HttpServlet {
             double wallet = transactionDAO.getBalance(username); 
 
             if (amount <= wallet) {
-                int id = transactionDAO.createTransaction(username, amount, "WITHDRAW");
+                int id = transactionDAO.createTransaction(username, amount, "WITHDRAW","Rut tien thanh cong");
                 transactionDAO.withdrawToWallet(username, amount);
                 double newBalance = transactionDAO.getBalance(username); 
 
