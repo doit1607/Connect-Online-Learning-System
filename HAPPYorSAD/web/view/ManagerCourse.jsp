@@ -253,7 +253,6 @@
                                             <th>Image</th>
                                             <th>Course Name</th>
                                             <th>Update At</th>
-                                            <th>Price</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -265,7 +264,6 @@
                                                     <a href="DetailCourseManager?Cid=${o.id}">${o.title}</a>
                                                 </td>
                                                 <td>${o.updatedAt}</td>
-                                                <td>${o.price}</td>
                                                 <td>
                                                     <div style="background-color: ${o.status == 'active' ? '#28a745' : '#dc3545'};
                                                          color: white; padding: 8px 12px; border-radius: 5px; display: inline-block;">
@@ -273,7 +271,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button onclick="showEditForm('${o.id}', '${o.title}', '${o.description}', '${o.status}', '${o.courseMajorId}', '${o.price}', '${o.image}')" 
+                                                    <button onclick="showEditForm('${o.id}', '${o.title}', '${o.description}', '${o.status}', '${o.courseMajorId}', '${o.image}')" 
                                                             class="resut-badge badge-light-danger approve">Edit</button>
 
                                                 </td>
@@ -333,9 +331,6 @@
                                         </c:forEach>
                                     </select>
 
-                                    <label>Price:</label>
-                                    <input type="number" name="price" step="0.01" required>
-
                                     <label>Upload Image:</label>
                                     <input type="file" name="image">
 
@@ -351,7 +346,7 @@
             </div>
             <script>
 
-                function showEditForm(id, title, description, status, courseMajorId, price, image) {
+                function showEditForm(id, title, description, status, courseMajorId, image) {
                     document.getElementById("editFormOverlay").style.display = "flex";
                     document.body.classList.add("overlay-active");
 
@@ -361,7 +356,6 @@
                     document.querySelector("textarea[name='description']").value = description;
                     document.querySelector("select[name='status']").value = status;
                     document.querySelector("select[name='course_major_id']").value = courseMajorId;
-                    document.querySelector("input[name='price']").value = price;
 
                 }
 
