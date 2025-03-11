@@ -93,9 +93,6 @@
                                                     <a href="CourseDetails?Cid=${o.id}">
                                                         <img  class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
-<!--                                                    <div class="price">
-                                                        <h3>${o.price}</h3>
-                                                    </div>-->
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="head-course-title">
