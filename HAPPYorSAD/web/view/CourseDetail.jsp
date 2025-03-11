@@ -154,7 +154,6 @@
                                     <h2 class="subs-title">Overview</h2>
                                     <h5>Course Title</h5>
                                     <h5><p>${detail.title}</p> </h5>
-
                                     <h5>Course Major</h5>
                                     <h5><p>${majorName}</p>  </h5>  
                                     <h5>Course Description</h5>
@@ -171,24 +170,20 @@
                                     <div class="col-lg-12 d-flex">
                                         <div class="instructor-list flex-fill">
                                             <div class="instructor-img">
-                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}">
+                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}">
                                                     <img class="img-fluid" alt="Img" src="${mentor.image}">
                                                 </a>
+                                                <div class="price">
+                                                    <h3> ${mentor.pricePerSlot}đ</h3>
+                                                </div>
                                             </div>
                                             <div class="instructor-content">												
-                                                <h5><a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}">${mentor.name}</a></h5>
+                                                <h5><a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}">${mentor.name}</a></h5>
                                                 <h6>@${mentor.username}</h6>
                                                 <div class="instructor-info">
-                                                    <div class="rating-img d-flex align-items-center justify-content-center">
-                                                        <img src="assets/img/icon/icon-01.svg" class="me-1" alt="Img">
-                                                        <p>12+ Lesson</p>
-                                                    </div>
-                                                    <div class="course-view d-flex align-items-center justify-content-center">
-                                                        <img src="assets/img/icon/icon-02.svg" class="me-1" alt="Img">
-                                                        <p>9hr 30min</p>
-                                                    </div>
                                                     <div class="rating-img d-flex align-items-center">
                                                         <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
+
                                                         <p>${mentor.total_mentees} Mentees</p>
                                                     </div>
                                                     <div class="rating">
@@ -215,9 +210,8 @@
                                                 </div>
                                             </div>
                                             <h2>
-                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${price}" 
+                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
                                                    class="btn btn-enroll w-100">View</a>
-
                                             </h2>
                                         </div>
                                     </div>
