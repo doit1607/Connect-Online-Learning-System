@@ -161,8 +161,8 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="contact-info">
-                                                    <h6>Last Name</h6>
-                                                    <p>${sessionScope.profile.fullname}</p>
+                                                    <h6>Price</h6>
+                                                    <p>${sessionScope.profile.pricePerSlot}</p>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
