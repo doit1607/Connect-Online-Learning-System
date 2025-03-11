@@ -161,7 +161,6 @@
                                             <div class="detail-item"><strong>Created At: </strong> ${detail.createdAt}</div>
                                             <div class="detail-item"><strong>Update At: </strong> ${detail.updatedAt}</div>
                                             <div class="detail-item"><strong>course Major Id: </strong> ${detail.courseMajorId}</div>                                          
-                                            <div class="detail-item"><strong>Price: </strong> ${detail.price}</div>
                                         </c:when>
                                         <c:otherwise>
                                             <div class="no-data text-center">No Course found</div>
