@@ -248,10 +248,16 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <div class="input-block">
                                                     <label class="form-label">Address <span class="required">*</span></label>
                                                     <input type="text" class="form-control" id="address" name="address" value="${mentor.address}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-block">
+                                                    <label class="form-label">Price <span class="required">*</span></label>
+                                                    <input type="text" class="form-control" id="price" name="price" value="${mentor.pricePerSlot}" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
