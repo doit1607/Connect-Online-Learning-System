@@ -171,11 +171,18 @@
                                             <i class="bx bxs-graduation"></i>Request
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="Notifications" class="nav-link">
-                                            <i class="bx bxs-bell"></i>Notifications
-                                        </a>
-                                    </li>
+                                    <%
+                                            String requestStatus = (String) session.getAttribute("menteeRequestStatus");
+                                            if ("Completed".equals(requestStatus)) {
+                                        %>
+                                        <li class="nav-item">
+                                            <a href="reviewmentor" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Review Mentor
+                                            </a>
+                                        </li>
+                                        <%
+                                            }
+                                        %>
                                 </ul>
                                 <h3>Account Settings</h3>
                                 <ul>
