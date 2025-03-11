@@ -20,6 +20,7 @@ public class CV {
     public LocalDateTime createdAt;
     public String status;
     public String message;
+    public Double price;
 
     public CV() {
     }
@@ -33,9 +34,10 @@ public class CV {
         this.achievementDescription = achievementDescription;
         this.createdAt = createdAt;
         this.status = status;
+        
     }
 
-    public CV(String username, String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, LocalDateTime createdAt, String message) {
+    public CV(String username, String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, LocalDateTime createdAt, String message, Double price) {
         this.username = username;
         this.profession = profession;
         this.professionIntro = professionIntro;
@@ -44,6 +46,7 @@ public class CV {
         this.achievementDescription = achievementDescription;
         this.createdAt = createdAt;
         this.message = message;
+        this.price = price;
     }
     
 
@@ -122,4 +125,13 @@ public class CV {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    
 }
