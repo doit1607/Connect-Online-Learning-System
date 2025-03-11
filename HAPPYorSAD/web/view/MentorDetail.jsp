@@ -288,7 +288,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <h2><a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&priceperslot=${param.priceperslot}" class="btn btn-enroll w-100">Invite</a></h2>
+                                                <h2><a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" class="btn btn-enroll w-100">Invite</a></h2>
                                             </div>
                                         </div>
                                     </div>
