@@ -4,6 +4,7 @@
  */
 package controller;
 
+import entity.Mentor;
 import entity.MentorReview;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.DAORateMentor;
 import model.DAOuser;
@@ -50,12 +52,21 @@ public class ReviewMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
-        DAOuser dao1 = new DAOuser();
+
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
-        int menteeId = dao1.getUserIdByUsername(username);
+        String requestStatus = dao.getRequestStatusByMentee(username);
+        session.setAttribute("menteeRequestStatus", requestStatus);
+
+        int menteeId = dao.getMenteeIdByUsername(username);
         session.setAttribute("menteeID", menteeId);
-        
+
+        List<Mentor> mentorList = dao.getAllMentors(menteeId);
+        request.setAttribute("mentorList", mentorList);
+
+        List<Integer> reviewedMentorIds = dao.getReviewedMentorsByMentee(username);
+        session.setAttribute("reviewedMentorIds", reviewedMentorIds);
+
         String mentorIdStr = request.getParameter("mentorId");
         //String menteeIdStr = request.getParameter("menteeId");
         String ratingStr = request.getParameter("rating");
