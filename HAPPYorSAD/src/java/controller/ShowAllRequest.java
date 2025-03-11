@@ -57,11 +57,9 @@ public class ShowAllRequest extends HttpServlet {
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
         String service = request.getParameter("service");
-        if ("confirm".equals(service)) {
+        if ("confirm".equals(service)) {           
             int requestId = Integer.parseInt(request.getParameter("requestid"));
-            Request newrequest = dao.getRequestById(requestId);
-            int menteeid = newrequest.getMenteeId();
-            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+             dao.updateRequestStatus(requestId, "Processing");
             try {
                 List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId);
                 for (entity.Slot slot : slots) {
@@ -71,33 +69,25 @@ public class ShowAllRequest extends HttpServlet {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
-            double totalprice = newrequest.gettotalprice();
-            dao.updateRequestStatus(requestId, "Processing");
-
-            daotran.updateHoldAfterReject(usernamementee, totalprice);
-            daotran.withdrawToWallet(usernamementee, totalprice);
-            daotran.depositToWallet((String) session.getAttribute("usernameUser"), totalprice);
-            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
-            double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
-            session.setAttribute("walletBalance", balance);
+            }      
         }
         if ("closed".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
             Request newrequest = dao.getRequestById(requestId);
             int mentorid = newrequest.getMentorId();
             int mentoruser_id = daomentor.getMentorUserid(mentorid);
+            int menteeid = newrequest.getMenteeId();
+            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
             double finalprice = Double.parseDouble(request.getParameter("finalprice"));
             String usernamementor = daomentor.getMentorUsername(mentoruser_id);
             dao.updateRequestStatus(requestId, "Closed");
             daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), finalprice);
-            daotran.createTransaction((String) (String) session.getAttribute("usernameUser"), finalprice, "WITHDRAW");
+            daotran.createTransaction((String) (String) session.getAttribute("usernameUser"), finalprice, "WITHDRAW", "Chuyen tien khoa hoc cho mentor " + usernamementor);
             daotran.depositToWallet(usernamementor, finalprice);
-            daotran.createTransaction((String) usernamementor, finalprice, "DEPOSIT");
+            daotran.createTransaction((String) usernamementor, finalprice, "DEPOSIT", "Tien khoa hoc cua mentee " + usernamementee);
             double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
-            session.setAttribute("walletBalance", balance);            
+            session.setAttribute("walletBalance", balance);
         }
 
         LocalDate startDate = (startDateStr != null && !startDateStr.isEmpty()) ? LocalDate.parse(startDateStr) : null;
