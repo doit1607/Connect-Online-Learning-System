@@ -140,6 +140,23 @@ public class DAOuser extends DBConnection {
         }
         return role;
     }
+    
+     public String getEmail(String username) {
+        String sql = "Select email from Users where username = ?";
+        String role = null;
+        try {
+
+            PreparedStatement state = conn.prepareStatement(sql);
+            state.setString(1, username);
+            ResultSet rs = state.executeQuery();
+            if (rs.next()) {
+                role = rs.getString("email");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return role;
+    }
 
     public boolean checkUsernameExist(String username) {
         try {
