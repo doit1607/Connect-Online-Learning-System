@@ -17,16 +17,17 @@ public class Transaction {
     private String type;  // 'DEPOSIT', 'WITHDRAW', 'COURSE_REGISTRATION'
     private double amount;
     private Date transactionDate;   
-    private String status;  // 'PENDING', 'COMPLETED', 'FAILED'
-    private int courseId;  // For course registration
-    private String managerUsername;  // For manager's username during registration
+    private String status;  
+    private int courseId; 
+    private String description;
+    private String managerUsername;  
 
     // Constructor
     
     public Transaction() {
     }
 
-    public Transaction(int transactionId, String username, String type, double amount, Date transactionDate, String status, int courseId, String managerUsername) {
+    public Transaction(int transactionId, String username, String type, double amount, Date transactionDate, String status, int courseId, String description, String managerUsername) {
         this.transactionId = transactionId;
         this.username = username;
         this.type = type;
@@ -34,10 +35,10 @@ public class Transaction {
         this.transactionDate = transactionDate;
         this.status = status;
         this.courseId = courseId;
+        this.description = description;
         this.managerUsername = managerUsername;
     }
 
-    // Getters and Setters
     public int getTransactionId() {
         return transactionId;
     }
@@ -94,6 +95,14 @@ public class Transaction {
         this.courseId = courseId;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getManagerUsername() {
         return managerUsername;
     }
@@ -101,4 +110,6 @@ public class Transaction {
     public void setManagerUsername(String managerUsername) {
         this.managerUsername = managerUsername;
     }
+
+    
 }
