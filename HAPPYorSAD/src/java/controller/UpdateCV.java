@@ -90,11 +90,23 @@ public class UpdateCV extends HttpServlet {
 
         String coursesString = String.join(", ", courses);
 
+        Double price = null;
+        try {
+            String priceStr = request.getParameter("price");
+            if (priceStr != null && !priceStr.trim().isEmpty()) {
+                price = Double.parseDouble(priceStr);
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid price format.");
+            request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
+            return;
+        }
+
         if (!profession.isEmpty() && !professionIntro.isEmpty()
                 && !serviceDescription.isEmpty() && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
-            dao.updateCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username);
+            dao.updateCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username, price);
 
             DAOAcceptCV dao1 = new DAOAcceptCV();
             String submitApproval = request.getParameter("submitApproval");
