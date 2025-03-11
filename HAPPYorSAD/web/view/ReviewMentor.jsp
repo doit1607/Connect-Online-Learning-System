@@ -1,3 +1,4 @@
+<%@ page import="java.util.List, entity.Mentor" %>
 <%-- 
     Document   : ReviewMentor
     Created on : Feb 3, 2025, 11:38:35 PM
@@ -75,20 +76,65 @@
                     <div class="row">
 
                         <!-- Sidebar -->
+                        <!--                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                                                    <div class="settings-widget dash-profile">
+                                                        <div class="settings-menu">
+                                                            <div class="profile-bg">
+                                                                <div class="profile-img">
+                                                                    <a href="mentor-profile.html"><img src="assets/img/user/user-17.jpg" alt="Mentor Img"></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="profile-group">
+                                                                <div class="profile-name text-center">
+                                                                    <h4><a href="mentor-profile.html">Mentor's Name</a></h4>
+                                                                    <p>Mentor</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                            <div class="settings-widget dash-profile">
+
+                            <div class="settings-widget account-settings">
                                 <div class="settings-menu">
-                                    <div class="profile-bg">
-                                        <div class="profile-img">
-                                            <a href="mentor-profile.html"><img src="assets/img/user/user-17.jpg" alt="Mentor Img"></a>
-                                        </div>
-                                    </div>
-                                    <div class="profile-group">
-                                        <div class="profile-name text-center">
-                                            <h4><a href="mentor-profile.html">Mentor's Name</a></h4>
-                                            <p>Mentor</p>
-                                        </div>
-                                    </div>
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item ">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-user"></i>My Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
+                                            </a>
+                                        </li>
+                                        <%
+                                            String requestStatus = (String) session.getAttribute("menteeRequestStatus");
+                                            if ("Completed".equals(requestStatus)) {
+                                        %>
+                                        <li class="nav-item active">
+                                            <a href="reviewmentor" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Review Mentor
+                                            </a>
+                                        </li>
+                                        <%
+                                            }
+                                        %>
+                                    </ul>
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item ">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -97,40 +143,73 @@
                         <%
                             HttpSession userSession = request.getSession();
                             Integer menteeId = (Integer) userSession.getAttribute("menteeID");
-                            String mentorId = request.getParameter("mentorId");// neu sai thay bang int mentorId = ?;
+                            List<Mentor> mentorList = (List<Mentor>) request.getAttribute("mentorList");
                         %>
-                        <!-- Main Content -->
+
                         <div class="col-xl-9 col-lg-9">
                             <div class="card">
                                 <div class="card-body">
-                                    <h1 class="mb-4">Rate & Comment Mentor</h1>
+                                    <h1 class="mb-4">Select Mentor to Review</h1>
 
-                                    <!-- Rating Form -->
-                                    <form action="/HAPPYorSAD/reviewmentor" method="get">
-                                        <input type="hidden" name="mentorId" value="<%= mentorId %>">
-                                        <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
+                                    <!-- Mentor List -->
+                                    <div class="mentor-list">
+                                        <ul>
+                                            <% 
+                                            List<Integer> reviewedMentorIds = (List<Integer>) session.getAttribute("reviewedMentorIds");
+                                            if (mentorList != null) {
+                                                for (Mentor mentor : mentorList) { 
+                                                    boolean isReviewed = reviewedMentorIds != null && reviewedMentorIds.contains(mentor.getId());
+                                            %>
+                                            <li>
+                                                <% if (isReviewed) { %>
+                                                <a href="viewReview.jsp?mentorId=<%= mentor.getId() %>" class="btn btn-secondary">
+                                                    Xem đánh giá - <%= mentor.getName() %>
+                                                </a>
+                                                <% } else { %>
+                                                <button class="btn btn-link mentor-btn" data-mentor-id="<%= mentor.getId() %>" data-reviewed="false">
+                                                    <%= mentor.getName() %>
+                                                </button>
+                                                <% } %>
+                                            </li>
+                                            <%  } } %>
+                                        </ul>
+                                    </div>
 
-                                        <div class="rating mb-3">
-                                            <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
-                                            <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
-                                            <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
-                                            <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
-                                            <input type="radio" id="star5" name="rating" value="5"><label for="star5">&#9733;</label>
-                                        </div>
+                                    <!-- Review Form (Hidden by Default) -->
+                                    <div id="review-form" style="display: none;">
+                                        <h2 class="mb-3">Rate & Comment Mentor</h2>
+                                        <form action="/HAPPYorSAD/reviewmentor" method="get">  
+                                            <input type="hidden" name="mentorId" id="mentorId">
+                                            <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
 
-                                        <div class="form-group">
-                                            <label for="comment">Comment <span class="required">*</span></label>
-                                            <textarea class="form-control" name="comment" required rows="5"></textarea>
-                                        </div>
+                                            <div class="rating mb-3">
+                                                <input type="radio" id="star5" name="rating" value="5" required><label for="star5">&#9733;</label>
+                                                <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
+                                                <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
+                                                <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
+                                                <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+                                            </div>
 
-<!--                                        <input type="hidden" name="mentorId" value="${mentorId}">
-                                        <input type="hidden" name="menteeId" value="${menteeId}">-->
+                                            <div class="form-group">
+                                                <label for="comment">Comment <span class="required">*</span></label>
+                                                <textarea class="form-control" name="comment" required rows="5"></textarea>
+                                            </div>
 
-                                        <button type="submit" class="btn btn-primary">Submit Review</button>
-                                    </form>
+                                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.querySelectorAll('.mentor-btn').forEach(button => {
+                                button.addEventListener('click', function () {
+                                    let mentorId = this.getAttribute('data-mentor-id');
+                                    document.getElementById('mentorId').value = mentorId;
+                                    document.getElementById('review-form').style.display = 'block';
+                                });
+                            });
+                        </script>
                         <!-- /Main Content -->
                     </div>
                 </div>
