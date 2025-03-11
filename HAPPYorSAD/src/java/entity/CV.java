@@ -49,6 +49,17 @@ public class CV {
         this.price = price;
     }
     
+    public CV(String username, String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, LocalDateTime createdAt, String message) {
+        this.username = username;
+        this.profession = profession;
+        this.professionIntro = professionIntro;
+        this.courses = courses;
+        this.serviceDescription = serviceDescription;
+        this.achievementDescription = achievementDescription;
+        this.createdAt = createdAt;
+        this.message = message;
+    }
+    
 
     public String getUsername() {
         return username;
