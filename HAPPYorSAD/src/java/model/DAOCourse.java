@@ -31,6 +31,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
@@ -46,7 +47,8 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                Double price = result.getDouble("price");
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
                 listCourse.add(course);
             }
             result.close();
@@ -120,8 +122,9 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
+                Double price = result.getDouble("price");
 
-                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                Course course = new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
                 listCourse.add(course);
             }
             result.close();
@@ -241,7 +244,7 @@ public class DAOCourse extends DBConnection {
 
     public boolean updateCourse(Course course) {
         String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
-                + "updated_at = GETDATE(), course_major_id = ?, image = ?"
+                + "updated_at = GETDATE(), course_major_id = ?, image = ?, price = ? "
                 + "WHERE id = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -251,7 +254,8 @@ public class DAOCourse extends DBConnection {
             ps.setString(3, course.getStatus());
             ps.setInt(4, course.getCourseMajorId());
             ps.setString(5, course.getImage());
-            ps.setInt(6, course.getId());
+            ps.setDouble(6, course.getPrice());
+            ps.setInt(7, course.getId());
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;
@@ -272,6 +276,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  Where [id] = ?";
         try {
@@ -290,8 +295,9 @@ public class DAOCourse extends DBConnection {
                 int courseMajorId = result.getInt("course_major_id");
                 String status = result.getString("status");
                 String image = result.getString("image");
+                Double price = result.getDouble("price");
 
-                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image);
+                return new Course(id, title, description, managerId, mentorId, status, createdAt, updatedAt, courseMajorId, image, price);
 
             }
             result.close();
@@ -314,6 +320,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "     ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  where [mentor_id] = ?";
         try {
@@ -331,6 +338,7 @@ public class DAOCourse extends DBConnection {
                 course.setStatus(result.getString("status"));
                 course.setCourseMajorId(result.getInt("course_major_id"));
                 course.setImage(result.getString("image"));
+                course.setPrice(result.getDouble("price"));
 
                 listCourse.add(course);
 
@@ -346,7 +354,7 @@ public class DAOCourse extends DBConnection {
 
     public Course getCourseByIdd(int id) {
         Course course = null;
-        String sql = "SELECT Course.title, CourseMajor.name as name ,Course.image "
+        String sql = "SELECT Course.title, CourseMajor.name as name ,Course.image, Course.price "
                 + "FROM Course JOIN CourseMajor ON CourseMajor.id = Course.course_major_id "
                 + "WHERE Course.id = ?";
         try {
@@ -357,7 +365,8 @@ public class DAOCourse extends DBConnection {
                 course = new Course(
                         rs.getString("title"), // Course.title
                         rs.getString("name"), // Course.image
-                        rs.getString("image") // CourseMajor.name (aliased as 'major')
+                        rs.getString("image"), // CourseMajor.name (aliased as 'major')
+                        rs.getDouble("price") // Course.price
                 );
             }
         } catch (SQLException e) {
@@ -472,6 +481,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  where [course_major_id] = ?";
         try {
@@ -490,6 +500,7 @@ public class DAOCourse extends DBConnection {
                 course.setStatus(rs.getString("status"));
                 course.setCourseMajorId(rs.getInt("course_major_id"));
                 course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
 
                 courses.add(course);
             }
@@ -504,7 +515,7 @@ public class DAOCourse extends DBConnection {
 
         // SQL Query to join Request, Course, Mentee, and Users tables
         String sql = "SELECT c.id, c.title, c.description, c.manager_id, c.mentor_id, "
-                + "c.status, c.created_at, c.updated_at, c.course_major_id, c.image "
+                + "c.status, c.created_at, c.updated_at, c.course_major_id, c.image, c.price "
                 + "FROM Request r "
                 + "JOIN Course c ON r.course_id = c.id "
                 + "JOIN Mentee m ON r.mentee_id = m.id "
@@ -526,6 +537,7 @@ public class DAOCourse extends DBConnection {
                     course.setStatus(rs.getString("status"));
                     course.setCourseMajorId(rs.getInt("course_major_id"));
                     course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
 
                     courses.add(course);
                 }
@@ -541,7 +553,7 @@ public class DAOCourse extends DBConnection {
         ArrayList<Course> listCourse = new ArrayList<>();
         String query = "SELECT c.[id], c.[title], c.[description], c.[manager_id], c.[mentor_id], "
                 + "       u.[username] AS mentor_username, c.[status], c.[created_at], "
-                + "       c.[updated_at], c.[course_major_id], c.[image] "
+                + "       c.[updated_at], c.[course_major_id], c.[image], c.[price] "
                 + "FROM [SWP1].[dbo].[Course] c "
                 + "JOIN [SWP1].[dbo].[Mentor] m ON c.mentor_id = m.id "
                 + "JOIN [SWP1].[dbo].[Users] u ON m.user_id = u.id "
@@ -561,6 +573,7 @@ public class DAOCourse extends DBConnection {
                 course.setStatus(result.getString("status"));
                 course.setCourseMajorId(result.getInt("course_major_id"));
                 course.setImage(result.getString("image"));
+                course.setPrice(result.getDouble("price"));
 
                 listCourse.add(course);
 
@@ -599,6 +612,7 @@ public class DAOCourse extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
+                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "order by [title]\n"
                 + "offset ? rows fetch next 5 rows only";
@@ -616,6 +630,7 @@ public class DAOCourse extends DBConnection {
                 course.setStatus(rs.getString("status"));
                 course.setCourseMajorId(rs.getInt("course_major_id"));
                 course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
 
                 list.add(course);
             }
@@ -627,7 +642,7 @@ public class DAOCourse extends DBConnection {
     public List<Course> pagingCourseManager(int index) {
         List<Course> list = new ArrayList<>();
         String sql = "SELECT [id], [title], [description], [manager_id], [mentor_id], "
-                + "[status], [created_at], [updated_at], [course_major_id], [image] "
+                + "[status], [created_at], [updated_at], [course_major_id], [image], [price] "
                 + "FROM [SWP1].[dbo].[Course] "
                 + "ORDER BY [id] "
                 + "OFFSET ? ROWS FETCH NEXT 7 ROWS ONLY";
@@ -644,6 +659,7 @@ public class DAOCourse extends DBConnection {
                     course.setStatus(rs.getString("status"));
                     course.setCourseMajorId(rs.getInt("course_major_id"));
                     course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
 
                     list.add(course);
                 }
@@ -671,6 +687,7 @@ public class DAOCourse extends DBConnection {
                     course.setStatus(rs.getString("status"));
                     course.setCourseMajorId(rs.getInt("course_major_id"));
                     course.setImage(rs.getString("image"));
+                    course.setPrice(rs.getDouble("price"));
 
                     list.add(course);
             }
@@ -689,7 +706,7 @@ public class DAOCourse extends DBConnection {
 //        }
 //        List<Course> listCourse1 = dao.getAllCourse();
 //        System.out.println(listCourse1);
-        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
+//        Course newCourse = new Course(0, "Java Programming", "Learn Java from basic to advanced", 1, 2, "active", LocalDateTime.now(), LocalDateTime.now(), 3);
 //
 //        boolean result = dao.createCourse("Java", "Basic");
 //        if (result) {
@@ -704,7 +721,6 @@ public class DAOCourse extends DBConnection {
 ////        System.out.println(a);
 //        System.out.println(b);
 //        System.out.println(str);
-        dao.updateCourse(course);
         for (Course course : listCourseHome) {
             System.out.println(course);
         }
