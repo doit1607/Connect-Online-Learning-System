@@ -210,7 +210,7 @@
                                                 </div>
                                             </div>
                                             <h2>
-                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}" 
+                                                <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}" 
                                                    class="btn btn-enroll w-100">View</a>
                                             </h2>
                                         </div>
