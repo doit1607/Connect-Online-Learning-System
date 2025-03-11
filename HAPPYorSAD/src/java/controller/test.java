@@ -63,12 +63,11 @@ public class test extends HttpServlet {
         TransactionDAO daowallet = new TransactionDAO();
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        String startDateStr = request.getParameter("startdate");
+        LocalDate startDate = LocalDate.now(); // Lấy ngày hiện tại
         String endDateStr = request.getParameter("enddate");
         String service = request.getParameter("service");
         String usernamementee = (String) session.getAttribute("usernameUser");
         Double walletbalance = (Double) session.getAttribute("walletBalance");
-        LocalDate startDate = null;
         LocalDate endDate = null;
         String sessionId = request.getSession().getId();
         long currentTime = System.currentTimeMillis();
@@ -98,9 +97,6 @@ public class test extends HttpServlet {
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            if (startDateStr != null && !startDateStr.isEmpty()) {
-                startDate = LocalDate.parse(startDateStr, formatter);
-            }
             if (endDateStr != null && !endDateStr.isEmpty()) {
                 endDate = LocalDate.parse(endDateStr, formatter);
             }
@@ -174,9 +170,13 @@ public class test extends HttpServlet {
                         daowallet.updateHold(usernamementee, totalprice);
                         double balance = daowallet.getBalance(usernamementee);
                         double totalbalance = daowallet.getTotalBalance(usernamementee);
-                        daowallet.createTransaction(usernamementee, totalprice, "WITHDRAW");
+                        double hold = daowallet.getHold(usernamementee);
+                        DAOCourse dao = new DAOCourse();
+                        String coursename = dao.getCourseName(courseId);
+                        daowallet.createTransaction(usernamementee, totalprice, "WITHDRAW", "Thanh toan khoa hoc " + coursename);
                         session.setAttribute("walletBalance", balance);
                         session.setAttribute("walletTotalbalance", totalbalance);
+                        session.setAttribute("walletHold", hold);
                         Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
 
                         int newRequestId;
@@ -347,7 +347,7 @@ public class test extends HttpServlet {
         int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
 
         Mentor mentor = daomentor.getMentorByID(mentorId);
-        double price = Double.parseDouble(request.getParameter("priceperslot"));
+        double price = Double.parseDouble(request.getParameter("price"));
 
         // Gán các giá trị cơ bản vào request
         request.setAttribute("mentorrequest", mentor);
@@ -357,7 +357,7 @@ public class test extends HttpServlet {
         if ("update".equals(service)) {
             request.setAttribute("title", request.getParameter("title"));
             request.setAttribute("content", request.getParameter("content"));
-            request.setAttribute("startdate", request.getParameter("startdate"));
+            request.setAttribute("startdate", LocalDate.now().toString()); // Lấy ngày hiện tại và chuyển thành String
             request.setAttribute("enddate", request.getParameter("enddate"));
             request.setAttribute("requestId", request.getParameter("requestId"));
         }
