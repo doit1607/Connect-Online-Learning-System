@@ -25,9 +25,9 @@ import model.DAOuser;
  * @author admin
  */
 @WebServlet(name = "UpdateMentorProfile", urlPatterns = {"/updatementorprofile"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
-                 maxFileSize = 1024 * 1024 * 10,       // 10MB
-                 maxRequestSize = 1024 * 1024 * 50)    // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)    // 50MB
 public class UpdateMentorProfile extends HttpServlet {
 
     /**
@@ -59,7 +59,6 @@ public class UpdateMentorProfile extends HttpServlet {
         DAOuser mento = new DAOuser();
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
-    
 
         User u = mento.getMentorByUsername(username);
 
@@ -95,12 +94,21 @@ public class UpdateMentorProfile extends HttpServlet {
 
         String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
         request.getSession().setAttribute("userAvatar", fileUrl);
-        
+
         DAOuser mentor = new DAOuser();
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
+        double price = 0.0;
+        try {
+            String priceStr = request.getParameter("price");
+            if (priceStr != null && !priceStr.isEmpty()) {
+                price = Double.parseDouble(priceStr);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
         Date dateOfBirth = null;
         try {
@@ -111,11 +119,11 @@ public class UpdateMentorProfile extends HttpServlet {
             e.printStackTrace();
         }
 
-        mentor.updateMentorProfile(username, fileUrl, fullname, address, dateOfBirth, gender);
+        mentor.updateMentorProfile(username, fileUrl, fullname, address, dateOfBirth, gender, price);
 
         request.getSession().setAttribute("successMessage", "Profile updated successfully!");
         response.sendRedirect("updatementorprofile");
-    
+
     }
 
     /**
