@@ -235,9 +235,6 @@
                                                     <a href="course-details.html">
                                                         <img class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
-                                                    <div class="price">
-                                                        <h3> ${o.price} đ</h3>
-                                                    </div>
                                                 </div>
                                                 <div class="product-content">
                                                     <div class="course-group d-flex">                                                 
@@ -247,16 +244,6 @@
                                                         </div>
                                                     </div>
                                                     <h3 class="title"><a href="course-details.html">${o.title}</a></h3>
-                                                    <div class="course-info d-flex align-items-center">
-                                                        <div class="rating-img d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                                            <p>12+ Lesson</p>
-                                                        </div>
-                                                        <div class="course-view d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-02.svg" alt="Img">
-                                                            <p>9hr 30min</p>
-                                                        </div>
-                                                    </div>
                                                     <div class="rating">
                                                         <i class="fas fa-star filled"></i>
                                                         <i class="fas fa-star filled"></i>
@@ -282,9 +269,6 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <img src="${detail.image}" alt="Img">
-                                            <div class="video-details">
-                                                <span class="price-tag">${detail.price}đ</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
