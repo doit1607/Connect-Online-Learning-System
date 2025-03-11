@@ -362,9 +362,22 @@ public class DAORequest extends DBConnection {
 
         return listRequest;
     }
-
+    // dem so luong request
+    public int getTotalRequest() {
+        String sql = "select count(*) from Request";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+    
     // Hien thi cho manager tat ca request cua Mentee (Dung)
-    public List<Request> showAllRequest() {
+    public List<Request> showAllRequest(int index) {
         List<Request> listReq = new ArrayList<>();
         String sql = "SELECT r.id, u.username, r.title AS request_title, r.totalPrice, r.status, "
                 + "c.title AS course_title, m2.name AS mentor_name "
@@ -374,9 +387,11 @@ public class DAORequest extends DBConnection {
                 + "JOIN Course c ON r.course_id = c.id\n"
                 + "JOIN Mentor m2 ON r.mentor_id = m2.user_id\n"
                 + "WHERE r.status != 'Draft'\n"
-                + "ORDER BY r.created_at DESC";
+                + "ORDER BY r.created_at DESC\n"
+                + "offset ? rows fetch next 10 rows only";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 10);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Request request = new Request();
