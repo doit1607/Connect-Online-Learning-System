@@ -18,7 +18,8 @@ import static model.DBConnection.conn;
  * @author Ann
  */
 public class DAOuser extends DBConnection {
-     public User getMentorById(int id) {
+
+    public User getMentorById(int id) {
         User mentor = null;
         String sql = "Select * from Users where id = ? and role = 'mentor'";
         try {
@@ -35,7 +36,7 @@ public class DAOuser extends DBConnection {
                     mentor.setAddress(rs.getString("address"));
                     mentor.setDateOfBirth(rs.getDate("date_of_birth"));
                     mentor.setGender(rs.getString("gender"));
-                     mentor.setStatus(rs.getString("status"));
+                    mentor.setStatus(rs.getString("status"));
                 }
             }
         } catch (SQLException ex) {
@@ -43,7 +44,6 @@ public class DAOuser extends DBConnection {
         }
         return mentor;
     }
-
 
     public boolean loginUser(String username, String password) {
         try {
@@ -61,7 +61,8 @@ public class DAOuser extends DBConnection {
         }
         return false;
     }
-     public boolean checkUsernameandEmail(String username, String email) {
+
+    public boolean checkUsernameandEmail(String username, String email) {
         try {
             String sql = "Select * from Users where username = ? and email = ?";
             PreparedStatement state = conn.prepareStatement(sql);
@@ -140,8 +141,8 @@ public class DAOuser extends DBConnection {
         }
         return role;
     }
-    
-     public String getEmail(String username) {
+
+    public String getEmail(String username) {
         String sql = "Select email from Users where username = ?";
         String role = null;
         try {
@@ -360,7 +361,9 @@ public class DAOuser extends DBConnection {
     }
 
     public User getMentorByUsername(String username) {
-        String sql = "Select * from Users where username = ? and role = 'mentor'";
+        String sql = "Select u.*, m.price_per_slot from Users u\n"
+                + "join Mentor m on u.id = m.user_id\n"
+                + "where username = ? and role = 'mentor'";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -371,7 +374,7 @@ public class DAOuser extends DBConnection {
                         rs.getString("phone_number"),
                         rs.getString("address"), rs.getDate("date_of_birth"), rs.getDate("created_at"),
                         rs.getString("gender"),
-                        rs.getString("role"), true);
+                        rs.getString("role"), true, rs.getDouble("price_per_slot"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -381,19 +384,34 @@ public class DAOuser extends DBConnection {
 
     // Update Mentor profile
     public void updateMentorProfile(String username, String avatar, String fullname, String address,
-            Date dob, String gender) {
-        String sql = "Update Users set avatar_path = ?, fullname = ?,"
-                + "address = ?, date_of_birth = ?, gender = ? WHERE username = ?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, avatar);
-            pre.setString(2, fullname);
-            pre.setString(3, address);
-            pre.setDate(4, new java.sql.Date(dob.getTime()));
-            pre.setString(5, gender);
-            pre.setString(6, username);
+            Date dob, String gender, Double price) {
+        String sqlUser = "UPDATE Users "
+                + "SET avatar_path = ?, fullname = ?, address = ?, date_of_birth = ?, gender = ? "
+                + "WHERE username = ?";
 
-            pre.executeUpdate();
+        String sqlMentor = "UPDATE Mentor "
+                + "SET price_per_slot = ? "
+                + "WHERE user_id = (SELECT id FROM Users WHERE username = ?)";
+
+        try {
+            // Cập nhật bảng Users
+            PreparedStatement preUser = conn.prepareStatement(sqlUser);
+            preUser.setString(1, avatar);
+            preUser.setString(2, fullname);
+            preUser.setString(3, address);
+            preUser.setDate(4, new java.sql.Date(dob.getTime()));
+            preUser.setString(5, gender);
+            preUser.setString(6, username);
+            preUser.executeUpdate();
+            preUser.close();
+
+            // Cập nhật bảng Mentor
+            PreparedStatement preMentor = conn.prepareStatement(sqlMentor);
+            preMentor.setDouble(1, price);
+            preMentor.setString(2, username);
+            preMentor.executeUpdate();
+            preMentor.close();
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -401,7 +419,7 @@ public class DAOuser extends DBConnection {
 
     public User getMentorProfile(int userId) {
         String sql = "SELECT u.fullname, u.username, m.created_at, "
-                + "u.email, u.phone_number, m.bio "
+                + "u.email, u.phone_number, m.bio, m.price_per_slot "
                 + "FROM Users u "
                 + "JOIN Mentor m ON m.user_id = u.id "
                 + "WHERE u.id = ?";
@@ -416,7 +434,8 @@ public class DAOuser extends DBConnection {
                         rs.getString("email"),
                         rs.getString("phone_number"),
                         rs.getTimestamp("created_at"), // Sử dụng getTimestamp()
-                        rs.getString("bio"));
+                        rs.getString("bio"),
+                        rs.getDouble("price_per_slot"));
                 rs.close();
                 pre.close();
                 return user;
@@ -428,7 +447,8 @@ public class DAOuser extends DBConnection {
         }
         return null;
     }
-     public User getMenteeProfile(int userId) {
+
+    public User getMenteeProfile(int userId) {
         String sql = "SELECT u.fullname, u.username, m.created_at, "
                 + "u.email, u.phone_number "
                 + "FROM Users u "
@@ -475,13 +495,13 @@ public class DAOuser extends DBConnection {
         }
         return userId;
     }
-    
+
     public User getMenteeById(int id) {
 
-        String sql = "SELECT u.* " +
-             "FROM Users u " +
-             "JOIN Mentee m ON u.id = m.user_id " +
-             "WHERE m.id = ? ";
+        String sql = "SELECT u.* "
+                + "FROM Users u "
+                + "JOIN Mentee m ON u.id = m.user_id "
+                + "WHERE m.id = ? ";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
@@ -498,22 +518,22 @@ public class DAOuser extends DBConnection {
         }
         return null;
     }
-    public String getAvatarPath(String username){
+
+    public String getAvatarPath(String username) {
         String sql = "Select avatar_path from Users where username = ?";
         String avatar = null;
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 avatar = rs.getString("avatar_path");
                 return avatar;
             }
         } catch (Exception e) {
         }
         return null;
-        
+
     }
-    
-    
+
 }
