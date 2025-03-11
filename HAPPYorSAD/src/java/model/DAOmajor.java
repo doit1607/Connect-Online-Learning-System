@@ -86,7 +86,6 @@ public class DAOmajor extends DBConnection {
                 + "      ,[updated_at]\n"
                 + "      ,[course_major_id]\n"
                 + "      ,[image]\n"
-                + "      ,[price]\n"
                 + "  FROM [SWP1].[dbo].[Course]\n"
                 + "  where [course_major_id] = ?";
         try {
@@ -104,7 +103,6 @@ public class DAOmajor extends DBConnection {
                 course.setStatus(result.getString("status"));
                 course.setCourseMajorId(result.getInt("course_major_id"));
                 course.setImage(result.getString("image"));
-                course.setPrice(result.getDouble("price"));
 
                 listCourse.add(course);
             }
