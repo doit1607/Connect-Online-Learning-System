@@ -57,9 +57,9 @@ public class ShowAllRequest extends HttpServlet {
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
         String service = request.getParameter("service");
-        if ("confirm".equals(service)) {           
+        if ("confirm".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
-             dao.updateRequestStatus(requestId, "Processing");
+            dao.updateRequestStatus(requestId, "Processing");
             try {
                 List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId);
                 for (entity.Slot slot : slots) {
@@ -69,7 +69,7 @@ public class ShowAllRequest extends HttpServlet {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
-            }      
+            }
         }
         if ("closed".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
@@ -114,16 +114,30 @@ public class ShowAllRequest extends HttpServlet {
             }
             return;
         }
+
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+
+        int count = dao.getTotalRequest();
+        int endPage = count / 10;
+        if (count % 10 != 0) {
+            endPage++;
+        }
         // Lấy danh sách yêu cầu từ DAO
         List<Request> requestList;
         if (search == null && status == null && startDate == null && endDate == null) {
-            requestList = dao.showAllRequest(); // Gọi hàm mới
+            requestList = dao.showAllRequest(index); // Gọi hàm mới
         } else {
             requestList = dao.getAllRequests(search, status, startDate, endDate);
         }
         //List<Request> requestList = dao.getAllRequests(search, status, startDate, endDate);
 
         // Gửi danh sách đến JSP
+        request.setAttribute("tag", index);
+        request.setAttribute("endPage", endPage);
         request.setAttribute("requestList", requestList);
         request.getRequestDispatcher("/view/viewAllRequests.jsp").forward(request, response);
     }
