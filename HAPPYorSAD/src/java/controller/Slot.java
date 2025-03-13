@@ -30,6 +30,7 @@ public class Slot extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+
         if (session == null || session.getAttribute("userId") == null) {
             response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
             return;
@@ -37,6 +38,18 @@ public class Slot extends HttpServlet {
 
         int userId = (Integer) session.getAttribute("userId");
         Integer mentorId = DAOMentor.getMentorIdByUserId(userId);
+        String price = null;
+        if (mentorId != null) {
+            price = DAOMentor.getMentorPriceByID(mentorId);
+        }
+
+        if (price == null || price.trim().isEmpty()) {
+            // Chưa có giá tiền, chuyển hướng đến trang EditProfile
+            response.sendRedirect("/CRUD/updateMentorProfile.jsp?missingPrice=true");
+            return;
+        }
+        
+        request.setAttribute("price", price);
         String action = request.getParameter("action");
 
         // Default values for month and year
