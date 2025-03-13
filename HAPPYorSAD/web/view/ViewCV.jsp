@@ -217,10 +217,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="input-block">
-                                                    <label>Price</label>
-                                                    <textarea name="price" rows="3" readonly>${cv.price}</textarea>
-                                                </div>
                                                 <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
                                             </form>
