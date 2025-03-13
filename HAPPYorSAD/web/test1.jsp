@@ -624,8 +624,8 @@
                     <div class="mentor-course-info mb-4">
                         <div class="row">
                             <!-- Course Info (Left Side) -->
-                            <div class="col-md-6">
-                                <div class="card">
+                            <div>
+                                <div>
                                     <div class="card-header">
                                         <h4 class="card-title">Course Information</h4>
                                     </div>
@@ -634,16 +634,15 @@
                                             <img src="${requestScope.course.image}" alt="Course Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.course.title}</h5>
-                                                <p><strong>Major:</strong> ${requestScope.course.courseMajor}</p>
-                                                <p><strong>Price:</strong> <span class="text-success">${requestScope.price}</span></p>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Mentor Info (Right Side) -->
-                            <div class="col-md-6">
-                                <div class="card">
+                            <div>
+                                <div>
                                     <div class="card-header">
                                         <h4 class="card-title">Mentor Information</h4>
                                     </div>
@@ -652,17 +651,7 @@
                                             <img src="${requestScope.mentorrequest.image}" alt="Mentor Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.mentorrequest.name}</h5>
-                                                <p><strong>Username:</strong> ${requestScope.mentorrequest.username}</p>
-                                                <p><strong>Expertise:</strong> ${requestScope.mentorrequest.expertise}</p>
-                                                <p><strong>Email:</strong> ${requestScope.mentorrequest.email}</p>
-                                                <p><strong>Phone:</strong> ${requestScope.mentorrequest.phone_number}</p>
-                                                <div class="rating">
-                                                    <strong>Rating:</strong>
-                                                    <c:forEach begin="1" end="5" var="i">
-                                                        <i class="fas fa-star ${i <= requestScope.mentorrequest.rating ? 'filled' : ''}"></i>
-                                                    </c:forEach>
-                                                    <span class="d-inline-block average-rating">(${requestScope.mentorrequest.rating})</span>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
