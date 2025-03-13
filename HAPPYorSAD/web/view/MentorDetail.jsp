@@ -295,7 +295,7 @@
                                 </div>
                                 <!-- /Video -->
 
-                                <!-- Include -->
+<!--                                 Include 
                                 <div class="card include-sec">
                                     <div class="card-body">
                                         <div class="cat-title">
@@ -303,9 +303,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /Include -->
+                                 /Include 
 
-                                <!-- Features -->
+                                 Features 
                                 <div class="card feature-sec">
                                     <div class="card-body">
                                         <div class="cat-title">
@@ -313,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /Features -->
+                                 /Features -->
                             </div>
                         </div>
                     </div>	
