@@ -73,6 +73,7 @@ public class MentorDetail extends HttpServlet {
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("price", priceperslot);
         request.setAttribute("courseId", courseId);
+        request.setAttribute("mentorname", mentor.getName());
 
         // Default to current month/year if not provided
         int selectedMonth = LocalDate.now().getMonthValue();
