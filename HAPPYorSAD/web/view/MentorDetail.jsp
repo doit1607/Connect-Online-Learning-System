@@ -95,8 +95,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8">                          
-                            <h2>${detail.title}</h2>
-                            <p>Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!</p>
+                            <h1 style="color: white">${mentorname}</h1> 
+                        
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
                                 <div class="cou-info">
                                     <img src="assets/img/icon/icon-01.svg" alt="Img">
