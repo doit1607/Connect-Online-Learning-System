@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.List, entity.Mentor" %>
 <%-- 
     Document   : ReviewMentor
@@ -17,26 +19,32 @@
         <title>Dreams LMS</title>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.svg">
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
 
         <!-- Theme Settings Js -->
-        <script src="assets/js/theme-script.js" type="4b9afacfe3a18f285e1d0e14-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
 
         <!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-        <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
 
         <!-- Feather CSS -->
-        <link rel="stylesheet" href="assets/css/feather.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
 
         <!-- Select2 CSS -->
-        <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+
+        <!-- Boxioons CSS -->
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
         <link href="css/cssReview/ReviewMentor.css" rel="stylesheet" type="text/css"/>
     </head>
@@ -74,25 +82,6 @@
             <div class="page-content">
                 <div class="container">
                     <div class="row">
-
-                        <!-- Sidebar -->
-                        <!--                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                                                    <div class="settings-widget dash-profile">
-                                                        <div class="settings-menu">
-                                                            <div class="profile-bg">
-                                                                <div class="profile-img">
-                                                                    <a href="mentor-profile.html"><img src="assets/img/user/user-17.jpg" alt="Mentor Img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="profile-group">
-                                                                <div class="profile-name text-center">
-                                                                    <h4><a href="mentor-profile.html">Mentor's Name</a></h4>
-                                                                    <p>Mentor</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
                             <div class="settings-widget account-settings">
@@ -109,18 +98,18 @@
                                                 <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
-                                        <%
-                                            String requestStatus = (String) session.getAttribute("menteeRequestStatus");
-                                            if ("Completed".equals(requestStatus)) {
-                                        %>
-                                        <li class="nav-item active">
-                                            <a href="reviewmentor" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Review Mentor
+                                        <li class="nav-item">
+                                            <a href="/HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                                <i class="bx bxs-check-circle"></i>Attendance
                                             </a>
                                         </li>
-                                        <%
-                                            }
-                                        %>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                            <li class="nav-item active">
+                                                <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
+                                                    <i class="bx bxs-bell"></i> Review Mentor
+                                                </a>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
