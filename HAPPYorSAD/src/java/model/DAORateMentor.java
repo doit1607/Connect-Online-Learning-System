@@ -60,7 +60,9 @@ public class DAORateMentor extends DBConnection {
     // lay ra nhung mentee tu Request co trang thai la Completed de review
     public String getRequestStatusByMentee(String username) {
         String status = "";
-        String sql = "SELECT status FROM Request WHERE mentee_id = (SELECT id FROM Users WHERE username = ?)";
+        String sql = "SELECT TOP 1 status FROM Request \n"
+                + "WHERE mentee_id = (SELECT id FROM Users WHERE username = ?)\n"
+                + "ORDER BY mentee_id DESC;";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -129,7 +131,7 @@ public class DAORateMentor extends DBConnection {
     public List<Integer> getReviewedMentorsByMentee(String username) {
         List<Integer> reviewedMentors = new ArrayList<>();
         String sql = "SELECT DISTINCT mentor_id FROM mentor_reviews \n"
-                +"WHERE mentee_id = (SELECT id FROM Mentee WHERE name = ?)";
+                + "WHERE mentee_id = (SELECT id FROM Mentee WHERE name = ?)";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
