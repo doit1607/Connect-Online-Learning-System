@@ -177,21 +177,16 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="/HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-tachometer"></i>My Profile</a></li>
+                                        <li class="nav-item"><a href="/HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-user"></i>My Profile</a></li>
                                         <li class="nav-item"><a href="mentee-enrolled-course.html" class="nav-link"><i class="bx bxs-graduation"></i>Enrolled Courses</a></li>
                                         <li class="nav-item active"><a href="/HAPPYorSAD/AttendanceMentee" class="nav-link"><i class="bx bxs-check-circle"></i>Attendance</a></li>
-                                            <%
-                                                    String requestStatus = (String) session.getAttribute("menteeRequestStatus");
-                                                    if ("Completed".equals(requestStatus)) {
-                                            %>
-                                        <li class="nav-item">
-                                            <a href="reviewmentor" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Review Mentor
-                                            </a>
-                                        </li>
-                                        <%
-                                            }
-                                        %>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                            <li class="nav-item">
+                                                <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
+                                                    <i class="bx bxs-bell"></i> Review Mentor
+                                                </a>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
@@ -361,20 +356,20 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
             <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
             <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const monthItems = document.querySelectorAll(".month-item");
+            document.addEventListener("DOMContentLoaded", () => {
+                const monthItems = document.querySelectorAll(".month-item");
 
-                    monthItems.forEach(item => {
-                        item.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            const [month, year] = item.dataset.month.split(" ");
-                            document.getElementById("selectedMonth").textContent = item.dataset.month;
-                            document.getElementById("hiddenMonth").value = month;
-                            document.getElementById("hiddenYear").value = year;
-                            document.getElementById("monthForm").submit();
-                        });
+                monthItems.forEach(item => {
+                    item.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const [month, year] = item.dataset.month.split(" ");
+                        document.getElementById("selectedMonth").textContent = item.dataset.month;
+                        document.getElementById("hiddenMonth").value = month;
+                        document.getElementById("hiddenYear").value = year;
+                        document.getElementById("monthForm").submit();
                     });
                 });
+            });
             </script>
 
             <!-- Hidden Form for Month Selection -->
