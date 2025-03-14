@@ -75,7 +75,7 @@
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item ">
+                                        <li class="nav-item active ">
                                             <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
                                                 <i class="bx bxs-user"></i>My Profile
                                             </a>
@@ -87,21 +87,16 @@
                                         </li>
                                          <li class="nav-item">
                                             <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Attendance
+                                                <i class="bx bxs-check-circle"></i>Attendance
                                             </a>
                                         </li>
-                                        <%
-                                            String requestStatus = (String) session.getAttribute("menteeRequestStatus");
-                                            if ("Completed".equals(requestStatus)) {
-                                        %>
-                                        <li class="nav-item">
-                                            <a href="reviewmentor" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Review Mentor
-                                            </a>
-                                        </li>
-                                        <%
-                                            }
-                                        %>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                            <li class="nav-item">
+                                                <a href="reviewmentor" class="nav-link">
+                                                    <i class="bx bxs-bell"></i> Review Mentor
+                                                </a>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
