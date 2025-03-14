@@ -59,6 +59,13 @@
                                                 <ul class="submenu">
                                                     <li><a href="ViewMentor_Mentee">Mentor List</a></li>
                                                     <li><a href="att">Attendance</a></li>
+                                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                                        <li class="nav-item ">
+                                                            <a href="reviewmentor" class="nav-link">
+                                                                <i class="bx bxs-bell"></i> Review Mentor
+                                                            </a>
+                                                        </li>
+                                                    </c:if>
                                                 </ul>
                                             </li>	
                                             <c:if test="${sessionScope.usernameRole eq 'mentee'}">
