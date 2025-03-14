@@ -89,18 +89,18 @@
                                                     <i class="bx bxs-graduation"></i>Request
                                                 </a>
                                             </li>
-                                            <%
-                                            String requestStatus = (String) session.getAttribute("menteeRequestStatus");
-                                            if ("Completed".equals(requestStatus)) {
-                                            %>
                                             <li class="nav-item">
-                                                <a href="reviewmentor" class="nav-link">
-                                                    <i class="bx bxs-bell"></i>Review Mentor
+                                                <a href="/HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                                    <i class="bx bxs-check-circle"></i>Attendance
                                                 </a>
                                             </li>
-                                            <%
-                                                }
-                                            %>
+                                            <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                                <li class="nav-item ">
+                                                    <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
+                                                        <i class="bx bxs-bell"></i> Review Mentor
+                                                    </a>
+                                                </li>
+                                            </c:if>
                                         </ul>
                                         <h3>Account Settings</h3>
                                         <ul>
