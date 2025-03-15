@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
+import model.DAORateMentor;
 import model.DAORequest;
 import model.DAOuser;
 import model.DaoCV;
@@ -42,6 +43,7 @@ public class LoginUserController extends HttpServlet {
         HttpSession session = request.getSession();
         DAOuser userDAO = new DAOuser();
         DaoCV userCV = new DaoCV();
+        DAORateMentor dao = new DAORateMentor();
         DAORequest daoRequest = new DAORequest();
         TransactionDAO userwallet = new TransactionDAO();
         String service = request.getParameter("service");
@@ -51,6 +53,7 @@ public class LoginUserController extends HttpServlet {
             String username = request.getParameter("usernameLogin");
             String password = request.getParameter("passwordLogin");
             String rememberMe = request.getParameter("rememberMe");
+            String requestStatus = dao.getRequestStatusByMentee(username);
             String avatar = userDAO.getAvatarPath(username);
             int userId = userDAO.getUserIdByUsername(username);
             session.setAttribute("userId", userId);
@@ -81,6 +84,7 @@ public class LoginUserController extends HttpServlet {
                     if (role.equalsIgnoreCase("Mentee")) {
                         session.setAttribute("usernameUser", username);
                         session.setAttribute("usernameRole", role);
+                        session.setAttribute("menteeRequestStatus", requestStatus);
                         session.setAttribute("cvStatus", userCV.getCVStatusByUsername(username));
                         session.setAttribute("walletBalance", userwallet.getBalance(username));
                         session.setAttribute("walletTotalbalance", userwallet.getTotalBalance(username));

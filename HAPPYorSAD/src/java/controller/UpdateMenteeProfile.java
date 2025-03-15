@@ -18,6 +18,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import model.DAOuser;
 
 /**
@@ -87,39 +88,49 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = request.getPart("avatarFile");
-
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
-
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
-        String filePath = uploadPath + File.separator + fileName;
-        filePart.write(filePath);
-
-        String fileUrl = "/HAPPYorSAD/uploads/" + fileName;
-        request.getSession().setAttribute("userAvatar", fileUrl);
-        
-        DAOuser mente = new DAOuser();
-        String username = request.getParameter("username");
-        String fullname = request.getParameter("fullname");
-        String address = request.getParameter("address");
-        String gender = request.getParameter("gender");
-        Date dateOfBirth = null;
         try {
+            // Lấy dữ liệu từ form
+            String username = request.getParameter("username");
+            String fullname = request.getParameter("fullname");
+            String address = request.getParameter("address");
+            String gender = request.getParameter("gender");
+
+            // Xử lý ngày sinh
+            java.util.Date dateOfBirth = null;
             String dob = request.getParameter("dateOfBirth");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            dateOfBirth = formatter.parse(dob);
+            if (dob != null && !dob.isEmpty()) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                dateOfBirth = formatter.parse(dob);
+            }
+
+            // Xử lý upload avatar
+            Part filePart = request.getPart("avatarFile");
+            String fileUrl = (String) request.getSession().getAttribute("userAvatar");
+
+            if (filePart != null && filePart.getSize() > 0) {
+                String fileName = UUID.randomUUID().toString() + "_" + Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                String uploadPath = getServletContext().getRealPath("/uploads");
+
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+
+                String filePath = uploadPath + File.separator + fileName;
+                filePart.write(filePath);
+
+                fileUrl = "/HAPPYorSAD/uploads/" + fileName;
+                request.getSession().setAttribute("userAvatar", fileUrl);
+            }
+            
+            // Cập nhật thông tin vào database
+            DAOuser mente = new DAOuser();
+            mente.updateMenteeProfile(username, fileUrl, fullname, address, dateOfBirth, gender);
+
+            request.getSession().setAttribute("successMessage", "Profile updated successfully!");
+            response.sendRedirect("updatementeeprofile");
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("updatementeeprofile?error=Error updating profile");
         }
-        mente.updateMenteeProfile(username, fileUrl, fullname, address, dateOfBirth, gender);
-        request.getSession().setAttribute("successMessage", "Profile updated successfully!");
-        response.sendRedirect("updatementeeprofile");
     }
 
     /**

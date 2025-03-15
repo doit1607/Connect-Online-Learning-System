@@ -123,7 +123,7 @@
                     </c:if>
                     <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                           
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -138,7 +138,7 @@
                                                 <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
-                                         <li class="nav-item">
+                                        <li class="nav-item">
                                             <a href="/../HAPPYorSAD/Slot" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Schedule
                                             </a>
@@ -222,7 +222,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Avatar:</label>
-                                                <input type="file" name="avatarFile">
+                                                <img id="avatarPreview" src="${pageContext.request.contextPath}/uploads/${sessionScope.userAvatar}" alt="Avatar Preview" style="display: none;">
+                                                <input type="file" id="avatarUpload" name="avatarFile">
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="input-block">
