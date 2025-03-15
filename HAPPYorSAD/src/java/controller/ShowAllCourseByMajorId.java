@@ -38,6 +38,7 @@ public class ShowAllCourseByMajorId extends HttpServlet {
         request.setAttribute("listAllMaojor", listAllMaojor);
         List<Course> listCourseByMajorId = daoM.getListAllCourseByMajorId(majorId);
         request.setAttribute("listAllCousre", listCourseByMajorId);
+        request.setAttribute("tagg", majorId);
         request.getRequestDispatcher("view/Course.jsp").forward(request, response);
     }
 
