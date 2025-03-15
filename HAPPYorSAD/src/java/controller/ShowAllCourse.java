@@ -51,7 +51,7 @@ public class ShowAllCourse extends HttpServlet {
             int index = Integer.parseInt(indexPage);
 
             int count = dao.getTotalCourse();
-            int endPage = count / 2;
+            int endPage = count / 5;
             if (count % 2 != 0) {
                 endPage++;
             }
