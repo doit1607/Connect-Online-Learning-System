@@ -34,6 +34,15 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
         <link rel="stylesheet" href="/HAPPYorSAD/css/cssCourse/cssCourse.css"/>
     </head>
+    <style>
+        .tablecontent td.active a {           
+            color: #f0ad4e; /* Màu ch? tr?ng */
+            font-weight: bold;
+            text-decoration: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
     <body>
 
         <!-- Main Wrapper -->
@@ -158,7 +167,9 @@
                                 <tbody>
                                     <c:forEach items="${listAllMaojor}" var="o">
                                         <tr>
-                                            <td><a href="ShowAllCourseByMajorId?Mid=${o.id}">${o.name}</a></td>
+                                            <td class="${tagg == o.id ? 'active' : ''}">
+                                                <a href="ShowAllCourseByMajorId?Mid=${o.id}">${o.name}</a>
+                                            </td>
                                         </tr>                                  
                                     </c:forEach>
 
