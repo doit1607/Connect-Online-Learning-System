@@ -167,22 +167,15 @@
                         <div class="section-header aos" data-aos="fade-up">
                             <div class="section-sub-head">
                                 <span>Favourite Course</span>
-                                <h2>Top Category</h2>
+                                <h2>Category</h2>
                             </div>
-                            <div class="all-btn all-category d-flex align-items-center">
-                                <a href="job-category.html" class="btn btn-primary">All Categories</a>
-                            </div>
-                        </div>
-                        <div class="section-text aos" data-aos="fade-up">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida
-                                maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                         </div>
                         <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
                             <c:forEach var="category" items="${sessionScope.listMajor}" >
                                 <div class="feature-box text-center ">
                                     <div class="feature-bg">
                                         <div class="feature-header">
-                                            <div class="feature-icon">
+                                            <div class=" product-img">
                                                 <img src="${category.image}" alt="${category.name}">
                                             </div>
                                             <div class="feature-cont">
@@ -213,18 +206,14 @@
                                 <h2>Featured Courses</h2>
                             </div>
                             <div class="all-btn all-category d-flex align-items-center">
-                                <a href="course-list.html" class="btn btn-primary">All Courses</a>
+                                <a href="ShowAllCourse" class="btn btn-primary">All Courses</a>
                             </div>
-                        </div>
-                        <div class="section-text aos" data-aos="fade-up">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
-                                bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                         </div>
                         <div class="course-feature">
                             <div class="row">
                                 <c:forEach var="course" items="${sessionScope.listFCourse}" varStatus="loop">
-                                    <c:if test="${loop.index < 6}">
-                                        <div class="col-lg-4 col-md-6 d-flex">
+                                    <c:if test="${loop.index < 4}">
+                                        <div class="col-lg-3 col-md-6 d-flex">
                                             <div class="course-box d-flex aos" data-aos="fade-up">
                                                 <div class="product">
                                                     <div class="product-img">
@@ -280,11 +269,6 @@
                                         <span>What’s New</span>
                                         <h2>Master the skills to drive your career</h2>
                                     </div>
-                                </div>
-                                <div class="section-text aos" data-aos="fade-up">
-                                    <p>Get certified, master modern tech skills, and level up your career — whether you’re
-                                        starting out or a seasoned pro. 95% of eLearning learners report our hands-on content
-                                        directly helped their careers.</p>
                                 </div>
                                 <div class="career-group aos" data-aos="fade-up">
                                     <div class="row">
@@ -358,12 +342,8 @@
                                 <h2>TRENDING COURSES</h2>
                             </div>
                             <div class="all-btn all-category d-flex align-items-center">
-                                <a href="course-list.html" class="btn btn-primary">All Courses</a>
+                                <a href="ShowAllCourse" class="btn btn-primary">All Courses</a>
                             </div>
-                        </div>
-                        <div class="section-text aos" data-aos="fade-up">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan
-                                bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.</p>
                         </div>
                         <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
 
@@ -414,11 +394,6 @@
                             <div class="section-header aos" data-aos="fade-up">
                                 <div class="section-sub-head feature-head text-center">
                                     <h2>Featured Instructor</h2>
-                                    <div class="section-text aos" data-aos="fade-up">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
-                                            accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                             <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
