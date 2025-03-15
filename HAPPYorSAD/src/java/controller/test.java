@@ -35,6 +35,8 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.logging.Level;
+import model.DAOmentee_Slot;
+import model.DAOmentor_Slot;
 import model.TransactionDAO;
 
 @MultipartConfig
@@ -42,6 +44,8 @@ public class test extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(Schedule.class.getName());
     private static final DAOmentee daoMentee = new DAOmentee();
+    private static final DAOmentor_Slot daoMentorSL = new DAOmentor_Slot();
+    private static final DAOmentee_Slot daoMenteeSL = new DAOmentee_Slot();
     private static final DAOslot daoSlot = new DAOslot();
     private static final DAObook daoB = new DAObook();
     private static final DAOCourse daoC = new DAOCourse();
@@ -197,22 +201,12 @@ public class test extends HttpServlet {
                             String[] parts = slot.split("_");
                             String slotDate = parts[0];
                             int slotNumber = Integer.parseInt(parts[1]);
-                            Integer slotId = daoSlot.getSlotId(slotDate, slotNumber);
+                            Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
+                            System.out.println("Slot ID: " + slotId);
+                            System.out.println(" Date: " + slotDate + " Slot Number: " + slotNumber);
+
                             if (slotId != null) {
-                                boolean success = daoSlot.bookSlot(slotId, menteeId);
-                                if (success) {
-                                    try {
-                                        LOGGER.info("Attempting to update slot ID: " + slotId + " with request ID: " + newRequestId);
-                                        daoSlot.updateRequestIdForSlot(slotId, newRequestId);
-                                        LOGGER.info("Updated slot ID: " + slotId + " with request ID: " + newRequestId);
-                                        bookedCount++;
-                                        LOGGER.info("Booked: " + slot);
-                                    } catch (SQLException ex) {
-                                        LOGGER.log(Level.SEVERE, "Error updating slot request ID", ex);
-                                    }
-                                } else {
-                                    LOGGER.warning("no ava: " + slot);
-                                }
+                                boolean success = daoMenteeSL.bookSlot(menteeId, slotId, newRequestId, "Pending");
                             } else {
                                 LOGGER.warning("no available: " + slot);
                             }
@@ -246,9 +240,9 @@ public class test extends HttpServlet {
                             String[] parts = slot.split("_");
                             String slotDate = parts[0];
                             int slotNumber = Integer.parseInt(parts[1]);
-                            Integer slotId = daoSlot.getSlotId(slotDate, slotNumber);
+                            Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
                             if (slotId != null) {
-                                boolean success = daoSlot.bookSlot(slotId, menteeId);
+                                    boolean success = daoMenteeSL.bookSlot(menteeId, slotId, requestId, "Pending");
                                 if (success) {
                                     try {
                                         LOGGER.info("Attempting to update slot ID: " + slotId + " with request ID: " + requestId);
@@ -425,7 +419,7 @@ public class test extends HttpServlet {
         while (!currentDay.isAfter(lastDayOfWeek)) {
             String formattedDate = currentDay.format(dateFormatter);
             java.sql.Date sqlDate = java.sql.Date.valueOf(currentDay);
-            List<Slot> slots = daoSlot.getSlotsByDate2(sqlDate, mentorId);
+            List<Slot> slots = daoMentorSL.getSlotsByDateForRequest(sqlDate, mentorId);
             slotsByDay.put(formattedDate, slots);
 
             Map<String, String> dateInfo = Map.of(

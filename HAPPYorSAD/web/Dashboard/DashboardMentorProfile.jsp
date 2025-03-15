@@ -70,7 +70,7 @@
 
                         <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                           
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -85,9 +85,15 @@
                                                 <i class="bx bxs-star"></i>Reviews
                                             </a>
                                         </li>
-                                         <li class="nav-item">
+                                        <li class="nav-item">
                                             <a href="/../HAPPYorSAD/Slot" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Schedule
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Set Slot
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -213,7 +219,7 @@
 
             </div>
         </div>
- <%@include file="../sourcesHome/homeFooter.jsp" %>
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
         <!-- /Page Content -->
 
 

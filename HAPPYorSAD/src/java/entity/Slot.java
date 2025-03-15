@@ -39,6 +39,13 @@ public class Slot {
     public Slot() {
     }
 
+    public Slot(int id, Date slotDate, int slotNumber, Time startTime) {
+        this.id = id;
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.startTime = startTime;
+    }
+
     public Slot(Date slotDate, int slotNumber, Time startTime, Time endTime, String status, int request_id) {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
@@ -56,8 +63,8 @@ public class Slot {
         this.day_of_week = day_of_week;
         this.period = period;
     }
-    
-        public Slot(Date slotDate, int slotNumber, boolean isBooked,String status, Time startTime, String day_of_week, String period) {
+
+    public Slot(Date slotDate, int slotNumber, boolean isBooked, String status, Time startTime, String day_of_week, String period) {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
         this.isBooked = isBooked;
@@ -91,8 +98,8 @@ public class Slot {
         this.startTime = startTime;
         this.day_of_week = day_of_week;
     }
-    
-        public Slot(int id, Date slotDate, int slotNumber, boolean isBooked,String status ,Time startTime, String day_of_week) {
+
+    public Slot(int id, Date slotDate, int slotNumber, boolean isBooked, String status, Time startTime, String day_of_week) {
         this.id = id;
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
@@ -101,7 +108,6 @@ public class Slot {
         this.startTime = startTime;
         this.day_of_week = day_of_week;
     }
-
 
     public Slot(int scheduleId, Date slotDate, int slotNumber, String status, int request_id) {
         this.scheduleId = scheduleId;

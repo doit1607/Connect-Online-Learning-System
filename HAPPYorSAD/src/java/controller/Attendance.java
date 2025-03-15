@@ -5,6 +5,8 @@
 package controller;
 
 import entity.Mentee;
+import entity.Mentee_Slot;
+import entity.Mentor_Slot;
 import entity.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,6 +32,8 @@ import model.DAOslot;
 import entity.Slot;
 import model.DAORequest;
 import model.DAOatt;
+import model.DAOmentee_Slot;
+import model.DAOmentor_Slot;
 
 /**
  *
@@ -39,6 +43,9 @@ public class Attendance extends HttpServlet {
 
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Attendance.class.getName());
     private final DAOslot daoSlot = new DAOslot();
+    private final DAOmentor_Slot daoMSL = new DAOmentor_Slot();
+    private final DAOmentee_Slot daoMeSL = new DAOmentee_Slot();
+
     private final DAOschedule daoSc = new DAOschedule();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -141,7 +148,7 @@ public class Attendance extends HttpServlet {
         request.setAttribute("weekStartDate", weekStartDate);
         request.setAttribute("weekEndDate", weekEndDate);
 
-        Map<String, List<entity.Slot>> slotsByDay = new HashMap<>();
+        Map<String, List<entity.Mentor_Slot>> slotsByDay = new HashMap<>();
         if (startDate != null && mentorId != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(startDate);
@@ -151,7 +158,7 @@ public class Attendance extends HttpServlet {
             for (int i = 0; i < 7; i++) {
                 java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
                 String formattedDate = date.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                slotsByDay.put(formattedDate, daoSlot.getSlotsByDate3(date, mentorId));
+                slotsByDay.put(formattedDate, daoMSL.getSlotsByDateMentorAttendance(date, mentorId));
                 calendar.add(Calendar.DATE, 1);
             }
         }
@@ -175,7 +182,7 @@ public class Attendance extends HttpServlet {
 
                 System.out.println("Fetching mentees for Date: " + date + ", Slot: " + slotNumber);
 
-                Mentee m = daoM.getMenteeBySlotId(date, slotNumber);
+                Mentee m = daoMeSL.getMenteeBySlotId(date, slotNumber);
                 if (m != null) {
                     System.out.println("Mentee found: " + m.getImage() + " and " + m.getName() + " (" + m.getEmail() + ")");
                 } else {
@@ -200,37 +207,46 @@ public class Attendance extends HttpServlet {
                 System.out.println("Updating attendance for Date: " + date + ", Slot: " + slotNumber + " to " + status);
 
                 // Lấy slot từ DAO
+                Mentor_Slot slot = (Mentor_Slot) daoMSL.getSlotsByDateMentorAtt(date, slotNumber);
+                String menteeStatus = status.equals("present") ? "confirm_present" : "confirm_absent";
+                Mentee_Slot menteeSlot = daoMeSL.getMenteeSlotsByMentorSlotId(slot.getSlot_id());
+                if (menteeSlot != null) {
+                    daoMeSL.updateSlotStatus(menteeSlot.getSlot_id(), menteeStatus);
+                    System.out.println("Mentee slots updated to " + menteeStatus);
+                } else {
+                    System.out.println("No mentee slots found for this mentor slot");
+                }
 
-                Slot slot = daoSlot.getSlotByDateAndNumber(date, slotNumber);
                 if (slot != null) {
+
                     // Cập nhật trạng thái slot
-                    daoSlot.updateSlotStatus(slot.getId(), status);
+                    daoMSL.updateSlotStatus(slot.getSlot_id(), status);
                     System.out.println("Slot updated successfully to " + status);
-                    
+
                     // Lấy requestId từ slot (giả định Slot có thuộc tính requestId)
                     int requestId = slot.getRequest_id();
-                    
+
                     // Kiểm tra xem tất cả slot của requestId có "present" không
-                    boolean allPresent = daoA.checkAllSlotsPresent(requestId);
-                    System.out.println(requestId);
-                    
-                    if (allPresent) {
-                        Request requestDetails = daoR.getRequestById(requestId); // Lấy thông tin request
-                        System.out.println(requestDetails);
-                        System.out.println("Đã hoàn thành khóa tất cả Slot trong request");
-                        if (requestDetails != null) {
-                            Mentee mentee = daoM.getMenteeById(requestDetails.getMenteeId()); // Lấy mentee dựa trên menteeId từ request
-                            if (mentee != null) {
-                                String notification = "Đã hoàn thành " + requestDetails.getTitle() + " của " + mentee.getName() + ". Nhấn để xác nhận.";
-                                request.setAttribute("notification", notification);
-                                request.setAttribute("requestId", requestId);
-                            } else {
-                                System.out.println("Mentee not found for requestId: " + requestId);
-                            }
-                        } else {
-                            System.out.println("Request details not found for requestId: " + requestId);
-                        }
-                    }
+//                    boolean allPresent = daoA.checkAllSlotsPresent(requestId);
+//                    System.out.println(requestId);
+//
+//                    if (allPresent) {
+//                        Request requestDetails = daoR.getRequestById(requestId); // Lấy thông tin request
+//                        System.out.println(requestDetails);
+//                        System.out.println("Đã hoàn thành khóa tất cả Slot trong request");
+//                        if (requestDetails != null) {
+//                            Mentee mentee = daoM.getMenteeById(requestDetails.getMenteeId()); // Lấy mentee dựa trên menteeId từ request
+//                            if (mentee != null) {
+//                                String notification = "Đã hoàn thành " + requestDetails.getTitle() + " của " + mentee.getName() + ". Nhấn để xác nhận.";
+//                                request.setAttribute("notification", notification);
+//                                request.setAttribute("requestId", requestId);
+//                            } else {
+//                                System.out.println("Mentee not found for requestId: " + requestId);
+//                            }
+//                        } else {
+//                            System.out.println("Request details not found for requestId: " + requestId);
+//                        }
+//                    }
                 } else {
                     System.out.println("Failed to update slot status: Slot not found");
                 }

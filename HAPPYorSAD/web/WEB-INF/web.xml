@@ -53,6 +53,10 @@
         <servlet-class>controller.Dashboard</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SetSlot</servlet-name>
+        <servlet-class>controller.SetSlot</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CourseDetail</servlet-name>
         <servlet-class>controller.CourseDetail</servlet-class>
     </servlet>
@@ -168,6 +172,11 @@
         <servlet-name>SearchCourse</servlet-name>
         <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
+    <!-- Thêm servlet còn thiếu từ Tệp 1 -->
+    <servlet>
+        <servlet-name>ConfirmSchedule</servlet-name>
+        <servlet-class>controller.ConfirmSchedule</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -199,6 +208,10 @@
     <servlet-mapping>
         <servlet-name>test</servlet-name>
         <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetSlot</servlet-name>
+        <url-pattern>/SetSlot</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
@@ -335,6 +348,11 @@
     <servlet-mapping>
         <servlet-name>SearchCourse</servlet-name>
         <url-pattern>/SearchCourse</url-pattern>
+    </servlet-mapping>
+    <!-- Thêm ánh xạ còn thiếu từ Tệp 1 -->
+    <servlet-mapping>
+        <servlet-name>ConfirmSchedule</servlet-name>
+        <url-pattern>/ConfirmSchedule</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

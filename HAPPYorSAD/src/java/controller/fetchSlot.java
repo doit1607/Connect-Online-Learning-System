@@ -11,6 +11,8 @@ import model.DAOslot;
 import java.time.LocalDate; // For working with dates
 import java.time.DayOfWeek;
 import java.sql.Date; // For handling java.sql.Date
+import model.DAOmentee_Slot;
+import entity.Mentee_Slot;
 
 public class fetchSlot extends HttpServlet {
 
@@ -28,8 +30,9 @@ public class fetchSlot extends HttpServlet {
 
             int requestIdd = Integer.parseInt(requestId);
             DAOslot dao = new DAOslot();
-            List<entity.Slot> scheduleList = dao.getSlotsByRequestId1(requestIdd);
-            for (entity.Slot slot : scheduleList) {
+            DAOmentee_Slot daoMs = new DAOmentee_Slot();
+            List<Mentee_Slot> scheduleList = daoMs.getSlotsByRequestId1(requestIdd);
+            for (Mentee_Slot slot : scheduleList) {
                 System.out.println(slot);
             }
 
@@ -43,9 +46,9 @@ public class fetchSlot extends HttpServlet {
                 out.println("<thead><tr><th>Date</th><th>Day of Week</th><th>Slot Number</th><th>Start Time</th><th>End Time</th><th>Status</th></tr></thead>");
                 out.println("<tbody>");
 
-                for (entity.Slot slot : scheduleList) {
+                for (Mentee_Slot slot : scheduleList) {
                     // Convert java.sql.Date to LocalDate
-                    Date sqlDate = (Date) slot.getSlotDate(); // Cast to java.sql.Date
+                    Date sqlDate = (Date) slot.getSlot_date(); // Cast to java.sql.Date
                     LocalDate slotDate = sqlDate.toLocalDate(); // Convert to LocalDate
                     // Get the day of the week
                     DayOfWeek dayOfWeek = slotDate.getDayOfWeek();
@@ -56,9 +59,9 @@ public class fetchSlot extends HttpServlet {
                     out.println("<tr>");
                     out.println("<td>" + slotDate + "</td>"); // Use LocalDate directly (yyyy-MM-dd format)
                     out.println("<td>" + dayOfWeekStr + "</td>"); // Day of Week
-                    out.println("<td>" + slot.getSlotNumber() + "</td>");
-                    out.println("<td>" + slot.getStartTime() + "</td>");
-                    out.println("<td>" + slot.getEndTime() + "</td>");
+                    out.println("<td>" + slot.getSlot_number() + "</td>");
+                    out.println("<td>" + slot.getStart_time() + "</td>");
+                    out.println("<td>" + slot.getEnd_time() + "</td>");
                     out.println("<td>" + slot.getStatus() + "</td>");
                     out.println("</tr>");
                 }

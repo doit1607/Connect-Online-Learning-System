@@ -103,7 +103,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 border-radius: 4px;
                 font-weight: bold;
             }
-            .slot-presentPending {
+            .slot-pending {
                 background-color: rgba(255, 165, 0, 0.1);
                 color: orange;
                 padding: 3px 6px;
@@ -118,11 +118,14 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 background-color: #f0f0f0;
             }
             .pending-indicator {
-                cursor: pointer;
                 margin-left: 5px;
-                color: #007bff;
                 font-weight: bold;
             }
+            .slot-studying {
+                color: blue;
+                font-weight: bold;
+            }
+
         </style>
 
         <script>
@@ -180,7 +183,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                         <li class="nav-item"><a href="/HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-user"></i>My Profile</a></li>
                                         <li class="nav-item"><a href="mentee-enrolled-course.html" class="nav-link"><i class="bx bxs-graduation"></i>Enrolled Courses</a></li>
                                         <li class="nav-item active"><a href="/HAPPYorSAD/AttendanceMentee" class="nav-link"><i class="bx bxs-check-circle"></i>Attendance</a></li>
-                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                            <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
                                             <li class="nav-item">
                                                 <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
                                                     <i class="bx bxs-bell"></i> Review Mentor
@@ -205,6 +208,9 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     <div class="card-header"><h3>Your Attendance</h3></div>
                                     <c:if test="${not empty message}">
                                         <div class="alert alert-success">${message}</div>
+                                    </c:if>
+                                    <c:if test="${not empty error}">
+                                        <div class="alert alert-danger">${error}</div>
                                     </c:if>
                                     <div class="row align-items-center mb-3">
                                         <div class="col-12 col-sm-4 col-md-6">
@@ -265,24 +271,27 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                 <td>
                                                                                     <c:set var="slotFound" value="false"/>
                                                                                     <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                                        <c:if test="${slot.slotNumber == i}">
+                                                                                        <c:if test="${slot.slot_number == i}">
                                                                                             <c:choose>
                                                                                                 <c:when test="${slot.status == 'present'}">
-                                                                                                    <span class="slot-present">Slot ${slot.slotNumber} <span class="pending-indicator">✓</span></span>
+                                                                                                    <span class="slot-present">Slot ${slot.slot_number} <span class="pending-indicator">✓</span></span>
                                                                                                 </c:when>
                                                                                                 <c:when test="${slot.status == 'absent'}">
-                                                                                                    <span class="slot-absent">Slot ${slot.slotNumber} <span class="pending-indicator">✗</span></span>
+                                                                                                    <span class="slot-absent">Slot ${slot.slot_number} <span class="pending-indicator">✗</span></span>
                                                                                                 </c:when>
-                                                                                                <c:when test="${slot.status == 'presentPending'}">
+                                                                                                <c:when test="${slot.status == 'Studying'}">
+                                                                                                    <span class="slot-studying">Slot ${slot.slot_number} <span class="pending-indicator">📖</span></span>
+                                                                                                </c:when>
+                                                                                                <c:when test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent' }">
                                                                                                     <form action="/HAPPYorSAD/AttendanceMentee" method="post" style="display:inline;">
                                                                                                         <input type="hidden" name="action" value="getMentorInfo">
                                                                                                         <input type="hidden" name="date" value="${day}">
-                                                                                                        <input type="hidden" name="slot" value="${slot.slotNumber}">
-                                                                                                        <button type="submit" class="slot-presentPending slot-clickable btn btn-link p-0">Slot ${slot.slotNumber} <span class="pending-indicator">?</span></button>
+                                                                                                        <input type="hidden" name="slot" value="${slot.slot_number}">
+                                                                                                        <button type="submit" class="slot-pending slot-clickable btn btn-link p-0">Slot ${slot.slot_number} <span class="pending-indicator">?</span></button>
                                                                                                     </form>
                                                                                                 </c:when>
                                                                                                 <c:otherwise>
-                                                                                                    <span class="text-muted">Slot ${slot.slotNumber}</span>
+                                                                                                    <span class="text-muted">Empty</span>
                                                                                                 </c:otherwise>
                                                                                             </c:choose>
                                                                                             <c:set var="slotFound" value="true"/>
@@ -310,9 +319,32 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 </div>
             </div>
 
+
+            <!-- Notification Modal for Request Completion -->
+            <div class="modal fade" id="completionModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Request Completed</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>${notification}</p>
+                            <p><strong>Request đã hoàn thành hết các Slot.</strong> Nhấn để chuyển sang trang view request để xác nhận hoàn thành.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="/HAPPYorSAD/ShowMenteeRequest?requestId=${requestId}" class="btn btn-primary">Confirm Completion</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <!-- Modal for Confirmation -->
             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Confirm Attendance - Slot ${selectedSlot} on ${selectedDate}</h5>
@@ -324,27 +356,34 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     <p class="text-muted">No mentor assigned to this slot.</p>
                                 </c:when>
                                 <c:otherwise>
-                                    <form action="/HAPPYorSAD/AttendanceMentee" method="post">
-                                        <input type="hidden" name="action" value="confirmAttendance">
-                                        <input type="hidden" name="date" value="${selectedDate}">
-                                        <input type="hidden" name="slot" value="${selectedSlot}">
-                                        <ul class="list-group">
-                                            <li class="list-group-item d-flex align-items-center">
-                                                <img src="${mentor.image}" alt="Avatar" class="rounded-circle me-3" width="40" height="40">
-                                                <div class="flex-grow-1">
-                                                    <strong>${mentor.name}</strong><br>
-                                                    <small class="text-muted">${mentor.email}</small>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <span class="slot-presentPending">Status: Pending Confirmation</span>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                    <p><strong>Mentor:</strong> ${mentor.name} (${mentor.email})</p>
+                                    <p>Mentor marked your attendance as: 
+                                        <strong>${slot.status == 'confirm_present' ? 'Present' : slot.status == 'confirm_absent' ? 'Absent' : slot.status}</strong>
+                                    </p>
+                                    <c:if test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent'}">
+                                        <form action="/HAPPYorSAD/AttendanceMentee" method="post">
+                                            <input type="hidden" name="action" value="confirmAttendance">
+                                            <input type="hidden" name="date" value="${selectedDate}">
+                                            <input type="hidden" name="slot" value="${selectedSlot}">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" name="confirmation" value="confirm" class="btn btn-success">Confirm</button>
+                                                <button type="submit" name="confirmation" value="reject" class="btn btn-danger">Reject</button>
+                                            </div>
+                                        </form>
+                                    </c:if>
+                                    <c:if test="${slot.status == 'present' || slot.status == 'absent'}">
+                                        <p class="text-muted">Attendance has been confirmed as ${slot.status}.</p>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Confirm</button>
                                         </div>
-                                    </form>
+                                    </c:if>
+                                    <c:if test="${not empty message}">
+                                        <div class="alert alert-success mt-3">${message}</div>
+                                    </c:if>
+                                    <c:if test="${not empty error}">
+                                        <div class="alert alert-danger mt-3">${error}</div>
+                                    </c:if>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -370,6 +409,31 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     });
                 });
             });
+            </script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        let alerts = document.querySelectorAll(".alert");
+                        alerts.forEach(alert => {
+                            alert.style.transition = "opacity 0.5s";
+                            alert.style.opacity = "0";
+                            setTimeout(() => alert.style.display = "none", 500);
+                        });
+                    }, 3000);
+
+                    // Trigger confirmationModal if showModal is true
+                <c:if test="${showModal}">
+                    var confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+                    confirmationModal.show();
+                </c:if>
+
+                    // Trigger completionModal if showCompletionModal is true
+                <c:if test="${showCompletionModal}">
+                    var completionModal = new bootstrap.Modal(document.getElementById("completionModal"));
+                    completionModal.show();
+                </c:if>
+                });
             </script>
 
             <!-- Hidden Form for Month Selection -->

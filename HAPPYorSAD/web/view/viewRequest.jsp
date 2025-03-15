@@ -336,21 +336,6 @@
                                         <hr/>
                                         <div><p><i class="isax isax-clock5"></i>${request.getContent()}</p></div>
                                         <hr/>
-                                        <div>
-                                            Created At: ${request.getCreatedAt()}
-                                        </div>
-                                        <div>
-                                            Start Date: ${request.getStartDate()}
-
-                                        </div>
-                                        <div>
-                                            End Date: ${request.getEndDate()}
-                                        </div>
-                                        <div>
-                                            Total Slots: ${request.getTotalSlot()}
-                                        </div>
-
-                                        <hr/>
 
                                         <h3 style="margin-bottom: 18px">Courses</h3>
 

@@ -124,7 +124,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
+                                            <a href="ConfirmSchedule" class="nav-link">
                                                 <i class="bx bxs-star"></i>Request schedule
                                             </a>
                                         </li>

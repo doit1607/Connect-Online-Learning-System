@@ -634,7 +634,7 @@
                                             <img src="${requestScope.course.image}" alt="Course Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.course.title}</h5>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -651,7 +651,7 @@
                                             <img src="${requestScope.mentorrequest.image}" alt="Mentor Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.mentorrequest.name}</h5>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -758,32 +758,32 @@
                                                     <li>
                                                         <c:choose>
                                                             <c:when test="${not empty slotsByDay[entry.key]}">
+                                                                <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
                                                                 <c:forEach var="slotNumber" begin="1" end="5">
-                                                                    <div class="slot-row">
+                                                                    <div class="slot-row"> <!-- Thêm div để chia thành từng hàng -->
                                                                         <c:set var="slotFound" value="false" />
                                                                         <c:forEach var="slot" items="${slotsByDay[entry.key]}">
                                                                             <c:if test="${slot.slotNumber == slotNumber}">
                                                                                 <a href="#" class="timing" data-slot-info="${entry.key}_${slot.slotNumber}">
-                                                                                    <span>Slot ${slotNumber}</span>
-                                                                                </a>
-                                                                                <c:set var="slotFound" value="true" />
+                                                                                    <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                        </a>
+                                                                                    <c:set var="slotFound" value="true" />
+                                                                                </c:if>
+                                                                            </c:forEach>
+                                                                            <c:if test="${not slotFound}">
+                                                                            <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
+
+                                                                                <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                                    </a>
                                                                             </c:if>
-                                                                        </c:forEach>
-                                                                        <c:if test="${not slotFound}">
-                                                                            <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;">
-                                                                                <span>Slot ${slotNumber}</span>
-                                                                            </a>
-                                                                        </c:if>
                                                                     </div>
                                                                 </c:forEach>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div class="slot-row">
+                                                                    <!-- Nếu không có slot nào, hiển thị 5 hàng disabled -->
                                                                     <c:forEach var="slotNumber" begin="1" end="5">
-                                                                        <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;">
-                                                                            <span>Slot ${slotNumber}</span>
-                                                                        </a>
-                                                                    </c:forEach>
+                                                                        <a href="#" class="timing disabled" data-slot-info="${entry.key}_${slotNumber}" style="background-color: #f0f0f0;color: #999;"> 
+                                                                            <span>Slot ${slotNumber}</span> <!-- Hiển thị Slot1, Slot2, ... -->                                                                            </a>
+                                                                        </c:forEach>
                                                                 </div>
                                                             </c:otherwise>
                                                         </c:choose>
@@ -814,7 +814,7 @@
                                             </div>
                                             <div id="slotsOption" style="display: none;">
                                                 <label for="maxSlots">Số lượng slot tối đa: </label>
-                                                <input type="number" id="maxSlots" min="1" max="20" value="5">
+                                                +<input type="number" id="maxSlots" min="1" max="20" value="5">
                                             </div>
                                         </div>
                                         <button id="bookSlots" type="button">Book Selected Slots</button>

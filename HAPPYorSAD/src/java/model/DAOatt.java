@@ -60,21 +60,28 @@ public class DAOatt extends DBConnection {
 
     // Kiểm tra xem tất cả slot của requestId có trạng thái "present" không
     public boolean checkAllSlotsPresent(int requestId) {
-        String sql = "SELECT COUNT(*) as total, SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as presentCount FROM Slot WHERE request_id = ?";
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS total, \n"
+                + "    SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) AS presentCount,\n"
+                + "    SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) AS absentCount\n"
+                + "FROM Mentee_Slot \n"
+                + "WHERE request_id = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, requestId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int total = rs.getInt("total");
                 int presentCount = rs.getInt("presentCount");
-                return total > 0 && total == presentCount; // True nếu tất cả slot đều "present"
+                int absentCount = rs.getInt("absentCount");
+
+                return total > 0 && total == (presentCount + absentCount); // True nếu tất cả slot đều "present"
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-    
+
     // Lấy thông tin chi tiết của request
 //    public Request getRequestDetails(int requestId) {
 //        String sql = "SELECT title, menteeId, startDate, endDate, content, status " +
@@ -99,7 +106,6 @@ public class DAOatt extends DBConnection {
 //        }
 //        return null;
 //    }
-
     // Lấy thông tin mentee dựa trên requestId
 //    public Mentee getMenteeByRequestId(int requestId) {
 //        String sql = "SELECT m.menteeId, m.name, m.email, m.avatarPath " +
@@ -122,7 +128,6 @@ public class DAOatt extends DBConnection {
 //        }
 //        return null;
 //    }
-
     public static void main(String[] args) {
         DAOatt dao = new DAOatt();
 

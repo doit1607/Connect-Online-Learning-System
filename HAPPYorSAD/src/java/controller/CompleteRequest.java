@@ -10,6 +10,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DAORequest;
 
 /**
@@ -35,10 +38,14 @@ public class CompleteRequest extends HttpServlet {
         System.out.println(requestIdStr);
         if (requestIdStr != null && !requestIdStr.isEmpty()) {
             int requestId = Integer.parseInt(requestIdStr);
-            daoR.updateRequestStatus(requestId, "Completed");
+            try {
+                daoR.updateRequestStatus(requestId, "Completed");
+            } catch (SQLException ex) {
+                Logger.getLogger(CompleteRequest.class.getName()).log(Level.SEVERE, null, ex);
+            }
             request.setAttribute("message", "Request đã được hoàn thành thành công!");
         }
-        response.sendRedirect("/HAPPYorSAD/viewRequest");
+        response.sendRedirect("/HAPPYorSAD/ShowMenteeRequest");
     }
 
 

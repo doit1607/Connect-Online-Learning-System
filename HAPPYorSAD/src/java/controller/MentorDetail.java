@@ -2,6 +2,7 @@ package controller;
 
 import entity.Course;
 import entity.Mentor1;
+import entity.Mentor_Slot;
 import entity.Schedule;
 import entity.Slot;
 import jakarta.servlet.ServletException;
@@ -19,9 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import model.DAOCourse;
 import model.DAOMentor;
+import model.DAOmentee_Slot;
+import model.DAOmentor_Slot;
 import model.DAOschedule;
 import model.DAOslot;
 
@@ -34,16 +36,9 @@ public class MentorDetail extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(MentorDetail.class.getName());
     private final DAOslot daoSlot = new DAOslot();
     private final DAOschedule daoSc = new DAOschedule();
+    private static final DAOmentor_Slot daoMentorSL = new DAOmentor_Slot();
+    private static final DAOmentee_Slot daoMenteeSL = new DAOmentee_Slot();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -75,67 +70,13 @@ public class MentorDetail extends HttpServlet {
         request.setAttribute("courseId", courseId);
         request.setAttribute("mentorname", mentor.getName());
 
-        // Default to current month/year if not provided
-        int selectedMonth = LocalDate.now().getMonthValue();
-        int selectedYear = LocalDate.now().getYear();
+        // Default to current month/year and first week if not provided
+        LocalDate now = LocalDate.now();
+        int selectedMonth = now.getMonthValue();
+        int selectedYear = now.getYear();
+        LocalDate weekStartDate = now.withDayOfMonth(1); // Start from the 1st of the month initially
 
-        // Lấy danh sách lịch trình của mentor theo tháng/năm
-        List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
-        if (schedules.isEmpty()) {
-            LOGGER.info("No schedules found for mentorId: " + mentorId + " in " + Month.of(selectedMonth) + " " + selectedYear);
-            request.setAttribute("noSchedule", true);
-        } else {
-            int scheduleId = schedules.get(0).getId();
-            request.setAttribute("scheduleId", scheduleId);
-
-            // Lấy ngày bắt đầu của lịch trình
-            java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            // Tạo danh sách ngày trong tuần
-            String[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-            java.util.Calendar calendar = java.util.Calendar.getInstance();
-            calendar.setTime(startDate);
-            List<String> weekDates = new ArrayList<>();
-            for (int i = 0; i < 7; i++) {
-                java.sql.Date sqlDate = new java.sql.Date(calendar.getTimeInMillis());
-                weekDates.add(sqlDate.toLocalDate().format(dateFormatter));
-                calendar.add(java.util.Calendar.DATE, 1);
-            }
-
-            // Lấy danh sách slot theo ngày
-            List<Slot> allSlots = new ArrayList<>();
-            List<Slot> bookedSlots = new ArrayList<>();
-            Map<String, List<Slot>> slotsByDay = new HashMap<>();
-
-            for (String date : weekDates) {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(date);
-                List<Slot> slots = daoSlot.getSlotsByDate1(sqlDate, mentorId);
-                slotsByDay.put(date, slots);
-
-                for (Slot slot : slots) {
-                    allSlots.add(slot);
-                    if (slot.isBooked()) {
-                        bookedSlots.add(slot);
-                    }
-                }
-            }
-
-            // Truyền dữ liệu lịch vào request
-            request.setAttribute("weekDays", weekDays);
-            request.setAttribute("weekDates", weekDates);
-            request.setAttribute("slotsByDay", slotsByDay);
-            request.setAttribute("allSlots", allSlots);
-            request.setAttribute("bookedSlots", bookedSlots);
-            request.setAttribute("selectedMonth", selectedMonth);
-            request.setAttribute("selectedYear", selectedYear);
-        }
-
-        // Format the initial month/year display using java.time API
-        LocalDate date = LocalDate.of(selectedYear, selectedMonth, 1);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", new java.util.Locale("en", "US"));
-        String formattedMonthYear = date.format(formatter);
-        request.setAttribute("formattedMonthYear", formattedMonthYear);
+        setScheduleData(request, mentorId, selectedMonth, selectedYear, weekStartDate);
 
         request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
     }
@@ -147,27 +88,57 @@ public class MentorDetail extends HttpServlet {
         int year = Integer.parseInt(request.getParameter("year"));
         String direction = request.getParameter("direction");
 
-        // Adjust month based on direction
+        // Determine the current week's starting date
+        LocalDate weekStartDate;
+        if (request.getAttribute("weekStartDate") != null) {
+            weekStartDate = (LocalDate) request.getAttribute("weekStartDate");
+        } else {
+            weekStartDate = LocalDate.of(year, month, 1); // Default to start of the month
+        }
+
+        // Adjust month or week based on direction
         if ("prev".equals(direction)) {
             month--;
             if (month < 1) {
                 month = 12;
                 year--;
             }
+            weekStartDate = LocalDate.of(year, month, 1); // Reset to start of previous month
         } else if ("next".equals(direction)) {
             month++;
             if (month > 12) {
                 month = 1;
                 year++;
             }
+            weekStartDate = LocalDate.of(year, month, 1); // Reset to start of next month
+        } else if ("prevWeek".equals(direction)) {
+            weekStartDate = weekStartDate.minusWeeks(1);
+            if (weekStartDate.getMonthValue() != month) {
+                month = weekStartDate.getMonthValue();
+                year = weekStartDate.getYear();
+            }
+        } else if ("nextWeek".equals(direction)) {
+            weekStartDate = weekStartDate.plusWeeks(1);
+            if (weekStartDate.getMonthValue() != month) {
+                month = weekStartDate.getMonthValue();
+                year = weekStartDate.getYear();
+            }
         }
 
-        // Update request parameters
+        // Update request attributes
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("selectedMonth", month);
         request.setAttribute("selectedYear", year);
+        request.setAttribute("weekStartDate", weekStartDate);
 
-        // Fetch updated schedule
+        setScheduleData(request, mentorId, month, year, weekStartDate);
+
+        request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
+    }
+
+    private void setScheduleData(HttpServletRequest request, int mentorId, int month, int year, LocalDate weekStartDate)
+            throws ServletException, IOException {
+        // Fetch schedule for the selected month/year
         List<Schedule> schedules = daoSc.getSchedulesByMonth(year, month);
         if (schedules.isEmpty()) {
             LOGGER.info("No schedules found for mentorId: " + mentorId + " in " + Month.of(month) + " " + year);
@@ -176,46 +147,48 @@ public class MentorDetail extends HttpServlet {
             int scheduleId = schedules.get(0).getId();
             request.setAttribute("scheduleId", scheduleId);
 
-            java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+            // Generate week dates starting from weekStartDate
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
             String[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-            java.util.Calendar calendar = java.util.Calendar.getInstance();
-            calendar.setTime(startDate);
             List<String> weekDates = new ArrayList<>();
+            LocalDate currentDate = weekStartDate;
             for (int i = 0; i < 7; i++) {
-                java.sql.Date sqlDate = new java.sql.Date(calendar.getTimeInMillis());
-                weekDates.add(sqlDate.toLocalDate().format(dateFormatter));
-                calendar.add(java.util.Calendar.DATE, 1);
+                weekDates.add(currentDate.format(dateFormatter));
+                currentDate = currentDate.plusDays(1);
             }
 
-            Map<String, List<Slot>> slotsByDay = new HashMap<>();
+            // Fetch slots for each day in the week
+            Map<String, List<Mentor_Slot>> slotsByDay = new HashMap<>();
+            List<Mentor_Slot> allSlots = new ArrayList<>();
+            List<Mentor_Slot> bookedSlots = new ArrayList<>();
+
             for (String date : weekDates) {
                 java.sql.Date sqlDate = java.sql.Date.valueOf(date);
-                List<Slot> slots = daoSlot.getSlotsByDate1(sqlDate, mentorId);
+                List<Mentor_Slot> slots = daoMentorSL.getSlotsByDateMentorDetai(sqlDate, mentorId);
                 slotsByDay.put(date, slots);
+                for (Mentor_Slot slot : slots) {
+                    allSlots.add(slot);
+                    if ("Studying".equals(slot.getStatus())) {
+                        bookedSlots.add(slot);
+                    }
+                }
             }
 
+            // Set attributes for JSP
             request.setAttribute("weekDays", weekDays);
             request.setAttribute("weekDates", weekDates);
             request.setAttribute("slotsByDay", slotsByDay);
+            request.setAttribute("allSlots", allSlots);
+            request.setAttribute("bookedSlots", bookedSlots);
         }
 
-        // Format the updated month/year display using java.time API
+        // Format the month/year display
         LocalDate date = LocalDate.of(year, month, 1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", new java.util.Locale("en", "US"));
         String formattedMonthYear = date.format(formatter);
         request.setAttribute("formattedMonthYear", formattedMonthYear);
-
-        request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
     }
 
-    private String generateSlotsHTML(int mentorId, int month, int year) {
-        // This method is no longer needed for form submission, but kept for reference
-        return "";
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -232,5 +205,4 @@ public class MentorDetail extends HttpServlet {
     public String getServletInfo() {
         return "Servlet to display mentor details and schedule for viewing";
     }
-    // </editor-fold>
 }

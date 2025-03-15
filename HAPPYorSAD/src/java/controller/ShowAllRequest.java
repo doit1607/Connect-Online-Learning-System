@@ -23,6 +23,7 @@ import model.DAOslot;
 import model.TransactionDAO;
 import entity.Slot;
 import model.DAOMentor;
+import model.DAOmentee_Slot;
 
 /**
  *
@@ -42,11 +43,12 @@ public class ShowAllRequest extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         HttpSession session = request.getSession();
         DAORequest dao = new DAORequest();
         DAOslot daoSl = new DAOslot();
         DAOMentor daomentor = new DAOMentor();
+        DAOmentee_Slot daoMs = new DAOmentee_Slot();
 
         TransactionDAO daotran = new TransactionDAO();
         DAOmentee daomentee = new DAOmentee();
@@ -59,17 +61,27 @@ public class ShowAllRequest extends HttpServlet {
         String service = request.getParameter("service");
         if ("confirm".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
-            dao.updateRequestStatus(requestId, "Processing");
+            Request newrequest = dao.getRequestById(requestId);
+            int menteeid = newrequest.getMenteeId();
+            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+            int mentorId = dao.getMentorIdByRequestId(requestId);
+            System.out.println("MentorId" + mentorId);
             try {
-                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId);
-                for (entity.Slot slot : slots) {
+                List<entity.Mentee_Slot> slots = daoMs.getSlotsByRequestIdd(requestId);
+                for (entity.Mentee_Slot slot : slots) {
                     System.out.println(slot);
-                    int slotId = slot.getId();
-                    daoSl.updateSlotStatus(slotId, "Studying");
+                    int slotId = slot.getSlot_id();
+                    System.out.println("slot ID: " + slotId + "mentee ID: " + menteeid + "Mentor ID: " + mentorId + "Request ID: " + requestId);
+                    daoMs.updateMenteeSlotStatus(slotId, menteeid, requestId, "Studying");
+                    daoMs.updateMentorSlotStatus(slotId, mentorId, "Studying");
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
+            double totalprice = newrequest.gettotalprice();
+            dao.updateRequestStatus(requestId, "Processing");
         }
         if ("closed".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
@@ -154,7 +166,11 @@ public class ShowAllRequest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -168,7 +184,11 @@ public class ShowAllRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

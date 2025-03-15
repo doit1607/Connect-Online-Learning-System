@@ -17,6 +17,54 @@ public class DAOMentor extends DBConnection {
 
     public static DAOuser userDao = new DAOuser();
 
+    public static Integer getMentorIdByUserId(int userId) {
+        String sql = "SELECT id FROM Mentor WHERE user_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getMentorNameById(int mentorId) {
+        String sql = "SELECT name FROM Mentor WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Mentor> getAllMentor() {
+        List<Mentor> mentors = new ArrayList<>();
+        String sql = "SELECT id, name, image FROM Mentor"; // Điều chỉnh cột theo bảng của bạn
+
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentor.setImage(rs.getString("image"));
+                mentors.add(mentor);
+            }
+            System.out.println("Successfully retrieved " + mentors.size() + " mentors.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentors;
+    }
+
     public List<Mentor1> getAllMentors(String search, int pageNumber, int pageSize) {
         List<Mentor1> list = new ArrayList<>();
 
@@ -327,24 +375,6 @@ public class DAOMentor extends DBConnection {
         return list;
     }
 
-    public static Integer getMentorIdByUserId(int userId) {
-        String sql = "SELECT m.id \n"
-                + "FROM Users u join Mentor m on m.user_id = u.id\n"
-                + "WHERE u.id = ?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, userId);
-            try (ResultSet rs = pre.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
     // lay gia tien cua Mentor
     public static String getMentorPriceByID(int mentorId) {
         String sql = "select price_per_slot from Mentor where id = ?";
@@ -360,6 +390,22 @@ public class DAOMentor extends DBConnection {
         } catch (Exception e) {
         }
         return "0";
+    }
+
+    public Double getMentorPrice(int mentorId) {
+        Double price = 0.0;
+        String sql = "select price_per_slot from Mentor where id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                   price = rs.getDouble("price_per_slot");
+                }
+            }
+        } catch (Exception e) {
+        }
+        return price;
     }
 
     public void MentorCourse(int mentorId, int courseId) {

@@ -123,6 +123,8 @@
                 }, 3000);
             }
         </script>
+
+
     </head>
 
     <body>
@@ -171,13 +173,11 @@
                                             <i class="bx bxs-graduation"></i>Request
                                         </a>
                                     </li>
-                                    <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
-                                                <i class="bx bxs-bell"></i> Review Mentor
-                                            </a>
-                                        </li>
-                                    </c:if>
+                                    <li class="nav-item">
+                                        <a href="Notifications" class="nav-link">
+                                            <i class="bx bxs-bell"></i>Notifications
+                                        </a>
+                                    </li>
                                 </ul>
                                 <h3>Account Settings</h3>
                                 <ul>
@@ -256,6 +256,14 @@
                                                         <p><strong>Status:</strong> ${o.status}</p>
                                                         <p><strong>Schedule:</strong></p>
                                                         <div id="schedule-table-${o.id}"></div> <!-- Placeholder for schedule table -->
+
+
+                                                        <c:if test="${specificRequestId eq o.id}">
+                                                            <p><strong>Present Slots:</strong> ${presentCount}</p>
+                                                            <p><strong>Absent Slots:</strong> ${absentCount}</p>
+                                                            <p><strong>Refund Amount (for Absent Slots):</strong> <fmt:formatNumber value="${refundAmount}" type="number" groupingUsed="true" />₫</p>
+                                                            <p><strong>Final Price (after Refund):</strong> <fmt:formatNumber value="${finalPrice}" type="number" groupingUsed="true" />₫</p>
+                                                        </c:if>
                                                     </div>
 
                                                     <!-- Add JavaScript to load the schedule table when the modal is shown -->
@@ -278,10 +286,59 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                                    <!-- Accept Request Button -->
+                                                    <c:if test="${specificRequestId eq o.id and o.status ne 'Completed'}">
+                                                        <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
+                                                            <input type="hidden" name="action" value="CompleteRequest">
+                                                            <input type="hidden" name="requestId" value="${o.id}">
+                                                            <input type="hidden" name="totalPrice" value="${totalPrice}">
+                                                            <input type="hidden" name="refundAmount" value="${refundAmount}">
+                                                            <input type="hidden" name="finalPrice" value="${finalPrice}">
+                                                            <button type="submit" class="btn btn-success">Complete Request</button>
+                                                        </form>
+
+                                                        <!-- Add More Slots Button -->
+                                                        <c:if test="${absentCount > 0}">
+                                                            <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
+                                                                <input type="hidden" name="action" value="addMoreSlots">
+                                                                <input type="hidden" name="requestId" value="${o.id}">
+                                                                <button type="submit" class="btn btn-primary">Add More Slots</button>
+                                                            </form>
+                                                        </c:if>
+                                                    </c:if>
+
+                                                    <!-- Complete Request Button (for Accepted status with no absent slots) -->
+                                                    <c:if test="${o.status eq 'Accepted' and specificRequestId eq o.id and absentCount == 0}">
+                                                        <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
+                                                            <input type="hidden" name="action" value="CompleteRequest">
+                                                            <input type="hidden" name="requestId" value="${o.id}">
+                                                            <input type="hidden" name="totalPrice" value="${totalPrice}">
+                                                            <input type="hidden" name="refundAmount" value="${refundAmount}">
+                                                            <input type="hidden" name="finalPrice" value="${finalPrice}">
+                                                            <button type="submit" class="btn btn-warning">Complete Request</button>
+                                                        </form>
+                                                    </c:if>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Schedule fetch script -->
+                                    <script>
+                                        document.getElementById('requestModal_${o.id}').addEventListener('shown.bs.modal', function () {
+                                            fetch('fetchSlot?requestId=${o.id}')
+                                                    .then(response => response.text())
+                                                    .then(data => {
+                                                        document.getElementById('schedule-table-${o.id}').innerHTML = data;
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error loading schedule:', error);
+                                                        document.getElementById('schedule-table-${o.id}').innerHTML = '<p>Error loading schedule.</p>';
+                                                    });
+                                        });
+                                    </script>
+
                                 </c:forEach>
                             </div>
                         </div>

@@ -20,10 +20,38 @@ import java.util.HashMap;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import model.DBConnection;
 import static model.DBConnection.conn;
 
 public class DAORequest extends DBConnection {
+
+    public void processRefund(int requestId, double refundAmount) throws SQLException {
+        String sql = "UPDATE request SET refund_amount = ? WHERE request_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, refundAmount);
+            ps.setInt(2, requestId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateRequestTotalPrice(int requestId, double finalPrice) throws SQLException {
+        String sql = "UPDATE request SET totalprice = ? WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, finalPrice);
+            ps.setInt(2, requestId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateRequestStatus(int requestId, String status) throws SQLException {
+        String sql = "UPDATE request SET status = ? WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, requestId);
+            ps.executeUpdate();
+        }
+    }
 
     public List<Request> getRequestByMentor(String mentor, String title, String[] status, LocalDate date, int page, int limit) {
         List<Request> requests = new ArrayList<>();
@@ -99,6 +127,20 @@ public class DAORequest extends DBConnection {
         return requests;
     }
 
+    public Integer getMentorIdByRequestId(int requestId) {
+        String sql = "SELECT mentor_id FROM Request WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, requestId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("mentor_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
+
     public int getRequestCount(String mentor, String title, String[] status, LocalDate date) {
         int count = 0;
 
@@ -151,17 +193,6 @@ public class DAORequest extends DBConnection {
         return count;
     }
 
-    public void updateRequestStatus(int requestId, String newStatus) {
-        String sql = "UPDATE Request SET status = ? WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, newStatus);
-            stmt.setInt(2, requestId);
-
-            int rowsUpdated = stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void updateRequestStatus1(int requestId, String status) throws SQLException {
         String sql = "UPDATE Request SET status = ?, updated_at = GETDATE() WHERE id = ?";
@@ -362,6 +393,7 @@ public class DAORequest extends DBConnection {
 
         return listRequest;
     }
+
     // dem so luong request
     public int getTotalRequest() {
         String sql = "select count(*) from Request";
@@ -375,7 +407,7 @@ public class DAORequest extends DBConnection {
         }
         return 0;
     }
-    
+
     // Hien thi cho manager tat ca request cua Mentee (Dung)
     public List<Request> showAllRequest(int index) {
         List<Request> listReq = new ArrayList<>();
@@ -456,11 +488,11 @@ public class DAORequest extends DBConnection {
                     Request request = new Request();
                     request.setId(rs.getInt("id"));
                     request.setUserMentee(rs.getString("username"));
-                    request.setTitle(rs.getString("request_title")); 
+                    request.setTitle(rs.getString("request_title"));
                     request.setTotalprice(rs.getDouble("totalPrice"));
                     request.setStatus(rs.getString("status"));
-                    request.setCoursename(rs.getString("course_title")); 
-                    request.setMentorname(rs.getString("mentor_name"));  
+                    request.setCoursename(rs.getString("course_title"));
+                    request.setMentorname(rs.getString("mentor_name"));
                     request.setContent(rs.getString("content"));
                     request.setTotalSlot(rs.getInt("total_slot"));
                     listRep.add(request);
@@ -639,26 +671,13 @@ public class DAORequest extends DBConnection {
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
 
-        LocalDate validDate = LocalDate.of(2025, 2, 18);
-        LocalDate validDate1 = LocalDate.of(2025, 2, 28);
-//
-//      dao.createRequest(3, "qqqqqqqqq", validDate, validTime, "tt", "open");
-//      System.out.println(getMenteeIdByUserId(1));
-        int userId = 5; // Thay đổi giá trị này nếu cần test với user khác
-        int menteeId = dao.getMenteeIdByUserId(userId);
-
-        if (menteeId == -1) {
-            System.out.println("Không tìm thấy Mentee ID cho userId = " + userId);
-        } else {
-            System.out.println("Mentee ID tìm thấy: " + menteeId);
-        }
-        List<Request> request = dao.getAllRequest(2);
-        for (Request request1 : request) {
-            System.out.println(request1);
-        }
-        Request re = new Request(1, 1, "qqqqqqqqq", 5, validDate, validDate1, "yyyyyy", "Draft", 1);
-        dao.insertRequest(re);
+     
+        try {
+            dao.updateRequestStatus(745, "Processing");
 //        System.out.println(dao);
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(DAORequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -96,7 +96,7 @@
                     <div class="row">
                         <div class="col-lg-8">                          
                             <h1 style="color: white">${mentorname}</h1> 
-                        
+
                             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
                                 <div class="cou-info">
                                     <img src="assets/img/icon/icon-01.svg" alt="Img">
@@ -142,7 +142,6 @@
                                 </div>
                             </div>
                             <!-- /Overview -->
-
                             <!-- Mentor's Schedule -->
                             <div class="card overview-sec">
                                 <div class="card-body">
@@ -162,6 +161,13 @@
                                             <div class="col-12 col-sm-6 text-sm-end">
                                                 <button type="submit" class="btn btn-outline-primary btn-sm me-2" name="direction" value="prev">Previous Month</button>
                                                 <button type="submit" class="btn btn-outline-primary btn-sm" name="direction" value="next">Next Month</button>
+                                            </div>
+                                        </div>
+                                        <!-- Week Navigation Buttons -->
+                                        <div class="row align-items-center mt-2">
+                                            <div class="col-12 text-sm-end">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm me-2" name="direction" value="prevWeek">Previous Week</button>
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm" name="direction" value="nextWeek">Next Week</button>
                                             </div>
                                         </div>
                                     </form>
@@ -185,17 +191,17 @@
                                                                         <td>
                                                                             <c:set var="slotFound" value="false" />
                                                                             <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
-                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                <c:if test="${slot.slot_number_id == i}">
                                                                                     <c:set var="slotFound" value="true" />
                                                                                     <c:choose>
-                                                                                        <c:when test="${slot.isBooked == true}">
+                                                                                        <c:when test="${slot.status == 'Studying'}">
                                                                                             <span class="text-danger">
-                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slotNumber} (Booked)
+                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slot_number_id} (Booked)
                                                                                             </span>
                                                                                         </c:when>
                                                                                         <c:otherwise>
                                                                                             <span class="text-success">
-                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slotNumber}
+                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slot_number_id}
                                                                                             </span>
                                                                                         </c:otherwise>
                                                                                     </c:choose>
@@ -295,25 +301,7 @@
                                 </div>
                                 <!-- /Video -->
 
-<!--                                 Include 
-                                <div class="card include-sec">
-                                    <div class="card-body">
-                                        <div class="cat-title">
-                                            <h4>Includes</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                 /Include 
 
-                                 Features 
-                                <div class="card feature-sec">
-                                    <div class="card-body">
-                                        <div class="cat-title">
-                                            <h4>Includes</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                 /Features -->
                             </div>
                         </div>
                     </div>	

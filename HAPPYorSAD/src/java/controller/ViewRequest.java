@@ -25,6 +25,7 @@ import model.DAOmentee;
 import model.DAOslot;
 import model.DAOuser;
 import entity.Slot;
+import model.DAOmentee_Slot;
 import model.TransactionDAO;
 
 /**
@@ -135,7 +136,7 @@ public class ViewRequest extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("limit", limit);
         request.setAttribute("totalPages", totalPages);
-        
+
         String requestIdStr = request.getParameter("requestId");
         if (requestIdStr != null && !requestIdStr.isEmpty()) {
             int requestId = Integer.parseInt(requestIdStr);
@@ -145,7 +146,7 @@ public class ViewRequest extends HttpServlet {
             }
         }
         request.setAttribute("requests", requests);
-        
+
         request.getRequestDispatcher("view/viewRequest.jsp").forward(request, response);
     }
 
@@ -168,6 +169,7 @@ public class ViewRequest extends HttpServlet {
         DAORequest dao = new DAORequest();
         DAOmentee daomentee = new DAOmentee();
         DAOslot daoSl = new DAOslot();
+        DAOmentee_Slot daoMs = new DAOmentee_Slot();
 
         Request newrequest = dao.getRequestById(requestId);
         if (newrequest == null) {
@@ -181,14 +183,21 @@ public class ViewRequest extends HttpServlet {
         String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
         double totalprice = newrequest.gettotalprice();
         String status = request.getParameter("status");
+        int mentorId = dao.getMentorIdByRequestId(requestId);
+
         if (status.equals("Pending")) {
-            dao.updateRequestStatus(requestId, "Pending");
+            System.out.println("Updating request status to Pending");
             try {
-                List<entity.Slot> slots = daoSl.getSlotsByRequestId(requestId); 
-                for (entity.Slot slot : slots) {
+                dao.updateRequestStatus(requestId, "Pending");
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                List<entity.Mentee_Slot> slots = daoMs.getSlotsByRequestId(requestId); // Lấy slotId từ requestId
+                for (entity.Mentee_Slot slot : slots) {
                     System.out.println(slot);
-                    int slotId = slot.getId(); 
-                    daoSl.updateSlotStatus(slotId, "Pending");
+                    int slotId = slot.getSlot_id(); // Lấy slotId từ đối tượng Slot
+                    daoSl.updateSlotStatusss(slotId, mentorId, "Pending");
                     System.out.println(slotId);
                 }
             } catch (SQLException ex) {
@@ -202,8 +211,12 @@ public class ViewRequest extends HttpServlet {
             System.out.println("Updating request status to Cancel");
             daotran.updateHoldAfterReject(usernamementee, totalprice);
             double hold = daotran.getHold(usernamementee);
-            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT" , "Mentor tu choi khoa hoc");
-            dao.updateRequestStatus(requestId, status);
+            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT", "Mentor tu choi khoa hoc");
+            try {
+                dao.updateRequestStatus(requestId, status);
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+            }
             session.setAttribute("walletHold", hold);
         } else {
             System.out.println("Error: Invalid status received - " + status);

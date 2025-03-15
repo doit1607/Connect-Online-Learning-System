@@ -289,24 +289,25 @@ public class DAOslot extends DBConnection {
         }
         return slots;
     }
-    
-        public List<Slot> getSlotsByDate3(Date date, int mentorId) {
+
+    public List<Slot> getSlotsByDate3(Date date, int mentorId) {
         List<Slot> slots = new ArrayList<>();
 
-        String query = "SELECT sl.id, sl.slot_date, st.slot_number,sl.is_booked, sl.status, st.start_time,\n"
-                + "       CASE \n"
-                + "           WHEN st.start_time BETWEEN '06:00:00' AND '11:59:59' THEN 'Morning'\n"
-                + "           WHEN st.start_time BETWEEN '12:00:00' AND '17:59:59' THEN 'Afternoon'\n"
-                + "           ELSE 'Evening'\n"
-                + "       END AS period\n"
-                + "FROM Slot sl\n"
-                + "JOIN Schedule sc ON sl.schedule_id = sc.id\n"
-                + "JOIN Mentor_Schedule ms ON ms.schedule_id = sc.id  -- Thay đổi theo mối quan hệ mới\n"
-                + "JOIN Mentor m ON ms.mentor_id = m.id  -- Liên kết với bảng Mentor thông qua Mentor_Schedule\n"
-                + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
-                + "WHERE sl.slot_date = ?\n"
-                + "AND ms.mentor_id = ?  -- Thay vì sc.mentor_id, dùng ms.mentor_id theo quan hệ mới\n"
-                + "ORDER BY st.start_time;";
+        String query = "    SELECT sl.id, sl.slot_date, st.slot_number, sl.is_booked, sl.status, st.start_time,\n"
+                + "           CASE \n"
+                + "               WHEN st.start_time BETWEEN '06:00:00' AND '11:59:59' THEN 'Morning'\n"
+                + "               WHEN st.start_time BETWEEN '12:00:00' AND '17:59:59' THEN 'Afternoon'\n"
+                + "               ELSE 'Evening'\n"
+                + "           END AS period\n"
+                + "    FROM Slot sl\n"
+                + "    JOIN Schedule sc ON sl.schedule_id = sc.id\n"
+                + "    JOIN Mentor_Schedule ms ON ms.schedule_id = sc.id\n"
+                + "    JOIN Mentor m ON ms.mentor_id = m.id\n"
+                + "    JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
+                + "    WHERE sl.slot_date = ?\n"
+                + "      AND ms.mentor_id = ?\n"
+                + "      AND sl.mentee_id is not null\n"
+                + "    ORDER BY st.start_time;";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setDate(1, date);
@@ -394,7 +395,6 @@ public class DAOslot extends DBConnection {
                     slot.setId(rs.getInt("id"));
                     slot.setSlotDate(rs.getDate("slot_date"));
                     slot.setSlotNumber(rs.getInt("slot_number_id"));
-                    slot.setStatus(rs.getString("status"));
                     slot.setRequest_id(rs.getInt("request_id"));
                 }
             }
@@ -404,6 +404,57 @@ public class DAOslot extends DBConnection {
         return slot;
     }
 
+    public Slot getSlotByDateAndNumberr(String date, int slotNumber) {
+        Slot slot = null;
+        String query = "SELECT s.*, ms.* \n"
+                + "FROM Slot s \n"
+                + "LEFT JOIN mentee_Slot ms ON s.id = ms.slot_id \n"
+                + "WHERE s.slot_date = ? AND s.slot_number_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, date);
+            ps.setInt(2, slotNumber);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    slot = new Slot();
+                    slot.setId(rs.getInt("id"));
+                    slot.setSlotDate(rs.getDate("slot_date"));
+                    slot.setSlotNumber(rs.getInt("slot_number_id"));
+                    slot.setStatus(rs.getString("status"));
+                    slot.setRequest_id(rs.getInt("request_id"));
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slot;
+    }
+
+//    public Slot getSlotByDateAndNumberr(String date, int slotNumber) {
+//        Slot slot = null;
+//        String query = "SELECT sl.*, ms.*, r.mentor_id\n"
+//                + "FROM Slot sl \n"
+//                + "join Mentee_Slot ms on ms.slot_id = sl.id\n"
+//                + "join Request r on r.id = ms.request_id\n"
+//                + "WHERE sl.slot_date = ? AND slot_number_id = ?";
+//        try (PreparedStatement ps = conn.prepareStatement(query)) {
+//            ps.setString(1, date);
+//            ps.setInt(2, slotNumber);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                if (rs.next()) {
+//                    slot = new Slot();
+//                    slot.setId(rs.getInt("id"));
+//                    slot.setSlotDate(rs.getDate("slot_date"));
+//                    slot.setSlotNumber(rs.getInt("slot_number_id"));
+//                    slot.setStatus(rs.getString("status"));
+//                    slot.setRequest_id(rs.getInt("request_id"));
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return slot;
+//    }
     public Integer getSlotId(String slotDate, int slotNumber) {
         String query = "SELECT id FROM Slot WHERE slot_date = ? AND slot_number_id = ? AND mentee_id IS NULL";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -481,10 +532,31 @@ public class DAOslot extends DBConnection {
     }
 
     public void updateSlotStatus(int slotId, String status) throws SQLException {
-        String sql = "UPDATE Slot SET status = ? WHERE id = ?";
+        String sql = "UPDATE Mentor_Slot SET status = ? WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, status);
         ps.setInt(2, slotId);
+        ps.executeUpdate();
+    }
+
+    public void updateSlotStatuss(int slotId, int menteeId, int requestId, String status) throws SQLException {
+        String sql = "UPDATE Mentee_Slot SET status = ? WHERE [slot_id] = ? AND [mentee_id] = ? AND [request_id] = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, slotId);
+        ps.setInt(2, menteeId);
+        ps.setInt(3, requestId);
+        ps.setString(4, status);
+
+        ps.executeUpdate();
+    }
+
+    public void updateSlotStatusss(int slotId, int mentorId, String status) throws SQLException {
+        String sql = "UPDATE Mentor_Slot SET status = ? WHERE [slot_id] = ? AND [mentor_id] = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, status);
+        ps.setInt(2, slotId);
+        ps.setInt(3, mentorId);
+
         ps.executeUpdate();
     }
 
@@ -498,7 +570,7 @@ public class DAOslot extends DBConnection {
 
     public List<Slot> getSlotsByRequestId(int requestId) throws SQLException {
         List<Slot> slots = new ArrayList<>();
-        String sql = "SELECT * FROM Slot WHERE request_id = ?";
+        String sql = "SELECT * FROM Mentee_Slot WHERE request_id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, requestId);
         ResultSet rs = ps.executeQuery();
@@ -528,7 +600,7 @@ public class DAOslot extends DBConnection {
                     rs.getTime("start_time"),
                     rs.getTime("end_time"),
                     rs.getString("status"),
-            rs.getInt("request_id"));
+                    rs.getInt("request_id"));
 
             slots.add(slot);
         }
@@ -561,6 +633,82 @@ public class DAOslot extends DBConnection {
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, requestId);
         ps.executeUpdate();
+    }
+
+    public List<Slot> getSlotsByDate4(Date date, int mentorId) {
+        List<Slot> slots = new ArrayList<>();
+
+        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+                + "FROM Slot sl\n"
+                + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
+                + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
+                + "WHERE sl.slot_date = ?\n"
+                + "AND ms.mentor_id = ?\n"
+                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+                + "ORDER BY st.start_time;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDate(1, date);
+            stmt.setInt(2, mentorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                boolean add = slots.add(new Slot(
+                        rs.getInt("id"),
+                        rs.getDate("slot_date"),
+                        rs.getInt("slot_number"),
+                        rs.getTime("start_time")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
+
+    public List<Slot> getSlotsByDate5(Date date, int mentorId) {
+        List<Slot> slots = new ArrayList<>();
+
+        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+                + "FROM Slot sl\n"
+                + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
+                + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
+                + "WHERE sl.slot_date = ?\n"
+                + "AND ms.mentor_id = ? and ms.status = 'Available'\n"
+                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+                + "ORDER BY st.start_time;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDate(1, date);
+            stmt.setInt(2, mentorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                boolean add = slots.add(new Slot(
+                        rs.getInt("id"),
+                        rs.getDate("slot_date"),
+                        rs.getInt("slot_number"),
+                        rs.getTime("start_time")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
+
+    public int getSlotId(int scheduleId, Date slotDate, int slotNumber) {
+        String sql = "SELECT * FROM Slot WHERE schedule_id = ? AND slot_date = ? AND slot_number_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, scheduleId);
+            ps.setDate(2, slotDate);
+            ps.setInt(3, slotNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu không tìm thấy
     }
 
     public static void main(String[] args) {
