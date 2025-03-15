@@ -52,15 +52,14 @@
             <!-- Main Content -->
             <section class="payment-section py-5">
                 <div class="container">
-                    <!-- User Info Box (Top Left, Wider) -->
                     <div class="row justify-content-start">
-                        <div class="col-md-6 col-sm-8 col-12"> <!-- Tăng từ col-md-4 lên col-md-6 -->
+                        <div class="col-md-6 col-sm-8 col-12"> 
                             <div class="user-info-box shadow-lg">
                                 <div class="info-header bg-gradient text-white text-center">
                                     <h5 class="mb-0 py-2">Wallet Information</h5>
                                 </div>
-                                <div class="info-body p-4"> <!-- Tăng padding từ p-3 lên p-4 -->
-                                    <!-- Wallet Info (Wider Layout) -->
+                                <div class="info-body p-4"> 
+                                    <!-- Wallet Info -->
                                     <div class="wallet-info text-center">
                                         <div class="row">
                                             <div class="col-4">
@@ -87,22 +86,72 @@
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <button class="btn btn-gradient mt-4 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal"> <!-- Tăng margin-top từ mt-3 lên mt-4 -->
+                                        <button class="btn btn-gradient mt-4 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal"> 
                                             <i class="fas fa-wallet me-1"></i> Manage Wallet
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Transactions Table (Full Width) -->
                         <div class="row justify-content-center mt-4">
                             <div class="col-12">
                                 <div class="card transaction-card shadow-lg">
                                     <div class="card-header bg-gradient text-white text-center">
                                         <h4 class="mb-0">Recent Transactions</h4>
                                     </div>
-                                    <div class="card-body p-0">
+                                    <div class="card-body p-4">
+                                        <!-- Hiển thị thông báo nếu có -->
+                                        <c:if test="${not empty requestScope.msg}">
+                                            <div class="alert alert-info mt-3">${requestScope.msg}</div>
+                                        </c:if>
+
+                                        <div class="search-section mb-4">
+                                            <!-- Sửa action thành /HAPPYorSAD/Wallet -->
+                                            <form id="searchForm" method="GET" action="/HAPPYorSAD/Wallet">
+                                                <div class="row g-3 align-items-end">
+                                                    <!-- Date Range -->
+                                                    <div class="col-md-2">
+                                                        <label class="form-label fw-bold">From Date</label>
+                                                        <input type="date" class="form-control" name="fromDate" id="fromDate" value="${param.fromDate}">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label fw-bold">To Date</label>
+                                                        <input type="date" class="form-control" name="toDate" id="toDate" value="${param.toDate}" max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
+                                                    </div>
+                                                    <!-- Transaction Type -->
+                                                    <div class="col-md-2">
+                                                        <label class="form-label fw-bold">Type</label>
+                                                        <select class="form-control" name="type" id="type">
+                                                            <option value="">All</option>
+                                                            <option value="DEPOSIT" ${param.type == 'DEPOSIT' ? 'selected' : ''}>Deposit</option>
+                                                            <option value="WITHDRAW" ${param.type == 'WITHDRAW' ? 'selected' : ''}>Withdraw</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Description -->
+                                                    <div class="col-md-3">
+                                                        <label class="form-label fw-bold">Description</label>
+                                                        <input type="text" class="form-control" name="description" placeholder="Enter keyword" value="${param.description}">
+                                                    </div>
+                                                    <!-- Status -->
+                                                    <div class="col-md-2">
+                                                        <label class="form-label fw-bold">Status</label>
+                                                        <select class="form-control" name="status" id="status">
+                                                            <option value="">All</option>
+                                                            <option value="Completed" ${param.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                                                            <option value="Pending" ${param.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Search Button -->
+                                                    <div class="col-md-1 d-flex align-items-end">
+                                                        <button type="submit" class="btn btn-gradient w-100">
+                                                            <i class="fas fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Transactions Table -->
                                         <div class="table-responsive">
                                             <table class="table table-hover mb-0">
                                                 <thead class="bg-light">
@@ -136,20 +185,25 @@
                                                             <td><span class="status-badge">${i.status}</span></td>
                                                         </tr>
                                                     </c:forEach>
+                                                    <c:if test="${empty requestScope.transaction}">
+                                                        <tr>
+                                                            <td colspan="5" class="text-center">No transactions found.</td>
+                                                        </tr>
+                                                    </c:if>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                      
                     </div>
                 </div>
             </section>
 
             <!-- Payment Modal -->
             <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tăng kích thước modal bằng modal-lg -->
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gradient text-white">
                             <h5 class="modal-title" id="paymentModalLabel">Payment Processing</h5>
@@ -183,7 +237,8 @@
                                     </c:if>
                                 </div>
                             </div>
-                            <form id="walletForm" method="POST">
+                            <!-- Giữ nguyên action và method ban đầu -->
+                            <form id="walletForm" method="POST" action="/HAPPYorSAD/Wallet">
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Amount (VND)</label>
                                     <div class="input-group">
@@ -229,12 +284,33 @@
 
         <!-- Custom CSS -->
         <style>
+            .search-section {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+            .search-section .form-label {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+            .search-section .form-control, .search-section .btn {
+                height: 38px;
+                font-size: 0.9rem;
+            }
+            .search-section .btn-gradient {
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .search-section .btn-gradient i {
+                font-size: 1.1rem;
+            }
             body {
                 font-family: 'Poppins', sans-serif;
                 background: #f4f7fc;
             }
-
-            /* Gradient Button */
             .btn-gradient {
                 background: linear-gradient(90deg, #00c4cc, #7b3fe4);
                 color: white;
@@ -248,8 +324,6 @@
                 box-shadow: 0 5px 15px rgba(0, 196, 204, 0.4);
                 color: white;
             }
-
-            /* User Info Box */
             .user-info-box {
                 border: none;
                 border-radius: 12px;
@@ -261,24 +335,22 @@
                 background: linear-gradient(90deg, #00c4cc, #7b3fe4);
             }
             .info-body {
-                padding: 20px; /* Tăng padding để rộng rãi hơn */
+                padding: 20px;
             }
-
-            /* Wallet Info (Wider Layout) */
             .wallet-info {
-                padding: 20px; /* Tăng padding từ 15px lên 20px */
+                padding: 20px;
                 background: #f8f9fa;
                 border-radius: 10px;
             }
             .wallet-info small {
-                font-size: 1rem; /* Tăng kích thước chữ nhỏ */
+                font-size: 1rem;
                 color: #666;
                 font-weight: 500;
             }
             .amount-text, .hold-text, .available-text {
-                font-size: 1.8rem; /* Tăng kích thước chữ để nổi bật */
+                font-size: 1.8rem;
                 font-weight: 600;
-                margin: 8px 0; /* Tăng khoảng cách giữa các dòng */
+                margin: 8px 0;
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             }
             .amount-text {
@@ -290,8 +362,6 @@
             .available-text {
                 color: #28a745;
             }
-
-            /* Transaction Card (Full Width) */
             .transaction-card {
                 border: none;
                 border-radius: 15px;
@@ -334,15 +404,11 @@
                 border-radius: 20px;
                 font-size: 0.85rem;
             }
-
-            /* Payment Section */
             .payment-section {
                 background: linear-gradient(135deg, #f4f7fc, #e8edf5);
                 padding: 40px 0;
                 min-height: 100vh;
             }
-
-            /* Modal */
             .modal-content {
                 border-radius: 15px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
