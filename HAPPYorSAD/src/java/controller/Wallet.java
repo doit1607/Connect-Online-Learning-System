@@ -28,7 +28,7 @@ public class Wallet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
         if (username == null) {
-            response.sendRedirect("/../HAPPYorSAD/LoginUser.jsp");
+            response.sendRedirect("LoginUser.jsp");
             return;
         }
         double balance = transactionDAO.getTotalBalance(username);
@@ -70,7 +70,7 @@ public class Wallet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("usernameUser");
         if (username == null) {
-            response.sendRedirect("/../HAPPYorSAD/LoginUser.jsp");
+            response.sendRedirect("LoginUser.jsp");
             return;
         }
         String amountStr = request.getParameter("amount");
@@ -94,9 +94,5 @@ public class Wallet extends HttpServlet {
         } else {
             response.sendRedirect("/HAPPYorSAD/wallet?service=error&msg=Invalid payment method");
         }
-    }
-    @Override
-    public String getServletInfo() {
-        return "Servlet to manage wallet and transactions";
     }
 }
