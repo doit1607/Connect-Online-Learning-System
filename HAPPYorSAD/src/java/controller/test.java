@@ -373,6 +373,7 @@ public class test extends HttpServlet {
         // Xử lý tháng và năm từ request hoặc mặc định là hiện tại
         int selectedMonth;
         int selectedYear;
+        System.out.println("Hello");
 
         if (selectedMonthStr != null && selectedYearStr != null && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
             try {
