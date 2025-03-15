@@ -92,18 +92,9 @@
                                     </c:if>
                                 </div>	 
                                 <ul class="nav header-navbar-rht">		
+                                    						
                                     <li class="nav-item user-nav">
-                                        <div>
-                                            <a href="javascript:void(0);" id="dark-mode-toggle" class="dark-mode-toggle  ">
-                                                <i class="fa-solid fa-moon"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" id="light-mode-toggle" class="dark-mode-toggle ">
-                                                <i class="fa-solid fa-sun"></i>
-                                            </a>
-                                        </div>
-                                    </li>						
-                                    <li class="nav-item user-nav">
-                                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                                        <a href="" class="dropdown-toggle" data-bs-toggle="dropdown">
                                             <span class="user-img">
                                                 <img src="${not empty sessionScope.userAvatar ? sessionScope.userAvatar : '/HAPPYorSAD/assets/img/user/user.jpg'}" alt="Img">
                                                 <span class="status online"></span>
@@ -122,11 +113,8 @@
                                             </div>
                                             <a class="dropdown-item" href="/../HAPPYorSAD/Wallet">
                                                 <i class="feather-star me-1"></i> 
-                                                Wallet: <span id="walletAmount"><fmt:formatNumber value="${sessionScope.walletBalance}" pattern="#,##0" /></span> <span id="currencySymbol"></span>
-
+                                                Wallet
                                             </a>
-
-
                                             <a class="dropdown-item" href="/../HAPPYorSAD/ProfileServlet"><i class="feather-home me-1"></i> Dashboard</a>
                                             <c:if test ="${sessionScope.usernameRole eq 'mentee'}">
                                                 <a class="dropdown-item" href="/../HAPPYorSAD/updatementeeprofile"><i class="feather-user me-1"></i> Profile</a>
