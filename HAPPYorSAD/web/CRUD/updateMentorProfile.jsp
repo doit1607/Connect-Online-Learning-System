@@ -213,7 +213,6 @@
                                             <div class="col-md-6">
                                                 <label>Avatar:</label>
                                                 <input type="file" id="avatarFile" name="avatarFile">
-                                                <span id="file-name">${mentor.avatarPath}</span>
                                             </div>
 
                                             <div class="col-md-6">
