@@ -139,7 +139,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h1 class="mb-4">Select Mentor to Review</h1>
-
+                                    
                                     <!-- Mentor List -->
                                     <div class="mentor-list">
                                         <ul>
@@ -168,6 +168,7 @@
                                     <div id="review-form" style="display: none;">
                                         <h2 class="mb-3">Rate & Comment Mentor</h2>
                                         <form action="/HAPPYorSAD/reviewmentor" method="get">  
+                                            <input type="hidden" name="username" value="${sessionScope.usernameUser}">
                                             <input type="hidden" name="mentorId" id="mentorId">
                                             <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
 
