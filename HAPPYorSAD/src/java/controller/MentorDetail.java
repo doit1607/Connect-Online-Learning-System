@@ -84,45 +84,41 @@ public class MentorDetail extends HttpServlet {
     private void handleScheduleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-        int month = Integer.parseInt(request.getParameter("month"));
-        int year = Integer.parseInt(request.getParameter("year"));
+        String monthStr = request.getParameter("month");
+        String yearStr = request.getParameter("year");
         String direction = request.getParameter("direction");
 
-        // Determine the current week's starting date
-        LocalDate weekStartDate;
-        if (request.getAttribute("weekStartDate") != null) {
-            weekStartDate = (LocalDate) request.getAttribute("weekStartDate");
-        } else {
-            weekStartDate = LocalDate.of(year, month, 1); // Default to start of the month
-        }
+        // Default to current month/year if parameters are invalid
+        LocalDate now = LocalDate.now();
+        int month = (monthStr == null || monthStr.trim().isEmpty()) ? now.getMonthValue() : Integer.parseInt(monthStr);
+        int year = (yearStr == null || yearStr.trim().isEmpty()) ? now.getYear() : Integer.parseInt(yearStr);
 
-        // Adjust month or week based on direction
+        // Compute weekStartDate dynamically (no need to persist it across requests)
+        LocalDate weekStartDate = LocalDate.of(year, month, 1); // Default to start of month
+
+        // Adjust based on direction
         if ("prev".equals(direction)) {
             month--;
             if (month < 1) {
                 month = 12;
                 year--;
             }
-            weekStartDate = LocalDate.of(year, month, 1); // Reset to start of previous month
+            weekStartDate = LocalDate.of(year, month, 1);
         } else if ("next".equals(direction)) {
             month++;
             if (month > 12) {
                 month = 1;
                 year++;
             }
-            weekStartDate = LocalDate.of(year, month, 1); // Reset to start of next month
+            weekStartDate = LocalDate.of(year, month, 1);
         } else if ("prevWeek".equals(direction)) {
             weekStartDate = weekStartDate.minusWeeks(1);
-            if (weekStartDate.getMonthValue() != month) {
-                month = weekStartDate.getMonthValue();
-                year = weekStartDate.getYear();
-            }
+            month = weekStartDate.getMonthValue();
+            year = weekStartDate.getYear();
         } else if ("nextWeek".equals(direction)) {
             weekStartDate = weekStartDate.plusWeeks(1);
-            if (weekStartDate.getMonthValue() != month) {
-                month = weekStartDate.getMonthValue();
-                year = weekStartDate.getYear();
-            }
+            month = weekStartDate.getMonthValue();
+            year = weekStartDate.getYear();
         }
 
         // Update request attributes

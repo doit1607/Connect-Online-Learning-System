@@ -193,6 +193,15 @@ public class DAOmentor_Slot extends DBConnection {
         }
         return slots;
     }
+    
+//    String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+//                + "FROM Slot sl\n"
+//                + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
+//                + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
+//                + "WHERE sl.slot_date = ? and status = 'Available'\n"
+//                + "AND ms.mentor_id = ?\n"
+//                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+//                + "ORDER BY st.start_time;";
 
     public List<Mentor_Slot> getSlotsByDateMentorDetai(Date date, int mentorId) {
         List<Mentor_Slot> slots = new ArrayList<>();

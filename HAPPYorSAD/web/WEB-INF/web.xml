@@ -177,6 +177,10 @@
         <servlet-name>ConfirmSchedule</servlet-name>
         <servlet-class>controller.ConfirmSchedule</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewCVMODAL</servlet-name>
+        <servlet-class>controller.viewCVMODAL</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -353,6 +357,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmSchedule</servlet-name>
         <url-pattern>/ConfirmSchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewCVMODAL</servlet-name>
+        <url-pattern>/viewCVMODAL</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

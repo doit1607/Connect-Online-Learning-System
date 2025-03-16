@@ -40,27 +40,256 @@
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">   
         <style>
-            .social-icons {
-                display: flex;
-                gap: 20px;
+
+            /* Định dạng chung cho slot-box */
+            .slot-box {
+                transition: all 0.3s ease;
+                border: 1px solid #e9ecef;
             }
-            .social-icons a {
-                text-decoration: none;
-                font-size: 40px;
+            .slot-box:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Định dạng header của slot */
+            .slot-header .week-day {
+                font-size: 1.1rem;
+                color: #007bff;
+            }
+            .slot-header small {
+                font-size: 0.9rem;
+            }
+
+            /* Định dạng bảng slot */
+            .slot-body .table {
+                border-collapse: collapse;
+                font-size: 0.9rem;
+            }
+            .slot-body .table td {
+                vertical-align: middle;
+                padding: 10px;
+                border: 1px solid #dee2e6;
+            }
+            .slot-body .text-success,
+            .slot-body .text-danger {
+                font-weight: 500;
+            }
+            .slot-body .text-muted {
+                font-style: italic;
+            }
+
+            /* Căn chỉnh nút điều hướng */
+            .btn-group .btn {
+                margin-left: 5px;
+            }
+            .btn-sm {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.875rem;
+            }
+
+            .mentor-image {
+                max-height: 200px; /* Adjust this value to scale the image */
+                object-fit: cover; /* Ensures the image scales nicely without distortion */
+                border-radius: 8px; /* Optional: Adds a slight rounded corner */
+            }
+
+            .course-info .cou-info {
+                margin-right: 20px; /* Adds spacing between course info items */
+            }
+
+            @media (max-width: 767px) {
+                .mentor-image {
+                    max-height: 150px; /* Smaller height for mobile */
+                    margin-bottom: 15px; /* Adds spacing below image on mobile */
+                }
+                .course-info {
+                    justify-content: center; /* Center course info on mobile */
+                }
+            }
+
+            /* Định dạng viền cho slot */
+            .border-green {
+                border: 2px solid #28a745 !important;
+                padding: 5px;
+                border-radius: 4px;
+                display: inline-block;
+            }
+
+            .border-red {
+                border: 2px solid #dc3545 !important;
+                padding: 5px;
+                border-radius: 4px;
+                display: inline-block;
+            }
+
+            /* Định dạng popover */
+            .popover {
+                max-width: 300px;
+            }
+
+            .popover-body {
                 color: #333;
-                transition: 0.3s;
+                font-size: 0.9rem;
             }
-            .social-icons a:hover {
-                transform: scale(1.2);
+
+            .slot-info {
+                cursor: pointer;
             }
-            .fa-facebook {
-                color: #1877F2;
+        </style>
+
+        <style>
+            /* ... Các CSS khác giữ nguyên ... */
+
+            /* Định dạng chung cho slot-box */
+            .slot-box {
+                transition: all 0.3s ease;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                margin-bottom: 15px;
             }
-            .fa-youtube {
-                color: #FF0000;
+            .slot-box:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             }
-            .fa-tiktok {
-                color: #000;
+
+            /* Định dạng header của slot */
+            .slot-header {
+                background-color: #f8f9fa;
+                padding: 10px;
+                border-bottom: 1px solid #e9ecef;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+            .slot-header .week-day {
+                font-size: 1.2rem;
+                color: #007bff;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+            .slot-header small {
+                font-size: 0.85rem;
+                color: #6c757d;
+            }
+
+            /* Định dạng body của slot */
+            .slot-body {
+                padding: 15px;
+            }
+            .slot-body .table {
+                border-collapse: collapse;
+                font-size: 0.9rem;
+                margin-bottom: 0;
+            }
+            .slot-body .table td {
+                vertical-align: middle;
+                padding: 12px;
+                border: 1px solid #e9ecef;
+                transition: background-color 0.3s ease;
+            }
+            .slot-body .table td:hover {
+                background-color: #f8f9fa;
+            }
+            .slot-body .text-success,
+            .slot-body .text-danger {
+                font-weight: 600;
+            }
+            .slot-body .text-muted {
+                font-style: italic;
+                color: #adb5bd;
+            }
+
+            /* Định dạng viền cho slot */
+            .border-green {
+                border: 2px solid #28a745 !important;
+                padding: 6px 10px;
+                border-radius: 6px;
+                display: inline-block;
+                background-color: rgba(40, 167, 69, 0.05);
+                transition: background-color 0.3s ease;
+            }
+            .border-green:hover {
+                background-color: rgba(40, 167, 69, 0.1);
+            }
+
+            .border-red {
+                border: 2px solid #dc3545 !important;
+                padding: 6px 10px;
+                border-radius: 6px;
+                display: inline-block;
+                background-color: rgba(220, 53, 69, 0.05);
+                transition: background-color 0.3s ease;
+            }
+            .border-red:hover {
+                background-color: rgba(220, 53, 69, 0.1);
+            }
+
+            /* Định dạng popover */
+            .popover {
+                max-width: 300px;
+                border: 1px solid #e9ecef;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .popover-body {
+                color: #333;
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .slot-info {
+                cursor: pointer;
+                font-weight: 500;
+            }
+
+            /* Định dạng card chứa schedule */
+            .overview-sec {
+                border: none;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                background-color: #fff;
+                margin-bottom: 30px;
+            }
+            .overview-sec .card-body {
+                padding: 25px;
+            }
+            .overview-sec .subs-title {
+                font-size: 1.5rem;
+                color: #343a40;
+                font-weight: 700;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 8px;
+                display: inline-block;
+            }
+
+            /* Định dạng nút điều hướng (Previous/Next) */
+            .btn-outline-primary,
+            .btn-outline-secondary {
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            .btn-outline-primary:hover {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
+            .btn-outline-secondary:hover {
+                background-color: #6c757d;
+                color: #fff;
+                border-color: #6c757d;
+            }
+            .btn-sm {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            /* Căn chỉnh các nút và tiêu đề tháng */
+            #mentorScheduleMonthYear {
+                font-size: 1.3rem;
+                color: #343a40;
+                font-weight: 600;
             }
         </style>
     </head>
@@ -94,17 +323,35 @@
             <div class="inner-banner">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8">                          
-                            <h1 style="color: white">${mentorname}</h1> 
-
-                            <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
-                                <div class="cou-info">
-                                    <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                    <p>12+ Lesson</p>
-                                </div>
-                                <div class="cou-info">
-                                    <img src="assets/img/icon/timer-icon.svg" alt="Img">
-                                    <p>9hr 30min</p>
+                        <div class="col-lg-12"> 
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <!-- Left Column: Mentor Image -->
+                                    <div class="col-md-4 col-12">
+                                        <a href="" class="video-thumbnail" data-fancybox="">
+                                            <img class="img-fluid mentor-image" src="${mentor.image}" alt="Mentor Image">
+                                        </a>
+                                    </div>
+                                    <!-- Right Column: Mentor Info -->
+                                    <div class="col-md-8 col-12 text-md-start text-center">
+                                        <h1 style="color: white">${mentorname}</h1>
+                                        <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0 flex-wrap">
+                                            <div class="cou-info">
+                                                <p></p>
+                                                <p></p>
+                                            </div>
+                                            <div class="cou-info">
+                                                <p></p>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                        <div class="video-details mt-3">
+                                            <h2>
+                                                <a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" 
+                                                   class="btn btn-enroll w-100">Invite</a>
+                                            </h2>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +364,7 @@
             <section class="page-content course-sec">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8">
+                        <div class="col-lg-14">
 
                             <!-- Overview -->
                             <div class="card overview-sec">
@@ -126,22 +373,46 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h5>Mentor name</h5>
-                                            <h5><p>- ${mentor.name}</p> </h5>
+                                            <h5><p>- ${mentor.name}</p></h5>
                                             <h5>Email</h5>
-                                            <h5><p>- ${mentor.email}</p></h5> 
+                                            <h5><p>- ${mentor.email}</p></h5>
                                             <h5>Review from mentees</h5>
-                                            <h5><p>- ${mentor.reviews}</p></h5>  
+                                            <h5><p>- ${mentor.reviews}</p></h5>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Expertise</h5>
-                                            <h5><p>- ${mentor.expertise}</p></h5> 
+                                            <h5><p>- ${mentor.expertise}</p></h5>
                                             <h5>Bio</h5>
-                                            <h5><p>- ${mentor.bio}</p></h5>   
+                                            <h5><p>- ${mentor.bio}</p></h5>
+                                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#cvModal">
+                                                View CV
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="cvModal" tabindex="-1" aria-labelledby="cvModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cvModalLabel">${mentor.name}'s CV</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Sử dụng iframe để gọi servlet -->
+                                            <iframe src="/HAPPYorSAD//viewCVMODAL?mentorId=${mentor.id}" width="100%" height="500px" frameborder="0"></iframe>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- /Overview -->
+
+                            <!-- Mentor's Schedule -->
                             <!-- Mentor's Schedule -->
                             <div class="card overview-sec">
                                 <div class="card-body">
@@ -149,13 +420,11 @@
                                     <form id="monthForm" action="/HAPPYorSAD/MentorDetail" method="GET">
                                         <input type="hidden" name="action" value="getMentorSlots">
                                         <input type="hidden" name="mentorId" value="${requestScope.mentorId}">
-                                        <input type="hidden" name="month" id="monthInput" value="${requestScope.selectedMonth}">
-                                        <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear}">
+                                        <input type="hidden" name="month" id="monthInput" value="${requestScope.selectedMonth != null ? requestScope.selectedMonth : currentMonth}">
+                                        <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear != null ? requestScope.selectedYear : currentYear}">
                                         <div class="row align-items-center">
                                             <div class="col-12 col-sm-6">
-                                                <h4 class="mb-1" id="mentorScheduleMonthYear">
-                                                    ${formattedMonthYear}
-                                                </h4>
+                                                <h4 class="mb-1" id="mentorScheduleMonthYear">${formattedMonthYear}</h4>
                                                 <p></p>
                                             </div>
                                             <div class="col-12 col-sm-6 text-sm-end">
@@ -163,10 +432,11 @@
                                                 <button type="submit" class="btn btn-outline-primary btn-sm" name="direction" value="next">Next Month</button>
                                             </div>
                                         </div>
-                                        <!-- Week Navigation Buttons -->
                                         <div class="row align-items-center mt-2">
-                                            <div class="col-12 text-sm-end">
-                                                <button type="submit" class="btn btn-outline-secondary btn-sm me-2" name="direction" value="prevWeek">Previous Week</button>
+                                            <div class="col-6 text-start">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm" name="direction" value="prevWeek">Previous Week</button>
+                                            </div>
+                                            <div class="col-6 text-end">
                                                 <button type="submit" class="btn btn-outline-secondary btn-sm" name="direction" value="nextWeek">Next Week</button>
                                             </div>
                                         </div>
@@ -184,6 +454,10 @@
                                                         </h5>
                                                     </div>
                                                     <div class="slot-body">
+                                                        <div class="text-center">
+                                                            <h10>${formattedDay}</h10>
+                                                        </div>
+                                                        <small class="text-muted fs-6">${formattedDate}</small> 
                                                         <table class="table table-bordered text-center">
                                                             <tbody>
                                                                 <c:forEach var="i" begin="1" end="5">
@@ -193,22 +467,78 @@
                                                                             <c:forEach var="slot" items="${slotsByDay[formattedDay]}">  
                                                                                 <c:if test="${slot.slot_number_id == i}">
                                                                                     <c:set var="slotFound" value="true" />
-                                                                                    <c:choose>
-                                                                                        <c:when test="${slot.status == 'Studying'}">
-                                                                                            <span class="text-danger">
-                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slot_number_id} (Booked)
-                                                                                            </span>
-                                                                                        </c:when>
-                                                                                        <c:otherwise>
-                                                                                            <span class="text-success">
-                                                                                                <i class="isax isax-clock"></i> Slot ${slot.slot_number_id}
-                                                                                            </span>
-                                                                                        </c:otherwise>
-                                                                                    </c:choose>
+                                                                                    <!-- Tính toán thời gian bắt đầu và kết thúc dựa trên bảng dữ liệu -->
+                                                                                    <c:set var="startTime">
+                                                                                        <c:choose>
+                                                                                            <c:when test="${slot.slot_number_id == 1}">07:30</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 2}">10:00</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 3}">13:00</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 4}">15:30</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 5}">19:30</c:when>
+                                                                                        </c:choose>
+                                                                                    </c:set>
+                                                                                    <c:set var="endTime">
+                                                                                        <c:choose>
+                                                                                            <c:when test="${slot.slot_number_id == 1}">09:30</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 2}">12:00</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 3}">15:00</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 4}">17:30</c:when>
+                                                                                            <c:when test="${slot.slot_number_id == 5}">21:30</c:when>
+                                                                                        </c:choose>
+                                                                                    </c:set>
+                                                                                    <span 
+                                                                                        class="slot-info ${slot.status == 'Available' ? 'border-green' : 'border-red'}"
+                                                                                        data-bs-toggle="popover" 
+                                                                                        data-bs-trigger="hover" 
+                                                                                        data-bs-html="true"
+                                                                                        data-bs-content="
+                                                                                        <strong>Slot:</strong> ${slot.slot_number_id}<br>
+                                                                                        <strong>Date:</strong> ${formattedDay}<br>
+                                                                                        <strong>Start:</strong> ${startTime}<br>
+                                                                                        <strong>End:</strong> ${endTime}<br>
+                                                                                        <strong>Status:</strong> ${slot.status == 'Available' ? 'Available' : 'Booked'}"
+                                                                                        >
+                                                                                        <c:choose>
+                                                                                            <c:when test="${slot.status == 'Available'}">
+                                                                                                <span class="text-success">
+                                                                                                    <i class="isax isax-clock"></i> Slot ${slot.slot_number_id}
+                                                                                                </span>
+                                                                                            </c:when>
+                                                                                            <c:otherwise>
+                                                                                                <span class="text-danger">
+                                                                                                    <i class="isax isax-clock"></i> Slot ${slot.slot_number_id}
+                                                                                                </span>
+                                                                                            </c:otherwise>
+                                                                                        </c:choose>
+                                                                                    </span>
                                                                                 </c:if>
                                                                             </c:forEach>
                                                                             <c:if test="${not slotFound}">
-                                                                                <span class="text-muted">Empty</span>
+                                                                                <span class="slot-info"
+                                                                                      data-bs-toggle="popover" 
+                                                                                      data-bs-trigger="hover" 
+                                                                                      data-bs-html="true"
+                                                                                      data-bs-content="
+                                                                                      <strong>Slot:</strong> ${i}<br>
+                                                                                      <strong>Date:</strong> ${formattedDay}<br>
+                                                                                      <strong>Start:</strong> 
+                                                                                      <c:choose>
+                                                                                          <c:when test='${i == 1}'>07:30</c:when>
+                                                                                          <c:when test='${i == 2}'>10:00</c:when>
+                                                                                          <c:when test='${i == 3}'>13:00</c:when>
+                                                                                          <c:when test='${i == 4}'>15:30</c:when>
+                                                                                          <c:when test='${i == 5}'>19:30</c:when>
+                                                                                      </c:choose><br>
+                                                                                      <strong>End:</strong> 
+                                                                                      <c:choose>
+                                                                                          <c:when test='${i == 1}'>09:30</c:when>
+                                                                                          <c:when test='${i == 2}'>12:00</c:when>
+                                                                                          <c:when test='${i == 3}'>15:00</c:when>
+                                                                                          <c:when test='${i == 4}'>17:30</c:when>
+                                                                                          <c:when test='${i == 5}'>21:30</c:when>
+                                                                                      </c:choose><br>
+                                                                                      <strong>Status:</strong> Unavailable"
+                                                                                      >Empty</span>
                                                                             </c:if>
                                                                         </td>
                                                                     </tr>
@@ -222,6 +552,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- /Mentor's Schedule -->
                             <!-- /Mentor's Schedule -->
 
                             <!-- List of Courses -->
@@ -274,65 +605,39 @@
                                 </c:forEach>
                             </div>
                             <!-- /List of Courses -->
-                        </div>	
-
-                        <div class="col-lg-4">
-                            <div class="sidebar-sec">
-                                <div class="video-sec vid-bg">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <a href="" class="video-thumbnail" data-fancybox="">
-                                                <img class="img-fluid" src="${mentor.image}" alt="Img">
-                                            </a>
-                                            <div class="video-details">                                              
-                                                <div class="course-fee">
-                                                    <div class="rating-img d-flex align-items-center">
-                                                        <div class="social-icons">
-                                                            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                                                            <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
-                                                            <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <h2><a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" class="btn btn-enroll w-100">Invite</a></h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Video -->
-
-
-                            </div>
-                        </div>
-                    </div>	
+                        </div>    
+                    </div>    
                 </div>
             </section>
             <!-- /Pricing Plan -->
         </div>
 
-
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
-        <!-- jQuery -->
         <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="text/javascript"></script>
-
-        <!-- Bootstrap Core JS -->
         <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-
-        <!-- Select2 JS -->
         <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
-
-        <!-- Ckeditor JS -->
         <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="text/javascript"></script>
-
-        <!-- Dropzone JS -->
         <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-
-        <!-- Sticky Sidebar JS -->
         <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="text/javascript"></script>
         <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="text/javascript"></script>
-
-        <!-- Custom JS -->
         <script src="/HAPPYorSAD/assets/js/script.js" type="text/javascript"></script>
+
+        <!-- Script khởi tạo popover -->
+        <script>
+            $(document).ready(function () {
+                // Khởi tạo popover với tùy chọn để hiển thị HTML
+                $('[data-bs-toggle="popover"]').popover({
+                    html: true,
+                    trigger: 'hover',
+                    placement: 'top' // Có thể thay đổi vị trí: 'top', 'bottom', 'left', 'right'
+                });
+
+                // Đảm bảo popover được đóng khi rời khỏi
+                $('[data-bs-toggle="popover"]').on('mouseleave', function () {
+                    $(this).popover('hide');
+                });
+            });
+        </script>
     </body>
 </html>
