@@ -134,6 +134,10 @@
                                     <img src="assets/img/icon/people.svg" alt="Img">
                                     <p> Total: ${countMentorOfCourse} Mentor </p>
                                 </div>
+                                <div class="rating-img d-flex align-items-center">
+                                    <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
+                                    <p>${detail.total_Mentee} Mentees</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -179,7 +183,7 @@
                                             </div>
                                             <div class="instructor-content">												
                                                 <h5><a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}">${mentor.name}</a></h5>
-                                                <h6>@${mentor.username}</h6>
+                                                <h6>${mentor.username}</h6>
                                                 <div class="instructor-info">
                                                     <div class="rating-img d-flex align-items-center">
                                                         <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
@@ -188,7 +192,7 @@
                                                     </div>
                                                     <div class="rating">
                                                         <c:set var="ratingValue" value="${mentor.rating}"/>
-                                                        <c:set var="numReviews" value="${mentor.total_reviews}"/> 
+
                                                         <c:set var="fullStars" value="${Math.floor(ratingValue)}"/>
                                                         <c:forEach begin="1" end="5" varStatus="loop">
                                                             <c:choose>
@@ -200,9 +204,8 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </c:forEach>
-                                                        <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${numReviews})</span>
-                                                    </div>
-                                                    <a href="#rate" class="rating-count"><i class="fa-regular fa-heart"></i></a>
+                                                        <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${mentor.total_reviews})</span>
+                                                    </div>                                                  
                                                 </div>
                                                 <div class="instructor-badge">
                                                     <span class="web-badge">${mentor.expertise}</span>
@@ -231,23 +234,9 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-content">
-                                                    <div class="course-group d-flex">                                                 
-                                                        <div
-                                                            class="course-share d-flex align-items-center justify-content-center">
-                                                            <a href="#rate"><i class="fa-regular fa-heart"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <h3 class="title"><a href="course-details.html">${o.title}</a></h3>
-                                                    <div class="rating">
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                                    </div>
+                                                    <h3 class="title"><a href="course-details.html">${o.title}</a></h3>                                                  
                                                     <div class="all-btn all-category d-flex align-items-center">
-                                                        <a href="checkout.html" class="btn btn-primary">MORE DETAIL</a>
+                                                        <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">MORE DETAIL</a>
                                                     </div>
                                                 </div>
                                             </div>
