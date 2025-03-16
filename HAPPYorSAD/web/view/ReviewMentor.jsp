@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.List, entity.Mentor" %>
+<%@ page import="java.util.List, entity.MentorReview" %>
 <%-- 
     Document   : ReviewMentor
     Created on : Feb 3, 2025, 11:38:35 PM
@@ -133,56 +134,62 @@
                             HttpSession userSession = request.getSession();
                             Integer menteeId = (Integer) userSession.getAttribute("menteeID");
                             List<Mentor> mentorList = (List<Mentor>) request.getAttribute("mentorList");
+                            List<Integer> reviewedMentorIds = (List<Integer>) session.getAttribute("reviewedMentorIds");
+
+                            MentorReview review = (MentorReview) request.getAttribute("review");
+                            int rating = (review != null) ? review.getRating() : 0;
+                            String comment = (review != null) ? review.getCommit() : "";
                         %>
 
                         <div class="col-xl-9 col-lg-9">
                             <div class="card">
                                 <div class="card-body">
                                     <h1 class="mb-4">Select Mentor to Review</h1>
-                                    
+
                                     <!-- Mentor List -->
                                     <div class="mentor-list">
                                         <ul>
-                                            <% 
-                                            List<Integer> reviewedMentorIds = (List<Integer>) session.getAttribute("reviewedMentorIds");
-                                            if (mentorList != null) {
+                                            <% if (mentorList != null) {
+                                                Integer selectedMentorId = (Integer) session.getAttribute("selectedMentorId"); // Lấy mentorId từ session
                                                 for (Mentor mentor : mentorList) { 
                                                     boolean isReviewed = reviewedMentorIds != null && reviewedMentorIds.contains(mentor.getId());
+                                                    boolean isSelected = selectedMentorId != null && selectedMentorId.equals(mentor.getId());
                                             %>
                                             <li>
-                                                <% if (isReviewed) { %>
-                                                <a href="viewReview.jsp?mentorId=<%= mentor.getId() %>" class="btn btn-secondary">
+                                                <% if (isReviewed || isSelected) { %>
+                                                <a href="/HAPPYorSAD/reviewmentor?mentorId=<%= mentor.getId() %>" class="btn btn-secondary">
                                                     Xem đánh giá - <%= mentor.getName() %>
                                                 </a>
                                                 <% } else { %>
-                                                <button class="btn btn-link mentor-btn" data-mentor-id="<%= mentor.getId() %>" data-reviewed="false">
+                                                <button class="btn btn-link mentor-btn" data-mentor-id="<%= mentor.getId() %>" data-mentor-name="<%= mentor.getName() %>" data-reviewed="false">
                                                     <%= mentor.getName() %>
                                                 </button>
                                                 <% } %>
                                             </li>
-                                            <%  } } %>
+                                            <% } } %>
                                         </ul>
                                     </div>
 
                                     <!-- Review Form (Hidden by Default) -->
                                     <div id="review-form" style="display: none;">
-                                        <h2 class="mb-3">Rate & Comment Mentor</h2>
+                                        <h2 class="mb-3">Rate & Comment Mentor for <span id="mentor-name"></span></h2>
                                         <form action="/HAPPYorSAD/reviewmentor" method="get">  
                                             <input type="hidden" name="username" value="${sessionScope.usernameUser}">
                                             <input type="hidden" name="mentorId" id="mentorId">
                                             <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
 
+                                            <!-- Hiển thị rating đã chọn nếu có -->
                                             <div class="rating mb-3">
-                                                <input type="radio" id="star5" name="rating" value="5" required><label for="star5">&#9733;</label>
-                                                <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
-                                                <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
-                                                <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
-                                                <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+                                                <% for (int i = 5; i >= 1; i--) { %>
+                                                <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" <%= (i == rating) ? "checked" : "" %> required>
+                                                <label for="star<%= i %>">&#9733;</label>
+                                                <% } %>
                                             </div>
 
+                                            <!-- Hiển thị comment đã lưu nếu có -->
                                             <div class="form-group">
                                                 <label for="comment">Comment <span class="required">*</span></label>
-                                                <textarea class="form-control" name="comment" required rows="5"></textarea>
+                                                <textarea class="form-control" name="comment" required rows="5"><%= comment %></textarea>
                                             </div>
 
                                             <button type="submit" class="btn btn-primary">Submit Review</button>
@@ -191,12 +198,26 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- JavaScript -->
                         <script>
-                            document.querySelectorAll('.mentor-btn').forEach(button => {
-                                button.addEventListener('click', function () {
-                                    let mentorId = this.getAttribute('data-mentor-id');
-                                    document.getElementById('mentorId').value = mentorId;
-                                    document.getElementById('review-form').style.display = 'block';
+                            document.addEventListener("DOMContentLoaded", function () {
+                                document.querySelectorAll(".mentor-btn").forEach(button => {
+                                    button.addEventListener("click", function () {
+                                        const mentorId = this.getAttribute("data-mentor-id");
+                                        const mentorName = this.getAttribute("data-mentor-name");
+
+                                        document.getElementById("mentor-name").textContent = mentorName;
+                                        document.getElementById("mentorId").value = mentorId;
+                                        document.getElementById("review-form").style.display = "block";
+                                        fetch(`/HAPPYorSAD/reviewmentor?mentorId=${mentorId}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        location.reload(); // Reload trang để cập nhật UI
+                                                    }
+                                                });
+                                    });
                                 });
                             });
                         </script>
