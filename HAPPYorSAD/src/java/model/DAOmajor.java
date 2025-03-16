@@ -76,33 +76,48 @@ public class DAOmajor extends DBConnection {
 
     public List<Course> getListAllCourseByMajorId(int id) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT [id]\n"
-                + "      ,[title]\n"
-                + "      ,[description]\n"
-                + "      ,[manager_id]\n"
-                + "      ,[mentor_id]\n"
-                + "      ,[status]\n"
-                + "      ,[created_at]\n"
-                + "      ,[updated_at]\n"
-                + "      ,[course_major_id]\n"
-                + "      ,[image]\n"
-                + "  FROM [SWP1].[dbo].[Course]\n"
-                + "  where [course_major_id] = ?";
+        String sql = "SELECT \n"
+                + "    c.id AS CourseID,\n"
+                + "    c.title AS CourseTitle,\n"
+                + "    c.description AS CourseDescription,\n"
+                + "    c.manager_id AS ManagerID,\n"
+                + "    c.mentor_id AS MentorID,\n"
+                + "    c.status AS CourseStatus,\n"
+                + "    c.created_at AS CreatedAt,\n"
+                + "    c.updated_at AS UpdatedAt,\n"
+                + "    c.course_major_id AS CourseMajorID,\n"
+                + "    c.image AS CourseImage,\n"
+                + "    \n"
+                + "    -- Đếm số lượng mentor\n"
+                + "    COUNT(cv.id) AS MentorCount\n"
+                + "FROM \n"
+                + "    Course c\n"
+                + "LEFT JOIN \n"
+                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN \n"
+                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
+                + "WHERE \n"
+                + "    c.course_major_id = ?\n"
+                + "GROUP BY \n"
+                + "    c.id, c.title, c.description, c.manager_id, c.mentor_id, \n"
+                + "    c.status, c.created_at, c.updated_at, c.course_major_id, c.image;";
+
         try {
-            PreparedStatement connect = conn.prepareStatement(query);
+            PreparedStatement connect = conn.prepareStatement(sql);
             connect.setInt(1, id);
-            ResultSet result = connect.executeQuery();
-            
-            while (result.next()) {
+            ResultSet rs = connect.executeQuery();
+
+           while (rs.next()) {
                 Course course = new Course();
-                course.setId(result.getInt("id"));
-                course.setTitle(result.getString("title"));
-                course.setDescription(result.getString("description"));
-                course.setManagerId(result.getInt("manager_id"));
-                course.setMentorId(result.getInt("mentor_id"));
-                course.setStatus(result.getString("status"));
-                course.setCourseMajorId(result.getInt("course_major_id"));
-                course.setImage(result.getString("image"));
+                course.setId(rs.getInt("CourseID"));
+                course.setTitle(rs.getString("CourseTitle"));
+                course.setDescription(rs.getString("CourseDescription"));
+                course.setManagerId(rs.getInt("ManagerID"));
+                course.setMentorId(rs.getInt("MentorID"));
+                course.setStatus(rs.getString("CourseStatus"));
+                course.setCourseMajorId(rs.getInt("CourseMajorID"));
+                course.setImage(rs.getString("CourseImage"));
+                course.setTotal_Mentor(rs.getInt("MentorCount"));
 
                 listCourse.add(course);
             }
@@ -118,8 +133,8 @@ public class DAOmajor extends DBConnection {
 
         List<Major> list = dao.getMajorHome();
         List<Course> listCourse = dao.getListAllCourseByMajorId(2);
-         
-        System.out.println(listCourse+" \n");
+
+        System.out.println(listCourse + " \n");
 
     }
 
