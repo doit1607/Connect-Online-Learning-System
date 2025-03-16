@@ -86,7 +86,7 @@ public class ReviewMentor extends HttpServlet {
                 // Lấy đánh giá nếu đã tồn tại
                 MentorReview review = dao.getReviewByMenteeAndMentor(mentorId);
                 request.setAttribute("review", review);
-                session.setAttribute("selectedMentorId", mentorId);
+                session.setAttribute("mentorId", mentorId);
 
                 // Xử lý đánh giá mới (nếu có dữ liệu từ form)
                 String ratingStr = request.getParameter("rating");
