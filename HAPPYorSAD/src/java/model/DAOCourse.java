@@ -372,39 +372,52 @@ public class DAOCourse extends DBConnection {
         return course;
     }
 
-    public List<Mentor> getMentorByCourseTitle(String courseTitle) {
+     public List<Mentor> getMentorByCourseId(int cid) {
         List<Mentor> mentors = new ArrayList<>();
-        String sql = "SELECT id, user_id, name, email, rating, is_deleted, reviews, "
-                + "price_per_slot, expertise, bio, created_at, base_rate, multiplier, image "
-                + "FROM Mentor WHERE id = (SELECT mentor_id FROM Course WHERE title = ?)";
+        String sql = "SELECT \n"
+                + "    m.id AS mentor_id,\n"
+                + "    m.name AS mentor_name,\n"
+                + "    m.email AS mentor_email,\n"
+                + "    m.rating,\n"
+                + "    m.price_per_slot,\n"
+                + "    m.expertise,\n"
+                + "    m.bio,\n"
+                + "	m.image,\n"
+                + "	m.reviews,\n"
+                + "    u.username\n"
+                + "FROM \n"
+                + "    Course c\n"
+                + "INNER JOIN \n"
+                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "INNER JOIN \n"
+                + "    CV cv ON cv.courses LIKE '%' + cm.name + '%'\n"
+                + "INNER JOIN \n"
+                + "    Mentor m ON m.user_id = (SELECT id FROM Users WHERE username = cv.username)\n"
+                + "INNER JOIN \n"
+                + "    Users u ON m.user_id = u.id\n"
+                + "WHERE \n"
+                + "    c.id = ? \n"
+                + "    AND m.is_deleted = 0;";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, courseTitle);
+            stmt.setInt(1, cid);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                Mentor mentor = new Mentor(
-                        rs.getInt("id"),
-                        rs.getInt("id"), // mentorId (cùng giá trị với id)
-                        rs.getInt("user_id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getDouble("rating"),
-                        rs.getString("reviews"),
-                        rs.getDouble("price_per_slot"),
-                        rs.getString("expertise"),
-                        rs.getString("bio"),
-                        rs.getTimestamp("created_at") != null
-                        ? rs.getTimestamp("created_at").toLocalDateTime() : null,
-                        rs.getDouble("base_rate"),
-                        rs.getDouble("multiplier"),
-                        rs.getBoolean("is_deleted")
-                );
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("mentor_id"));
+                mentor.setName(rs.getString("mentor_name"));
+                mentor.setEmail(rs.getString("mentor_email"));
+                mentor.setReviews(rs.getString("reviews"));
+                mentor.setRating(rs.getDouble("rating"));
+                mentor.setPricePerSlot(rs.getDouble("price_per_slot"));
+                mentor.setBio(rs.getString("bio"));
                 mentor.setImage(rs.getString("image"));
                 mentors.add(mentor);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -473,6 +486,7 @@ public class DAOCourse extends DBConnection {
         return null;
     }
 
+    // hoang
     public List<Course> getTop3CoursesByMajor(int majorId) {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT top 3  [id]\n"
@@ -603,6 +617,7 @@ public class DAOCourse extends DBConnection {
         }
         return 0;
     }
+    // hoang
 
     public List<Course> pagingCourse(int index) {
         List<Course> list = new ArrayList<>();
@@ -686,24 +701,44 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> searchCourseByTitle(String keyword) {
         List<Course> list = new ArrayList<>();
-        String query = "SELECT * FROM Course WHERE LOWER(title) LIKE LOWER(?)";
+        String sql = "	SELECT \n"
+                + "    c.id AS CourseID,\n"
+                + "    c.title AS CourseTitle,\n"
+                + "    c.description AS CourseDescription,\n"
+                + "    c.manager_id AS ManagerID,\n"
+                + "    c.mentor_id AS MentorID,\n"
+                + "    c.status AS CourseStatus,\n"
+                + "    c.created_at AS CreatedAt,\n"
+                + "    c.updated_at AS UpdatedAt,\n"
+                + "    c.course_major_id AS CourseMajorID,\n"
+                + "    c.image AS CourseImage,\n"
+                + "    \n"
+                + "    COUNT(cv.id) AS MentorCount\n"
+                + "FROM \n"
+                + "    Course c\n"
+                + "LEFT JOIN \n"
+                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN \n"
+                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
+                + "WHERE LOWER(c.title) LIKE LOWER(?) \n"
+                + "GROUP BY \n"
+                + "    c.id, c.title, c.description, c.manager_id, c.mentor_id, \n"
+                + "    c.status, c.created_at, c.updated_at, c.course_major_id, c.image ";
 
         try {
-            PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, "%" + keyword + "%");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Course course = new Course();
-                course.setId(rs.getInt("id"));
-                course.setTitle(rs.getString("title"));
-                course.setDescription(rs.getString("description"));
-                course.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                course.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-                course.setStatus(rs.getString("status"));
-                course.setCourseMajorId(rs.getInt("course_major_id"));
-                course.setImage(rs.getString("image"));
-                course.setPrice(rs.getDouble("price"));
-
+                course.setId(rs.getInt("CourseID"));
+                course.setTitle(rs.getString("CourseTitle"));
+                course.setDescription(rs.getString("CourseDescription"));
+                course.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+                course.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
+                course.setCourseMajorId(rs.getInt("CourseMajorID"));
+                course.setImage(rs.getString("CourseImage"));
+                course.setTotal_Mentor(rs.getInt("MentorCount"));
                 list.add(course);
             }
         } catch (SQLException e) {
@@ -711,6 +746,30 @@ public class DAOCourse extends DBConnection {
         }
         return list;
     }
+
+    public int countMenteeOfCourse(int courseId) {
+        String sql = "SELECT \n"
+                + "    COUNT(DISTINCT r.mentee_id) AS total_mentees\n"
+                + "FROM \n"
+                + "    [dbo].[Request] r\n"
+                + "WHERE \n"
+                + "    r.status = 'closed' AND \n"
+                + "    r.course_id = ?;";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, courseId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total_mentees");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
