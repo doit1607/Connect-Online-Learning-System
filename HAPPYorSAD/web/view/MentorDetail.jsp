@@ -448,9 +448,9 @@
                                                         <tbody>
                                                             <c:forEach var="review" items="${listReview}">
                                                                 <tr>
-                                                                    <td>${review.menteeId}</td>
+                                                                    <td>${review.menteeID}</td>
                                                                     <td>${review.rating} / 5</td>
-                                                                    <td>${review.comment}</td>
+                                                                    <td>${review.commit}</td>
                                                                 </tr>
                                                             </c:forEach>
                                                         </tbody>
