@@ -564,17 +564,51 @@ public class DAOMentor extends DBConnection {
         }
         return mentor;
     }
+    
+     // Đếm số lượng mentor được review
+    public int countMentorsReviewed(int mid) {
+        String sql = "SELECT COUNT(*) AS total_reviews FROM mentor_reviews WHERE mentor_id = ? ";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, mid);
+            ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("total_reviews");
+                }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
+    // Đếm số lượng mentee đã review
+    public int countMenteesReviewed(int mid) {
+        String sql = "SELECT COUNT(DISTINCT mentee_id) AS total_mentees FROM mentor_reviews WHERE mentor_id = ? ";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, mid);
+            ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("total_mentees");
+                }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public static void main(String[] args) {
         DAOMentor dao = new DAOMentor();
 
-        String price = DAOMentor.getMentorPriceByID(1);
-        if (price == null) {
-            System.out.println("Mentor chưa có giá tiền.");
-        } else {
-            System.out.println("Giá tiền: " + price);
-        }
-
+//        String price = DAOMentor.getMentorPriceByID(1);
+//        if (price == null) {
+//            System.out.println("Mentor chưa có giá tiền.");
+//        } else {
+//            System.out.println("Giá tiền: " + price);
+//        }
+        int a = dao.countMenteesReviewed(1);
+        System.out.println(a);
     }
 
 }
