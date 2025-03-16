@@ -136,7 +136,11 @@
                             List<Mentor> mentorList = (List<Mentor>) request.getAttribute("mentorList");
                             List<Integer> reviewedMentorIds = (List<Integer>) session.getAttribute("reviewedMentorIds");
 
-                            MentorReview review = (MentorReview) request.getAttribute("review");
+                            // Lấy mentorId từ request nếu có
+                            String selectedMentorIdParam = request.getParameter("mentorId");
+                            Integer selectedMentorId = (selectedMentorIdParam != null) ? Integer.parseInt(selectedMentorIdParam) : null;
+                            MentorReview review = (MentorReview) request.getAttribute("review"); // Lấy review từ request
+
                             int rating = (review != null) ? review.getRating() : 0;
                             String comment = (review != null) ? review.getCommit() : "";
                         %>
@@ -146,39 +150,32 @@
                                 <div class="card-body">
                                     <h1 class="mb-4">Select Mentor to Review</h1>
 
-                                    <!-- Mentor List -->
+                                    <!-- Danh sách mentor -->
                                     <div class="mentor-list">
                                         <ul>
                                             <% if (mentorList != null) {
-                                                Integer selectedMentorId = (Integer) session.getAttribute("selectedMentorId"); // Lấy mentorId từ session
                                                 for (Mentor mentor : mentorList) { 
                                                     boolean isReviewed = reviewedMentorIds != null && reviewedMentorIds.contains(mentor.getId());
-                                                    boolean isSelected = selectedMentorId != null && selectedMentorId.equals(mentor.getId());
                                             %>
                                             <li>
-                                                <% if (isReviewed || isSelected) { %>
-                                                <a href="/HAPPYorSAD/reviewmentor?mentorId=<%= mentor.getId() %>" class="btn btn-secondary">
-                                                    Xem đánh giá - <%= mentor.getName() %>
-                                                </a>
-                                                <% } else { %>
-                                                <button class="btn btn-link mentor-btn" data-mentor-id="<%= mentor.getId() %>" data-mentor-name="<%= mentor.getName() %>" data-reviewed="false">
+                                                <a href="/HAPPYorSAD/reviewmentor?mentorId=<%= mentor.getId() %>" class="btn btn-link">
                                                     <%= mentor.getName() %>
-                                                </button>
-                                                <% } %>
+                                                </a>
                                             </li>
                                             <% } } %>
                                         </ul>
                                     </div>
 
-                                    <!-- Review Form (Hidden by Default) -->
-                                    <div id="review-form" style="display: none;">
-                                        <h2 class="mb-3">Rate & Comment Mentor for <span id="mentor-name"></span></h2>
-                                        <form action="/HAPPYorSAD/reviewmentor" method="get">  
+                                    <!-- Nếu mentor được chọn, hiển thị form đánh giá -->
+                                    <% if (selectedMentorId != null) { %>
+                                    <div id="review-form">
+                                        <h2 class="mb-3">Rate & Comment Mentor for <%= request.getAttribute("mentorName") %></h2>
+                                        <form action="/HAPPYorSAD/reviewmentor" method="post">
                                             <input type="hidden" name="username" value="${sessionScope.usernameUser}">
-                                            <input type="hidden" name="mentorId" id="mentorId">
+                                            <input type="hidden" name="mentorId" value="<%= selectedMentorId %>">
                                             <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
 
-                                            <!-- Hiển thị rating đã chọn nếu có -->
+                                            <!-- Rating -->
                                             <div class="rating mb-3">
                                                 <% for (int i = 5; i >= 1; i--) { %>
                                                 <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" <%= (i == rating) ? "checked" : "" %> required>
@@ -186,7 +183,7 @@
                                                 <% } %>
                                             </div>
 
-                                            <!-- Hiển thị comment đã lưu nếu có -->
+                                            <!-- Comment -->
                                             <div class="form-group">
                                                 <label for="comment">Comment <span class="required">*</span></label>
                                                 <textarea class="form-control" name="comment" required rows="5"><%= comment %></textarea>
@@ -195,32 +192,10 @@
                                             <button type="submit" class="btn btn-primary">Submit Review</button>
                                         </form>
                                     </div>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- JavaScript -->
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                document.querySelectorAll(".mentor-btn").forEach(button => {
-                                    button.addEventListener("click", function () {
-                                        const mentorId = this.getAttribute("data-mentor-id");
-                                        const mentorName = this.getAttribute("data-mentor-name");
-
-                                        document.getElementById("mentor-name").textContent = mentorName;
-                                        document.getElementById("mentorId").value = mentorId;
-                                        document.getElementById("review-form").style.display = "block";
-                                        fetch(`/HAPPYorSAD/reviewmentor?mentorId=${mentorId}`)
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    if (data.success) {
-                                                        location.reload(); // Reload trang để cập nhật UI
-                                                    }
-                                                });
-                                    });
-                                });
-                            });
-                        </script>
                         <!-- /Main Content -->
                     </div>
                 </div>
