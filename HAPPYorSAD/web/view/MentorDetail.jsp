@@ -291,6 +291,12 @@
                 color: #343a40;
                 font-weight: 600;
             }
+            .product-img img {
+                width: 100%; /* ??t chi?u r?ng c? ??nh cho ?nh */
+                height: 200px; /* ??t chi?u cao c? ??nh cho ?nh */
+                object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
+                border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
+            }
         </style>
     </head>
     <body>
@@ -563,40 +569,16 @@
                                         <div class="course-box course-design d-flex ">
                                             <div class="product">
                                                 <div class="product-img">
-                                                    <a href="course-details.html">
+                                                    <a href="CourseDetails?Cid=${o.id}">
                                                         <img class="img-fluid" alt="Img" src="${o.image}">
                                                     </a>
-                                                    <div class="price">
-                                                        <h3> ${o.price} đ</h3>
-                                                    </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <div class="course-group d-flex">                                                 
-                                                        <div class="course-share d-flex align-items-center justify-content-center">
-                                                            <a href="#rate"><i class="fa-regular fa-heart"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <h3 class="title"><a href="course-details.html">${o.title}</a></h3>
-                                                    <div class="course-info d-flex align-items-center">
-                                                        <div class="rating-img d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-01.svg" alt="Img">
-                                                            <p>12+ Lesson</p>
-                                                        </div>
-                                                        <div class="course-view d-flex align-items-center">
-                                                            <img src="assets/img/icon/icon-02.svg" alt="Img">
-                                                            <p>9hr 30min</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star filled"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                                                    </div>
+
+                                                    <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>                                                   
+
                                                     <div class="all-btn all-category d-flex align-items-center">
-                                                        <a href="checkout.html" class="btn btn-primary">MORE DETAIL</a>
+                                                        <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">MORE DETAIL</a>
                                                     </div>
                                                 </div>
                                             </div>
