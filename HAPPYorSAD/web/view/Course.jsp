@@ -42,6 +42,12 @@
             padding: 5px;
             border-radius: 5px;
         }
+        .product-img img {
+            width: 100%; /* ??t chi?u r?ng c? ??nh cho ?nh */
+            height: 200px; /* ??t chi?u cao c? ??nh cho ?nh */
+            object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
+            border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
+        }
     </style>
     <body>
 
