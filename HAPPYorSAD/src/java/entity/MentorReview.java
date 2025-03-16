@@ -22,6 +22,12 @@ public class MentorReview {
 
     public MentorReview() {
     }
+    
+    public MentorReview(int menteeID, int rating, String commit) {
+        this.menteeID = menteeID;
+        this.rating = rating;
+        this.commit = commit;
+    }
 
     public MentorReview(int id, int mentorID, int menteeID, int rating, String commit, LocalDateTime createdAt) {
         this.id = id;
