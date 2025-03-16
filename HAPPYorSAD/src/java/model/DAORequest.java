@@ -326,6 +326,7 @@ public class DAORequest extends DBConnection {
         return false;
     }
 
+    // Lay ID cua Mentee boi User_ID
     public Integer getMenteeIdByUserId(int userId) {
         int menteeId = -1;
         String sql = "SELECT id \n"
@@ -344,6 +345,23 @@ public class DAORequest extends DBConnection {
         return menteeId;
     }
 
+    // Lay ID cua Mentor boi User_ID
+    public Integer getMentorIdByUserId(int userId) {
+        int mentorId = -1;
+        String sql = "select id from Mentor where user_id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                mentorId = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentorId;
+    }
+    
     public List<Request> getAllRequest(int menteeId) {
         ArrayList<Request> listRequest = new ArrayList<>();
 
