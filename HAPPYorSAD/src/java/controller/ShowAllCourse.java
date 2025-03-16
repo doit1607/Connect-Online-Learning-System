@@ -56,16 +56,10 @@ public class ShowAllCourse extends HttpServlet {
                 endPage++;
             }
 
-            List<Course> listAllCousre = dao.pagingCourse(index);
-            int id = 0;
-            for (Course course : listAllCousre) {
-                id = course.getId();
-            }
-            int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
-
+            List<Course> listAllCousre = dao.pagingCourse(index);           
+            
             request.setAttribute("endPage", endPage);
             request.setAttribute("tag", index);
-            request.setAttribute("countMentorOfCourse", countMentorOfCourse);
             request.setAttribute("listAllCousre", listAllCousre);
         }
 
