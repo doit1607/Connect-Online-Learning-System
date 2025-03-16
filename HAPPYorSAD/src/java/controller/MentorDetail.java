@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import model.DAOCourse;
 import model.DAOMentor;
 import model.DAORateMentor;
+import model.DAORequest;
 import model.DAOmentee_Slot;
 import model.DAOmentor_Slot;
 import model.DAOschedule;
