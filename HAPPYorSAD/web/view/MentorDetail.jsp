@@ -351,7 +351,7 @@
                                                 <p></p>
                                             </div>
                                         </div>
-                                        <div class="video-details mt-3">
+                                        <div class="video-details col-md-2">
                                             <h2>
                                                 <a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" 
                                                    class="btn btn-enroll w-100">Invite</a>
@@ -417,6 +417,53 @@
                                 </div>
                             </div>
                             <!-- /Overview -->
+
+                            <!-- Button to trigger the modal -->
+                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                                Review from Mentees
+                            </button>
+
+                            <!-- Review Modal -->
+                            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="reviewModalLabel">Reviews from Mentees</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <c:choose>
+                                                <c:when test="${empty listReview}">
+                                                    <p>No reviews yet.</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Mentee ID</th>
+                                                                <th>Rating</th>
+                                                                <th>Comment</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:forEach var="review" items="${listReview}">
+                                                                <tr>
+                                                                    <td>${review.menteeId}</td>
+                                                                    <td>${review.rating} / 5</td>
+                                                                    <td>${review.comment}</td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Mentor's Schedule -->
                             <!-- Mentor's Schedule -->
