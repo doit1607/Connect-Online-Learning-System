@@ -167,11 +167,11 @@ public class DAOmentor_Slot extends DBConnection {
     public List<Slot> getSlotsByDateForRequest(Date date, int mentorId) {
         List<Slot> slots = new ArrayList<>();
 
-        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time, ms.status \n"
                 + "FROM Slot sl\n"
                 + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
                 + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
-                + "WHERE sl.slot_date = ? and status = 'Available'\n"
+                + "WHERE sl.slot_date = ? and ms.status = 'Available'\n"
                 + "AND ms.mentor_id = ?\n"
                 + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
                 + "ORDER BY st.start_time;";
