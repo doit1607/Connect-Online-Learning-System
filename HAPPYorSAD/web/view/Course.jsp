@@ -35,7 +35,7 @@
         <link rel="stylesheet" href="/HAPPYorSAD/css/cssCourse/cssCourse.css"/>
     </head>
     <style>
-        .tablecontent td.active a {           
+        .tablecontent td.active a {
             color: #f0ad4e; /* Màu ch? tr?ng */
             font-weight: bold;
             text-decoration: none;
@@ -116,6 +116,10 @@
                                                                 <img src="assets/img/icon/people.svg" alt="Img">
                                                                 <p> Total: ${o.total_Mentor} Mentor </p>
                                                             </div> 
+                                                            <div class="rating-img d-flex align-items-center">
+                                                                <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
+                                                                <p>${o.total_Mentee} Mentees</p>
+                                                            </div>
                                                         </div>
 
                                                     </div>
