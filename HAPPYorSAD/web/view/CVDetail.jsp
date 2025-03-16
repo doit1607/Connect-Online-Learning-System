@@ -125,24 +125,12 @@
                                                 <i class="bx bxs-heart"></i>Request of Mentee
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
-                                                <i class="bx bxs-star"></i>Request schedule
-                                            </a>
-                                        </li>
 
                                         <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
                                                 <i class="bx bxs-user-plus"></i>Static Mentee
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
-                                            </a>
-                                        </li>
-
                                     </ul>
 
                                     <ul>                                        
@@ -176,7 +164,7 @@
                                     <p><strong>Introduction:</strong> ${cvDetail.professionIntro}</p>
                                     <p><strong>Service Description:</strong> ${cvDetail.serviceDescription}</p>
                                     <p><strong>Achievements:</strong> ${cvDetail.achievementDescription}</p>
-                                    <p><strong>Courses:</strong> ${cvDetail.courses}</p>
+                                    <p><strong>Major:</strong> ${cvDetail.courses}</p>
                                     <p><strong>Created At:</strong> 
                                         <fmt:formatDate value="${cvDetail.createdAtAsDate}" pattern="dd-MM-yyyy HH:mm:ss" />
                                     </p>

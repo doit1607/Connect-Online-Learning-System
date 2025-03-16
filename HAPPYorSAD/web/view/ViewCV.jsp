@@ -204,7 +204,7 @@
                                                 </div>
 
                                                 <div class="input-block">
-                                                    <label>Courses I Can Teach</label>
+                                                    <label>Major I Can Teach</label>
                                                     <div class="checkbox-group">
                                                         <c:set var="selectedCourses" value="${requestScope.selectedCourses}" />
 

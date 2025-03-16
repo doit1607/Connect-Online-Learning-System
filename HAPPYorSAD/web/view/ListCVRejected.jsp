@@ -125,24 +125,12 @@
                                                 <i class="bx bxs-heart"></i>Request of Mentee
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
-                                                <i class="bx bxs-star"></i>Request schedule
-                                            </a>
-                                        </li>
-
+                                        
                                         <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
                                                 <i class="bx bxs-user-plus"></i>Static Mentee
                                             </a>
                                         </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
-                                            </a>
-                                        </li>
-
                                     </ul>
 
                                     <ul>                                        
@@ -176,7 +164,7 @@
                                                 <th>Username</th>
                                                 <th>Profession</th>
                                                 <th>Introduction</th>
-                                                <th>Courses</th>
+                                                <th>Major</th>
                                                 <th>Service Description</th>
                                                 <th>Achievements</th>
                                                 <th>Created at</th>

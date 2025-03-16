@@ -60,9 +60,9 @@ public class DAORateMentor extends DBConnection {
     // lay ra nhung mentee tu Request co trang thai la Completed de review
     public String getRequestStatusByMentee(String username) {
         String status = "";
-        String sql = "SELECT TOP 1 status FROM Request \n"
-                + "WHERE mentee_id = (SELECT id FROM Users WHERE username = ?)\n"
-                + "ORDER BY mentee_id DESC;";
+        String sql = "SELECT  r.status FROM Request r join Mentee m on r.mentee_id = m.id\n"
+                + "WHERE m.id = (SELECT m.id FROM Users u join Mentee m on u.id = m.user_id WHERE u.username = ?) and r.status = 'Completed'\n"
+                + "ORDER BY m.id DESC";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -96,6 +96,28 @@ public class DAORateMentor extends DBConnection {
         } catch (Exception e) {
         }
         return mentors;
+    }
+
+    // Lay danh gia Mentor de hien thi
+    public MentorReview getReviewByMenteeAndMentor(int mentorId) {
+        MentorReview review = null;
+        String sql = "select TOP 1 rating, comment from mentor_reviews \n"
+                + "WHERE mentor_id = ?\n"
+                + "order by created_at desc";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                review = new MentorReview();
+                review.setRating(rs.getInt("rating"));
+                review.setCommit(rs.getString("comment"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return review;
     }
 
     public List<MentorReview> getReviewsByMentor(String username) {
@@ -188,7 +210,9 @@ public class DAORateMentor extends DBConnection {
 //        } else {
 //            System.out.println("Failed to submit review.");
 //        }
-        int test = dao.getMenteeIdByUsername("jane_smith");
-        System.out.println(test);
+//        int test = dao.getMenteeIdByUsername("jane_smith");
+//        System.out.println(test);
+        MentorReview mr = dao.getReviewByMenteeAndMentor(1);
+        System.out.println(mr);
     }
 }

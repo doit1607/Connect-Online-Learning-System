@@ -126,21 +126,10 @@
                                                 <i class="bx bxs-heart"></i>Request of Mentee
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
-                                                <i class="bx bxs-star"></i>Request schedule
-                                            </a>
-                                        </li>
 
                                         <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
                                                 <i class="bx bxs-user-plus"></i>Static Mentee
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
 
@@ -183,7 +172,7 @@
                                                         Upload File <input type="file" name="imageFile" accept="image/*" id="image-upload" onchange="previewImage(event)">
                                                     </label>
                                                 </div>
-                                                <img id="image-preview" src="#" alt="Image Preview" class="img-fluid" style="display:none; margin-top: 10px; max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
+                                                <img id="image-preview" src="#" alt="Image Preview" class="img-fluid" style="display:none; margin-top: 10px; max-width: 10px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
                                             </div>
                                             <div class="input-block">
                                                 <label class="add-course-label">Course Name</label>
@@ -204,10 +193,6 @@
                                                 <textarea name="description" id="description" class="form-control" placeholder="Course Description" rows="3" required></textarea>
                                             </div>
                                             
-                                            <div class="input-block">
-                                                <label class="add-course-label">Course Price</label>
-                                                <input type="text" name="price" id="price" class="form-control" placeholder="Course Price" required>
-                                            </div>
                                             <div class="add-course-btns">
                                                 <ul class="nav">
 

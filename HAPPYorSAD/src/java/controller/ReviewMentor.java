@@ -52,45 +52,66 @@ public class ReviewMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAORateMentor dao = new DAORateMentor();
-
         HttpSession session = request.getSession();
+
+        // Lấy thông tin mentee từ session
         String username = (String) session.getAttribute("usernameUser");
-        String requestStatus = dao.getRequestStatusByMentee(username);
-        session.setAttribute("menteeRequestStatus", requestStatus);
+        Integer menteeId = (Integer) session.getAttribute("menteeID");
 
-        int menteeId = dao.getMenteeIdByUsername(username);
-        session.setAttribute("menteeID", menteeId);
+        // Nếu chưa có menteeId trong session, lấy từ database
+        if (menteeId == null) {
+            menteeId = dao.getMenteeIdByUsername(username);
+            if (menteeId != null) {
+                session.setAttribute("menteeID", menteeId);
+            } else {
+                request.setAttribute("error", "Mentee information not found.");
+                request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
+                return;
+            }
+        }
 
+        // Lấy danh sách mentor và danh sách mentor đã đánh giá
         List<Mentor> mentorList = dao.getAllMentors(menteeId);
         request.setAttribute("mentorList", mentorList);
 
         List<Integer> reviewedMentorIds = dao.getReviewedMentorsByMentee(username);
         session.setAttribute("reviewedMentorIds", reviewedMentorIds);
 
+        // Xử lý nếu có mentorId được chọn
         String mentorIdStr = request.getParameter("mentorId");
-        //String menteeIdStr = request.getParameter("menteeId");
-        String ratingStr = request.getParameter("rating");
-        String comment = request.getParameter("comment");
+        if (mentorIdStr != null && !mentorIdStr.trim().isEmpty()) {
+            try {
+                int mentorId = Integer.parseInt(mentorIdStr);
 
-        if (isEmpty(mentorIdStr) || isEmpty(ratingStr)) {
-            request.setAttribute("error", "Missing required fields: mentorId, menteeId, or rating.");
-            request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-            return;
+                // Lấy đánh giá nếu đã tồn tại
+                MentorReview review = dao.getReviewByMenteeAndMentor(mentorId);
+                request.setAttribute("review", review);
+                session.setAttribute("selectedMentorId", mentorId);
+
+                // Xử lý đánh giá mới (nếu có dữ liệu từ form)
+                String ratingStr = request.getParameter("rating");
+                String comment = request.getParameter("comment");
+
+                if (ratingStr != null && !ratingStr.trim().isEmpty()) {
+                    int rating = Integer.parseInt(ratingStr);
+                    boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
+
+                    if (isSuccess) {
+                        reviewedMentorIds = dao.getReviewedMentorsByMentee(username);
+                        session.setAttribute("reviewedMentorIds", reviewedMentorIds);
+                        request.setAttribute("success", "Your review has been submitted successfully!");
+                    } else {
+                        request.setAttribute("error", "Failed to submit review. Please try again.");
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid mentor ID format.");
+            }
         }
 
-        int mentorId = Integer.parseInt(mentorIdStr);
-        //int menteeId = Integer.parseInt(menteeIdStr);
-        int rating = Integer.parseInt(ratingStr);
-
-        boolean isSuccess = dao.submitReview(mentorId, menteeId, rating, comment);
-
-        if (isSuccess) {
-            request.setAttribute("success", "Your review has been submitted successfully!");
-        } else {
-            request.setAttribute("error", "Failed to submit review. Please try again.");
-        }
+        // Chuyển hướng về JSP
         request.getRequestDispatcher("/view/ReviewMentor.jsp").forward(request, response);
-
     }
 
     private boolean isEmpty(String str) {

@@ -59,6 +59,8 @@ public class LoginUserController extends HttpServlet {
             session.setAttribute("userId", userId);
             int menteeId = daoRequest.getMenteeIdByUserId(userId);
             session.setAttribute("menteeId", menteeId);
+            int mentorId = daoRequest.getMentorIdByUserId(userId); // Lay ID cua Mentor tu bang User
+            session.setAttribute("mentorId", mentorId);
             session.setAttribute("userAvatar", avatar);
             if (userDAO.loginUser(username, password)) {
                 if (userDAO.checkUserActive(username)) {

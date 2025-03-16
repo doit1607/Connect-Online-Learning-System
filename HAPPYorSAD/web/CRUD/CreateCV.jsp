@@ -152,7 +152,7 @@
                     </div>
 
                     <div class="input-block">
-                        <label>Courses I Can Teach</label>
+                        <label>Major I Can Teach</label>
                         <div class="checkbox-group">
                             <input type="checkbox" id="cs" name="courses" value="Computer Science">
                             <label for="cs">Computer Science</label>
