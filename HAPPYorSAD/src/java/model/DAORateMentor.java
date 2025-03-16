@@ -201,6 +201,26 @@ public class DAORateMentor extends DBConnection {
         return reviews;
     }
 
+    // Lay ra list Mentor duoc rate cho vao Detail
+    public List<MentorReview> getMentorRate(int mentorId) {
+        List<MentorReview> list = new ArrayList<>();
+        String sql = "select * from mentor_reviews where mentor_id = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new MentorReview(
+                        rs.getInt("mentee_id"),
+                        rs.getInt("rating"),
+                        rs.getString("comment")
+                ));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         DAORateMentor dao = new DAORateMentor();
 //        boolean result = dao.submitReview(10, 7, 5, "very good");
@@ -212,7 +232,11 @@ public class DAORateMentor extends DBConnection {
 //        }
 //        int test = dao.getMenteeIdByUsername("jane_smith");
 //        System.out.println(test);
-        MentorReview mr = dao.getReviewByMenteeAndMentor(1);
-        System.out.println(mr);
+//        MentorReview mr = dao.getReviewByMenteeAndMentor(1);
+//        System.out.println(mr);
+        List<MentorReview> list = dao.getMentorRate(2);
+        for (MentorReview mentorReview : list) {
+            System.out.println(mentorReview);
+        }
     }
 }
