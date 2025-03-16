@@ -140,7 +140,8 @@
                             String selectedMentorIdParam = request.getParameter("mentorId");
                             Integer selectedMentorId = (selectedMentorIdParam != null) ? Integer.parseInt(selectedMentorIdParam) : null;
                             MentorReview review = (MentorReview) request.getAttribute("review"); // Lấy review từ request
-
+                            String selectedMentorName = "Selected Mentor"; // Giá trị mặc định
+                            
                             int rating = (review != null) ? review.getRating() : 0;
                             String comment = (review != null) ? review.getCommit() : "";
                         %>
@@ -169,8 +170,8 @@
                                     <!-- Nếu mentor được chọn, hiển thị form đánh giá -->
                                     <% if (selectedMentorId != null) { %>
                                     <div id="review-form">
-                                        <h2 class="mb-3">Rate & Comment Mentor for <%= request.getAttribute("mentorName") %></h2>
-                                        <form action="/HAPPYorSAD/reviewmentor" method="post">
+                                        <h2 class="mb-3">Rate & Comment for </h2>
+                                        <form action="/HAPPYorSAD/reviewmentor" method="get">
                                             <input type="hidden" name="username" value="${sessionScope.usernameUser}">
                                             <input type="hidden" name="mentorId" value="<%= selectedMentorId %>">
                                             <input type="hidden" name="menteeID" value="${sessionScope.menteeID}">
@@ -195,6 +196,19 @@
                                     <% } %>
                                 </div>
                             </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.querySelectorAll(".mentor-btn").forEach(button => {
+                                        button.addEventListener("click", function () {
+                                            const mentorId = this.getAttribute("data-mentor-id");
+                                            const mentorName = this.getAttribute("data-mentor-name");
+                                            document.getElementById("mentor-name").textContent = mentorName;
+                                            document.getElementById("mentorId").value = mentorId;
+                                            document.getElementById("review-form").style.display = "block";
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                         <!-- /Main Content -->
                     </div>
