@@ -40,8 +40,13 @@ public class ShowAllCourse extends HttpServlet {
         String searchKeyword = request.getParameter("txt");
 
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
- 
+
             List<Course> searchResults = dao.searchCourseByTitle(searchKeyword);
+            int countMentee = 0;
+            for (Course course : searchResults) {
+                countMentee = dao.countMenteeOfCourse(course.getId());
+                course.setTotal_Mentee(countMentee);
+            }
             request.setAttribute("listAllCousre", searchResults);
         } else {
             String indexPage = request.getParameter("index");
@@ -56,8 +61,12 @@ public class ShowAllCourse extends HttpServlet {
                 endPage++;
             }
 
-            List<Course> listAllCousre = dao.pagingCourse(index);           
-            
+            List<Course> listAllCousre = dao.pagingCourse(index);
+            int countMentee = 0;
+            for (Course course : listAllCousre) {
+                countMentee = dao.countMenteeOfCourse(course.getId());
+                course.setTotal_Mentee(countMentee);
+            }
             request.setAttribute("endPage", endPage);
             request.setAttribute("tag", index);
             request.setAttribute("listAllCousre", listAllCousre);
