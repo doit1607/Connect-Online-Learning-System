@@ -243,26 +243,25 @@ public class DAOCourse extends DBConnection {
     }
 
     public boolean updateCourse(Course course) {
-    String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
-               + "updated_at = GETDATE(), course_major_id = ?, image = ? "
-               + "WHERE id = ?";
-    try {
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, course.getTitle());
-        ps.setString(2, course.getDescription());
-        ps.setString(3, course.getStatus());
-        ps.setInt(4, course.getCourseMajorId());
-        ps.setString(5, course.getImage());
-        ps.setInt(6, course.getId());
+        String sql = "UPDATE Course SET title = ?, description = ?, status = ?, "
+                + "updated_at = GETDATE(), course_major_id = ?, image = ? "
+                + "WHERE id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, course.getTitle());
+            ps.setString(2, course.getDescription());
+            ps.setString(3, course.getStatus());
+            ps.setInt(4, course.getCourseMajorId());
+            ps.setString(5, course.getImage());
+            ps.setInt(6, course.getId());
 
-        int rowsUpdated = ps.executeUpdate();
-        return rowsUpdated > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
-
 
     public Course getCourseById(int id) {
         String query = "SELECT [id]\n"
@@ -432,16 +431,23 @@ public class DAOCourse extends DBConnection {
 //        return 0;
 //    }
     public int getTotalMentorsByCourse(int courseId) {
-        String sql = "SELECT COUNT(DISTINCT c.mentor_id) AS total_mentors "
-                + "FROM Course c "
-                + "WHERE c.id = ?";
+        String sql = "SELECT \n"
+                + "    COUNT(cv.id) AS mentorCount\n"
+                + "FROM \n"
+                + "    Course c\n"
+                + "LEFT JOIN \n"
+                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN \n"
+                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
+                + "WHERE \n"
+                + "    c.id = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, courseId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt("total_mentors");
+                return rs.getInt("mentorCount");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -601,19 +607,29 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> pagingCourse(int index) {
         List<Course> list = new ArrayList<>();
-        String sql = "SELECT [id]\n"
-                + "      ,[title]\n"
-                + "      ,[description]\n"
-                + "      ,[manager_id]\n"
-                + "      ,[mentor_id]\n"
-                + "      ,[status]\n"
-                + "      ,[created_at]\n"
-                + "      ,[updated_at]\n"
-                + "      ,[course_major_id]\n"
-                + "      ,[image]\n"
-                + "      ,[price]\n"
-                + "  FROM [SWP1].[dbo].[Course]\n"
-                + "order by [title]\n"
+        String sql = "	SELECT \n"
+                + "    c.id AS CourseID,\n"
+                + "    c.title AS CourseTitle,\n"
+                + "    c.description AS CourseDescription,\n"
+                + "    c.manager_id AS ManagerID,\n"
+                + "    c.mentor_id AS MentorID,\n"
+                + "    c.status AS CourseStatus,\n"
+                + "    c.created_at AS CreatedAt,\n"
+                + "    c.updated_at AS UpdatedAt,\n"
+                + "    c.course_major_id AS CourseMajorID,\n"
+                + "    c.image AS CourseImage,\n"
+                + "    \n"
+                + "    COUNT(cv.id) AS MentorCount\n"
+                + "FROM \n"
+                + "    Course c\n"
+                + "LEFT JOIN \n"
+                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "LEFT JOIN \n"
+                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
+                + "GROUP BY \n"
+                + "    c.id, c.title, c.description, c.manager_id, c.mentor_id, \n"
+                + "    c.status, c.created_at, c.updated_at, c.course_major_id, c.image \n"
+                + "ORDER BY c.title ASC \n"
                 + "offset ? rows fetch next 5 rows only";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -621,15 +637,15 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Course course = new Course();
-                course.setId(rs.getInt("id"));
-                course.setTitle(rs.getString("title"));
-                course.setDescription(rs.getString("description"));
-                course.setManagerId(rs.getInt("manager_id"));
-                course.setMentorId(rs.getInt("mentor_id"));
-                course.setStatus(rs.getString("status"));
-                course.setCourseMajorId(rs.getInt("course_major_id"));
-                course.setImage(rs.getString("image"));
-                course.setPrice(rs.getDouble("price"));
+                course.setId(rs.getInt("CourseID"));
+                course.setTitle(rs.getString("CourseTitle"));
+                course.setDescription(rs.getString("CourseDescription"));
+                course.setManagerId(rs.getInt("ManagerID"));
+                course.setMentorId(rs.getInt("MentorID"));
+                course.setStatus(rs.getString("CourseStatus"));
+                course.setCourseMajorId(rs.getInt("CourseMajorID"));
+                course.setImage(rs.getString("CourseImage"));
+                course.setTotal_Mentor(rs.getInt("MentorCount"));
 
                 list.add(course);
             }
@@ -668,37 +684,39 @@ public class DAOCourse extends DBConnection {
         }
         return list;
     }
+
     public List<Course> searchCourseByTitle(String keyword) {
         List<Course> list = new ArrayList<>();
         String query = "SELECT * FROM Course WHERE LOWER(title) LIKE LOWER(?)";
-        
+
         try {
-             PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, "%" + keyword + "%");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                 Course course = new Course();
-                    course.setId(rs.getInt("id"));
-                    course.setTitle(rs.getString("title"));
-                    course.setDescription(rs.getString("description"));
-                    course.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                    course.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-                    course.setStatus(rs.getString("status"));
-                    course.setCourseMajorId(rs.getInt("course_major_id"));
-                    course.setImage(rs.getString("image"));
-                    course.setPrice(rs.getDouble("price"));
+                Course course = new Course();
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));
+                course.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                course.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                course.setStatus(rs.getString("status"));
+                course.setCourseMajorId(rs.getInt("course_major_id"));
+                course.setImage(rs.getString("image"));
+                course.setPrice(rs.getDouble("price"));
 
-                    list.add(course);
+                list.add(course);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourseHome = dao.searchCourseByTitle("intro");
+        List<Course> listCourseHome = dao.pagingCourse(5);
 //
 //        for (Course course : listCourseHome) {
 //            System.out.println(course);
@@ -723,6 +741,7 @@ public class DAOCourse extends DBConnection {
         for (Course course : listCourseHome) {
             System.out.println(course);
         }
-
+//        int a = dao.getTotalMentorsByCourse(1);
+//        System.out.println(a);
     }
 }
