@@ -204,18 +204,8 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="RequestSchedule" class="nav-link">
-                                                <i class="bx bxs-star"></i>Request schedule
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
                                                 <i class="bx bxs-user-plus"></i>Static Mentee
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
                                             </a>
                                         </li>
                                     </ul>
@@ -388,11 +378,11 @@
                                         </li>
                                     </c:if>
 
-                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                    <c:forEach begin="1" end="${endPage - 1}" var="i">
                                         <a class="page-link ${tag == i?'active':''}" href="ShowAllRequest?index=${i}">${i}</a>
                                     </c:forEach>
 
-                                    <c:if test="${tag < endPage}">
+                                    <c:if test="${tag < endPage - 1}">
                                         <li class="page-item">
                                             <a href="ShowAllRequest?index=${tag+1}" class="page-link">Next</a>
                                         </li>
