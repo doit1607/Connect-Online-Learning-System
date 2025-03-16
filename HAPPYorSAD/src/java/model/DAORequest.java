@@ -193,7 +193,6 @@ public class DAORequest extends DBConnection {
         return count;
     }
 
-
     public void updateRequestStatus1(int requestId, String status) throws SQLException {
         String sql = "UPDATE Request SET status = ?, updated_at = GETDATE() WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -227,29 +226,36 @@ public class DAORequest extends DBConnection {
         return false;
     }
 
-    public int insertRequestAndGetId(Request request) throws SQLException {
+    public int insertRequestAndGetId(Request request) {
         String sql = "INSERT INTO Request (mentee_id, mentor_id, title, total_slot, totalprice, start_date, end_date, content, status, course_id) "
                 + "OUTPUT INSERTED.id "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, request.getMenteeId());
-        ps.setInt(2, request.getMentorId());
-        ps.setString(3, request.getTitle());
-        ps.setInt(4, request.getTotalSlot());
-        ps.setDouble(5, request.getTotalprice());
-        ps.setObject(6, request.getStartDate());
-        ps.setObject(7, request.getEndDate());
-        ps.setString(8, request.getContent());
-        ps.setString(9, request.getStatus());
-        ps.setInt(10, request.getCourseId());
+        int generatedId = -1;
 
-        System.out.println("sql" + sql + "request" + request);
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, request.getMenteeId());
+            ps.setInt(2, request.getMentorId());
+            ps.setString(3, request.getTitle());
+            ps.setInt(4, request.getTotalSlot());
+            ps.setDouble(5, request.getTotalprice());
+            ps.setObject(6, request.getStartDate());
+            ps.setObject(7, request.getEndDate());
+            ps.setString(8, request.getContent());
+            ps.setString(9, request.getStatus());
+            ps.setInt(10, request.getCourseId());
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1); // Trả về ID của request vừa chèn
+            System.out.println("SQL: " + sql + " Request: " + request);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1); // Lấy ID của request vừa chèn
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Ghi log lỗi
         }
-        return -1;
+
+        return generatedId;
     }
 
     // Lấy request theo ID
@@ -671,7 +677,6 @@ public class DAORequest extends DBConnection {
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
 
-     
         try {
             dao.updateRequestStatus(745, "Processing");
 //        System.out.println(dao);

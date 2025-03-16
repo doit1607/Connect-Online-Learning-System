@@ -42,7 +42,7 @@ import model.TransactionDAO;
 @MultipartConfig
 public class test extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(Schedule.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(test.class.getName()); // Sửa tên Logger để phản ánh lớp hiện tại
     private static final DAOmentee daoMentee = new DAOmentee();
     private static final DAOmentor_Slot daoMentorSL = new DAOmentor_Slot();
     private static final DAOmentee_Slot daoMenteeSL = new DAOmentee_Slot();
@@ -56,28 +56,30 @@ public class test extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOGGER.info("Received GET request");
         processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Giữ nguyên logic doPost hiện tại
+        LOGGER.info("Received POST request at " + new java.util.Date());
         HttpSession session = request.getSession();
         DAORequest daorequest = new DAORequest();
         TransactionDAO daowallet = new TransactionDAO();
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        LocalDate startDate = LocalDate.now(); // Lấy ngày hiện tại
+        LocalDate startDate = LocalDate.now();
         String endDateStr = request.getParameter("enddate");
         String service = request.getParameter("service");
         String usernamementee = (String) session.getAttribute("usernameUser");
         Double walletbalance = (Double) session.getAttribute("walletBalance");
         LocalDate endDate = null;
-        String sessionId = request.getSession().getId();
+        String sessionId = session.getId();
         long currentTime = System.currentTimeMillis();
         long lastRequestTime = requestTimestamps.getOrDefault(sessionId, 0L);
         String submissionId = request.getParameter("submissionId");
-        System.out.println("Received POST request at " + new java.util.Date() + " for session: " + sessionId + " with action: " + request.getParameter("service"));
+
+        LOGGER.info("Session ID: " + sessionId + ", Service: " + service + ", Submission ID: " + submissionId);
 
         if (currentTime - lastRequestTime < REQUEST_TIMEOUT) {
             LOGGER.warning("Blocked duplicate request for session: " + sessionId + " within " + REQUEST_TIMEOUT + "ms");
@@ -88,34 +90,38 @@ public class test extends HttpServlet {
 
         synchronized (processedSubmissions) {
             if (submissionId != null && processedSubmissions.containsKey(submissionId)) {
-                LOGGER.warning("Blocked duplicate request for session: " + sessionId + ", submissionId: " + submissionId);
+                LOGGER.warning("Blocked duplicate submission for session: " + sessionId + ", submissionId: " + submissionId);
                 response.setContentType("text/plain");
                 response.getWriter().write("Request ignored: Duplicate submission detected.");
                 return;
             }
             if (submissionId != null) {
                 processedSubmissions.put(submissionId, sessionId);
+                LOGGER.info("Added submission ID: " + submissionId + " to processed submissions");
             }
         }
         requestTimestamps.put(sessionId, currentTime);
+        LOGGER.info("Updated request timestamp for session: " + sessionId);
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             if (endDateStr != null && !endDateStr.isEmpty()) {
                 endDate = LocalDate.parse(endDateStr, formatter);
+                LOGGER.info("Parsed endDate: " + endDate);
             }
         } catch (DateTimeParseException e) {
-            e.printStackTrace();
+            LOGGER.severe("Invalid date format for endDate: " + endDateStr);
             request.setAttribute("errorMessage", "Invalid date format.");
             response.setContentType("text/plain");
             response.getWriter().write("Invalid date format.");
             return;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe("Unexpected error parsing date: " + e.getMessage());
         }
 
         DAOMentor daomentor = new DAOMentor();
         int menteeId = daorequest.getMenteeIdByUserId((Integer) session.getAttribute("userId"));
+        LOGGER.info("Mentee ID: " + menteeId);
         String mentorIdStr = request.getParameter("mentorId");
         String courseIdStr = request.getParameter("courseId");
         String priceStr = request.getParameter("price");
@@ -129,35 +135,33 @@ public class test extends HttpServlet {
         double totalprice = (totalpriceStr != null && !totalpriceStr.isEmpty()) ? Double.parseDouble(totalpriceStr) : 0.0;
 
         Mentor mentor = daomentor.getMentorByID(mentorId);
+        LOGGER.info("Mentor retrieved: " + (mentor != null ? mentor.toString() : "null"));
 
         String action = request.getParameter("action");
-        System.out.println("Received action: " + action);
-        System.out.println("Received tempSlotBooked values: " + Arrays.toString(request.getParameterValues("tempSlotBooked")));
+        LOGGER.info("Action: " + action);
         if ("book".equals(action)) {
             String[] tempSlots = request.getParameterValues("tempSlotBooked");
-            System.out.println("Received tempSlots: " + Arrays.toString(tempSlots));
+            LOGGER.info("Temp slots received: " + Arrays.toString(tempSlots));
             if (tempSlots != null && tempSlots.length > 0) {
                 Set<String> tempSlotBooked = new HashSet<>(Arrays.asList(tempSlots));
                 session.setAttribute("tempSlotBooked", tempSlotBooked);
                 String responseMessage = "Đã lưu tạm " + tempSlotBooked.size() + " slot.";
+                LOGGER.info("Saved tempSlotBooked to session: " + tempSlotBooked);
                 response.setContentType("text/plain");
                 response.getWriter().write(responseMessage);
-                System.out.println("Saved tempSlotBooked to session: " + tempSlotBooked + ", Response: " + responseMessage);
             } else {
-                String errorMessage = "Không có slot nào được chọn.";
+                LOGGER.warning("No slots selected for booking");
                 response.setContentType("text/plain");
-                response.getWriter().write(errorMessage);
-                System.out.println(errorMessage);
+                response.getWriter().write("Không có slot nào được chọn.");
             }
             return;
         }
 
         if ("clear".equals(action)) {
+            LOGGER.info("Clearing tempSlotBooked from session");
             session.removeAttribute("tempSlotBooked");
-            String responseMessage = "Đã xóa tất cả slot tạm.";
             response.setContentType("text/plain");
-            response.getWriter().write(responseMessage);
-            System.out.println("Cleared tempSlotBooked, Response: " + responseMessage);
+            response.getWriter().write("Đã xóa tất cả slot tạm.");
             return;
         }
 
@@ -168,9 +172,11 @@ public class test extends HttpServlet {
             if (tempSlotBooked != null && !tempSlotBooked.isEmpty()) {
                 totalSlots = tempSlotBooked.size();
                 totalprice = totalSlots * price;
+                LOGGER.info("Total slots: " + totalSlots + ", Total price: " + totalprice);
 
                 if (requestId_raw == null) {
                     if (totalprice > 0 && walletbalance != null && walletbalance >= totalprice) {
+                        LOGGER.info("Updating wallet hold for user: " + usernamementee + ", Amount: " + totalprice);
                         daowallet.updateHold(usernamementee, totalprice);
                         double balance = daowallet.getBalance(usernamementee);
                         double totalbalance = daowallet.getTotalBalance(usernamementee);
@@ -181,19 +187,11 @@ public class test extends HttpServlet {
                         session.setAttribute("walletBalance", balance);
                         session.setAttribute("walletTotalbalance", totalbalance);
                         session.setAttribute("walletHold", hold);
-                        Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
 
-                        int newRequestId;
-                        try {
-                            LOGGER.info("Attempting to insert new request: " + requests);
-                            newRequestId = daorequest.insertRequestAndGetId(requests);
-                            LOGGER.info("Inserted new request with ID: " + newRequestId);
-                        } catch (SQLException ex) {
-                            LOGGER.log(Level.SEVERE, "Error inserting request", ex);
-                            response.setContentType("text/plain");
-                            response.getWriter().write("Database error occurred.");
-                            return;
-                        }
+                        Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
+                        LOGGER.info("Inserting new request: " + requests);
+                        int newRequestId = daorequest.insertRequestAndGetId(requests);
+                        LOGGER.info("Inserted new request with ID: " + newRequestId);
 
                         int bookedCount = 0;
                         for (String slot : tempSlotBooked) {
@@ -202,19 +200,21 @@ public class test extends HttpServlet {
                             String slotDate = parts[0];
                             int slotNumber = Integer.parseInt(parts[1]);
                             Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
-                            System.out.println("Slot ID: " + slotId);
-                            System.out.println(" Date: " + slotDate + " Slot Number: " + slotNumber);
-
                             if (slotId != null) {
                                 boolean success = daoMenteeSL.bookSlot(menteeId, slotId, newRequestId, "Pending");
+                                if (success) {
+                                    bookedCount++;
+                                }
                             } else {
-                                LOGGER.warning("no available: " + slot);
+                                LOGGER.warning("Slot not available: " + slot);
                             }
                         }
+                        LOGGER.info("Booked " + bookedCount + " slots for request ID: " + newRequestId);
 
                         session.removeAttribute("tempSlotBooked");
                         session.setAttribute("msg", "Your request submit successfully! Booked " + bookedCount + " slot(s).");
                     } else {
+                        LOGGER.warning("Insufficient balance or invalid total price: " + totalprice + ", Wallet balance: " + walletbalance);
                         response.setContentType("text/plain");
                         response.getWriter().write("Insufficient balance or invalid total price.");
                         return;
@@ -223,6 +223,8 @@ public class test extends HttpServlet {
                     int requestId = Integer.parseInt(requestId_raw);
                     Request existingRequest = daorequest.getRequestById(requestId);
                     if (existingRequest != null) {
+                        LOGGER.info("Deleting draft slots for request ID: " + requestId);
+                        daoMenteeSL.deleteSlotsByRequestIdAndStatus(requestId, "Draft");
                         existingRequest.setTitle(title);
                         existingRequest.setContent(content);
                         existingRequest.setStartDate(startDate);
@@ -230,9 +232,8 @@ public class test extends HttpServlet {
                         existingRequest.setTotalSlot(totalSlots);
                         existingRequest.settotalprice(totalprice);
                         existingRequest.setStatus("Open");
-                        LOGGER.info("Attempting to update request ID: " + requestId);
+                        LOGGER.info("Updating request ID: " + requestId);
                         daorequest.updateRequest(existingRequest);
-                        LOGGER.info("Updated request ID: " + requestId);
 
                         int bookedCount = 0;
                         for (String slot : tempSlotBooked) {
@@ -242,41 +243,33 @@ public class test extends HttpServlet {
                             int slotNumber = Integer.parseInt(parts[1]);
                             Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
                             if (slotId != null) {
-                                    boolean success = daoMenteeSL.bookSlot(menteeId, slotId, requestId, "Pending");
+                                boolean success = daoMenteeSL.bookSlot(menteeId, slotId, requestId, "Pending");
                                 if (success) {
                                     try {
-                                        LOGGER.info("Attempting to update slot ID: " + slotId + " with request ID: " + requestId);
                                         daoSlot.updateRequestIdForSlot(slotId, requestId);
-                                        LOGGER.info("Updated slot ID: " + slotId + " with request ID: " + requestId);
-                                        bookedCount++;
-                                        LOGGER.info("Booked: " + slot);
                                     } catch (SQLException ex) {
-                                        LOGGER.log(Level.SEVERE, "Error updating slot request ID", ex);
+                                        Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
                                     }
-                                } else {
-                                    LOGGER.warning("no ava: " + slot);
+                                    bookedCount++;
                                 }
                             } else {
-                                LOGGER.warning("no available: " + slot);
+                                LOGGER.warning("Slot not available: " + slot);
                             }
                         }
-                        try {
-                            LOGGER.info("Removing old slots for request ID: " + requestId);
-                            daoSlot.removeRequestIdFromSlots(requestId);
-                        } catch (SQLException ex) {
-                            LOGGER.log(Level.SEVERE, "Error removing old slots", ex);
-                        }
+                        LOGGER.info("Booked " + bookedCount + " slots for request ID: " + requestId);
 
                         session.removeAttribute("tempSlotBooked");
                         LOGGER.info("Request updated successfully: " + requestId);
                     } else {
+                        LOGGER.warning("Request not found: " + requestId);
                         request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
-                        LOGGER.warning("Request with ID " + requestId + " not found.");
                     }
                 }
+                LOGGER.info("Redirecting to ShowMenteeRequest");
                 response.sendRedirect("ShowMenteeRequest");
                 return;
             } else {
+                LOGGER.warning("No slots booked temporarily");
                 response.setContentType("text/plain");
                 response.getWriter().write("No slots booked temporarily.");
                 return;
@@ -285,20 +278,49 @@ public class test extends HttpServlet {
 
         if ("save".equals(service)) {
             String requestId_raw = request.getParameter("requestId");
-            @SuppressWarnings("unchecked")
-            Set<String> tempSlotBooked = (Set<String>) session.getAttribute("tempSlotBooked");
-            if (tempSlotBooked != null && !tempSlotBooked.isEmpty()) {
-                totalSlots = tempSlotBooked.size();
+            String[] tempSlotBooked = request.getParameterValues("tempSlotBooked");
+            double totalPrice = Double.parseDouble(request.getParameter("totalPriceInput"));
+            LOGGER.info("Processing save with tempSlotBooked: " + Arrays.toString(tempSlotBooked));
+
+            if (tempSlotBooked != null && tempSlotBooked.length > 0) {
+                totalSlots = tempSlotBooked.length;
                 totalprice = totalSlots * price;
+                LOGGER.info("Total slots: " + totalSlots + ", Total price: " + totalprice);
 
                 if (requestId_raw == null) {
+                    // Trường hợp lưu mới (Insert)
                     Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Draft", courseId);
-                    if (!daorequest.insertRequest(requests)) {
+                    LOGGER.info("Inserting new draft request: " + requests);
+                    int newRequestId = daorequest.insertRequestAndGetId(requests);
+                    if (newRequestId > 0) {
+                        for (String slot : tempSlotBooked) {
+                            LOGGER.info("Processing slot for draft: " + slot);
+                            String[] parts = slot.split("_");
+                            String slotDate = parts[0];
+                            int slotNumber = Integer.parseInt(parts[1]);
+                            Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
+                            if (slotId != null) {
+                                daoMenteeSL.bookSlot(menteeId, slotId, newRequestId, "Draft");
+                            } else {
+                                LOGGER.warning("Slot not available: " + slot);
+                            }
+                        }
+                        LOGGER.info("Saved draft request with ID: " + newRequestId);
+                        // Gửi dữ liệu về JSP
+                        request.setAttribute("requestId", newRequestId);
+                        request.setAttribute("title", title);
+                        request.setAttribute("content", content);
+                        request.setAttribute("startdate", startDate);
+                        request.setAttribute("enddate", endDate);
+                        request.setAttribute("totalSlots", totalSlots);
+                        request.setAttribute("totalprice", totalprice);
+                        request.setAttribute("tempSlotBooked", Arrays.asList(tempSlotBooked));
+                    } else {
+                        LOGGER.severe("Failed to save draft request");
                         request.setAttribute("errorMessage", "Failed to save draft request.");
-                        LOGGER.warning("Failed to save draft request.");
                     }
-                    session.removeAttribute("tempSlotBooked");
                 } else {
+                    // Trường hợp cập nhật (Update)
                     int requestId = Integer.parseInt(requestId_raw);
                     Request existingRequest = daorequest.getRequestById(requestId);
                     if (existingRequest != null) {
@@ -309,55 +331,105 @@ public class test extends HttpServlet {
                         existingRequest.setTotalSlot(totalSlots);
                         existingRequest.settotalprice(totalprice);
                         existingRequest.setStatus("Draft");
-                        if (!daorequest.updateRequest(existingRequest)) {
+                        LOGGER.info("Updating draft request ID: " + requestId);
+                        if (daorequest.updateRequest(existingRequest)) {
+                            daoMenteeSL.deleteSlotsByRequestIdAndStatus(requestId, "Draft");
+                            for (String slot : tempSlotBooked) {
+                                LOGGER.info("Processing slot for draft: " + slot);
+                                String[] parts = slot.split("_");
+                                String slotDate = parts[0];
+                                int slotNumber = Integer.parseInt(parts[1]);
+                                Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
+                                if (slotId != null) {
+                                    daoMenteeSL.bookSlot(menteeId, slotId, requestId, "Draft");
+                                }
+                            }
+                            LOGGER.info("Updated draft request ID: " + requestId);
+                            // Gửi dữ liệu về JSP
+                            request.setAttribute("requestId", requestId);
+                            request.setAttribute("title", title);
+                            request.setAttribute("content", content);
+                            request.setAttribute("startdate", startDate);
+                            request.setAttribute("enddate", endDate);
+                            request.setAttribute("totalSlots", totalSlots);
+                            request.setAttribute("totalprice", totalprice);
+                            request.setAttribute("tempSlotBooked", Arrays.asList(tempSlotBooked));
+                        } else {
+                            LOGGER.severe("Failed to update draft request: " + requestId);
                             request.setAttribute("errorMessage", "Failed to update draft request.");
-                            LOGGER.warning("Failed to update draft request: " + requestId);
                         }
-                        session.removeAttribute("tempSlotBooked");
                     } else {
+                        LOGGER.warning("Request not found: " + requestId);
                         request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
                     }
                 }
+
+                // Forward về JSP để hiển thị dữ liệu đã lưu
+                LOGGER.info("Forwarding to booking JSP with saved data");
+                request.getRequestDispatcher("/path/to/your/booking.jsp").forward(request, response);
+                return;
+
+            } else {
+                LOGGER.warning("No slots selected for saving draft");
+                request.setAttribute("errorMessage", "Vui lòng chọn ít nhất một slot để lưu.");
+                request.getRequestDispatcher("/path/to/your/booking.jsp").forward(request, response);
+                return;
             }
-            response.sendRedirect("ShowMenteeRequest");
-            return;
         }
     }
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOGGER.info("Processing request");
         HttpSession session = request.getSession();
         DAOMentor daomentor = new DAOMentor();
         DAOCourse daocourse = new DAOCourse();
 
-        // Lấy các tham số từ request (bao gồm từ JSP)
         String mentorIdStr = request.getParameter("mentorId");
         String courseIdStr = request.getParameter("courseId");
-        String selectedMonthStr = request.getParameter("month"); // Từ JSP
-        String selectedYearStr = request.getParameter("year");   // Từ JSP
-        String weekOffsetStr = request.getParameter("weekOffset"); // Từ JSP
+        String selectedMonthStr = request.getParameter("month");
+        String selectedYearStr = request.getParameter("year");
+        String weekOffsetStr = request.getParameter("weekOffset");
         String service = request.getParameter("service");
+        LOGGER.info("Parameters - Mentor ID: " + mentorIdStr + ", Course ID: " + courseIdStr + ", Service: " + service);
+
         int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
         int courseId = (courseIdStr != null && !courseIdStr.isEmpty()) ? Integer.parseInt(courseIdStr) : 0;
         int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
 
         Mentor mentor = daomentor.getMentorByID(mentorId);
         String price_raw = request.getParameter("price");
-        double price = 0;
-        if(price_raw != null){
-           price = Double.parseDouble(price_raw);
-        }
+        double price = (price_raw != null) ? Double.parseDouble(price_raw) : 0.0;
 
-        // Gán các giá trị cơ bản vào request
         request.setAttribute("mentorrequest", mentor);
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("courseId", courseId);
         request.setAttribute("price", price);
+        LOGGER.info("Set basic attributes - Mentor: " + mentor + ", Price: " + price);
+
         if ("update".equals(service)) {
+            LOGGER.info("Processing update service");
             request.setAttribute("title", request.getParameter("title"));
             request.setAttribute("content", request.getParameter("content"));
-            request.setAttribute("startdate", LocalDate.now().toString()); // Lấy ngày hiện tại và chuyển thành String
+            request.setAttribute("startdate", LocalDate.now().toString());
             request.setAttribute("enddate", request.getParameter("enddate"));
             request.setAttribute("requestId", request.getParameter("requestId"));
+
+            String requestIdStr = request.getParameter("requestId");
+            if (requestIdStr != null && !requestIdStr.isEmpty()) {
+                int requestId = Integer.parseInt(requestIdStr);
+                Request existingRequest = new DAORequest().getRequestById(requestId);
+                if (existingRequest != null) {
+                    request.setAttribute("totalSlots", existingRequest.getTotalSlot());
+                    request.setAttribute("totalprice", existingRequest.gettotalprice());
+                    List<Slot> draftSlots = daoMenteeSL.getSlotsByRequestIdAndStatus(requestId, "Draft");
+                    LOGGER.info("Retrieved draft slots for request ID " + requestId + ": " + draftSlots);
+                    request.setAttribute("tempSlotBooked", draftSlots);
+
+                } else {
+                    LOGGER.warning("Request not found for ID: " + requestId);
+                }
+            }
         }
 
         Integer userId = (Integer) session.getAttribute("userId");
@@ -370,29 +442,15 @@ public class test extends HttpServlet {
         Integer menteeId = DAOmentee.getMenteeIdByUserId(userId);
         LOGGER.info("Mentee ID retrieved: " + menteeId);
 
-        // Xử lý tháng và năm từ request hoặc mặc định là hiện tại
-        int selectedMonth;
-        int selectedYear;
-        System.out.println("Hello");
+        int selectedMonth = (selectedMonthStr != null && !selectedMonthStr.isEmpty())
+                ? Month.valueOf(selectedMonthStr.toUpperCase()).getValue() : LocalDate.now().getMonthValue();
+        int selectedYear = (selectedYearStr != null && !selectedYearStr.isEmpty())
+                ? Integer.parseInt(selectedYearStr) : LocalDate.now().getYear();
+        LOGGER.info("Selected month: " + selectedMonth + ", Year: " + selectedYear);
 
-        if (selectedMonthStr != null && selectedYearStr != null && !selectedMonthStr.isEmpty() && !selectedYearStr.isEmpty()) {
-            try {
-                selectedMonth = Month.valueOf(selectedMonthStr.toUpperCase()).getValue(); // Chuyển từ tên tháng sang số
-                selectedYear = Integer.parseInt(selectedYearStr);
-            } catch (IllegalArgumentException e) {
-                selectedMonth = LocalDate.now().getMonthValue();
-                selectedYear = LocalDate.now().getYear();
-                LOGGER.info("Invalid month/year parameters: " + selectedMonthStr + "/" + selectedYearStr + ". Defaulting to current: " + selectedMonth + "/" + selectedYear);
-            }
-        } else {
-            selectedMonth = LocalDate.now().getMonthValue();
-            selectedYear = LocalDate.now().getYear();
-            LOGGER.info("No month/year provided. Defaulting to current: " + selectedMonth + "/" + selectedYear);
-        }
-
-        // Lấy schedule dựa trên tháng/năm hoặc mặc định
         List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
-        int scheduleId = schedules.isEmpty() ? 1 : schedules.get(0).getId(); // Lấy schedule đầu tiên nếu có
+        int scheduleId = schedules.isEmpty() ? 1 : schedules.get(0).getId();
+        LOGGER.info("Schedule ID: " + scheduleId);
 
         java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
         java.sql.Date endDate = daoSc.getEndDateByScheduleId(scheduleId);
@@ -402,19 +460,14 @@ public class test extends HttpServlet {
             return;
         }
 
-        // Tính toán tuần dựa trên weekOffset
-        LocalDate baseDate = LocalDate.of(selectedYear, selectedMonth, 1); // Ngày đầu tháng
-        LocalDate firstDayOfWeek = baseDate.plusWeeks(weekOffset); // Ngày đầu tuần dựa trên offset
+        LocalDate baseDate = LocalDate.of(selectedYear, selectedMonth, 1);
+        LocalDate firstDayOfWeek = baseDate.plusWeeks(weekOffset);
         LocalDate lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
-
-        // Điều chỉnh ranh giới tuần
         weekOffset = adjustWeekBoundaries(startDate.toLocalDate(), endDate.toLocalDate(), firstDayOfWeek, lastDayOfWeek, weekOffset);
-
-        // Cập nhật lại firstDayOfWeek và lastDayOfWeek sau khi điều chỉnh
         firstDayOfWeek = baseDate.plusWeeks(weekOffset);
         lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
+        LOGGER.info("Week boundaries - First day: " + firstDayOfWeek + ", Last day: " + lastDayOfWeek);
 
-        // Tạo dữ liệu cho JSP
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
         Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
@@ -437,15 +490,13 @@ public class test extends HttpServlet {
             formattedWeekDates.add(formattedDate);
             currentDay = currentDay.plusDays(1);
         }
+        LOGGER.info("Generated slots by day: " + slotsByDay.size() + " days");
 
-        Map<Integer, String> slotTimeMap = Map.of(
-                1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00"
-        );
+        Map<Integer, String> slotTimeMap = Map.of(1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00");
 
-        // Gán dữ liệu vào request
         Course c = daoC.getCourseByIdd(courseId);
         Mentor m = daomentor.getMentorByIdd(mentorId);
-        Map<String, List<entity.Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
+        Map<String, List<Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
 
         request.setAttribute("course", c);
         request.setAttribute("mentorrequest", m);
@@ -459,31 +510,31 @@ public class test extends HttpServlet {
         request.setAttribute("scheduleId", scheduleId);
         request.setAttribute("selectedYear", selectedYear);
         request.setAttribute("selectedMonth", selectedMonth);
-        request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH)); // Để hiển thị trên JSP
-
+        request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        LOGGER.info("Before forwarding to test1.jsp");
+        LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
+        LOGGER.info("slotsByDay: " + slotsByDay);
         request.getRequestDispatcher("test1.jsp").forward(request, response);
+        LOGGER.info("After forwarding to test1.jsp"); // Nếu không thấy log này, forward thất bại
     }
 
-    // Các hàm helper mới
     private LocalDate calculateLastDayOfWeek(LocalDate firstDay, LocalDate endDate) {
         LocalDate potentialLastDay = firstDay.plusDays(6);
         return potentialLastDay.isAfter(endDate) ? endDate : potentialLastDay;
     }
 
-    private int adjustWeekBoundaries(LocalDate startDate, LocalDate endDate,
-            LocalDate firstDayOfWeek, LocalDate lastDayOfWeek, int weekOffset) {
-        int adjustedOffset = weekOffset; // Sử dụng tham số weekOffset được truyền vào
+    private int adjustWeekBoundaries(LocalDate startDate, LocalDate endDate, LocalDate firstDayOfWeek, LocalDate lastDayOfWeek, int weekOffset) {
+        int adjustedOffset = weekOffset;
         if (firstDayOfWeek.isBefore(startDate)) {
             firstDayOfWeek = startDate;
             lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate);
             adjustedOffset = 0;
         } else if (lastDayOfWeek.isAfter(endDate)) {
             lastDayOfWeek = endDate;
-            firstDayOfWeek = lastDayOfWeek.minusDays(6).isBefore(startDate)
-                    ? startDate
-                    : lastDayOfWeek.minusDays(6);
+            firstDayOfWeek = lastDayOfWeek.minusDays(6).isBefore(startDate) ? startDate : lastDayOfWeek.minusDays(6);
             adjustedOffset = (int) ChronoUnit.WEEKS.between(startDate, firstDayOfWeek);
         }
+        LOGGER.info("Adjusted week offset: " + adjustedOffset);
         return adjustedOffset;
     }
 
@@ -500,6 +551,7 @@ public class test extends HttpServlet {
             }
             calendar.add(Calendar.DATE, 1);
         }
+        LOGGER.info("Matching dates with same weekday: " + matchingDates.size());
         return matchingDates;
     }
 

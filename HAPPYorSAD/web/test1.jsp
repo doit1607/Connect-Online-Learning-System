@@ -824,8 +824,36 @@
                             </div>
                             <!-- /Schedule Content -->
                             <!-- Schedule hiển thị slot đã book -->
+                            <%-- Bảng cho các slot đã lưu trước đó từ database (Saved/Draft) --%>
+                            <div id="savedSchedule">
+                                <h3>Thời Khóa Biểu Đã Lưu</h3>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Thứ</th>
+                                            <th>Ngày</th>
+                                            <th>Tháng</th>
+                                            <th>Năm</th>
+                                            <th>Slot</th>
+                                            <th>Thời Gian</th>
+                                            <th>Trạng Thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="savedSlotsContainer">
+                                        <c:if test="${not empty tempSlotBooked}">
+                                            <c:forEach var="slot" items="${requestScope.tempSlotBooked}">
+                                                <tr>
+                                                    
+                                                </tr>
+                                            </c:forEach>
+                                        </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <%-- Bảng cho các slot book động --%>
                             <div id="bookedSchedule">
-                                <h3>Thời Khóa Biểu của Bạn</h3>
+                                <h3>Thời Khóa Biểu Đang Chọn</h3>
                                 <table class="schedule-table">
                                     <thead>
                                         <tr>
@@ -839,7 +867,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="bookedSlotsContainer">
-                                        <!-- Bảng trống ban đầu, sẽ được cập nhật khi chọn slot -->
+                                        <!-- Trống ban đầu, được cập nhật động bởi JavaScript -->
                                     </tbody>
                                 </table>
                             </div>
@@ -1362,17 +1390,60 @@
                         saveBtn.classList.add("disabled");
 
                         if (bookingForm.checkValidity()) {
-                            document.getElementById("serviceInput").value = "save";
-                            saveFormData();
-
-                            bookingForm.requestSubmit();
-
-                            setTimeout(() => {
+                            if (tempSlotBooked.size === 0) {
+                                showNotification("Please select at least one slot before saving!");
                                 isSaveProcessing = false;
                                 saveBtn.disabled = false;
                                 saveBtn.classList.remove("disabled");
-                                console.log("Save processing completed");
-                            }, 1000);
+                                return;
+                            }
+
+                            document.getElementById("serviceInput").value = "save";
+                            document.getElementById("totalPriceInput").value = totalPrice;
+
+                            let formData = new FormData(bookingForm);
+                            formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
+                            tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
+                            console.log("Sending FormData for Save:", Array.from(formData.entries()));
+
+                            fetch(bookingForm.action, {
+                                method: "POST",
+                                body: formData,
+                                credentials: "same-origin"
+                            })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error("Network response was not ok " + response.status);
+                                        }
+                                        return response.text();
+                                    })
+                                    .then(data => {
+                                        console.log("Raw response from Save:", data);
+                                        if (data.includes("ShowMenteeRequest")) { // Kiểm tra redirect URL hoặc thông báo thành công
+                                            clearFormData(); // Xóa dữ liệu tạm thời sau khi lưu thành công
+                                            tempSlotBooked.clear();
+                                            slotRepeatMap.clear();
+                                            updateTempSlotUI();
+                                            bookedSlotsContainer.innerHTML = "";
+                                            totalSlots = 0;
+                                            totalPrice = 0;
+                                            updateUI();
+                                            showNotification("Đã lưu request thành công!");
+                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest"; // Chuyển hướng sau khi lưu
+                                        } else {
+                                            showNotification("Lưu request không thành công. Vui lòng thử lại.");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Lỗi khi gửi Save:", error);
+                                        showNotification("Lỗi khi gửi Save: " + error.message);
+                                    })
+                                    .finally(() => {
+                                        isSaveProcessing = false;
+                                        saveBtn.disabled = false;
+                                        saveBtn.classList.remove("disabled");
+                                        console.log("Save processing completed");
+                                    });
                         } else {
                             showNotification("Please fill in all required fields.");
                             isSaveProcessing = false;

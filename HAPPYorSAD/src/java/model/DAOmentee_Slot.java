@@ -7,6 +7,7 @@ package model;
 import entity.Mentee;
 import entity.Mentee_Slot;
 import entity.Mentor_Slot;
+import entity.Slot;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -137,18 +138,15 @@ public class DAOmentee_Slot extends DBConnection {
         ps.executeUpdate();
     }
 
-    
-        public void updateMenteeSlotStatusCF(int slotId, String status) throws SQLException {
+    public void updateMenteeSlotStatusCF(int slotId, String status) throws SQLException {
         String sql = "UPDATE Mentee_Slot SET status = ? WHERE [slot_id] = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, status);
         ps.setInt(2, slotId);
 
-
         ps.executeUpdate();
     }
-        
-        
+
     public void updateMentorSlotStatus(int slotId, int mentorId, String status) throws SQLException {
         String sql = "UPDATE mentor_Slot SET status = ? WHERE [slot_id] = ? AND [mentor_id] = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -249,7 +247,6 @@ public class DAOmentee_Slot extends DBConnection {
 //        }
 //        return null; // Trả về null nếu không tìm thấy
 //    }
-
     public List<Mentee_Slot> getSlotsByDateMenteeAttendance(java.sql.Date date, int menteeId) {
         List<Mentee_Slot> slots = new ArrayList<>();
 
@@ -295,6 +292,36 @@ public class DAOmentee_Slot extends DBConnection {
             }
             return slots;
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
+
+    public void deleteSlotsByRequestIdAndStatus(int requestId, String status) {
+        String sql = "DELETE FROM mentee_slot WHERE request_id = ? AND status = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, requestId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Slot> getSlotsByRequestIdAndStatus(int requestId, String status) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "SELECT s.* FROM mentee_slot ms JOIN Slot s ON ms.slot_id = s.id WHERE ms.request_id = ? AND ms.status = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, requestId);
+            ps.setString(2, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Slot slot = new Slot(rs.getInt("id"), 
+                        rs.getDate("slot_date"), 
+                        rs.getInt("slot_number_id"));
+                       slots.add(slot);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return slots;
