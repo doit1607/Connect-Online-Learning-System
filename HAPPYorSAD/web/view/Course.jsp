@@ -114,13 +114,10 @@
                                                         <div class="course-group-img d-flex">
                                                             <div class="cou-info">
                                                                 <img src="assets/img/icon/people.svg" alt="Img">
-                                                                <p> Total: ${countMentorOfCourse} Mentor </p>
+                                                                <p> Total: ${o.total_Mentor} Mentor </p>
                                                             </div> 
                                                         </div>
-                                                        <div
-                                                            class="course-share d-flex align-items-center justify-content-center">
-                                                            <a href="#rate"><i class="fa-regular fa-heart"></i></a>
-                                                        </div>
+
                                                     </div>
                                                 </div>
 
