@@ -98,6 +98,28 @@ public class DAORateMentor extends DBConnection {
         return mentors;
     }
 
+    // Lay danh gia Mentor de hien thi
+    public MentorReview getReviewByMenteeAndMentor(int mentorId) {
+        MentorReview review = null;
+        String sql = "select TOP 1 rating, comment from mentor_reviews \n"
+                + "WHERE mentor_id = ?\n"
+                + "order by created_at desc";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, mentorId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                review = new MentorReview();
+                review.setRating(rs.getInt("rating"));
+                review.setCommit(rs.getString("comment"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return review;
+    }
+
     public List<MentorReview> getReviewsByMentor(String username) {
         List<MentorReview> reviews = new ArrayList<>();
         String sql = "SELECT mr.* FROM mentor_reviews mr "
@@ -188,7 +210,9 @@ public class DAORateMentor extends DBConnection {
 //        } else {
 //            System.out.println("Failed to submit review.");
 //        }
-        int test = dao.getMenteeIdByUsername("jane_smith");
-        System.out.println(test);
+//        int test = dao.getMenteeIdByUsername("jane_smith");
+//        System.out.println(test);
+        MentorReview mr = dao.getReviewByMenteeAndMentor(1);
+        System.out.println(mr);
     }
 }
