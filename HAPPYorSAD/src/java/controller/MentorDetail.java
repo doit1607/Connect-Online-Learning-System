@@ -2,6 +2,7 @@ package controller;
 
 import entity.Course;
 import entity.Mentor1;
+import entity.MentorReview;
 import entity.Mentor_Slot;
 import entity.Schedule;
 import entity.Slot;
@@ -22,10 +23,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 import model.DAOCourse;
 import model.DAOMentor;
+import model.DAORateMentor;
 import model.DAOmentee_Slot;
 import model.DAOmentor_Slot;
 import model.DAOschedule;
 import model.DAOslot;
+import model.DAOuser;
 
 /**
  *
@@ -56,10 +59,12 @@ public class MentorDetail extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("mentorId"));
         int mentorIdDetail = id;
         DAOMentor dao = new DAOMentor();
+        
         DAOCourse daoC = new DAOCourse();
         Mentor1 mentor = dao.getMentorById(mentorIdDetail);
         Double priceperslot = Double.parseDouble(request.getParameter("price"));
         ArrayList<Course> list = daoC.getCourseByMentorId(mentorIdDetail);
+        
         HttpSession session = request.getSession();
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         int courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -189,6 +194,14 @@ public class MentorDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+        DAOuser userDAO = new DAOuser();
+        int userId = userDAO.getUserIdByUsername(username);
+        DAORateMentor daoR = new DAORateMentor(); // code them cua Dung
+        List<MentorReview> listReview = daoR.getMentorRate(userId);
+        request.setAttribute("listReview", listReview);
+        request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
     }
 
     @Override
