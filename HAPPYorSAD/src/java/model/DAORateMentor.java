@@ -60,9 +60,9 @@ public class DAORateMentor extends DBConnection {
     // lay ra nhung mentee tu Request co trang thai la Completed de review
     public String getRequestStatusByMentee(String username) {
         String status = "";
-        String sql = "SELECT TOP 1 status FROM Request \n"
-                + "WHERE mentee_id = (SELECT id FROM Users WHERE username = ?)\n"
-                + "ORDER BY mentee_id DESC;";
+        String sql = "SELECT  r.status FROM Request r join Mentee m on r.mentee_id = m.id\n"
+                + "WHERE m.id = (SELECT m.id FROM Users u join Mentee m on u.id = m.user_id WHERE u.username = ?) and r.status = 'Completed'\n"
+                + "ORDER BY m.id DESC";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
