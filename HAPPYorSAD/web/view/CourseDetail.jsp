@@ -94,6 +94,12 @@
             background-color: #f8f9fa; /* Nền trắng nhạt hơn khi hover */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bóng đậm hơn khi hover */
         }
+        .product-img img {
+            width: 100%; /* ??t chi?u r?ng c? ??nh cho ?nh */
+            height: 200px; /* ??t chi?u cao c? ??nh cho ?nh */
+            object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
+            border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
+        }
     </style>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
