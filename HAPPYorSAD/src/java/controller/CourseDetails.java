@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import model.DAOCourse;
+import model.DAOMentor;
+
 /**
  *
  * @author Acer
@@ -35,29 +37,37 @@ public class CourseDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         int id = Integer.parseInt(request.getParameter("Cid"));
         DAOCourse dao = new DAOCourse();
+        DAOMentor daom = new DAOMentor();
         Course course = dao.getCourseById(id);
-        String courseName = course.getTitle();
-        List<Mentor> list = dao.getMentorByCourseTitle(courseName);
-//        int countMenteOfCourse = dao.getTotalMenteesByCourse(id);
+        int countMenteeOfcourse = dao.countMenteeOfCourse(course.getId());
+        course.setTotal_Mentee(countMenteeOfcourse);
+        List<Mentor> list = dao.getMentorByCourseId(id);
+        int countReview = 0;
+        int countMentee = 0;
+        for (Mentor mentor : list) {
+            countReview = daom.countMentorsReviewed(mentor.getMentorId());
+            countMentee = daom.countMenteesReviewed(mentor.getMentorId());
+            mentor.setTotal_mentees(countReview);
+            mentor.setTotal_reviews(countMentee);
+        }
         int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
         String majorName = dao.getCourseMajor(id);
         int majorId = course.getCourseMajorId();
         List<Course> listc = dao.getTop3CoursesByMajor(majorId);
         ArrayList<Course> listCourseToPrint = new ArrayList<>();
         for (Course course1 : listc) {
-            if(course1.getId() != course.getId()){
+            if (course1.getId() != course.getId()) {
                 listCourseToPrint.add(course1);
             }
         }
         HttpSession session = request.getSession();
         session.setAttribute("listAllMentorByCourse", list);
         session.setAttribute("detail", course);
-//        session.setAttribute("countMenteOfCourse", countMenteOfCourse);
+//      session.setAttribute("countMenteOfCourse", countMenteOfCourse);
         session.setAttribute("countMentorOfCourse", countMentorOfCourse);
         session.setAttribute("majorName", majorName);
-         session.setAttribute("listCourseToPrint", listCourseToPrint);
+        session.setAttribute("listCourseToPrint", listCourseToPrint);
         request.getRequestDispatcher("view/CourseDetail.jsp").forward(request, response);
-        
 
     }
 
