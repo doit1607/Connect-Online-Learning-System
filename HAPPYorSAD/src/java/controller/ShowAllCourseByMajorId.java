@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import model.DAOCourse;
 import model.DAOmajor;
 
 /**
@@ -32,11 +33,17 @@ public class ShowAllCourseByMajorId extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        DAOCourse dao = new DAOCourse();
         DAOmajor daoM = new DAOmajor();
         int majorId = Integer.parseInt(request.getParameter("Mid"));
         List<Major> listAllMaojor = daoM.getListAllMajor();
         request.setAttribute("listAllMaojor", listAllMaojor);
         List<Course> listCourseByMajorId = daoM.getListAllCourseByMajorId(majorId);
+        int countMentee = 0;
+        for (Course course : listCourseByMajorId) {
+            countMentee = dao.countMenteeOfCourse(course.getId());
+            course.setTotal_Mentee(countMentee);
+        }
         request.setAttribute("listAllCousre", listCourseByMajorId);
         request.setAttribute("tagg", majorId);
         request.getRequestDispatcher("view/Course.jsp").forward(request, response);
