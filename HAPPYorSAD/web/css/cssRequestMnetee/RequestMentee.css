@@ -40,6 +40,33 @@ h3 {
 .updatebtn {
     color: #004FFF;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
 
+.pagination a {
+    color: rgb(217, 102, 137);
+    padding: 8px 16px;
+    margin: 0 4px;
+    text-decoration: none;
+    border: 1px solid rgb(217, 102, 137);
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.pagination a.active {
+    background: rgb(217, 102, 137);
+    color: #fff;
+    border-color: rgb(217, 102, 137);
+}
+
+.pagination a:hover {
+    background: #0056b3;
+    color: #fff;
+    border-color: #0056b3;
+}
 
 
