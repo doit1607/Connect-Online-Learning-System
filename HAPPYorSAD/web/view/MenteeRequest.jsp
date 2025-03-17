@@ -32,7 +32,7 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/css/cssRequestMnetee/RequestMentee.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/css/cssRequestMnetee/RequestMentee.css"/>
 
         <!-- Theme Settings JS -->
         <script src="/HAPPYorSAD/assets/js/theme-script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
@@ -100,6 +100,7 @@
             .viewbtn i {
                 text-decoration: none;
             }
+
         </style>
         <c:if test="${not empty sessionScope.msg}">
             <script>
@@ -157,55 +158,61 @@
                         </div>
                     </div>
                     <!-- /Breadcrumb -->	
-                      <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                    <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
-                            <div class="settings-widget account-settings">
-                                <div class="settings-menu">
-                                    <h3>Dashboard</h3>
-                                    <ul>
+                        <div class="settings-widget account-settings">
+                            <div class="settings-menu">
+                                <h3>Dashboard</h3>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                            <i class="bx bxs-user"></i>Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                            <i class="bx bxs-graduation"></i>Request
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                            <i class="bx bxs-check-circle"></i>Attendance
+                                        </a>
+                                    </li>
+                                    <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                                <i class="bx bxs-user"></i>Profile
+                                            <a href="reviewmentor" class="nav-link">
+                                                <i class="bx bxs-bell"></i> Review Mentor
                                             </a>
                                         </li>
-                                        <li class="nav-item active">
-                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Request
-                                            </a>
-                                        </li>
-                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
-                                                <i class="bx bxs-check-circle"></i>Attendance
-                                            </a>
-                                        </li>
-                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
-                                            <li class="nav-item">
-                                                <a href="reviewmentor" class="nav-link">
-                                                    <i class="bx bxs-bell"></i> Review Mentor
-                                                </a>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                    <h3>Account Settings</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="LoginUser?service=logout" class="nav-link">
-                                                <i class="bx bxs-log-out"></i>Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    </c:if>
+                                </ul>
+                                <h3>Account Settings</h3>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                            <i class="bx bxs-cog"></i>Settings
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="LoginUser?service=logout" class="nav-link">
+                                            <i class="bx bxs-log-out"></i>Logout
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <!-- /Sidebar -->
+                    </div>
+                    <!-- /Sidebar -->
 
                     <!-- Page Content -->
                     <div class="col-md-9"> 
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <form action="ShowMenteeRequest" method="get" class="d-flex "> 
+                                <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Course Name...">
+                                <button type="submit" class="btn btn-primary px-4">Search</button>
+                            </form>                                                      
+                        </div>
                         <div class="formcontent">
                             <div>  
                                 <table class="tablecontent">
@@ -352,26 +359,31 @@
                             </div>
                         </div>
 
-                        <div class="dash-pagination">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <p>Page 1 of 2</p>
+                        <!-- /pagination -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- Pagination -->
+                                <div class="pagination">
+                                    <c:if test="${tag > 1}">
+                                        <li class="page-item">
+                                            <a href="ShowMenteeRequest?index=${tag-1}" class="page-link">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-link ${tag == i?'active':''}" href="ShowMenteeRequest?index=${i}">${i}</a>
+                                    </c:forEach>
+
+                                    <c:if test="${tag < endPage}">
+                                        <li class="page-item">
+                                            <a href="ShowMenteeRequest?index=${tag+1}" class="page-link">Next</a>
+                                        </li>
+                                    </c:if>
                                 </div>
-                                <div class="col-6">
-                                    <ul class="pagination">
-                                        <li class="active">
-                                            <a href="#">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="bx bx-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <!-- /Pagination -->                              
                             </div>
                         </div>
+                        <!-- /pagination -->
 
                     </div>
                 </div>
