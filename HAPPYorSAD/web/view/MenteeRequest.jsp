@@ -207,12 +207,12 @@
 
                     <!-- Page Content -->
                     <div class="col-md-9"> 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+<!--                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <form action="ShowMenteeRequest" method="get" class="d-flex "> 
                                 <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Course Name...">
                                 <button type="submit" class="btn btn-primary px-4">Search</button>
                             </form>                                                      
-                        </div>
+                        </div>-->
                         <div class="formcontent">
                             <div>  
                                 <table class="tablecontent">
