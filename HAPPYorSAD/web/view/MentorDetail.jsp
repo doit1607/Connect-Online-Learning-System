@@ -297,6 +297,24 @@
                 object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
                 border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
             }
+
+            .mentee-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #ddd;
+            }
+
+            .rating {
+                color: #FFD700; /* Màu vàng */
+                font-size: 18px;
+            }
+
+            .star.empty {
+                color: #ccc; /* Màu xám cho sao trống */
+            }
+
         </style>
     </head>
     <body>
@@ -408,7 +426,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <!-- Sử dụng iframe để gọi servlet -->
-                                            <iframe src="/HAPPYorSAD//viewCVMODAL?mentorId=${mentor.id}" width="100%" height="500px" frameborder="0"></iframe>
+                                            <iframe src="/HAPPYorSAD//viewCVMODAL?mentorId=${mentor.id}" width="100%" height="900px" frameborder="0"></iframe>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -418,52 +436,6 @@
                             </div>
                             <!-- /Overview -->
 
-                            <!-- Button to trigger the modal -->
-                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                                Review from Mentees
-                            </button>
-
-                            <!-- Review Modal -->
-                            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="reviewModalLabel">Reviews from Mentees</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <c:choose>
-                                                <c:when test="${empty listReview}">
-                                                    <p>No reviews yet.</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Mentee ID</th>
-                                                                <th>Rating</th>
-                                                                <th>Comment</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <c:forEach var="review" items="${listReview}">
-                                                                <tr>
-                                                                    <td>${review.menteeID}</td>
-                                                                    <td>${review.rating} / 5</td>
-                                                                    <td>${review.commit}</td>
-                                                                </tr>
-                                                            </c:forEach>
-                                                        </tbody>
-                                                    </table>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Mentor's Schedule -->
                             <!-- Mentor's Schedule -->
@@ -608,6 +580,54 @@
                             <!-- /Mentor's Schedule -->
                             <!-- /Mentor's Schedule -->
 
+                            <!-- Reviews from Mentees -->
+                            <!-- Reviews from Mentees -->
+                            <div class="card overview-sec">
+                                <div class="card-body">
+                                    <h2 class="subs-title">Reviews from Mentees</h2>
+                                    <c:choose>
+                                        <c:when test="${empty listReview}">
+                                            <p>No reviews yet.</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!-- Hiển thị tất cả review, nhưng ẩn các review từ 5 trở đi -->
+                                            <c:forEach var="review" items="${listReview}" varStatus="loop">
+                                                <div class="review-item mb-3 p-3 border rounded shadow-sm ${loop.index >= 5 ? 'd-none' : ''}" data-hidden="${loop.index >= 5}">
+                                                    <div class="d-flex align-items-center">
+                                                        <!-- Hiển thị ảnh mentee -->
+                                                        <img src="${review.image}" alt="Mentee Image" class="mentee-img me-3">
+                                                        <div>
+                                                            <!-- Hiển thị tên mentee -->
+                                                            <p class="fw-bold mb-1">${review.name}</p>
+                                                            <!-- Hiển thị rating bằng sao -->
+                                                            <div class="rating">
+                                                                <c:forEach var="i" begin="1" end="${review.rating}">
+                                                                    <span class="star">★</span>
+                                                                </c:forEach>
+                                                                <c:forEach var="i" begin="${review.rating + 1}" end="5">
+                                                                    <span class="star empty">★</span>
+                                                                </c:forEach>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Hiển thị bình luận -->
+                                                    <p class="mt-2 text-muted">${review.commit}</p>
+                                                </div>
+                                            </c:forEach>
+
+                                            <!-- Nếu có nhiều hơn 5 review, hiển thị nút "Tải thêm" -->
+                                            <c:if test="${listReview.size() > 5}">
+                                                <div class="text-center">
+                                                    <button id="loadMoreBtn" class="btn btn-outline-primary">Load more feedback</button>
+                                                </div>
+                                            </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                            <!-- /Reviews from Mentees -->
+                            <!-- /Reviews from Mentees -->
+
                             <!-- List of Courses -->
                             <div class="row">
                                 <h2 class="subs-title">List of course mentor are training</h2>
@@ -666,7 +686,16 @@
                 $('[data-bs-toggle="popover"]').on('mouseleave', function () {
                     $(this).popover('hide');
                 });
+
+                // Xử lý sự kiện khi nhấn nút "Tải thêm feedback"
+                $('#loadMoreBtn').on('click', function () {
+                    // Hiển thị tất cả các review-item đang bị ẩn
+                    $('.review-item[data-hidden="true"]').removeClass('d-none').attr('data-hidden', 'false');
+                    // Ẩn nút "Tải thêm" sau khi hiển thị hết
+                    $(this).hide();
+                });
             });
         </script>
+
     </body>
 </html>

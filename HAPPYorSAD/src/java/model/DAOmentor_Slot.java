@@ -167,13 +167,13 @@ public class DAOmentor_Slot extends DBConnection {
     public List<Slot> getSlotsByDateForRequest(Date date, int mentorId) {
         List<Slot> slots = new ArrayList<>();
 
-        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time, ms.status \n"
+        String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time, st.end_time, ms.status \n"
                 + "FROM Slot sl\n"
                 + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
                 + "JOIN Slot_Template st ON st.id = sl.slot_number_id\n"
-                + "WHERE sl.slot_date = ? and ms.status = 'Available'\n"
+                + "WHERE sl.slot_date = ? \n"
                 + "AND ms.mentor_id = ?\n"
-                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
+                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time, ms.status,  st.end_time \n"
                 + "ORDER BY st.start_time;";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -186,14 +186,15 @@ public class DAOmentor_Slot extends DBConnection {
                         rs.getInt("id"),
                         rs.getDate("slot_date"),
                         rs.getInt("slot_number"),
-                        rs.getTime("start_time")));
+                        rs.getTime("start_time"),
+                        rs.getTime("end_time")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return slots;
     }
-    
+
 //    String query = "SELECT sl.id, sl.slot_date, st.slot_number, st.start_time \n"
 //                + "FROM Slot sl\n"
 //                + "JOIN Mentor_Slot ms ON ms.slot_id = sl.id\n"
@@ -202,7 +203,6 @@ public class DAOmentor_Slot extends DBConnection {
 //                + "AND ms.mentor_id = ?\n"
 //                + "group by sl.id, sl.slot_date, st.slot_number, st.start_time \n"
 //                + "ORDER BY st.start_time;";
-
     public List<Mentor_Slot> getSlotsByDateMentorDetai(Date date, int mentorId) {
         List<Mentor_Slot> slots = new ArrayList<>();
 

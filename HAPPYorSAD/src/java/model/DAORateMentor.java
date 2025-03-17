@@ -204,19 +204,32 @@ public class DAORateMentor extends DBConnection {
     // Lay ra list Mentor duoc rate cho vao Detail
     public List<MentorReview> getMentorRate(int mentorId) {
         List<MentorReview> list = new ArrayList<>();
-        String sql = "select * from mentor_reviews where mentor_id = ?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+        String sql = "SELECT \n"
+                + "    mr.*, \n"
+                + "    m.name AS mentee_name, \n"
+                + "    m.image AS mentee_image\n"
+                + "FROM \n"
+                + "    mentor_reviews mr\n"
+                + "JOIN \n"
+                + "    mentee m ON mr.mentee_id = m.id\n"
+                + "WHERE \n"
+                + "    mr.mentor_id = ?;";
+
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
             pre.setInt(1, mentorId);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                list.add(new MentorReview(
-                        rs.getInt("mentee_id"),
-                        rs.getInt("rating"),
-                        rs.getString("comment")
-                ));
+
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new MentorReview(
+                            rs.getInt("rating"),
+                            rs.getString("comment"),
+                            rs.getString("mentee_name"),
+                            rs.getString("mentee_image"))
+                    );
+                }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace(); // Hiển thị lỗi để debug
         }
         return list;
     }

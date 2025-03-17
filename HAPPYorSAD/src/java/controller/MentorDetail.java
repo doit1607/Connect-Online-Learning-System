@@ -48,11 +48,27 @@ public class MentorDetail extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
 
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("usernameUser");
+        DAOuser userDAO = new DAOuser();
+        int userId = userDAO.getUserIdByUsername(username);
+        int id = Integer.parseInt(request.getParameter("mentorId"));
+        int mentorIdDetail = id;
+        DAOMentor dao = new DAOMentor();
+
+        DAOCourse daoC = new DAOCourse();
+        DAORateMentor daoR = new DAORateMentor(); // code them cua Dung
+
+        List<MentorReview> listReview = daoR.getMentorRate(mentorIdDetail);
+        System.out.println("Helloo " + listReview);
+        request.setAttribute("listReview", listReview);
+
         if ("getMentorSlots".equals(action)) {
             handleScheduleRequest(request, response);
         } else {
             handleInitialRequest(request, response);
         }
+
     }
 
     private void handleInitialRequest(HttpServletRequest request, HttpServletResponse response)
@@ -60,12 +76,12 @@ public class MentorDetail extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("mentorId"));
         int mentorIdDetail = id;
         DAOMentor dao = new DAOMentor();
-        
+
         DAOCourse daoC = new DAOCourse();
         Mentor1 mentor = dao.getMentorById(mentorIdDetail);
         Double priceperslot = Double.parseDouble(request.getParameter("price"));
         ArrayList<Course> list = daoC.getCourseByMentorId(mentorIdDetail);
-        
+
         HttpSession session = request.getSession();
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         int courseId = Integer.parseInt(request.getParameter("courseId"));
@@ -195,14 +211,7 @@ public class MentorDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("usernameUser");
-        DAOuser userDAO = new DAOuser();
-        int userId = userDAO.getUserIdByUsername(username);
-        DAORateMentor daoR = new DAORateMentor(); // code them cua Dung
-        List<MentorReview> listReview = daoR.getMentorRate(userId);
-        request.setAttribute("listReview", listReview);
-        request.getRequestDispatcher("view/MentorDetail.jsp").forward(request, response);
+
     }
 
     @Override

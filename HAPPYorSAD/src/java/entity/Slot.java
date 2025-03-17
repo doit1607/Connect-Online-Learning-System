@@ -45,13 +45,20 @@ public class Slot {
         this.slotNumber = slotNumber;
         this.startTime = startTime;
     }
-    
-        public Slot(int id, Date slotDate, int slotNumber) {
+
+    public Slot(int id, Date slotDate, int slotNumber, Time startTime, Time endTime) {
+        this.id = id;
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.startTime = startTime;
+          this.endTime = endTime;
+    }
+
+    public Slot(int id, Date slotDate, int slotNumber) {
         this.id = id;
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
     }
-
 
     public Slot(Date slotDate, int slotNumber, Time startTime, Time endTime, String status, int request_id) {
         this.slotDate = slotDate;

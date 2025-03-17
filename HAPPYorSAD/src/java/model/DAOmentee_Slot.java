@@ -224,29 +224,6 @@ public class DAOmentee_Slot extends DBConnection {
         return null; // Trả về null nếu không tìm thấy
     }
 
-//    public Mentee getMenteeBySlotId(String date, int slotNumber) {
-//        String sql = "SELECT m.name, m.image, m.email \n"
-//                + "               FROM Mentee_Slot ms \n"
-//                + "                JOIN Mentee m ON m.id = ms.mentee_id \n"
-//                + "		join Slot sl on sl.id = ms.slot_id\n"
-//                + "               WHERE sl.slot_date = ? and slot_number_id = ?";
-//        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setString(1, date);
-//            stmt.setInt(2, slotNumber);
-//            try (ResultSet rs = stmt.executeQuery()) {
-//                if (rs.next()) {
-//                    return new Mentee(
-//                            rs.getString("name"),
-//                            rs.getString("image"),
-//                            rs.getString("email")
-//                    );
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace(); // Xử lý lỗi hoặc log lỗi
-//        }
-//        return null; // Trả về null nếu không tìm thấy
-//    }
     public List<Mentee_Slot> getSlotsByDateMenteeAttendance(java.sql.Date date, int menteeId) {
         List<Mentee_Slot> slots = new ArrayList<>();
 
@@ -316,10 +293,10 @@ public class DAOmentee_Slot extends DBConnection {
             ps.setString(2, status);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Slot slot = new Slot(rs.getInt("id"), 
-                        rs.getDate("slot_date"), 
+                Slot slot = new Slot(rs.getInt("id"),
+                        rs.getDate("slot_date"),
                         rs.getInt("slot_number_id"));
-                       slots.add(slot);
+                slots.add(slot);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -327,12 +304,39 @@ public class DAOmentee_Slot extends DBConnection {
         return slots;
     }
 
+    public List<Slot> getSlotsByMenteeIdAndStatus(int menteeId, String status) {
+        List<Slot> bookedSlots = new ArrayList<>();
+        String sql = "SELECT s.id, s.slot_date, s.slot_number_id, ms.request_id\n"
+                + "FROM Slot s\n"
+                + "JOIN Mentee_Slot ms ON s.id = ms.slot_id\n"
+                + "WHERE ms.mentee_id = ? AND ms.status = ?;";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, menteeId);
+            ps.setString(2, status);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Slot slot = new Slot();
+                slot.setId(rs.getInt("id"));
+                slot.setSlotDate(rs.getDate("slot_date"));
+                slot.setSlotNumber(rs.getInt("slot_number_id"));
+                slot.setRequest_id(rs.getObject("request_id") != null ? rs.getInt("request_id") : null);
+                bookedSlots.add(slot);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookedSlots;
+    }
+
     public static void main(String[] args) {
         DAOmentee_Slot dao = new DAOmentee_Slot();
         LocalDate localDate = LocalDate.parse("2025-03-03");
         java.sql.Date sqlDate = java.sql.Date.valueOf(localDate); // Chuyển LocalDate thành java.sql.Date
 
-        List<Mentee_Slot> slots = dao.getSlotsByDateMenteeAttendance(sqlDate, 1);
+        List<Slot> slots = dao.getSlotsByMenteeIdAndStatus(2, "Studying");
         System.out.println(slots);
     }
 

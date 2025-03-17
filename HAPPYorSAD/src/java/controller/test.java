@@ -377,7 +377,6 @@ public class test extends HttpServlet {
             }
         }
     }
-    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Processing request");
@@ -473,6 +472,12 @@ public class test extends HttpServlet {
         Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
         List<String> formattedWeekDates = new ArrayList<>();
 
+        Map<String, String> slotStatusMap = new LinkedHashMap<>(); // Map để lưu trạng thái của slot
+
+        // Lấy danh sách slot Studying của mentee
+        Set<String> studyingSlots = getStudyingSlotsForMentee(menteeId);
+        LOGGER.info("Studying slots for mentee " + menteeId + ": " + studyingSlots);
+
         LocalDate currentDay = firstDayOfWeek;
         while (!currentDay.isAfter(lastDayOfWeek)) {
             String formattedDate = currentDay.format(dateFormatter);
@@ -488,6 +493,29 @@ public class test extends HttpServlet {
             );
             weekDateInfoMap.put(formattedDate, dateInfo);
             formattedWeekDates.add(formattedDate);
+
+            for (int slotNumber = 1; slotNumber <= 5; slotNumber++) {
+                String slotKey = formattedDate + "_" + slotNumber;
+                if (studyingSlots.contains(slotKey)) {
+                    slotStatusMap.put(slotKey, "Studying"); // Slot đã học
+                    LOGGER.info("Slot " + slotKey + " -> Studying");
+
+                } else {
+                    boolean isAvailable = false;
+                    for (Slot slot : slots) { // Traditional loop instead of stream
+                        if (slot.getSlotNumber() == slotNumber && Objects.equals(slot.getRequest_id(), null)) {
+                            isAvailable = true;
+                            break;
+                        }
+                    }
+                    String status = studyingSlots.contains(slotKey) ? "Studying" : (isAvailable ? "Available" : "NotSet");
+                    slotStatusMap.put(slotKey, status); // Có thể chọn hoặc không set
+                    LOGGER.info("Slot " + slotKey + " -> " + status);
+
+                }
+            }
+            LOGGER.info("Final Slot Status Map: " + slotStatusMap);
+
             currentDay = currentDay.plusDays(1);
         }
         LOGGER.info("Generated slots by day: " + slotsByDay.size() + " days");
@@ -498,6 +526,7 @@ public class test extends HttpServlet {
         Mentor m = daomentor.getMentorByIdd(mentorId);
         Map<String, List<Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
 
+        request.setAttribute("slotStatusMap", slotStatusMap); // Truyền trạng thái slot sang JSP
         request.setAttribute("course", c);
         request.setAttribute("mentorrequest", m);
         request.setAttribute("months", schedulesByMonth.keySet());
@@ -553,6 +582,22 @@ public class test extends HttpServlet {
         }
         LOGGER.info("Matching dates with same weekday: " + matchingDates.size());
         return matchingDates;
+    }
+
+    private Set<String> getStudyingSlotsForMentee(int menteeId) {
+        Set<String> studyingSlots = new HashSet<>();
+        DAOmentee_Slot daoMenteeSlot = new DAOmentee_Slot();
+        List<Slot> bookedSlots = daoMenteeSlot.getSlotsByMenteeIdAndStatus(menteeId, "Studying");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (Slot slot : bookedSlots) {
+            String slotDate = slot.getSlotDate().toLocalDate().format(formatter);
+            int slotNumber = slot.getSlotNumber(); // Giả sử Slot có thuộc tính slotNumber
+            String slotKey = slotDate + "_" + slotNumber;
+            studyingSlots.add(slotKey);
+        }
+        LOGGER.info("Found " + studyingSlots.size() + " studying slots for mentee ID: " + menteeId);
+        return studyingSlots;
     }
 
     private void redirect(HttpServletResponse response, String url) throws IOException {
