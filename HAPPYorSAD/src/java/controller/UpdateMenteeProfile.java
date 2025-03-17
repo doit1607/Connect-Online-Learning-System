@@ -96,7 +96,7 @@ public class UpdateMenteeProfile extends HttpServlet {
             String gender = request.getParameter("gender");
 
             // Xử lý ngày sinh
-            java.util.Date dateOfBirth = null;
+            Date dateOfBirth = null;
             String dob = request.getParameter("dateOfBirth");
             if (dob != null && !dob.isEmpty()) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
