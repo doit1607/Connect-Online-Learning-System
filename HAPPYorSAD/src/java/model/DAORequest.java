@@ -362,7 +362,7 @@ public class DAORequest extends DBConnection {
         return mentorId;
     }
     
-    public List<Request> getAllRequest(int menteeId) {
+    public List<Request> getAllRequest(int menteeId,int index) {
         ArrayList<Request> listRequest = new ArrayList<>();
 
         String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
@@ -372,11 +372,13 @@ public class DAORequest extends DBConnection {
                 + "FROM [SWP1].[dbo].[Request] r "
                 + "JOIN [SWP1].[dbo].[Course] c ON r.course_id = c.id "
                 + "JOIN [SWP1].[dbo].[Mentor] m ON r.mentor_id = m.user_id "
-                + "WHERE r.mentee_id = ? order by created_at desc";
+                + "WHERE r.mentee_id = ? order by created_at desc "
+                + "offset ? rows fetch next 10 rows only";
 
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             connect.setInt(1, menteeId);
+            connect.setInt(2, (index - 1) * 10);
             ResultSet result = connect.executeQuery();
 
             while (result.next()) {
