@@ -77,7 +77,7 @@
                                     <ul>
                                         <li class="nav-item active ">
                                             <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
+                                                <i class="bx bxs-user"></i>Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
