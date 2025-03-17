@@ -9,9 +9,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-java.util.Calendar cal = java.util.Calendar.getInstance();
-int currentMonth = cal.get(java.util.Calendar.MONTH) + 1; // Tháng bắt đầu từ 0 nên cộng 1
-int currentYear = cal.get(java.util.Calendar.YEAR);
+    java.util.Calendar cal = java.util.Calendar.getInstance();
+    int currentMonth = cal.get(java.util.Calendar.MONTH) + 1; // Tháng bắt đầu từ 0 nên cộng 1
+    int currentYear = cal.get(java.util.Calendar.YEAR);
 %>
 <fmt:setLocale value="en"/>
 
@@ -125,27 +125,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 color: blue;
                 font-weight: bold;
             }
-
         </style>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    let alerts = document.querySelectorAll(".alert");
-                    alerts.forEach(alert => {
-                        alert.style.transition = "opacity 0.5s";
-                        alert.style.opacity = "0";
-                        setTimeout(() => alert.style.display = "none", 500);
-                    });
-                }, 3000);
-
-                // Tự động hiển thị modal xác nhận nếu có dữ liệu từ servlet
-            <c:if test="${showModal}">
-                var modal = new bootstrap.Modal(document.getElementById("confirmationModal"));
-                modal.show();
-            </c:if>
-            });
-        </script>
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
@@ -174,25 +154,24 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             <div class="page-content">
                 <div class="container">
                     <div class="row">
-                        <!-- Sidebar (adjusted for Mentee) -->
-                          <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-
+                        <!-- Sidebar -->
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                            <a href="/HAPPYorSAD/ProfileServlet" class="nav-link">
                                                 <i class="bx bxs-user"></i>Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                            <a href="/HAPPYorSAD/ShowMenteeRequest" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
-                                         <li class="nav-item active">
-                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                        <li class="nav-item active">
+                                            <a href="/HAPPYorSAD/AttendanceMentee" class="nav-link">
                                                 <i class="bx bxs-check-circle"></i>Attendance
                                             </a>
                                         </li>
@@ -207,7 +186,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     <h3>Account Settings</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link">
                                                 <i class="bx bxs-cog"></i>Settings
                                             </a>
                                         </li>
@@ -220,8 +199,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                 </div>
                             </div>
                         </div>
-                        <!-- /Sidebar -->
-
 
                         <!-- Main Content -->
                         <div class="col-lg-9 col-xl-9">
@@ -305,11 +282,14 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                                 <c:when test="${slot.status == 'Studying'}">
                                                                                                     <span class="slot-studying">Slot ${slot.slot_number} <span class="pending-indicator">📖</span></span>
                                                                                                 </c:when>
-                                                                                                <c:when test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent' }">
+                                                                                                <c:when test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent'}">
                                                                                                     <form action="/HAPPYorSAD/AttendanceMentee" method="post" style="display:inline;">
                                                                                                         <input type="hidden" name="action" value="getMentorInfo">
                                                                                                         <input type="hidden" name="date" value="${day}">
                                                                                                         <input type="hidden" name="slot" value="${slot.slot_number}">
+                                                                                                        <input type="hidden" name="month" value="${selectedMonth}">
+                                                                                                        <input type="hidden" name="year" value="${selectedYear}">
+                                                                                                        <input type="hidden" name="weekOffset" value="${weekOffset}">
                                                                                                         <button type="submit" class="slot-pending slot-clickable btn btn-link p-0">Slot ${slot.slot_number} <span class="pending-indicator">?</span></button>
                                                                                                     </form>
                                                                                                 </c:when>
@@ -342,7 +322,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 </div>
             </div>
 
-
             <!-- Notification Modal for Request Completion -->
             <div class="modal fade" id="completionModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
@@ -363,8 +342,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 </div>
             </div>
 
-
-
             <!-- Modal for Confirmation -->
             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -377,36 +354,38 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                             <c:choose>
                                 <c:when test="${empty mentor}">
                                     <p class="text-muted">No mentor assigned to this slot.</p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </c:when>
                                 <c:otherwise>
                                     <p><strong>Mentor:</strong> ${mentor.name} (${mentor.email})</p>
                                     <p>Mentor marked your attendance as: 
                                         <strong>${slot.status == 'confirm_present' ? 'Present' : slot.status == 'confirm_absent' ? 'Absent' : slot.status}</strong>
                                     </p>
-                                    <c:if test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent'}">
-                                        <form action="/HAPPYorSAD/AttendanceMentee" method="post">
-                                            <input type="hidden" name="action" value="confirmAttendance">
-                                            <input type="hidden" name="date" value="${selectedDate}">
-                                            <input type="hidden" name="slot" value="${selectedSlot}">
+                                    <c:choose>
+                                        <c:when test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent'}">
+                                            <form action="/HAPPYorSAD/AttendanceMentee" method="post">
+                                                <input type="hidden" name="action" value="confirmAttendance">
+                                                <input type="hidden" name="date" value="${selectedDate}">
+                                                <input type="hidden" name="slot" value="${selectedSlot}">
+                                                <input type="hidden" name="month" value="${selectedMonth}">
+                                                <input type="hidden" name="year" value="${selectedYear}">
+                                                <input type="hidden" name="weekOffset" value="${weekOffset}">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" name="confirmation" value="confirm" class="btn btn-success">Confirm</button>
+                                                    <button type="submit" name="confirmation" value="reject" class="btn btn-danger">Reject</button>
+                                                </div>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="text-muted">Attendance has been confirmed as ${slot.status}.</p>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" name="confirmation" value="confirm" class="btn btn-success">Confirm</button>
-                                                <button type="submit" name="confirmation" value="reject" class="btn btn-danger">Reject</button>
                                             </div>
-                                        </form>
-                                    </c:if>
-                                    <c:if test="${slot.status == 'present' || slot.status == 'absent'}">
-                                        <p class="text-muted">Attendance has been confirmed as ${slot.status}.</p>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${not empty message}">
-                                        <div class="alert alert-success mt-3">${message}</div>
-                                    </c:if>
-                                    <c:if test="${not empty error}">
-                                        <div class="alert alert-danger mt-3">${error}</div>
-                                    </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -418,24 +397,8 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
             <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
             <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const monthItems = document.querySelectorAll(".month-item");
-
-                monthItems.forEach(item => {
-                    item.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        const [month, year] = item.dataset.month.split(" ");
-                        document.getElementById("selectedMonth").textContent = item.dataset.month;
-                        document.getElementById("hiddenMonth").value = month;
-                        document.getElementById("hiddenYear").value = year;
-                        document.getElementById("monthForm").submit();
-                    });
-                });
-            });
-            </script>
-
-            <script>
                 document.addEventListener("DOMContentLoaded", function () {
+                    // Tự động ẩn thông báo sau 3 giây
                     setTimeout(function () {
                         let alerts = document.querySelectorAll(".alert");
                         alerts.forEach(alert => {
@@ -445,13 +408,25 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                         });
                     }, 3000);
 
-                    // Trigger confirmationModal if showModal is true
+                    // Xử lý chọn tháng từ dropdown
+                    const monthItems = document.querySelectorAll(".month-item");
+                    monthItems.forEach(item => {
+                        item.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            const [month, year] = item.dataset.month.split(" ");
+                            document.getElementById("selectedMonth").textContent = item.dataset.month;
+                            document.getElementById("hiddenMonth").value = month;
+                            document.getElementById("hiddenYear").value = year;
+                            document.getElementById("monthForm").submit();
+                        });
+                    });
+
+                    // Hiển thị modal nếu được yêu cầu từ servlet
                 <c:if test="${showModal}">
                     var confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
                     confirmationModal.show();
                 </c:if>
 
-                    // Trigger completionModal if showCompletionModal is true
                 <c:if test="${showCompletionModal}">
                     var completionModal = new bootstrap.Modal(document.getElementById("completionModal"));
                     completionModal.show();
@@ -463,6 +438,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             <form id="monthForm" action="/HAPPYorSAD/AttendanceMentee" method="get" style="display:none;">
                 <input type="hidden" name="month" id="hiddenMonth">
                 <input type="hidden" name="year" id="hiddenYear">
+                <input type="hidden" name="weekOffset" value="${weekOffset}">
             </form>
         </div>
     </body>

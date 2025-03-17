@@ -273,6 +273,55 @@ public class DAOmentee_Slot extends DBConnection {
         }
         return slots;
     }
+    
+    public List<Mentee_Slot> getSlotsByDateMenteeAttendancee(java.sql.Date date) {
+        List<Mentee_Slot> slots = new ArrayList<>();
+
+        String sql = "SELECT \n"
+                + "    sl.slot_date, msl.slot_id, \n"
+                + "    msl.status, \n"
+                + "    sl.slot_number_id, \n"
+                + "    st.start_time, \n"
+                + "    st.end_time,\n"
+                + "	sl.id , msl.request_id,\n"
+                + "    msl.mentee_id\n"
+                + "FROM Mentee_Slot msl\n"
+                + "JOIN Slot sl ON sl.id = msl.slot_id\n"
+                + "JOIN Slot_Template st ON sl.slot_number_id = st.id\n"
+                + "WHERE sl.slot_date = ?  -- Thay bằng ngày bạn muốn test\n"
+                + " -- Thay bằng ID Mentor cần test\n"
+                + "GROUP BY \n"
+                + "    sl.slot_date, \n"
+                + "    msl.status, \n"
+                + "    sl.slot_number_id, \n"
+                + "    st.start_time, \n"
+                + "    st.end_time, \n"
+                + "	sl.id,\n"
+                + "    msl.mentee_id, msl.slot_id,  msl.request_id;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, date);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Mentee_Slot slot = new Mentee_Slot(
+                        rs.getInt("mentee_id"),
+                        rs.getInt("slot_id"),
+                        rs.getInt("request_id"),
+                        rs.getString("status"),
+                        rs.getDate("slot_date"),
+                        rs.getInt("slot_number_id"),
+                        rs.getTime("start_time"),
+                        rs.getTime("end_time"));
+
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
 
     public void deleteSlotsByRequestIdAndStatus(int requestId, String status) {
         String sql = "DELETE FROM mentee_slot WHERE request_id = ? AND status = ?";

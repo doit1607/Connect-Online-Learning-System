@@ -35,7 +35,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
         <style>
-
             .temp-slot-item {
                 background: #fffae6;
                 border-left: 4px solid #ffc107;
@@ -114,71 +113,74 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 color: red;
                 padding: 3px 6px;
                 border-radius: 4px;
-                font-weigh
+                font-weight: bold;
+            }
+            .text-warning {
+                color: #ffc107 !important;
+            }
+            .fw-bold {
+                font-weight: bold;
+            }
+        </style>
 
-                .text-warning {
-                    color: #ffc107 !important;
-                }
-                .fw-bold {
-                    font-weight: bold;
-                }
-            </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Tự động ẩn thông báo sau 3 giây
+                setTimeout(function () {
+                    let alerts = document.querySelectorAll(".alert");
+                    alerts.forEach(alert => {
+                        alert.style.transition = "opacity 0.5s";
+                        alert.style.opacity = "0";
+                        setTimeout(() => alert.style.display = "none", 500);
+                    });
+                }, 3000);
 
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(function () {
-                        let alerts = document.querySelectorAll(".alert");
-                        alerts.forEach(alert => {
-                            alert.style.transition = "opacity 0.5s";
-                            alert.style.opacity = "0";
-                            setTimeout(() => alert.style.display = "none", 500);
-                        });
-                    }, 3000);
+                // Tự động hiển thị modal điểm danh nếu có dữ liệu từ servlet
+            <c:if test="${showModal}">
+                var modal = new bootstrap.Modal(document.getElementById("attendanceModal"));
+                modal.show();
+            </c:if>
 
-                    // Tự động hiển thị modal điểm danh nếu có dữ liệu từ servlet
-                <c:if test="${showModal}">
-                    var modal = new bootstrap.Modal(document.getElementById("attendanceModal"));
-                    modal.show();
-                </c:if>
-
-                    // Tự động hiển thị modal thông báo hoàn thành nếu có notification
-                <c:if test="${not empty notification}">
-                    var completionModal = new bootstrap.Modal(document.getElementById("completionModal"));
-                    completionModal.show();
-                </c:if>
+                // Xử lý khi modal đóng để đảm bảo không hiển thị lại khi không cần thiết
+                const attendanceModalEl = document.getElementById("attendanceModal");
+                attendanceModalEl.addEventListener("hidden.bs.modal", function () {
+                    // Gửi yêu cầu để xóa showModal khỏi session khi modal đóng
+                    fetch("/HAPPYorSAD/Attendance?action=clearModal&month=${selectedMonth}&year=${selectedYear}&weekOffset=${weekOffset}", {
+                        method: "POST"
+                    });
                 });
-            </script>
-        </head>
-        <body>
-            <%@include file="../sourcesHome/homeHeader.jsp" %>
+            });
+        </script>
+    </head>
+    <body>
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
 
-            <div class="main-wrapper">
-                <!-- Breadcrumb -->
-                <div class="breadcrumb-bar breadcrumb-bar-info">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="breadcrumb-list">
-                                    <h2 class="breadcrumb-title">Dashboard</h2>
-                                    <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Attendance</li>
-                                        </ol>
-                                    </nav>
-                                </div>
+        <div class="main-wrapper">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-bar breadcrumb-bar-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="breadcrumb-list">
+                                <h2 class="breadcrumb-title">Dashboard</h2>
+                                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Attendance</li>
+                                    </ol>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Page Content -->
-                <div class="page-content">
-                    <div class="container">
-                        <div class="row">
-                            <!-- Sidebar -->
-                            <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="container">
+                    <div class="row">
+                        <!-- Sidebar -->
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -234,232 +236,251 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                             </div>
                         </div>
 
-                            <!-- Main Content -->
-                            <div class="col-lg-9 col-xl-9">
-                                <div class="dashboard-header"><h3>Attendance</h3></div>
-                                <div class="card custom-card">
-                                    <div class="card-body">
-                                        <div class="card-header"><h3>Your Attendance</h3></div>
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-success">${message}</div>
-                                        </c:if>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-12 col-sm-4 col-md-6">
-                                                <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
-                                                <p class="text-muted"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/></p>
-                                            </div>
-                                            <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                                <div class="dropdown d-inline-block">
-                                                    <a href="#" class="dropdown-toggle text-primary" id="monthDropdown" data-bs-toggle="dropdown">
-                                                        <i class="far fa-calendar-alt me-2"></i>
-                                                        <span id="selectedMonth">${selectedMonth} ${selectedYear}</span>
-                                                        <i class="fas fa-chevron-down ms-2"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu" aria-labelledby="monthDropdown">
-                                                        <c:forEach var="i" begin="1" end="<%=currentMonth%>">
-                                                            <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
-                                                            </c:forEach>
-                                                    </ul>
-                                                </div>
+                        <!-- Main Content -->
+                        <div class="col-lg-9 col-xl-9">
+                            <div class="dashboard-header"><h3>Attendance</h3></div>
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="card-header"><h3>Your Attendance</h3></div>
+                                    <c:if test="${not empty message}">
+                                        <div class="alert alert-success">${message}</div>
+                                    </c:if>
+                                    <c:if test="${not empty error}">
+                                        <div class="alert alert-danger">${error}</div>
+                                    </c:if>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-12 col-sm-4 col-md-6">
+                                            <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
+                                            <p class="text-muted"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/></p>
+                                        </div>
+                                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                                            <div class="dropdown d-inline-block">
+                                                <a href="#" class="dropdown-toggle text-primary" id="monthDropdown" data-bs-toggle="dropdown">
+                                                    <i class="far fa-calendar-alt me-2"></i>
+                                                    <span id="selectedMonth">${selectedMonth} ${selectedYear}</span>
+                                                    <i class="fas fa-chevron-down ms-2"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="monthDropdown">
+                                                    <c:forEach var="i" begin="1" end="<%=currentMonth%>">
+                                                        <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
+                                                        </c:forEach>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <!-- Week Navigation -->
-                                        <div class="row mb-3">
-                                            <div class="col-12 text-center">
-                                                <form action="/HAPPYorSAD/Attendance" method="get" style="display:inline;">
-                                                    <input type="hidden" name="weekOffset" value="${weekOffset - 1}">
-                                                    <input type="hidden" name="month" value="${selectedMonth}">
-                                                    <input type="hidden" name="year" value="${selectedYear}">
-                                                    <button type="submit" class="btn btn-primary me-2">Previous Week</button>
-                                                </form>
-                                                <span>Week of ${weekStartDate} - ${weekEndDate}</span>
-                                                <form action="/HAPPYorSAD/Attendance" method="get" style="display:inline;">
-                                                    <input type="hidden" name="weekOffset" value="${weekOffset + 1}">
-                                                    <input type="hidden" name="month" value="${selectedMonth}">
-                                                    <input type="hidden" name="year" value="${selectedYear}">
-                                                    <button type="submit" class="btn btn-primary ms-2">Next Week</button>
-                                                </form>
-                                            </div>
+                                    </div>
+                                    <!-- Week Navigation -->
+                                    <div class="row mb-3">
+                                        <div class="col-12 text-center">
+                                            <form action="/HAPPYorSAD/Attendance" method="get" style="display:inline;">
+                                                <input type="hidden" name="weekOffset" value="${weekOffset - 1}">
+                                                <input type="hidden" name="month" value="${selectedMonth}">
+                                                <input type="hidden" name="year" value="${selectedYear}">
+                                                <button type="submit" class="btn btn-primary me-2">Previous Week</button>
+                                            </form>
+                                            <span>Week of ${weekStartDate} - ${weekEndDate}</span>
+                                            <form action="/HAPPYorSAD/Attendance" method="get" style="display:inline;">
+                                                <input type="hidden" name="weekOffset" value="${weekOffset + 1}">
+                                                <input type="hidden" name="month" value="${selectedMonth}">
+                                                <input type="hidden" name="year" value="${selectedYear}">
+                                                <button type="submit" class="btn btn-primary ms-2">Next Week</button>
+                                            </form>
                                         </div>
+                                    </div>
 
-                                        <div class="row slot-row">
-                                            <c:choose>
-                                                <c:when test="${empty weekDates}">
-                                                    <div class="col-12"><p class="text-warning">No week dates available for this month.</p></div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:forEach var="day" items="${weekDates}" varStatus="status">
-                                                        <div class="col-md slot-column">
-                                                            <div class="slot-box">
-                                                                <div class="slot-header">
-                                                                    <h5>${weekDays[status.index]}<span style="font-size: 0.8em;
-                                                                                                       display: block;">${day.split('-')[2]}/${day.split('-')[1]}</span></h5>
-                                                                </div>
-                                                                <div class="slot-body">
-                                                                    <table class="table table-bordered text-center">
-                                                                        <tbody>
-                                                                            <c:forEach var="i" begin="1" end="5">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <c:set var="slotFound" value="false"/>
-                                                                                        <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                                            <c:if test="${slot.slot_number_id == i}">
-                                                                                                <c:choose>
-                                                                                                    <c:when test="${slot.status == 'present'}">
-                                                                                                        <span class="slot-present">Slot ${slot.slot_number_id}</span>
-                                                                                                    </c:when>
-                                                                                                    <c:when test="${slot.status == 'absent'}">
-                                                                                                        <span class="slot-absent">Slot ${slot.slot_number_id}</span>
-                                                                                                    </c:when>
-                                                                                                    <c:otherwise>
-                                                                                                        <form action="/HAPPYorSAD/Attendance" method="post" style="display:inline;">
-                                                                                                            <input type="hidden" name="action" value="getMentees">
-                                                                                                            <input type="hidden" name="date" value="${day}">
-                                                                                                            <input type="hidden" name="slot" value="${slot.slot_number_id}">
-                                                                                                            <button type="submit" class="slot-clickable btn btn-link p-0">Slot ${slot.slot_number_id}</button>
-                                                                                                        </form>
-                                                                                                    </c:otherwise>
-                                                                                                </c:choose>
-                                                                                                <c:set var="slotFound" value="true"/>
-                                                                                            </c:if>
-                                                                                        </c:forEach>
-                                                                                        <c:if test="${not slotFound}">
-                                                                                            <span class="text-muted">Empty</span>
+                                    <div class="row slot-row">
+                                        <c:choose>
+                                            <c:when test="${empty weekDates}">
+                                                <div class="col-12"><p class="text-warning">No week dates available for this month.</p></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach var="day" items="${weekDates}" varStatus="status">
+                                                    <div class="col-md slot-column">
+                                                        <div class="slot-box">
+                                                            <div class="slot-header">
+                                                                <h5>${weekDays[status.index]}<span style="font-size: 0.8em;
+                                                                                                   display: block;">${day.split('-')[2]}/${day.split('-')[1]}</span></h5>
+                                                            </div>
+                                                            <div class="slot-body">
+                                                                <table class="table table-bordered text-center">
+                                                                    <tbody>
+                                                                        <c:forEach var="i" begin="1" end="5">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <c:set var="slotFound" value="false"/>
+                                                                                    <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                                        <c:if test="${slot.slot_number_id == i}">
+                                                                                            <c:choose>
+                                                                                                <c:when test="${slot.status == 'present'}">
+                                                                                                    <span class="slot-present">Slot ${slot.slot_number_id}</span>
+                                                                                                </c:when>
+                                                                                                <c:when test="${slot.status == 'absent'}">
+                                                                                                    <span class="slot-absent">Slot ${slot.slot_number_id}</span>
+                                                                                                </c:when>
+                                                                                                <c:otherwise>
+                                                                                                    <form action="/HAPPYorSAD/Attendance" method="post" style="display:inline;">
+                                                                                                        <input type="hidden" name="action" value="getMentees">
+                                                                                                        <input type="hidden" name="date" value="${day}">
+                                                                                                        <input type="hidden" name="slot" value="${slot.slot_number_id}">
+                                                                                                        <input type="hidden" name="month" value="${selectedMonth}">
+                                                                                                        <input type="hidden" name="year" value="${selectedYear}">
+                                                                                                        <input type="hidden" name="weekOffset" value="${weekOffset}">
+                                                                                                        <button type="submit" class="slot-clickable btn btn-link p-0">Slot ${slot.slot_number_id}</button>
+                                                                                                    </form>
+                                                                                                </c:otherwise>
+                                                                                            </c:choose>
+                                                                                            <c:set var="slotFound" value="true"/>
                                                                                         </c:if>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </c:forEach>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
+                                                                                    </c:forEach>
+                                                                                    <c:if test="${not slotFound}">
+                                                                                        <span class="text-muted">Empty</span>
+                                                                                    </c:if>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
-                                                    </c:forEach>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Notification Modal for Request Completion -->
-<!--                <div class="modal fade" id="completionModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Request Completed</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>${notification}</p>
-                                <p><strong>Request đã hoàn thành hết các Slot.</strong> Nhấn để chuyển sang trang view request để xác nhận hoàn thành.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a href="/HAPPYorSAD/viewRequest?requestId=${requestId}" class="btn btn-primary">Confirm Completion</a>
-                            </div>
+            <!-- Modal for Attendance -->
+            <div class="modal fade" id="attendanceModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Attendance - Slot ${selectedSlot} on ${selectedDate}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <c:choose>
+                                <c:when test="${empty mentee}">
+                                    <p class="text-muted">No mentee assigned to this slot.</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="/HAPPYorSAD/Attendance" method="post">
+                                        <input type="hidden" name="action" value="saveAttendance">
+                                        <input type="hidden" name="date" value="${selectedDate}">
+                                        <input type="hidden" name="slot" value="${selectedSlot}">
+                                        <input type="hidden" name="month" value="${selectedMonth}">
+                                        <input type="hidden" name="year" value="${selectedYear}">
+                                        <input type="hidden" name="weekOffset" value="${weekOffset}">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex align-items-center">
+                                                <img src="${mentee.image}" alt="Avatar" class="rounded-circle me-3" width="200" height="200">
+                                                <div class="flex-grow-1">
+                                                    <strong class="fs-3">${mentee.name}</strong><br>
+                                                    <small class="text-muted">${mentee.email}</small>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <c:choose>
+                                                        <c:when test="${slot.status == 'pending_present' || slot.status == 'pending_absent'}">
+                                                            <span class="text-warning fw-bold">Pending Confirmation from Mentee</span>
+                                                        </c:when>
+                                                        <c:when test="${slot.status == 'present'}">
+                                                            <span class="slot-present">Present (Confirmed)</span>
+                                                        </c:when>
+                                                        <c:when test="${slot.status == 'absent'}">
+                                                            <span class="slot-absent">Absent (Confirmed)</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div class="form-check me-3">
+                                                                <input type="radio" class="form-check-input" name="status" value="pending_present" id="presentRadio">
+                                                                <label class="form-check-label" for="presentRadio">Present</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="radio" class="form-check-input" name="status" value="pending_absent" id="absentRadio">
+                                                                <label class="form-check-label" for="absentRadio">Absent</label>
+                                                            </div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <c:if test="${slot.status != 'present' && slot.status != 'absent'}">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <c:if test="${slot.status != 'pending_present' && slot.status != 'pending_absent'}">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </c:if>
+                                            </div>
+                                        </c:if>
+                                    </form>
+                                    <c:if test="${slot.status == 'pending_present' || slot.status == 'pending_absent'}">
+                                        <p class="text-muted mt-3">Waiting for mentee to confirm the attendance status.</p>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
-                </div>-->
+                </div>
+            </div>
 
-                <!-- Modal for Attendance -->
-                <!-- Modal for Attendance -->
-                <div class="modal fade" id="attendanceModal" tabindex="-1" aria-hidden="true">
+            <!-- Rejection Notices Modal -->
+            <c:if test="${not empty rejectionNotices}">
+                <div class="modal fade" id="rejectionModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Attendance - Slot ${selectedSlot} on ${selectedDate}</h5>
+                                <h5 class="modal-title">Rejected Attendance Notices</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <c:choose>
-                                    <c:when test="${empty mentee}">
-                                        <p class="text-muted">No mentee assigned to this slot.</p>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <form action="/HAPPYorSAD/Attendance" method="post">
-                                            <input type="hidden" name="action" value="saveAttendance">
-                                            <input type="hidden" name="date" value="${selectedDate}">
-                                            <input type="hidden" name="slot" value="${selectedSlot}">
-                                            <ul class="list-group">
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <img src="${mentee.image}" alt="Avatar" class="rounded-circle me-3" width="200" height="200">
-                                                    <div class="flex-grow-1">
-                                                        <strong class="fs-3">${mentee.name}</strong><br>
-                                                        <small class="text-muted">${mentee.email}</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <c:choose>
-                                                            <c:when test="${slot.status == 'pending_present' || slot.status == 'pending_absent'}">
-                                                                <span class="text-warning fw-bold">Pending Confirmation from Mentee</span>
-                                                            </c:when>
-                                                            <c:when test="${slot.status == 'present'}">
-                                                                <span class="slot-present">Present (Confirmed)</span>
-                                                            </c:when>
-                                                            <c:when test="${slot.status == 'absent'}">
-                                                                <span class="slot-absent">Absent (Confirmed)</span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="form-check me-3">
-                                                                    <input type="radio" class="form-check-input" name="status" value="pending_present" id="presentRadio">
-                                                                    <label class="form-check-label" for="presentRadio">Present</label>
-                                                                </div>
-                                                                <div class="form-check">
-                                                                    <input type="radio" class="form-check-input" name="status" value="pending_absent" id="absentRadio">
-                                                                    <label class="form-check-label" for="absentRadio">Absent</label>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <c:if test="${slot.status != 'present' && slot.status != 'absent'}">
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <c:if test="${slot.status != 'pending_present' && slot.status != 'pending_absent'}">
-                                                        <button type="submit" class="btn btn-primary">Save</button>
-                                                    </c:if>
-                                                </div>
-                                            </c:if>
-                                        </form>
-                                        <c:if test="${slot.status == 'pending_present' || slot.status == 'pending_absent'}">
-                                            <p class="text-muted mt-3">Waiting for mentee to confirm the attendance status.</p>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                                <ul>
+                                    <c:forEach var="notice" items="${rejectionNotices}">
+                                        <li>${notice}</li>
+                                        </c:forEach>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Scripts -->
-                <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-                <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
                 <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const monthItems = document.querySelectorAll(".month-item");
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var rejectionModal = new bootstrap.Modal(document.getElementById("rejectionModal"));
+                        rejectionModal.show();
+                    });
+                </script>
+            </c:if>
 
-                    monthItems.forEach(item => {
-                        item.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            const [month, year] = item.dataset.month.split(" ");
-                            document.getElementById("selectedMonth").textContent = item.dataset.month;
-                            document.getElementById("hiddenMonth").value = month;
-                            document.getElementById("hiddenYear").value = year;
-                            document.getElementById("monthForm").submit();
+            <!-- Scripts -->
+            <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+            <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
+            <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const monthItems = document.querySelectorAll(".month-item");
+
+                        monthItems.forEach(item => {
+                            item.addEventListener("click", (e) => {
+                                e.preventDefault();
+                                const [month, year] = item.dataset.month.split(" ");
+                                document.getElementById("selectedMonth").textContent = item.dataset.month;
+                                document.getElementById("hiddenMonth").value = month;
+                                document.getElementById("hiddenYear").value = year;
+                                document.getElementById("monthForm").submit();
+                            });
                         });
                     });
-                });
-                </script>
+            </script>
 
-                <!-- Hidden Form for Month Selection -->
-                <form id="monthForm" action="/HAPPYorSAD/Attendance" method="get" style="display:none;">
-                    <input type="hidden" name="month" id="hiddenMonth">
-                    <input type="hidden" name="year" id="hiddenYear">
-                </form>
-            </div>
-        </body>
-    </html>
+            <!-- Hidden Form for Month Selection -->
+            <form id="monthForm" action="/HAPPYorSAD/Attendance" method="get" style="display:none;">
+                <input type="hidden" name="month" id="hiddenMonth">
+                <input type="hidden" name="year" id="hiddenYear">
+                <input type="hidden" name="weekOffset" value="${weekOffset}">
+            </form>
+        </div>
+    </body>
+</html>
