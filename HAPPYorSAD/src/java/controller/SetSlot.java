@@ -213,6 +213,7 @@ public class SetSlot extends HttpServlet {
                                     + ", date: " + date + ", slotNumber: " + slotNumber);
                         }
                     } else {
+    
                         LOGGER.warning("No slot found in database for scheduleId: " + scheduleId
                                 + ", date: " + date + ", slotNumber: " + slotNumber);
                     }

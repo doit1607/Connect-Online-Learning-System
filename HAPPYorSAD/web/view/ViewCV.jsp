@@ -76,16 +76,11 @@
                                 <ul>
                                     <li class="nav-item">
                                         <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                            <i class="bx bxs-tachometer"></i>My Profile
+                                            <i class="bx bxs-tachometer"></i>Profile
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="instructor-reviews.html" class="nav-link">
-                                            <i class="bx bxs-star"></i>Reviews
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/../HAPPYorSAD/Slot" class="nav-link">
+                                        <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
                                             <i class="bx bxs-tachometer"></i>Schedule
                                         </a>
                                     </li>
@@ -94,18 +89,22 @@
                                             <i class="bx bxs-bell"></i>Notifications
                                         </a>
                                     </li>
-
                                 </ul>
                                 <h3>Instructor</h3>
                                 <ul>
                                     <li class="nav-item active">
                                         <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
-                                            <i class="bx bxs-rocket"></i>My Curriculum Vitae
+                                            <i class="bx bxs-rocket"></i>Curriculum Vitae
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
                                             <i class="bx bxs-graduation"></i>Inviting Request
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/../HAPPYorSAD/Attendance" class="nav-link">
+                                            <i class="bx bxs-graduation"></i>Attendance
                                         </a>
                                     </li>
                                 </ul>

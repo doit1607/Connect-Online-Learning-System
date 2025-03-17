@@ -167,26 +167,58 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 <div class="container">
                     <div class="row">
                         <!-- Sidebar -->
-                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="/HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-tachometer"></i>My Profile</a></li>
-                                        <li class="nav-item"><a href="instructor-enrolled-course.html" class="nav-link"><i class="bx bxs-graduation"></i>Enrolled Courses</a></li>
-                                        <li class="nav-item active"><a href="/HAPPYorSAD/SetSlot" class="nav-link"><i class="bx bxs-graduation"></i>Available Timings</a></li>
-                                        <li class="nav-item"><a href="instructor-reviews.html" class="nav-link"><i class="bx bxs-star"></i>Reviews</a></li>
+                                        <li class="nav-item ">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item active">
+                                            <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
+                                                <i class="bx bxs-tachometer"></i>Schedule
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="Notifications" class="nav-link">
+                                                <i class="bx bxs-bell"></i>Notifications
+                                            </a>
+                                        </li>
                                     </ul>
                                     <h3>Instructor</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="instructor-course.html" class="nav-link"><i class="bx bxs-rocket"></i>My Courses</a></li>
-                                        <li class="nav-item"><a href="instructor-course.html" class="nav-link"><i class="bx bxs-rocket"></i>My Curriculum Vitae</a></li>
-                                        <li class="nav-item"><a href="viewRequest" class="nav-link"><i class="bx bxs-graduation"></i>Inviting Request</a></li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
+                                                <i class="bx bxs-rocket"></i>Curriculum Vitae
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Inviting Request
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Attendance" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Attendance
+                                            </a>
+                                        </li>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link"><i class="bx bxs-cog"></i>Settings</a></li>
-                                        <li class="nav-item"><a href="LoginUser?service=logout" class="nav-link"><i class="bx bxs-log-out"></i>Logout</a></li>
+                                        <li class="nav-item">
+                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

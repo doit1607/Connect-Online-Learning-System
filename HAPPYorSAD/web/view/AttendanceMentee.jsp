@@ -175,17 +175,30 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 <div class="container">
                     <div class="row">
                         <!-- Sidebar (adjusted for Mentee) -->
-                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                          <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="/HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-user"></i>My Profile</a></li>
-                                        <li class="nav-item"><a href="mentee-enrolled-course.html" class="nav-link"><i class="bx bxs-graduation"></i>Enrolled Courses</a></li>
-                                        <li class="nav-item active"><a href="/HAPPYorSAD/AttendanceMentee" class="nav-link"><i class="bx bxs-check-circle"></i>Attendance</a></li>
-                                            <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-user"></i>Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
+                                            </a>
+                                        </li>
+                                         <li class="nav-item active">
+                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                                <i class="bx bxs-check-circle"></i>Attendance
+                                            </a>
+                                        </li>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
                                             <li class="nav-item">
-                                                <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
+                                                <a href="reviewmentor" class="nav-link">
                                                     <i class="bx bxs-bell"></i> Review Mentor
                                                 </a>
                                             </li>
@@ -193,12 +206,22 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>
-                                        <li class="nav-item"><a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link"><i class="bx bxs-cog"></i>Settings</a></li>
-                                        <li class="nav-item"><a href="LoginUser?service=logout" class="nav-link"><i class="bx bxs-log-out"></i>Logout</a></li>
+                                        <li class="nav-item">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+                        <!-- /Sidebar -->
+
 
                         <!-- Main Content -->
                         <div class="col-lg-9 col-xl-9">

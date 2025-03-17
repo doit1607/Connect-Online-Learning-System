@@ -4,7 +4,6 @@
     Author     : Ann
 --%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -130,7 +129,9 @@
             }
         </style>
     </head>
+    
     <body>
+        <%@include file="../sourcesHome/headerManager.jsp" %>  
         <div class="main-wrapper">
             <!-- Breadcrumb -->
             <div class="breadcrumb-bar breadcrumb-bar-info">
@@ -151,33 +152,45 @@
                 <div class="container">
                     <div class="row">
                         <!-- Sidebar -->
-                        <div class="col-xl-3 col-lg-4 theiaStickySidebar">
+                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="/HAPPYorSAD/AcceptCV" class="nav-link"><i class="fas fa-user"></i> Manage CV</a>
-                                        </li>
+                                            <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
+                                                <i class="fas fa-user"></i>Manage CV
+                                            </a>
                                         <li class="nav-item">
-                                            <a href="CourseManager" class="nav-link"><i class="bx bxs-graduation"></i> Manage Courses</a>
+                                            <a href="CourseManager" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Manage Courses
+                                            </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="ShowAllRequest" class="nav-link"><i class="bx bxs-heart"></i> Request of Mentee</a>
+                                        
+                                        <li class="nav-item active">
+                                            <a href="ConfirmSchedule" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                            </a>
                                         </li>
+
                                         <li class="nav-item">
-                                            <a href="ConfirmSchedule" class="nav-link"><i class="bx bxs-star"></i> Request Schedule</a>
+                                            <a href="ShowAllRequest" class="nav-link">
+                                                <i class="bx bxs-heart"></i>Manage Request Mentee
+                                            </a>
                                         </li>
+
                                         <li class="nav-item">
-                                            <a href="menteestatistic" class="nav-link"><i class="bx bxs-user-plus"></i> Static Mentee</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="instructor-notifications.html" class="nav-link"><i class="bx bxs-bell"></i> Notifications</a>
+                                            <a href="menteestatistic" class="nav-link">
+                                                <i class="bx bxs-user-plus"></i>Manage Static Mentee
+                                            </a>
                                         </li>
                                     </ul>
+
                                     <ul>
                                         <li class="nav-item">
-                                            <a href="LoginUser?service=logout" class="nav-link"><i class="bx bxs-log-out"></i> Logout</a>
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -220,7 +233,7 @@
                             <!-- Modal -->
                             <div id="slotModal" class="modal-custom">
                                 <div class="modal-content-custom">
-                                    <span class="modal-close" onclick="closeModal()">Ã—</span>
+                                    <span class="modal-close" onclick="closeModal()">×</span>
                                     <c:if test="${not empty selectedMentorSlots}">
                                         <h2 class="text-center mb-4">Slots for Mentor: ${selectedMentorName} (ID: ${selectedMentorId})</h2>
                                         <div class="action-buttons">

@@ -62,7 +62,7 @@
                                     <!-- Wallet Info -->
                                     <div class="wallet-info text-center">
                                         <div class="row">
-                                            <div class="col-4">
+                                            <div <c:if test = "${usernameRole != 'manager'}">class="col-4"</c:if>>
                                                 <small class="text-muted">Amount</small>
                                                 <p class="amount-text mb-0">
                                                     <fmt:setLocale value="vi_VN"/>
@@ -212,7 +212,7 @@
                         <div class="modal-body">
                             <div class="wallet-balance mb-4 text-center">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div <c:if test = "${usernameRole != 'manager'}">class="col-4"</c:if>>
                                         <h6 class="text-muted">Amount</h6>
                                         <p class="amount-text">
                                             <fmt:setLocale value="vi_VN"/>

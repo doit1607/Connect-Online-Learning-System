@@ -157,44 +157,53 @@
                         </div>
                     </div>
                     <!-- /Breadcrumb -->	
-                    <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                      <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
-                        <div class="settings-widget account-settings">
-                            <div class="settings-menu">
-                                <h3>Dashboard</h3>
-                                <ul>
-                                    <li class="nav-item ">
-                                        <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                            <i class="bx bxs-user"></i>My Profile
-                                        </a>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
-                                            <i class="bx bxs-graduation"></i>Request
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="Notifications" class="nav-link">
-                                            <i class="bx bxs-bell"></i>Notifications
-                                        </a>
-                                    </li>
-                                </ul>
-                                <h3>Account Settings</h3>
-                                <ul>
-                                    <li class="nav-item">
-                                        <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
-                                            <i class="bx bxs-cog"></i>Settings
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="LoginUser?service=logout" class="nav-link">
-                                            <i class="bx bxs-log-out"></i>Logout
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="settings-widget account-settings">
+                                <div class="settings-menu">
+                                    <h3>Dashboard</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                                <i class="bx bxs-user"></i>Profile
+                                            </a>
+                                        </li>
+                                        <li class="nav-item active">
+                                            <a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request
+                                            </a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                                <i class="bx bxs-check-circle"></i>Attendance
+                                            </a>
+                                        </li>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                            <li class="nav-item">
+                                                <a href="reviewmentor" class="nav-link">
+                                                    <i class="bx bxs-bell"></i> Review Mentor
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                    <h3>Account Settings</h3>
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                                <i class="bx bxs-cog"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="LoginUser?service=logout" class="nav-link">
+                                                <i class="bx bxs-log-out"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <!-- /Sidebar -->
+
                     <!-- Page Content -->
                     <div class="col-md-9"> 
                         <div class="formcontent">

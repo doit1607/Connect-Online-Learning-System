@@ -81,9 +81,9 @@
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item ">
+                                        <li class="nav-item">
                                             <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                                <i class="bx bxs-user"></i>My Profile
+                                                <i class="bx bxs-user"></i>Profile
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -91,14 +91,14 @@
                                                 <i class="bx bxs-graduation"></i>Request
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="/HAPPYorSAD/AttendanceMentee" class="nav-link">
+                                         <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link">
                                                 <i class="bx bxs-check-circle"></i>Attendance
                                             </a>
                                         </li>
                                         <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
                                             <li class="nav-item">
-                                                <a href="/../HAPPYorSAD/reviewmentor" class="nav-link">
+                                                <a href="reviewmentor" class="nav-link">
                                                     <i class="bx bxs-bell"></i> Review Mentor
                                                 </a>
                                             </li>
@@ -120,6 +120,8 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- /Sidebar -->
+
                     </c:if>
                     <c:if test="${sessionScope.usernameRole eq 'mentor'}">
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
