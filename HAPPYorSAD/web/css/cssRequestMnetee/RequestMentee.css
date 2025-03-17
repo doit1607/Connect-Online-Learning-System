@@ -1,49 +1,45 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : 24 Feb 2025, 11:40:50 pm
-    Author     : Acer
-*/
-
-
-.formcontent {
-    width: 100%;
-    display: flex;
-}
-
 .tablecontent {
     width: 100%;
-
     margin-top: 20px;
     background-color: white;
     margin-bottom: 20px;
+    table-layout: fixed; /* Giữ nguyên kích thước cột cố định */
 }
 
 .tablecontent thead tr {
-    background-color: #f36980;  /*Header màu đỏ nhạt */
+    background-color: #f36980;
     color: white;
-    padding-right: 50px;
 }
 
 .tablecontent th, .tablecontent td {
-    border: 1px solid #ddd;  /*ường viền mỏng màu xám nhạt*/ 
+    border: 1px solid #ddd;
     padding: 10px;
+    width: 150px; /* Đặt chiều rộng cố định */
+    max-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .tablecontent tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Hàng chẵn có màu nền nhạt */
+    background-color: #f9f9f9;
 }
 
 .tablecontent tbody tr:hover {
-    background-color: #f1f1f1;  /*Hover làm nổi bật */
+    background-color: #f1f1f1;
 }
 
 h3 {
     color: #333;
     margin-bottom: 10px;
 }
-.updatebtn{
-   color: #004FFF; 
+
+.updatebtn {
+    color: #004FFF;
 }
+
+
+
