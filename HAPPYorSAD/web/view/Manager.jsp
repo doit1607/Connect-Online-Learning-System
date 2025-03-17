@@ -126,13 +126,13 @@
 
                                         <li class="nav-item">
                                             <a href="ShowAllRequest" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Request of Mentee
+                                                <i class="bx bxs-heart"></i>Manage Request Mentee
                                             </a>
                                         </li>
 
                                         <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Static Mentee
+                                                <i class="bx bxs-user-plus"></i>Manage Static Mentee
                                             </a>
                                         </li>
                                     </ul>
