@@ -17,6 +17,7 @@ import model.TransactionDAO;
 public class Wallet extends HttpServlet {
 
     private TransactionDAO transactionDAO;
+    private static final int ITEMS_PER_PAGE = 10; // Số giao dịch mỗi trang
 
     @Override
     public void init() throws ServletException {
@@ -31,23 +32,48 @@ public class Wallet extends HttpServlet {
             response.sendRedirect("LoginUser.jsp");
             return;
         }
+        
+        // Lấy số dư và số tiền bị giữ
         double balance = transactionDAO.getTotalBalance(username);
         double hold = transactionDAO.getHold(username);
         session.setAttribute("walletBalance", balance);
         session.setAttribute("walletHold", hold);
+
+        // Lấy tham số tìm kiếm
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
         String type = request.getParameter("type");
         String description = request.getParameter("description");
         String status = request.getParameter("status");
 
-        List<Transaction> list;
+        // Lấy tham số trang
+        String pageStr = request.getParameter("page");
+        int page = (pageStr != null && !pageStr.isEmpty()) ? Integer.parseInt(pageStr) : 1;
+        if (page < 1) page = 1; // Đảm bảo page không âm
+
+        // Tính toán phân trang
+        List<Transaction> fullList;
         if (fromDate != null || toDate != null || type != null || description != null || status != null) {
-            list = transactionDAO.searchTransactions(username, fromDate, toDate, type, description, status);
+            fullList = transactionDAO.searchTransactions(username, fromDate, toDate, type, description, status);
         } else {
-            list = transactionDAO.listTransactionByUsername(username);
+            fullList = transactionDAO.listTransactionByUsername(username);
         }
-        request.setAttribute("transaction", list);
+
+        int totalTransactions = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalTransactions / ITEMS_PER_PAGE); // Làm tròn lên
+        if (totalPages == 0) totalPages = 1; // Đảm bảo ít nhất 1 trang nếu không có giao dịch
+
+        // Giới hạn danh sách theo trang
+        int start = (page - 1) * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, totalTransactions);
+        List<Transaction> transactionPage = (totalTransactions > 0) ? fullList.subList(start, end) : fullList;
+
+        // Đặt thuộc tính cho JSP (chỉ dùng transactionPage)
+        request.setAttribute("transactionPage", transactionPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", page); // Thêm trang hiện tại để JSP sử dụng
+
+        // Xử lý thông báo
         String service = request.getParameter("service");
         String msg = request.getParameter("msg");
         if (service != null) {
@@ -55,6 +81,7 @@ public class Wallet extends HttpServlet {
                 request.setAttribute("msg", msg);
             }
         }
+
         request.getRequestDispatcher("view/Wallet.jsp").forward(request, response);
     }
 
