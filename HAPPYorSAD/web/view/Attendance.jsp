@@ -136,10 +136,10 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 }, 3000);
 
                 // Tự động hiển thị modal nếu có dữ liệu từ session
-                <c:if test="${showModal}">
-                    var modal = new bootstrap.Modal(document.getElementById("attendanceModal"));
-                    modal.show();
-                </c:if>
+            <c:if test="${showModal}">
+                var modal = new bootstrap.Modal(document.getElementById("attendanceModal"));
+                modal.show();
+            </c:if>
 
                 // Xử lý khi modal đóng để xóa showModal khỏi session
                 const attendanceModalEl = document.getElementById("attendanceModal");
@@ -154,7 +154,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             // Hàm submit form để lấy thông tin mentee
             function showAttendanceModal(date, slot, month, year, weekOffset) {
                 if (!date || !slot || !month || !year || !weekOffset) {
-                    console.error("Missing parameters:", { date, slot, month, year, weekOffset });
+                    console.error("Missing parameters:", {date, slot, month, year, weekOffset});
                     alert("Error: Missing required parameters.");
                     return;
                 }
@@ -166,12 +166,12 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
 
                 // Thêm các input ẩn
                 var inputs = [
-                    { name: "action", value: "getMentees" },
-                    { name: "date", value: date },
-                    { name: "slot", value: slot },
-                    { name: "month", value: month },
-                    { name: "year", value: year },
-                    { name: "weekOffset", value: weekOffset }
+                    {name: "action", value: "getMentees"},
+                    {name: "date", value: date},
+                    {name: "slot", value: slot},
+                    {name: "month", value: month},
+                    {name: "year", value: year},
+                    {name: "weekOffset", value: weekOffset}
                 ];
 
                 inputs.forEach(input => {
@@ -298,7 +298,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                 <ul class="dropdown-menu" aria-labelledby="monthDropdown">
                                                     <c:forEach var="i" begin="1" end="<%=currentMonth%>">
                                                         <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
-                                                    </c:forEach>
+                                                        </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
@@ -339,7 +339,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                 <th>Start Time</th>
                                                                 <th>End Time</th>
                                                                 <th class="sortable" data-sort="status">Status <i class="fas fa-sort"></i></th>
-                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -347,7 +346,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                 <c:forEach var="slot" items="${slotsByDay[day]}">
                                                                     <c:set var="validStatus" value="false"/>
                                                                     <c:choose>
-                                                                        <c:when test="${slot.status == 'Studying' || slot.status == 'pending_present' || slot.status == 'pending_absent' || slot.status == 'present' || slot.status == 'absent' || slot.status == 'done' || slot.status == 'cancel'}">
+                                                                        <c:when test="${slot.status == 'Studying' || slot.status == 'pending_present' || slot.status == 'pending_absent' || slot.status == 'present' || slot.status == 'absent' || slot.status == 'Done' || slot.status == 'cancel' || slot.status == 'att_again'}">
                                                                             <c:set var="validStatus" value="true"/>
                                                                         </c:when>
                                                                     </c:choose>
@@ -369,14 +368,17 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                     <c:when test="${slot.status == 'pending_present' || slot.status == 'pending_absent'}">
                                                                                         <span class="text-warning fw-bold">Pending Confirmation</span>
                                                                                     </c:when>
-                                                                                    <c:when test="${slot.status == 'done'}">
-                                                                                        <span class="text-info">Completed</span>
+                                                                                    <c:when test="${slot.status == 'Done'}">
+                                                                                        <span class="text-info">Done</span>
                                                                                     </c:when>
                                                                                     <c:when test="${slot.status == 'Studying'}">
                                                                                         <span class="text-info">Studying</span>
                                                                                     </c:when>
                                                                                     <c:when test="${slot.status == 'cancel'}">
                                                                                         <span class="text-danger">Canceled</span>
+                                                                                    </c:when>
+                                                                                    <c:when test="${slot.status == 'att_again'}">
+                                                                                        <span class="text-info fw-bold">Attendance can be marked again</span>
                                                                                     </c:when>
                                                                                     <c:otherwise>
                                                                                         <form action="/HAPPYorSAD/Attendance" method="post" style="display:inline;">
@@ -392,9 +394,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                 </c:choose>
                                                                             </td>
                                                                             <td>
-                                                                                <c:if test="${slot.status == 'present' || slot.status == 'absent' || slot.status == 'pending_present' || slot.status == 'pending_absent'}">
-                                                                                    <button onclick="showAttendanceModal('${day}', '${slot.slot_number_id}', '${selectedMonth}', '${selectedYear}', '${weekOffset}')" class="btn btn-info btn-sm">View</button>
-                                                                                </c:if>
+
                                                                             </td>
                                                                         </tr>
                                                                     </c:if>
@@ -411,6 +411,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                         </div>
                     </div>
 
+                    <!-- Modal for Attendance -->
                     <!-- Modal for Attendance -->
                     <div class="modal fade" id="attendanceModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -450,6 +451,20 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                 <c:when test="${slot.status == 'absent'}">
                                                                     <span class="slot-absent">Absent (Confirmed)</span>
                                                                 </c:when>
+                                                                <c:when test="${slot.status == 'Done'}">
+                                                                    <span class="text-info">Done</span>
+                                                                </c:when>
+                                                                <c:when test="${slot.status == 'att_again'}">
+                                                                    <span class="text-info fw-bold">Attendance can be marked again</span>
+                                                                    <div class="form-check me-3">
+                                                                        <input type="radio" class="form-check-input" name="status" value="pending_present" id="presentRadio" required>
+                                                                        <label class="form-check-label" for="presentRadio">Present</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input type="radio" class="form-check-input" name="status" value="pending_absent" id="absentRadio" required>
+                                                                        <label class="form-check-label" for="absentRadio">Absent</label>
+                                                                    </div>
+                                                                </c:when>
                                                                 <c:otherwise>
                                                                     <div class="form-check me-3">
                                                                         <input type="radio" class="form-check-input" name="status" value="pending_present" id="presentRadio" required>
@@ -483,80 +498,52 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                         </div>
                     </div>
 
-                    <!-- Rejection Notices Modal -->
-                    <c:if test="${not empty rejectionNotices}">
-                        <div class="modal fade" id="rejectionModal" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Rejected Attendance Notices</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <ul>
-                                            <c:forEach var="notice" items="${rejectionNotices}">
-                                                <li>${notice}</li>
-                                            </c:forEach>
-                                        </ul>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                var rejectionModal = new bootstrap.Modal(document.getElementById("rejectionModal"));
-                                rejectionModal.show();
-                            });
-                        </script>
-                    </c:if>
+
 
                     <!-- Scripts -->
                     <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
                     <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
                     <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            const monthItems = document.querySelectorAll(".month-item");
+                                                                            document.addEventListener("DOMContentLoaded", () => {
+                                                                                const monthItems = document.querySelectorAll(".month-item");
 
-                            monthItems.forEach(item => {
-                                item.addEventListener("click", (e) => {
-                                    e.preventDefault();
-                                    const [month, year] = item.dataset.month.split(" ");
-                                    document.getElementById("selectedMonth").textContent = item.dataset.month;
-                                    document.getElementById("hiddenMonth").value = month;
-                                    document.getElementById("hiddenYear").value = year;
-                                    document.getElementById("monthForm").submit();
-                                });
-                            });
+                                                                                monthItems.forEach(item => {
+                                                                                    item.addEventListener("click", (e) => {
+                                                                                        e.preventDefault();
+                                                                                        const [month, year] = item.dataset.month.split(" ");
+                                                                                        document.getElementById("selectedMonth").textContent = item.dataset.month;
+                                                                                        document.getElementById("hiddenMonth").value = month;
+                                                                                        document.getElementById("hiddenYear").value = year;
+                                                                                        document.getElementById("monthForm").submit();
+                                                                                    });
+                                                                                });
 
-                            // Sorting functionality
-                            $('.sortable').click(function () {
-                                let table = $('#attendanceTable');
-                                let rows = table.find('tbody tr').toArray();
-                                let column = $(this).data('sort');
+                                                                                // Sorting functionality
+                                                                                $('.sortable').click(function () {
+                                                                                    let table = $('#attendanceTable');
+                                                                                    let rows = table.find('tbody tr').toArray();
+                                                                                    let column = $(this).data('sort');
 
-                                rows.sort(function (a, b) {
-                                    let aValue = $(a).find('td').eq($(this).index()).text();
-                                    let bValue = $(b).find('td').eq($(this).index()).text();
-                                    return aValue.localeCompare(bValue);
-                                }.bind(this));
+                                                                                    rows.sort(function (a, b) {
+                                                                                        let aValue = $(a).find('td').eq($(this).index()).text();
+                                                                                        let bValue = $(b).find('td').eq($(this).index()).text();
+                                                                                        return aValue.localeCompare(bValue);
+                                                                                    }.bind(this));
 
-                                $.each(rows, function (index, row) {
-                                    table.children('tbody').append(row);
-                                });
-                            });
-                        });
+                                                                                    $.each(rows, function (index, row) {
+                                                                                        table.children('tbody').append(row);
+                                                                                    });
+                                                                                });
+                                                                            });
 
-                        // Validation form
-                        $('#attendanceForm').submit(function (e) {
-                            if (!$('input[name="status"]:checked').length) {
-                                e.preventDefault();
-                                alert('Please select an attendance status');
-                                return false;
-                            }
-                        });
+                                                                            // Validation form
+                                                                            $('#attendanceForm').submit(function (e) {
+                                                                                if (!$('input[name="status"]:checked').length) {
+                                                                                    e.preventDefault();
+                                                                                    alert('Please select an attendance status');
+                                                                                    return false;
+                                                                                }
+                                                                            });
                     </script>
 
                     <!-- Hidden Form for Month Selection -->

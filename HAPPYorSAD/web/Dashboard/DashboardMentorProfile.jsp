@@ -110,8 +110,8 @@
                                         </li>
                                         
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/Att" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>ATT
+                                            <a href="/../HAPPYorSAD/MySchedule" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>My schedule
                                             </a>
                                         </li>
                                     </ul>

@@ -188,7 +188,8 @@ public class Attendance extends HttpServlet {
                     String status = slot.getStatus();
                     if (status != null && (status.equals("Studying") || status.equals("pending_present")
                             || status.equals("pending_absent") || status.equals("present")
-                            || status.equals("absent") || status.equals("done") || status.equals("cancel"))) {
+                            || status.equals("absent") || status.equals("Done") || status.equals("cancel")
+                            || status.equals("att_again"))) {
                         Slot slotDetails = daoSlot.getSlotById(slot.getSlot_id());
                         if (slotDetails != null) {
                             slot.setStart_time(slotDetails.getStartTime());
@@ -203,47 +204,12 @@ public class Attendance extends HttpServlet {
                     }
                 }
                 slotsByDay.put(formattedDate, filteredSlots);
-
-                List<Mentee_Slot> menteeSlots = daoMeSL.getSlotsByDateMenteeAttendancee(date);
-                for (Mentee_Slot menteeSlot : menteeSlots) {
-                    if ("rejected_by_mentee".equals(menteeSlot.getStatus())) {
-                        Mentee mentee = daoMentee.getMenteeById(menteeSlot.getMentee_id());
-                        String notice = "Slot " + menteeSlot.getSlot_number() + " on " + formattedDate + ", Mentee: " + mentee.getName() + " rejected attendance. Please re-mark.";
-                        rejectionNotices.add(notice);
-                    }
-                }
+                
                 calendar.add(Calendar.DATE, 1);
             }
         }
-        LOGGER.info("Total rejection notices: " + rejectionNotices.size());
+     
         request.setAttribute("slotsByDay", slotsByDay);
-        request.setAttribute("rejectionNotices", rejectionNotices);
-
-        if (session != null) {
-            String message = (String) session.getAttribute("message");
-            String error = (String) session.getAttribute("error");
-            if (message != null) {
-                LOGGER.info("Setting message attribute: " + message);
-                request.setAttribute("message", message);
-                session.removeAttribute("message");
-            }
-            if (error != null) {
-                LOGGER.info("Setting error attribute: " + error);
-                request.setAttribute("error", error);
-                session.removeAttribute("error");
-            }
-            String referer = request.getHeader("Referer");
-            if (referer == null || !referer.contains("/Attendance")) {
-                if (session.getAttribute("showModal") != null && (Boolean) session.getAttribute("showModal")) {
-                    LOGGER.info("Detected page refresh without POST action, clearing modal-related session attributes");
-                    session.removeAttribute("mentee");
-                    session.removeAttribute("slot");
-                    session.removeAttribute("selectedDate");
-                    session.removeAttribute("selectedSlot");
-                    session.removeAttribute("showModal");
-                }
-            }
-        }
 
         request.getRequestDispatcher("view/Attendance.jsp").forward(request, response);
     }
@@ -300,7 +266,6 @@ public class Attendance extends HttpServlet {
                         + ", End: " + (slot != null ? slot.getEnd_time() : "null")
                         + ", Status: " + (slot != null ? slot.getStatus() : "null"));
 
-                
                 session.setAttribute("mentee", m);
                 session.setAttribute("slot", slot);
                 session.setAttribute("selectedDate", date);

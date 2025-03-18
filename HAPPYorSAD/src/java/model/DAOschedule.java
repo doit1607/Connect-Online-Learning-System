@@ -37,7 +37,8 @@ public class DAOschedule extends DBConnection {
             while (rs.next()) {
                 Schedule schedule = new Schedule();
                 schedule.setId(rs.getInt("id"));
-                schedule.setStart_date(rs.getDate("start_date")); // Điều chỉnh theo cột thực tế            // Thêm các thuộc tính khác của Schedule nếu cần
+                schedule.setStart_date(rs.getDate("start_date")); 
+                schedule.setEnd_date(rs.getDate("end_date")); 
                 schedules.add(schedule);
             }
         } catch (SQLException e) {
@@ -375,7 +376,7 @@ public class DAOschedule extends DBConnection {
 //            }
 //        }
 
-        List<Schedule> schedules = scheduleDAO.getSchedulesByMonth(2025, 2);
+        List<Schedule> schedules = scheduleDAO.getAssignedSchedulesByMentor(1);
         // In kết quả
         if (schedules.isEmpty()) {
             System.out.println("Không có schedule nào trong tháng 2/2025.");

@@ -280,7 +280,7 @@ public class DAOmentor_Slot extends DBConnection {
                 + "FROM Mentor_Slot msl\n"
                 + "JOIN Slot sl ON sl.id = msl.slot_id\n"
                 + "JOIN Slot_Template st ON sl.slot_number_id = st.id\n"
-                + "WHERE sl.slot_date = ? and  msl.status != 'Available'  -- Thay bằng ngày bạn muốn test\n"
+                + "WHERE sl.slot_date = ?   -- Thay bằng ngày bạn muốn test\n"
                 + "AND msl.mentor_id = ?  -- Thay bằng ID Mentor cần test\n"
                 + "GROUP BY \n"
                 + "    sl.slot_date, \n"

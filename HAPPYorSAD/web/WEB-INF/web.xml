@@ -104,7 +104,7 @@
         <servlet-name>JoinCourse</servlet-name>
         <servlet-class>controller.JoinCourse</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>Att</servlet-name>
         <servlet-class>controller.Att</servlet-class>
     </servlet>
@@ -185,11 +185,15 @@
         <servlet-name>viewCVMODAL</servlet-name>
         <servlet-class>controller.viewCVMODAL</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MySchedule</servlet-name>
+        <servlet-class>controller.MySchedule</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Att</servlet-name>
         <url-pattern>/Att</url-pattern>
     </servlet-mapping>
@@ -369,6 +373,10 @@
     <servlet-mapping>
         <servlet-name>viewCVMODAL</servlet-name>
         <url-pattern>/viewCVMODAL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MySchedule</servlet-name>
+        <url-pattern>/MySchedule</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

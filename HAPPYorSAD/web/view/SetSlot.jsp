@@ -7,6 +7,7 @@ java.util.Calendar cal = java.util.Calendar.getInstance();
 int currentMonth = cal.get(java.util.Calendar.MONTH) + 1; // Tháng bắt đầu từ 0 nên cộng 1
 int currentYear = cal.get(java.util.Calendar.YEAR);
 %>
+
 <fmt:setLocale value="en"/>
 
 <!DOCTYPE html>
@@ -49,21 +50,17 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 align-items: center;
                 justify-content: center;
             }
-
             .slot-header {
                 font-size: 16px;
                 font-weight: bold;
                 padding: 10px;
-                /*                background: #f8f9fa;*/
                 text-align: center;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                height: 100%; /* Đảm bảo phần tử có chiều cao đầy đủ */
+                height: 100%;
             }
-
-
             .slot-body {
                 padding: 5px;
             }
@@ -104,25 +101,30 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             .schedule-list {
                 margin-bottom: 20px;
             }
-
             .week-navigation {
                 display: flex;
-                justify-content: space-between; /* Đẩy nút ra hai bên */
-                align-items: center; /* Căn giữa theo chiều dọc */
+                justify-content: space-between;
+                align-items: center;
                 width: 100%;
-                max-width: 600px; /* Điều chỉnh độ rộng tối đa */
-                margin: 0 auto; /* Canh giữa nội dung */
+                max-width: 600px;
+                margin: 0 auto;
             }
-
             .week-navigation form {
                 display: inline-block;
             }
-
             .week-navigation button {
-                font-size: 14px; /* Giảm kích thước chữ */
-                padding: 6px 12px; /* Thu nhỏ nút */
+                font-size: 14px;
+                padding: 6px 12px;
             }
-
+            .dropdown-menu {
+                display: none;
+            }
+            .dropdown:hover .dropdown-menu {
+                display: none !important;
+            }
+            .dropdown.show .dropdown-menu {
+                display: block !important;
+            }
         </style>
 
         <script>
@@ -137,7 +139,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 }, 3000);
             });
         </script>
-
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
@@ -166,9 +167,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             <div class="page-content">
                 <div class="container">
                     <div class="row">
-                        <!-- Sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
@@ -181,6 +180,11 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                         <li class="nav-item active">
                                             <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
                                                 <i class="bx bxs-tachometer"></i>Schedule
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/MySchedule" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>My Schedule
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -222,373 +226,210 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-
-
-                        <!-- Main Content -->
+                        </div>  
                         <div class="col-lg-9 col-xl-9">
-                            <div class="dashboard-header"><h3>Available Timings</h3></div>
-                            <div class="appointment-tabs">
-                                <ul class="nav available-nav">
-                                    <li class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#your-schedule">Your Schedule</a></li>
-                                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="tab" data-bs-target="#general-availability">General Availability</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="tab-content pt-0 timing-content">
-
-                                <div class="tab-pane fade show active" id="your-schedule">
-                                    <div class="card custom-card">
-                                        <div class="card-body">
-                                            <div class="card-header"><h3>Your Schedule</h3></div>
-                                            <div class="row align-items-center mb-3">
-                                                <div class="col-12 col-sm-4 col-md-6">
-                                                    <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
-                                                    <p class="text-muted"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/></p>
-                                                </div>
-                                                <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a href="#" class="dropdown-toggle text-primary" id="monthDropdown" data-bs-toggle="dropdown">
-                                                            <i class="far fa-calendar-alt me-2"></i>
-                                                            <span id="selectedMonth">${selectedMonth} ${selectedYear}</span>
-                                                            <i class="fas fa-chevron-down ms-2"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu" aria-labelledby="monthDropdown">
-                                                            <c:forEach var="i" begin="1" end="<%=currentMonth%>">
-                                                                <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
-                                                                </c:forEach>
-                                                        </ul>
+                            <div class="dashboard-header"><h3>General Availability</h3></div>
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="card-header"><h3>Select Available Slots</h3></div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-12 col-sm-4 col-md-6">
+                                            <h4 class="mb-1">${nextMonth} ${nextYear}</h4>
+                                            <p class="text-muted">Schedule ID: ${nextScheduleId}</p>
+                                        </div>
+                                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
+                                            <div class="dropdown d-inline-block">
+                                                <a href="#" class="dropdown-toggle text-primary" id="scheduleMonthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="far fa-calendar-alt me-2"></i>
+                                                    <span id="selectedScheduleMonth">${nextMonth} ${nextYear}</span>
+                                                    <i class="fas fa-chevron-down ms-2"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="scheduleMonthDropdown">
+                                                    <c:forEach var="schedule" items="${assignedSchedulesForDropdown}">
+                                                        <c:set var="scheduleMonth" value="${schedule.start_date.toLocalDate().monthValue}"/>
+                                                        <c:set var="scheduleYear" value="${schedule.start_date.toLocalDate().year}"/>
+                                                        <li>
+                                                            <form action="/HAPPYorSAD/SetSlot" method="post" style="margin: 0;">
+                                                                <input type="hidden" name="action" value="selectSchedule">
+                                                                <input type="hidden" name="scheduleId" value="${schedule.id}">
+                                                                <button type="submit" class="dropdown-item schedule-month-item ${(schedule.id == nextScheduleId) ? 'active' : ''}">
+                                                                    ${scheduleMonth} ${scheduleYear}
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
+                                        </div>
+                                    </div>
+                                    <div class="row slot-row">
+                                        <c:choose>
+                                            <c:when test="${empty nextWeekDates}">
+                                                <div class="col-12"><p class="text-warning">No week dates available for selected schedule.</p></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach var="day" items="${nextWeekDates}" varStatus="status">
+                                                    <div class="col-md slot-column">
+                                                        <div class="slot-box">
+                                                            <div class="slot-header">
+                                                                <h5>${weekDays[status.index]}</h5>
+                                                                <small>${day}</small>
+                                                            </div>
+                                                            <div class="slot-body">
+                                                                <table class="table table-bordered text-center">
+                                                                    <tbody>
+                                                                        <c:forEach var="i" begin="1" end="5">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <c:set var="slotFound" value="false"/>
+                                                                                    <c:forEach var="slot" items="${nextSlotsByDay[day]}">
+                                                                                        <c:if test="${slot.slotNumber == i}">
+                                                                                            <span>Slot ${slot.slotNumber}</span>
+                                                                                            <c:set var="slotFound" value="true"/>
+                                                                                        </c:if>
+                                                                                    </c:forEach>
+                                                                                    <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
+                                                                                        <c:if test="${temp.slotNumber == i}">
+                                                                                            <span class="temp-slot-item temp-slot-highlight">
+                                                                                                <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
+                                                                                            </span>
+                                                                                            <c:set var="slotFound" value="true"/>
+                                                                                        </c:if>
+                                                                                    </c:forEach>
+                                                                                    <c:if test="${not slotFound}">
+                                                                                        <span class="text-muted">Empty</span>
+                                                                                        <button type="button" class="btn btn-sm btn-success add-temp-slot" 
+                                                                                                data-date="${day}" data-slot="${i}">+</button>
+                                                                                    </c:if>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <!-- Week Navigation -->
-                                            <div class="row mb-3">
-                                                <div class="col-12 text-center">
-                                                    <form action="/HAPPYorSAD/SetSlot" method="get" style="display:inline;">
-                                                        <input type="hidden" name="weekOffset" value="${weekOffset - 1}">
-                                                        <input type="hidden" name="month" value="${selectedMonth}">
-                                                        <input type="hidden" name="year" value="${selectedYear}">
-                                                        <button type="submit" class="btn btn-primary me-2">Previous Week</button>
-                                                    </form>
-
-                                                    <span>Week of ${weekStartDate} - ${weekEndDate}</span>
-
-                                                    <form action="/HAPPYorSAD/SetSlot" method="get" style="display:inline;">
-                                                        <input type="hidden" name="weekOffset" value="${weekOffset + 1}">
-                                                        <input type="hidden" name="month" value="${selectedMonth}">
-                                                        <input type="hidden" name="year" value="${selectedYear}">
-                                                        <button type="submit" class="btn btn-primary ms-2">Next Week</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row slot-row">
-                                                <c:choose>
-                                                    <c:when test="${empty weekDates}">
-                                                        <div class="col-12"><p class="text-warning">No week dates available for this month.</p></div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:forEach var="day" items="${weekDates}" varStatus="status">
-                                                            <div class="col-md slot-column">
-                                                                <div class="slot-box">
-                                                                    <div class="slot-header">
-                                                                        <h5>${weekDays[status.index]}<span style="font-size: 0.8em; display: block;">${day.split('-')[2]}/${day.split('-')[1]}</span></h5>
-                                                                    </div>
-                                                                    <div class="slot-body">
-                                                                        <table class="table table-bordered text-center">
-                                                                            <tbody>
-                                                                                <c:forEach var="i" begin="1" end="5">
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            <c:set var="slotFound" value="false"/>
-                                                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                                                <c:if test="${slot.slotNumber == i}">
-                                                                                                    <span>Slot ${slot.slotNumber}</span>
-                                                                                                    <c:set var="slotFound" value="true"/>
-                                                                                                </c:if>
-                                                                                            </c:forEach>
-                                                                                            <c:if test="${not slotFound}">
-                                                                                                <span class="text-muted">Empty</span>
-                                                                                            </c:if>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </c:forEach>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-
-                                        </div>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
-
-
-
-                                <div class="tab-pane fade" id="general-availability">
-                                    <div class="card custom-card">
-                                        <div class="card-body">
-                                            <div class="card-header"><h3>Select Available Slots</h3></div>
-                                            <div class="row align-items-center mb-3">
-                                                <div class="col-12 col-sm-4 col-md-6">
-                                                    <h4 class="mb-1">${nextMonth} ${nextYear}</h4>
-                                                    <p class="text-muted">Schedule ID: ${nextScheduleId}</p>
-                                                </div>
-                                                <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                                    <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
-                                                </div>
-                                            </div>
-
-                                            <div class="row slot-row">
-                                                <c:choose>
-                                                    <c:when test="${empty nextWeekDates}">
-                                                        <div class="col-12"><p class="text-warning">No week dates available for next month.</p></div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:forEach var="day" items="${nextWeekDates}" varStatus="status">
-                                                            <div class="col-md slot-column">
-                                                                <div class="slot-box">
-                                                                    <div class="slot-header">
-                                                                        <h5>${weekDays[status.index]}</h5>
-                                                                    </div>
-                                                                    <div class="slot-body">
-                                                                        <table class="table table-bordered text-center">
-                                                                            <tbody>
-                                                                                <c:forEach var="i" begin="1" end="5">
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            <c:set var="slotFound" value="false"/>
-                                                                                            <c:forEach var="slot" items="${nextSlotsByDay[day]}">
-                                                                                                <c:if test="${slot.slotNumber == i}">
-                                                                                                    <span>Slot ${slot.slotNumber}</span>
-                                                                                                    <c:set var="slotFound" value="true"/>
-                                                                                                </c:if>
-                                                                                            </c:forEach>
-                                                                                            <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
-                                                                                                <c:if test="${temp.slotNumber == i}">
-                                                                                                    <span class="temp-slot-item temp-slot-highlight">
-                                                                                                        <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
-                                                                                                        <form action="/HAPPYorSAD/SetSlot?action=deleteTemp" method="post" style="display:inline;" 
-                                                                                                              onsubmit="return confirm('Are you sure you want to delete this slot?');">
-                                                                                                            <input type="hidden" name="formattedDay" value="${day}">
-                                                                                                            <input type="hidden" name="slotNumber" value="${temp.slotNumber}">
-                                                                                                            <input type="hidden" name="scheduleId" value="${nextScheduleId}">
-                                                                                                            <button type="submit" class="btn btn-link text-danger p-0 ms-1" style="font-size: 14px;">-</button>
-                                                                                                        </form>
-                                                                                                    </span>
-                                                                                                    <c:set var="slotFound" value="true"/>
-                                                                                                </c:if>
-                                                                                            </c:forEach>
-                                                                                            <c:if test="${not slotFound}">
-                                                                                                <span class="text-muted">Empty</span>
-                                                                                                <button type="button" class="btn btn-sm btn-success add-temp-slot" 
-                                                                                                        data-date="${day}" data-slot="${i}">+</button>
-                                                                                            </c:if>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                    <div class="slot-footer">
-                                                                        <form action="/HAPPYorSAD/SetSlot?action=delete" method="post" 
-                                                                              onsubmit="return confirm('Are you sure you want to delete all slots?');">
-                                                                            <input type="hidden" name="formattedDay" value="${day}">
-                                                                            <input type="hidden" name="scheduleId" value="${nextScheduleId}">
-                                                                            <button type="submit" class="btn btn-link text-danger">Delete All</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </c:forEach>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer text-end">
-                                            <form action="/HAPPYorSAD/SetSlot?action=save" method="post">
-                                                <input type="hidden" name="scheduleId" value="${nextScheduleId}">
-                                                <button type="button" class="btn btn-gray" onclick="window.location.reload()">Cancel</button>
-                                                <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hidden Forms -->
-                    <form id="tempSlotForm" action="/HAPPYorSAD/SetSlot?action=add" method="post" style="display:none;">
-                        <input type="hidden" name="scheduleId" id="scheduleIdInput" value="${scheduleId}">
-                        <input type="hidden" name="slot_date" id="slotDateInput">
-                        <input type="hidden" name="slotNumber" id="slotNumberInput">
-                    </form>
-                    <form id="monthForm" action="/HAPPYorSAD/SetSlot" method="get" style="display:none;">
-                        <input type="hidden" name="month" id="hiddenMonth">
-                        <input type="hidden" name="year" id="hiddenYear">
-                    </form>
-                    <form id="selectScheduleForm" action="/HAPPYorSAD/SetSlot" method="post" style="display:none;">
-                        <input type="hidden" name="action" value="selectSchedule">
-                        <input type="hidden" name="scheduleId" id="selectedScheduleId">
-                    </form>
-
-                    <!-- Scripts -->
-                    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-                    <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
-                    <script>
-                                                    document.addEventListener("DOMContentLoaded", () => {
-                                                        let scheduleId = "${scheduleId}";
-                                                        const addScheduleBtn = document.getElementById("addSchedule");
-                                                        const monthItems = document.querySelectorAll(".month-item");
-                                                        const addSlotButtons = document.querySelectorAll(".add-temp-slot");
-                                                        const scheduleItems = document.querySelectorAll(".schedule-item");
-
-                                                        addScheduleBtn.addEventListener("click", (e) => {
-                                                            e.preventDefault();
-                                                            if (!scheduleId || scheduleId === "-1") {
-                                                                alert("Please select a valid schedule first.");
-                                                                return;
-                                                            }
-                                                            const form = document.createElement("form");
-                                                            form.method = "POST";
-                                                            form.action = "/HAPPYorSAD/SetSlot";
-                                                            form.innerHTML = `
-                                    <input type="hidden" name="action" value="addSchedule">
-                                    <input type="hidden" name="scheduleId" value="${scheduleId}">
-                                    <input type="hidden" name="month" value="${"${selectedMonth}"}">
-                                    <input type="hidden" name="year" value="${"${selectedYear}"}">
-                                `;
-                                                            document.body.appendChild(form);
-                                                            form.submit();
-                                                        });
-
-                                                        scheduleItems.forEach(item => {
-                                                            item.addEventListener("click", () => {
-                                                                const newScheduleId = item.dataset.scheduleId;
-                                                                scheduleId = newScheduleId;
-                                                                document.getElementById("scheduleIdInput").value = scheduleId;
-                                                                document.getElementById("selectedScheduleId").value = newScheduleId;
-                                                                scheduleItems.forEach(i => i.classList.remove("text-primary"));
-                                                                item.classList.add("text-primary");
-                                                                document.getElementById("selectScheduleForm").submit();
-                                                            });
-                                                        });
-
-                                                        addSlotButtons.forEach(button => {
-                                                            button.addEventListener("click", async () => {
-                                                                const date = button.dataset.date;
-                                                                const slotNumber = parseInt(button.dataset.slot);
-                                                                if (!date || !slotNumber || !scheduleId || scheduleId === "-1") {
-                                                                    alert("Invalid slot data or no schedule selected");
-                                                                    return;
-                                                                }
-                                                                button.classList.add("loading");
-                                                                try {
-                                                                    const response = await fetch("/HAPPYorSAD/SetSlot?action=add", {
-                                                                        method: "POST",
-                                                                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                                                                        body: new URLSearchParams({
-                                                                            scheduleId: scheduleId,
-                                                                            slot_date: date,
-                                                                            slotNumber: slotNumber
-                                                                        })
-                                                                    });
-                                                                    if (response.ok) {
-                                                                        updateSlotUI(date, slotNumber, button);
-                                                                    } else {
-                                                                        alert("Failed to add slot: " + await response.text());
-                                                                    }
-                                                                } catch (error) {
-                                                                    alert("Error adding slot: " + error.message);
-                                                                } finally {
-                                                                    button.classList.remove("loading");
-                                                                }
-                                                            });
-                                                        });
-
-                                                        function updateSlotUI(date, slotNumber, button) {
-                                                            const slotCell = button.closest("td");
-                                                            slotCell.innerHTML = `<span class="temp-slot-item temp-slot-highlight"><i class="isax isax-clock"></i> Slot ${slotNumber}</span>`;
-                                                        }
-
-                                                        monthItems.forEach(item => {
-                                                            item.addEventListener("click", (e) => {
-                                                                e.preventDefault();
-                                                                const [month, year] = item.dataset.month.split(" ");
-                                                                document.getElementById("selectedMonth").textContent = item.dataset.month;
-                                                                document.getElementById("hiddenMonth").value = month;
-                                                                document.getElementById("hiddenYear").value = year;
-                                                                document.getElementById("monthForm").submit();
-                                                            });
-                                                        });
-                                                    });
-                    </script>
-
-                    <script>
-                        document.getElementById("addSchedule").addEventListener("click", function (event) {
-                            event.preventDefault();
-                            fetch("/HAPPYorSAD/SetSlot?action=addSchedule", {
-                                method: "POST"
-                            })
-                                    .then(response => response.text())
-                                    .then(data => {
-                                        alert("Schedule added successfully!");
-                                        location.reload(); // Tải lại trang để hiển thị slot của schedule mới
-                                    })
-                                    .catch(error => console.error("Error:", error));
-                        });
-                    </script>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Thông báo</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <c:if test="${not empty message}">
-                                        <div class="alert alert-info">${message}</div>
-                                    </c:if>
-                                    <c:if test="${not empty errorMessage}">
-                                        <div class="alert alert-danger">${errorMessage}</div>
-                                    </c:if>
+                                <div class="card-footer text-end">
+                                    <form action="/HAPPYorSAD/SetSlot?action=save" method="post">
+                                        <input type="hidden" name="scheduleId" value="${nextScheduleId}">
+                                        <button type="button" class="btn btn-gray" onclick="window.location.reload()">Cancel</button>
+                                        <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            let message = "${message}";
-                            if (message.includes("Schedule for") && message.includes("added successfully")) {
-                                // Chuyển sang tab "General Availability"
-                                document.querySelector('[data-bs-target="#general-availability"]').click();
-                            }
-                        });
-                    </script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            let message = "${message}";
-                            let errorMessage = "${errorMessage}";
+                </div>
+            </div>
+        </div>
 
-                            if (message || errorMessage) {
-                                let modal = new bootstrap.Modal(document.getElementById("messageModal"));
-                                modal.show();
+        <!-- Hidden Forms -->
+        <form id="tempSlotForm" action="/HAPPYorSAD/SetSlot?action=add" method="post" style="display:none;">
+            <input type="hidden" name="scheduleId" id="scheduleIdInput" value="${nextScheduleId}">
+            <input type="hidden" name="slot_date" id="slotDateInput">
+            <input type="hidden" name="slotNumber" id="slotNumberInput">
+        </form>
+        <form id="monthForm" action="/HAPPYorSAD/SetSlot" method="get" style="display:none;">
+            <input type="hidden" name="month" id="hiddenMonth">
+            <input type="hidden" name="year" id="hiddenYear">
+        </form>
 
-                                // Tự động ẩn sau 3 giây
-                                setTimeout(function () {
-                                    modal.hide();
-                                }, 3000);
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const scheduleId = "${nextScheduleId}";
+                const addScheduleBtn = document.getElementById("addSchedule");
+                const addSlotButtons = document.querySelectorAll(".add-temp-slot");
+
+                // Handle adding slots
+                addSlotButtons.forEach(button => {
+                    button.addEventListener("click", async () => {
+                        const date = button.dataset.date;
+                        const slotNumber = button.dataset.slot;
+
+                        if (!date || !slotNumber || !scheduleId || scheduleId === "-1") {
+                            alert("Invalid slot data or no schedule selected");
+                            return;
+                        }
+
+                        button.classList.add("loading");
+                        try {
+                            const response = await fetch("/HAPPYorSAD/SetSlot?action=add", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                                body: new URLSearchParams({scheduleId, slot_date: date, slotNumber})
+                            });
+                            if (response.ok) {
+                                updateSlotUI(date, slotNumber, button);
+                            } else {
+                                alert("Failed to add slot: " + await response.text());
                             }
-                        });
-                    </script>
-                    </body>
-                    </html>
+                        } catch (error) {
+                            alert("Error adding slot: " + error.message);
+                        } finally {
+                            if (button)
+                                button.classList.remove("loading");
+                        }
+                    });
+                });
+
+                function updateSlotUI(date, slotNumber, button) {
+                    const slotCell = button.closest("td");
+                    if (slotCell) {
+                        slotCell.innerHTML = `
+                            <span class="temp-slot-item temp-slot-highlight">
+                                <i class="isax isax-clock"></i> Slot ${slotNumber}
+                            </span>`;
+                    }
+                }
+
+                // Handle adding new schedule
+                if (addScheduleBtn) {
+                    addScheduleBtn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        fetch("/HAPPYorSAD/SetSlot?action=addSchedule", {method: "POST"})
+                                .then(() => location.reload());
+                    });
+                }
+            });
+        </script>
+
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Thông báo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <c:if test="${not empty message}">
+                            <div class="alert alert-info">${message}</div>
+                        </c:if>
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger">${errorMessage}</div>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let message = "${message}";
+                let errorMessage = "${errorMessage}";
+                if (message || errorMessage) {
+                    let modal = new bootstrap.Modal(document.getElementById("messageModal"));
+                    modal.show();
+                    setTimeout(function () {
+                        modal.hide();
+                    }, 3000);
+                }
+            });
+        </script>
+    </body>
+</html>

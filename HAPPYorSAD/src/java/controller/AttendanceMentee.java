@@ -295,7 +295,7 @@ public class AttendanceMentee extends HttpServlet {
                                 }
                             } else if ("reject".equals(menteeConfirmation)) {
                                 daoMSL.updateMenteeSlotStatusCF(slot.getId(), "rejected_by_mentee");
-                                daoMeSL.updateSlotStatus(slot.getId(), "Studying");
+                                daoMeSL.updateSlotStatus(slot.getId(), "att_again");
                                 LOGGER.info("Mentee rejected confirmation for Slot " + slotNumber + " on " + date + ", status remains " + currentStatus);
                                 session.setAttribute("message", "Attendance rejected. Please wait for mentor to update.");
                             }
