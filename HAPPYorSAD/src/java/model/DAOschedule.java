@@ -28,6 +28,24 @@ public class DAOschedule extends DBConnection {
 
     public static DAOschedule dao = new DAOschedule();
 
+    public List<Schedule> getAssignedSchedulesByMentor(int mentorId) {
+        List<Schedule> schedules = new ArrayList<>();
+        String sql = "SELECT s.* FROM schedule s INNER JOIN mentor_schedule ms ON s.id = ms.schedule_id WHERE ms.mentor_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("id"));
+                schedule.setStart_date(rs.getDate("start_date")); // Điều chỉnh theo cột thực tế            // Thêm các thuộc tính khác của Schedule nếu cần
+                schedules.add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
     public Date getStartDateByScheduleId(int scheduleId) {
         String sql = "SELECT start_date FROM Schedule WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -84,25 +102,25 @@ public class DAOschedule extends DBConnection {
         }
         return -1; // Trả về -1 nếu không tìm thấy
     }
-    
+
     public List<Schedule> getSchedulesByMonth(int year, int month) {
-    List<Schedule> schedules = new ArrayList<>();
-    String query = "SELECT * FROM Schedule WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?";
-    try (PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setInt(1, year);
-        stmt.setInt(2, month);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            Schedule schedule = new Schedule();
-            schedule.setId(rs.getInt("id"));
-            schedule.setStart_date(rs.getDate("start_date"));
-            schedules.add(schedule);
+        List<Schedule> schedules = new ArrayList<>();
+        String query = "SELECT * FROM Schedule WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("id"));
+                schedule.setStart_date(rs.getDate("start_date"));
+                schedules.add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return schedules;
     }
-    return schedules;
-}
 
     public int addSchedule(String startDate, String endDate) throws SQLException {
         String sql = "INSERT INTO Schedule (start_date, end_date) VALUES (?, ?)";
@@ -319,7 +337,6 @@ public class DAOschedule extends DBConnection {
         return schedulesByMonth;
     }
 
-
     public Integer getScheduleIdByNearestStartDate() {
         String sql = "SELECT id FROM Schedule where start_date='?'\n";
         try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
@@ -330,6 +347,21 @@ public class DAOschedule extends DBConnection {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean isScheduleAssignedToMentor(int mentorId, int scheduleId) {
+        String sql = "SELECT COUNT(*) FROM mentor_schedule WHERE mentor_id = ? AND schedule_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, mentorId);
+            ps.setInt(2, scheduleId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {

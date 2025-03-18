@@ -167,7 +167,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 <div class="container">
                     <div class="row">
                         <!-- Sidebar -->
-                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
@@ -256,7 +256,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                         <ul class="dropdown-menu" aria-labelledby="monthDropdown">
                                                             <c:forEach var="i" begin="1" end="<%=currentMonth%>">
                                                                 <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
-                                                            </c:forEach>
+                                                                </c:forEach>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -298,22 +298,22 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                     <div class="slot-body">
                                                                         <table class="table table-bordered text-center">
                                                                             <tbody>
-                                                                            <c:forEach var="i" begin="1" end="5">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                <c:set var="slotFound" value="false"/>
-                                                                                <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                                    <c:if test="${slot.slotNumber == i}">
-                                                                                        <span>Slot ${slot.slotNumber}</span>
-                                                                                        <c:set var="slotFound" value="true"/>
-                                                                                    </c:if>
+                                                                                <c:forEach var="i" begin="1" end="5">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <c:set var="slotFound" value="false"/>
+                                                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                                    <span>Slot ${slot.slotNumber}</span>
+                                                                                                    <c:set var="slotFound" value="true"/>
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not slotFound}">
+                                                                                                <span class="text-muted">Empty</span>
+                                                                                            </c:if>
+                                                                                        </td>
+                                                                                    </tr>
                                                                                 </c:forEach>
-                                                                                <c:if test="${not slotFound}">
-                                                                                    <span class="text-muted">Empty</span>
-                                                                                </c:if>
-                                                                                </td>
-                                                                                </tr>
-                                                                            </c:forEach>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
@@ -327,91 +327,71 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade " id="general-availability">
+
+
+
+                                <div class="tab-pane fade" id="general-availability">
                                     <div class="card custom-card">
                                         <div class="card-body">
                                             <div class="card-header"><h3>Select Available Slots</h3></div>
                                             <div class="row align-items-center mb-3">
                                                 <div class="col-12 col-sm-4 col-md-6">
-                                                    <h4 class="mb-1"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMMM yyyy"/></h4>
-                                                    <p class="text-muted"><fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE"/></p>
+                                                    <h4 class="mb-1">${nextMonth} ${nextYear}</h4>
+                                                    <p class="text-muted">Schedule ID: ${nextScheduleId}</p>
                                                 </div>
-
-
                                                 <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a href="#" class="dropdown-toggle text-primary" id="monthDropdown" data-bs-toggle="dropdown">
-                                                            <i class="far fa-calendar-alt me-2"></i>
-                                                            <span id="selectedMonth">${selectedMonth} ${selectedYear}</span>
-                                                            <i class="fas fa-chevron-down ms-2"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu" aria-labelledby="monthDropdown">
-                                                            <c:forEach var="i" begin="<%=currentMonth%>" end="12">
-                                                                <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear}">${i} ${selectedYear}</a></li>
-                                                            </c:forEach>
-                                                            <c:forEach var="i" begin="1" end="12">
-                                                                <li><a class="dropdown-item month-item" href="#" data-month="${i} ${selectedYear+1}">${i} ${selectedYear+1}</a></li>
-                                                            </c:forEach>
-                                                        </ul>
-                                                    </div>
-                                                    <!-- Nút Add Schedule -->
                                                     <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
                                                 </div>
-
                                             </div>
 
                                             <div class="row slot-row">
                                                 <c:choose>
-                                                    <c:when test="${empty weekDates}">
-                                                        <div class="col-12"><p class="text-warning">No week dates available. Please select a schedule.</p></div>
+                                                    <c:when test="${empty nextWeekDates}">
+                                                        <div class="col-12"><p class="text-warning">No week dates available for next month.</p></div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <c:forEach var="day" items="${weekDates}" varStatus="status">
+                                                        <c:forEach var="day" items="${nextWeekDates}" varStatus="status">
                                                             <div class="col-md slot-column">
                                                                 <div class="slot-box">
                                                                     <div class="slot-header">
-                                                                        <h5>${weekDays[status.index]} </h5>
+                                                                        <h5>${weekDays[status.index]}</h5>
                                                                     </div>
                                                                     <div class="slot-body">
                                                                         <table class="table table-bordered text-center">
                                                                             <tbody>
-                                                                            <c:forEach var="i" begin="1" end="5">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                <c:set var="slotFound" value="false"/>
-                                                                                <!-- Hiển thị slot cố định -->
-                                                                                <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                                    <c:if test="${slot.slotNumber == i}">
-                                                                                        <span>Slot ${slot.slotNumber}</span>
-                                                                                        <c:set var="slotFound" value="true"/>
-                                                                                    </c:if>
+                                                                                <c:forEach var="i" begin="1" end="5">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <c:set var="slotFound" value="false"/>
+                                                                                            <c:forEach var="slot" items="${nextSlotsByDay[day]}">
+                                                                                                <c:if test="${slot.slotNumber == i}">
+                                                                                                    <span>Slot ${slot.slotNumber}</span>
+                                                                                                    <c:set var="slotFound" value="true"/>
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
+                                                                                                <c:if test="${temp.slotNumber == i}">
+                                                                                                    <span class="temp-slot-item temp-slot-highlight">
+                                                                                                        <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
+                                                                                                        <form action="/HAPPYorSAD/SetSlot?action=deleteTemp" method="post" style="display:inline;" 
+                                                                                                              onsubmit="return confirm('Are you sure you want to delete this slot?');">
+                                                                                                            <input type="hidden" name="formattedDay" value="${day}">
+                                                                                                            <input type="hidden" name="slotNumber" value="${temp.slotNumber}">
+                                                                                                            <input type="hidden" name="scheduleId" value="${nextScheduleId}">
+                                                                                                            <button type="submit" class="btn btn-link text-danger p-0 ms-1" style="font-size: 14px;">-</button>
+                                                                                                        </form>
+                                                                                                    </span>
+                                                                                                    <c:set var="slotFound" value="true"/>
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not slotFound}">
+                                                                                                <span class="text-muted">Empty</span>
+                                                                                                <button type="button" class="btn btn-sm btn-success add-temp-slot" 
+                                                                                                        data-date="${day}" data-slot="${i}">+</button>
+                                                                                            </c:if>
+                                                                                        </td>
+                                                                                    </tr>
                                                                                 </c:forEach>
-                                                                                <!-- Hiển thị temp slot với nút xóa -->
-                                                                                <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
-                                                                                    <c:if test="${temp.slotNumber == i}">
-                                                                                        <span class="temp-slot-item temp-slot-highlight">
-                                                                                            <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
-                                                                                            <!-- Thêm form để xóa temp slot riêng lẻ -->
-                                                                                            <form action="/HAPPYorSAD/SetSlot?action=deleteTemp" method="post" style="display:inline;" 
-                                                                                                  onsubmit="return confirm('Are you sure you want to delete this slot?');">
-                                                                                                <input type="hidden" name="formattedDay" value="${day}">
-                                                                                                <input type="hidden" name="slotNumber" value="${temp.slotNumber}">
-                                                                                                <input type="hidden" name="scheduleId" value="${scheduleId}">
-                                                                                                <button type="submit" class="btn btn-link text-danger p-0 ms-1" style="font-size: 14px;">-</button>
-                                                                                            </form>
-                                                                                        </span>
-                                                                                        <c:set var="slotFound" value="true"/>
-                                                                                    </c:if>
-                                                                                </c:forEach>
-                                                                                <!-- Nếu không có slot nào, hiển thị nút thêm -->
-                                                                                <c:if test="${not slotFound}">
-                                                                                    <span class="text-muted">Empty</span>
-                                                                                    <button type="button" class="btn btn-sm btn-success add-temp-slot" 
-                                                                                            data-date="${day}" data-slot="${i}">+</button>
-                                                                                </c:if>
-                                                                                </td>
-                                                                                </tr>
-                                                                            </c:forEach>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
@@ -419,7 +399,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                         <form action="/HAPPYorSAD/SetSlot?action=delete" method="post" 
                                                                               onsubmit="return confirm('Are you sure you want to delete all slots?');">
                                                                             <input type="hidden" name="formattedDay" value="${day}">
-                                                                            <input type="hidden" name="scheduleId" value="${scheduleId}">
+                                                                            <input type="hidden" name="scheduleId" value="${nextScheduleId}">
                                                                             <button type="submit" class="btn btn-link text-danger">Delete All</button>
                                                                         </form>
                                                                     </div>
@@ -432,7 +412,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                         </div>
                                         <div class="card-footer text-end">
                                             <form action="/HAPPYorSAD/SetSlot?action=save" method="post">
-                                                <input type="hidden" name="scheduleId" value="${scheduleId}">
+                                                <input type="hidden" name="scheduleId" value="${nextScheduleId}">
                                                 <button type="button" class="btn btn-gray" onclick="window.location.reload()">Cancel</button>
                                                 <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
                                             </form>
@@ -553,23 +533,17 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
 
                     <script>
                         document.getElementById("addSchedule").addEventListener("click", function (event) {
-                            event.preventDefault(); // Ngăn tải lại trang
-
-                            // Lấy giá trị tháng và năm từ giao diện
-                            const selectedMonth = document.getElementById("hiddenMonth").value;
-                            const selectedYear = document.getElementById("hiddenYear").value;
-
-                            fetch(`/HAPPYorSAD/SetSlot?action=addSchedule&month=${selectedMonth}&year=${selectedYear}`, {
+                            event.preventDefault();
+                            fetch("/HAPPYorSAD/SetSlot?action=addSchedule", {
                                 method: "POST"
                             })
                                     .then(response => response.text())
                                     .then(data => {
                                         alert("Schedule added successfully!");
-                                        location.reload(); // Tải lại trang để cập nhật lịch mới
+                                        location.reload(); // Tải lại trang để hiển thị slot của schedule mới
                                     })
                                     .catch(error => console.error("Error:", error));
                         });
-
                     </script>
 
                     <!-- Modal -->
@@ -591,7 +565,15 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                             </div>
                         </div>
                     </div>
-
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let message = "${message}";
+                            if (message.includes("Schedule for") && message.includes("added successfully")) {
+                                // Chuyển sang tab "General Availability"
+                                document.querySelector('[data-bs-target="#general-availability"]').click();
+                            }
+                        });
+                    </script>
                     <script>
                         document.addEventListener("DOMContentLoaded", function () {
                             let message = "${message}";

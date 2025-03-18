@@ -49,20 +49,36 @@ public class MentorDetail extends HttpServlet {
         String action = request.getParameter("action");
 
         HttpSession session = request.getSession();
+        String mentorId = request.getParameter("mentorId");
+        String courseId = request.getParameter("courseId");
+        String price = request.getParameter("price");
+        String month = request.getParameter("month");
+        String year = request.getParameter("year");
+        String direction = request.getParameter("direction");
         String username = (String) session.getAttribute("usernameUser");
-        DAOuser userDAO = new DAOuser();
-        int userId = userDAO.getUserIdByUsername(username);
         int id = Integer.parseInt(request.getParameter("mentorId"));
         int mentorIdDetail = id;
         DAOMentor dao = new DAOMentor();
 
         DAOCourse daoC = new DAOCourse();
+        Mentor1 mentor = dao.getMentorById(mentorIdDetail);
+        Double priceperslot = Double.parseDouble(request.getParameter("price"));
+        ArrayList<Course> list = daoC.getCourseByMentorId(mentorIdDetail);
+        DAOuser userDAO = new DAOuser();
+        int userId = userDAO.getUserIdByUsername(username);
+
         DAORateMentor daoR = new DAORateMentor(); // code them cua Dung
 
         List<MentorReview> listReview = daoR.getMentorRate(mentorIdDetail);
         System.out.println("Helloo " + listReview);
         request.setAttribute("listReview", listReview);
 
+        request.setAttribute("mentorname", mentor.getName());
+        request.setAttribute("mentorId", mentorId);
+        request.setAttribute("courseId", courseId);
+        request.setAttribute("price", price);
+        request.setAttribute("selectedMonth", month);
+        request.setAttribute("selectedYear", year);
         if ("getMentorSlots".equals(action)) {
             handleScheduleRequest(request, response);
         } else {

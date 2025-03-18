@@ -445,9 +445,12 @@
                                     <form id="monthForm" action="/HAPPYorSAD/MentorDetail" method="GET">
                                         <input type="hidden" name="action" value="getMentorSlots">
                                         <input type="hidden" name="mentorId" value="${requestScope.mentorId}">
+                                        <input type="hidden" name="courseId" value="${requestScope.courseId}"> <!-- Thêm courseId -->
+                                        <input type="hidden" name="price" value="${requestScope.price}"> <!-- Thêm price -->
+                                        <input type="hidden" name="mentorname" value="${mentorname}"> <!-- Thêm price -->
+
                                         <input type="hidden" name="month" id="monthInput" value="${requestScope.selectedMonth != null ? requestScope.selectedMonth : currentMonth}">
-                                        <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear != null ? requestScope.selectedYear : currentYear}">
-                                        <div class="row align-items-center">
+                                        <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear != null ? requestScope.selectedYear : currentYear}"><div class="row align-items-center">
                                             <div class="col-12 col-sm-6">
                                                 <h4 class="mb-1" id="mentorScheduleMonthYear">${formattedMonthYear}</h4>
                                                 <p></p>
