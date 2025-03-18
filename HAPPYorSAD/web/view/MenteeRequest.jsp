@@ -207,12 +207,36 @@
 
                     <!-- Page Content -->
                     <div class="col-md-9"> 
-<!--                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <form action="ShowMenteeRequest" method="get" class="d-flex "> 
-                                <input name="txt" type="text" id="searchInput" class="form-control me-2" style="max-width: 250px;" placeholder="Enter Course Name...">
-                                <button type="submit" class="btn btn-primary px-4">Search</button>
-                            </form>                                                      
-                        </div>-->
+                        <div class="d-flex align-items-center ">                           
+                            <div>
+                                <h4>Status: </h4>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Draft">
+                                    <button type="submit" class="btn btn-outline-secondary">Draft</button>
+                                </form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Open">
+                                    <button type="submit" class="btn btn-outline-success">Open</button>
+                                </form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Processing">
+                                    <button type="submit" class="btn btn-outline-primary">Processing</button>
+                                </form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Cancel">
+                                    <button type="submit" class="btn btn-outline-danger">Cancel</button>
+                                </form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Completed">
+                                    <button type="submit" class="btn btn-outline-warning">Completed</button>
+                                </form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline">
+                                    <input type="hidden" name="status" value="Closed">
+                                    <button type="submit" class="btn btn-outline-dark">Closed</button>
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="formcontent">
                             <div>  
                                 <table class="tablecontent">
@@ -229,6 +253,7 @@
                                     </thead>
                                     <tbody>
                                         <c:forEach items="${sessionScope.listAllRequest}" var="o">
+                                            <c:if test="${empty param.status or o.status eq param.status}">
                                             <tr>
                                                 <td>${o.title}</td>
                                                 <td>${o.content}</td>
@@ -247,6 +272,7 @@
                                                     </c:if>
                                                 </td>
                                             </tr>
+                                            </c:if>
                                         </c:forEach>
                                     </tbody>
                                 </table>
