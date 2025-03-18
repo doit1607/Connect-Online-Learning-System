@@ -361,8 +361,8 @@ public class DAORequest extends DBConnection {
         }
         return mentorId;
     }
-    
-    public List<Request> getAllRequest(int menteeId) {
+
+    public List<Request> getAllRequest(int menteeId, int index) {
         ArrayList<Request> listRequest = new ArrayList<>();
 
         String query = "SELECT r.[id], r.[mentee_id], r.[mentor_id], r.[title] AS request_title, "
@@ -372,11 +372,13 @@ public class DAORequest extends DBConnection {
                 + "FROM [SWP1].[dbo].[Request] r "
                 + "JOIN [SWP1].[dbo].[Course] c ON r.course_id = c.id "
                 + "JOIN [SWP1].[dbo].[Mentor] m ON r.mentor_id = m.user_id "
-                + "WHERE r.mentee_id = ? order by created_at desc";
+                + "WHERE r.mentee_id = ? order by created_at desc "
+                + "offset ? rows fetch next 10 rows only";
 
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             connect.setInt(1, menteeId);
+            connect.setInt(2, (index - 1) * 10);
             ResultSet result = connect.executeQuery();
 
             while (result.next()) {
@@ -692,15 +694,50 @@ public class DAORequest extends DBConnection {
 //        } catch (Exception e) {
 //        }
 //    }
+    public List<Request> getRequestByStatus(int menteeId, String status, int index) {
+        List<Request> list = new ArrayList<>();
+        String sql = "SELECT * FROM Request WHERE mentee_id = ? AND status = ? ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, menteeId);
+            ps.setString(2, status);
+            ps.setInt(3, (index - 1) * 10);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                Request request = new Request();
+                request.setId(result.getInt("id"));
+                request.setMenteeId(result.getInt("mentee_id"));
+                request.setMentorId(result.getInt("mentor_id"));
+                request.setTitle(result.getString("title"));
+                request.setTotalSlot(result.getInt("total_slot"));
+                request.setStartDate(result.getDate("start_date").toLocalDate());
+                request.setEndDate(result.getDate("end_date").toLocalDate());
+                request.setContent(result.getString("content"));
+                request.setStatus(result.getString("status"));
+                request.setCreatedAt(result.getTimestamp("created_at").toLocalDateTime());
+                request.setUpdatedAt(result.getTimestamp("updated_at").toLocalDateTime());
+                request.setCourseId(result.getInt("course_id"));
+                request.settotalprice(result.getDouble("totalPrice"));
+                list.add(request);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         DAORequest dao = new DAORequest();
 
-        try {
-            dao.updateRequestStatus(745, "Processing");
-//        System.out.println(dao);
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(DAORequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            dao.updateRequestStatus(745, "Processing");
+////        System.out.println(dao);
+//        } catch (SQLException ex) {
+//            java.util.logging.Logger.getLogger(DAORequest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+         List<Request> list = dao.getRequestByStatus(1, "Open", 10);
+         System.out.println(list);
     }
 
 }

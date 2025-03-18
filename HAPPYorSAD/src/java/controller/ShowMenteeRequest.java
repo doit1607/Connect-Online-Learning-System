@@ -67,8 +67,31 @@ public class ShowMenteeRequest extends HttpServlet {
         session.setAttribute("mentee", mentee);
 
         // Lấy danh sách tất cả request
-        List<Request> listAllRequest = dao.getAllRequest(menteeId);
-        LOGGER.log(Level.INFO, "Retrieved {0} requests for menteeId: {1}", new Object[]{listAllRequest.size(), menteeId});
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+
+        int count = dao.getTotalRequest();
+        int endPage = count / 10;
+        if (count % 2 != 0) {
+            endPage++;
+        }
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("tag", index);
+        String status = request.getParameter("status");
+        List<Request> listAllRequest;
+
+        if (status != null && !status.isEmpty()) {
+            listAllRequest = dao.getRequestByStatus(menteeId, status, index);
+            LOGGER.log(Level.INFO, "Filtered {0} requests with status {1} for menteeId: {2}",
+                    new Object[]{listAllRequest.size(), status, menteeId});
+        } else {
+            listAllRequest = dao.getAllRequest(menteeId, index);
+            LOGGER.log(Level.INFO, "Retrieved {0} requests for menteeId: {1}",
+                    new Object[]{listAllRequest.size(), menteeId});
+        }
         session.setAttribute("listAllRequest", listAllRequest);
 
         // Tính toán thông tin chi tiết cho từng request
