@@ -58,35 +58,30 @@
                                 <div class="info-header bg-gradient text-white text-center">
                                     <h5 class="mb-0 py-2">Wallet Information</h5>
                                 </div>
-                                <div class="info-body p-4"> 
+                                <div class="info-body p-2"> 
                                     <!-- Wallet Info -->
-                                    <div class="wallet-info text-center">
-                                        <div class="row">
-                                            <div <c:if test = "${usernameRole != 'manager'}">class="col-4"</c:if>>
-                                                <small class="text-muted">Amount</small>
-                                                <p class="amount-text mb-0">
-                                                    <fmt:setLocale value="vi_VN"/>
-                                                    <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
+                                    <div class="wallet-info">
+                                        <div class="wallet-item">
+                                            <small class="text-muted">Amount</small>
+                                            <p class="amount-text mb-0">
+                                                <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" pattern="#,###" groupingUsed="true" /> VND
+                                            </p>
+                                        </div>
+                                        <c:if test="${sessionScope.usernameRole != 'manager'}">
+                                            <div class="wallet-item">
+                                                <small class="text-muted">Hold</small>
+                                                <p class="hold-text mb-0">
+                                                    <fmt:formatNumber value="${sessionScope.walletHold != null ? sessionScope.walletHold : 0}" pattern="#,###" groupingUsed="true" /> VND
                                                 </p>
                                             </div>
-                                            <c:if test="${sessionScope.usernameRole != 'manager'}">
-                                                <div class="col-4">
-                                                    <small class="text-muted">Hold</small>
-                                                    <p class="hold-text mb-0">
-                                                        <fmt:setLocale value="vi_VN"/>
-                                                        <fmt:formatNumber value="${sessionScope.walletHold != null ? sessionScope.walletHold : 0}" type="currency" groupingUsed="true"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <small class="text-muted">Available</small>
-                                                    <p class="available-text mb-0">
-                                                        <fmt:setLocale value="vi_VN"/>
-                                                        <fmt:formatNumber value="${sessionScope.walletBalance - sessionScope.walletHold}" type="currency" groupingUsed="true"/>
-                                                    </p>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                        <button class="btn btn-gradient mt-4 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal"> 
+                                            <div class="wallet-item">
+                                                <small class="text-muted">Available</small>
+                                                <p class="available-text mb-0">
+                                                    <fmt:formatNumber value="${sessionScope.walletBalance - sessionScope.walletHold}" pattern="#,###" groupingUsed="true" /> VND
+                                                </p>
+                                            </div>
+                                        </c:if>
+                                        <button class="btn btn-gradient mt-2 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal"> 
                                             <i class="fas fa-wallet me-1"></i> Manage Wallet
                                         </button>
                                     </div>
@@ -106,7 +101,6 @@
                                         </c:if>
 
                                         <div class="search-section mb-4">
-                                            <!-- Sửa action thành /HAPPYorSAD/Wallet -->
                                             <form id="searchForm" method="GET" action="/HAPPYorSAD/Wallet">
                                                 <div class="row g-3 align-items-end">
                                                     <!-- Date Range -->
@@ -164,7 +158,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="i" items="${requestScope.transaction}">
+                                                    <c:forEach var="i" items="${requestScope.transactionPage}">
                                                         <tr>
                                                             <td><fmt:formatDate value="${i.transactionDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                             <td>
@@ -185,7 +179,7 @@
                                                             <td><span class="status-badge">${i.status}</span></td>
                                                         </tr>
                                                     </c:forEach>
-                                                    <c:if test="${empty requestScope.transaction}">
+                                                    <c:if test="${empty requestScope.transactionPage}">
                                                         <tr>
                                                             <td colspan="5" class="text-center">No transactions found.</td>
                                                         </tr>
@@ -193,6 +187,28 @@
                                                 </tbody>
                                             </table>
                                         </div>
+
+                                        <!-- Pagination -->
+                                        <c:if test="${not empty requestScope.transactionPage}">
+                                            <div class="pagination-section mt-4 text-center">
+                                                <ul class="pagination justify-content-center">
+                                                    <!-- Previous Button -->
+                                                    <li class="page-item ${requestScope.currentPage == 1 ? 'disabled' : ''}">
+                                                        <a class="page-link" href="/HAPPYorSAD/Wallet?page=${requestScope.currentPage - 1}&fromDate=${param.fromDate}&toDate=${param.toDate}&type=${param.type}&description=${param.description}&status=${param.status}">Previous</a>
+                                                    </li>
+                                                    <!-- Page Numbers -->
+                                                    <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
+                                                        <li class="page-item ${requestScope.currentPage == i ? 'active' : ''}">
+                                                            <a class="page-link" href="/HAPPYorSAD/Wallet?page=${i}&fromDate=${param.fromDate}&toDate=${param.toDate}&type=${param.type}&description=${param.description}&status=${param.status}">${i}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <!-- Next Button -->
+                                                    <li class="page-item ${requestScope.currentPage == requestScope.totalPages ? 'disabled' : ''}">
+                                                        <a class="page-link" href="/HAPPYorSAD/Wallet?page=${requestScope.currentPage + 1}&fromDate=${param.fromDate}&toDate=${param.toDate}&type=${param.type}&description=${param.description}&status=${param.status}">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -210,34 +226,28 @@
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="wallet-balance mb-4 text-center">
-                                <div class="row">
-                                    <div <c:if test = "${usernameRole != 'manager'}">class="col-4"</c:if>>
-                                        <h6 class="text-muted">Amount</h6>
-                                        <p class="amount-text">
-                                            <fmt:setLocale value="vi_VN"/>
-                                            <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" type="currency" groupingUsed="true"/>
+                            <div class="wallet-balance mb-3">
+                                <div class="wallet-item">
+                                    <h6 class="text-muted">Amount</h6>
+                                    <p class="amount-text">
+                                        <fmt:formatNumber value="${sessionScope.walletBalance != null ? sessionScope.walletBalance : 0}" pattern="#,###" groupingUsed="true" /> VND
+                                    </p>
+                                </div>
+                                <c:if test="${sessionScope.usernameRole != 'manager'}">
+                                    <div class="wallet-item">
+                                        <h6 class="text-muted">Hold</h6>
+                                        <p class="hold-text">
+                                            <fmt:formatNumber value="${sessionScope.walletHold != null ? sessionScope.walletHold : 0}" pattern="#,###" groupingUsed="true" /> VND
                                         </p>
                                     </div>
-                                    <c:if test="${sessionScope.usernameRole != 'manager'}">
-                                        <div class="col-4">
-                                            <h6 class="text-muted">Hold</h6>
-                                            <p class="hold-text">
-                                                <fmt:setLocale value="vi_VN"/>
-                                                <fmt:formatNumber value="${sessionScope.walletHold != null ? sessionScope.walletHold : 0}" type="currency" groupingUsed="true"/>
-                                            </p>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6 class="text-muted">Available</h6>
-                                            <p class="available-text">
-                                                <fmt:setLocale value="vi_VN"/>
-                                                <fmt:formatNumber value="${sessionScope.walletBalance - sessionScope.walletHold}" type="currency" groupingUsed="true"/>
-                                            </p>
-                                        </div>
-                                    </c:if>
-                                </div>
+                                    <div class="wallet-item">
+                                        <h6 class="text-muted">Available</h6>
+                                        <p class="available-text">
+                                            <fmt:formatNumber value="${sessionScope.walletBalance - sessionScope.walletHold}" pattern="#,###" groupingUsed="true" /> VND
+                                        </p>
+                                    </div>
+                                </c:if>
                             </div>
-                            <!-- Giữ nguyên action và method ban đầu -->
                             <form id="walletForm" method="POST" action="/HAPPYorSAD/Wallet">
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Amount (VND)</label>
@@ -317,12 +327,16 @@
                 border: none;
                 font-size: 0.9rem;
                 padding: 8px 12px;
+                border-radius: 6px;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
             .btn-gradient:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 5px 15px rgba(0, 196, 204, 0.4);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 196, 204, 0.3);
                 color: white;
+            }
+            .btn-gradient i {
+                font-size: 1.1rem;
             }
             .user-info-box {
                 border: none;
@@ -330,28 +344,43 @@
                 background: #ffffff;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
                 overflow: hidden;
+                max-width: 320px;
             }
             .info-header {
                 background: linear-gradient(90deg, #00c4cc, #7b3fe4);
+                padding: 10px;
+            }
+            .info-header h5 {
+                font-size: 1.3rem;
             }
             .info-body {
-                padding: 20px;
+                padding: 12px;
             }
             .wallet-info {
-                padding: 20px;
+                padding: 12px;
                 background: #f8f9fa;
-                border-radius: 10px;
+                border-radius: 8px;
+                text-align: left;
             }
-            .wallet-info small {
-                font-size: 1rem;
+            .wallet-item {
+                margin-bottom: 8px;
+            }
+            .wallet-item small {
+                font-size: 0.9rem;
                 color: #666;
                 font-weight: 500;
+                display: block;
+                margin-bottom: 3px;
             }
             .amount-text, .hold-text, .available-text {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
                 font-weight: 600;
-                margin: 8px 0;
-                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+                margin: 0;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+                white-space: nowrap;
+                overflow: visible;
+                max-width: none;
+                color: #333;
             }
             .amount-text {
                 color: #00c4cc;
@@ -412,15 +441,111 @@
             .modal-content {
                 border-radius: 15px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                margin: auto;
             }
-            .method-option {
+            .modal-header {
+                background: linear-gradient(90deg, #00c4cc, #7b3fe4);
+                padding: 10px 15px;
+            }
+            .modal-header .modal-title {
+                font-size: 1.3rem;
+            }
+            .modal-body {
+                padding: 15px;
+            }
+            .wallet-balance {
+                text-align: left;
+                padding: 10px;
                 background: #f8f9fa;
+                border-radius: 8px;
+                margin-bottom: 15px;
+            }
+            .wallet-balance .wallet-item {
+                margin-bottom: 8px;
+            }
+            .wallet-balance h6 {
+                font-size: 0.9rem;
+                color: #666;
+                font-weight: 500;
+                display: block;
+                margin-bottom: 3px;
+            }
+            .wallet-balance .amount-text,
+            .wallet-balance .hold-text,
+            .wallet-balance .available-text {
+                font-size: 1.6rem;
+                font-weight: 600;
+                margin: 0;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+                white-space: nowrap;
+                overflow: visible;
+                max-width: none;
+                color: #333;
+            }
+            .wallet-balance .amount-text {
+                color: #00c4cc;
+            }
+            .wallet-balance .hold-text {
+                color: #ffaa00;
+            }
+            .wallet-balance .available-text {
+                color: #28a745;
+            }
+            .mb-4 {
+                margin-bottom: 15px !important;
+            }
+            .form-label {
+                font-size: 0.9rem;
+                margin-bottom: 4px;
+            }
+            .input-group, .form-control {
+                font-size: 0.9rem;
+            }
+            .payment-methods .method-option {
+                padding: 10px;
+                background: #f8f9fa;
+                border-radius: 6px;
+                margin-bottom: 8px;
                 cursor: pointer;
                 transition: background 0.3s ease, transform 0.2s ease;
             }
-            .method-option:hover {
+            .payment-methods .method-option:hover {
                 background: #e9ecef;
                 transform: translateY(-2px);
+            }
+            .payment-methods .form-check-label {
+                font-size: 0.9rem;
+            }
+            .payment-methods .form-check-label i {
+                font-size: 1rem;
+            }
+            /* Pagination Styles */
+            .pagination-section .pagination {
+                margin: 0;
+            }
+            .pagination-section .page-item .page-link {
+                color: #00c4cc;
+                border: 1px solid #e9ecef;
+                border-radius: 6px;
+                margin: 0 4px;
+                padding: 6px 12px;
+                font-size: 0.9rem;
+                transition: background 0.3s ease, color 0.3s ease;
+            }
+            .pagination-section .page-item.active .page-link {
+                background: linear-gradient(90deg, #00c4cc, #7b3fe4);
+                color: white;
+                border: none;
+            }
+            .pagination-section .page-item.disabled .page-link {
+                color: #6c757d;
+                cursor: not-allowed;
+                background: #f8f9fa;
+            }
+            .pagination-section .page-item .page-link:hover:not(.disabled) {
+                background: #e9ecef;
+                color: #00c4cc;
             }
         </style>
 
@@ -435,26 +560,26 @@
         <script src="/HAPPYorSAD/assets/js/script.js"></script>
 
         <script>
-            function toggleCardInput() {
-                const withdrawRadio = document.querySelector('input[name="optradio"][value="withdraw"]');
-                const cardInputDiv = document.getElementById("cardNumberInput");
-                const form = document.getElementById("walletForm");
+                                                function toggleCardInput() {
+                                                    const withdrawRadio = document.querySelector('input[name="optradio"][value="withdraw"]');
+                                                    const cardInputDiv = document.getElementById("cardNumberInput");
+                                                    const form = document.getElementById("walletForm");
 
-                if (withdrawRadio.checked) {
-                    cardInputDiv.style.display = "block";
-                    form.action = "/HAPPYorSAD/VNPayReturnServlet?service=withdraw";
-                } else {
-                    cardInputDiv.style.display = "none";
-                    form.action = "/HAPPYorSAD/ajaxServlet";
-                }
-            }
+                                                    if (withdrawRadio.checked) {
+                                                        cardInputDiv.style.display = "block";
+                                                        form.action = "/HAPPYorSAD/VNPayReturnServlet?service=withdraw";
+                                                    } else {
+                                                        cardInputDiv.style.display = "none";
+                                                        form.action = "/HAPPYorSAD/ajaxServlet";
+                                                    }
+                                                }
 
-            document.getElementById("walletForm").onsubmit = function () {
-                toggleCardInput();
-                return true;
-            };
+                                                document.getElementById("walletForm").onsubmit = function () {
+                                                    toggleCardInput();
+                                                    return true;
+                                                };
 
-            window.onload = toggleCardInput;
+                                                window.onload = toggleCardInput;
         </script>
     </body>
 </html>
