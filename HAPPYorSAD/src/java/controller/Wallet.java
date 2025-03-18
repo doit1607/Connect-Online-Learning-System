@@ -17,11 +17,11 @@ import model.TransactionDAO;
 public class Wallet extends HttpServlet {
 
     private TransactionDAO transactionDAO;
-    private static final int ITEMS_PER_PAGE = 10; // Số giao dịch mỗi trang
+    private static final int ITEMS_PER_PAGE = 10; 
 
     @Override
     public void init() throws ServletException {
-        transactionDAO = new TransactionDAO(); // Khởi tạo DAO
+        transactionDAO = new TransactionDAO();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -32,8 +32,7 @@ public class Wallet extends HttpServlet {
             response.sendRedirect("LoginUser.jsp");
             return;
         }
-        
-        // Lấy số dư và số tiền bị giữ
+      
         double balance = transactionDAO.getTotalBalance(username);
         double hold = transactionDAO.getHold(username);
         session.setAttribute("walletBalance", balance);
@@ -60,20 +59,14 @@ public class Wallet extends HttpServlet {
         }
 
         int totalTransactions = fullList.size();
-        int totalPages = (int) Math.ceil((double) totalTransactions / ITEMS_PER_PAGE); // Làm tròn lên
-        if (totalPages == 0) totalPages = 1; // Đảm bảo ít nhất 1 trang nếu không có giao dịch
-
-        // Giới hạn danh sách theo trang
+        int totalPages = (int) Math.ceil((double) totalTransactions / ITEMS_PER_PAGE);
+        if (totalPages == 0) totalPages = 1; 
         int start = (page - 1) * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, totalTransactions);
         List<Transaction> transactionPage = (totalTransactions > 0) ? fullList.subList(start, end) : fullList;
-
-        // Đặt thuộc tính cho JSP (chỉ dùng transactionPage)
         request.setAttribute("transactionPage", transactionPage);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("currentPage", page); // Thêm trang hiện tại để JSP sử dụng
-
-        // Xử lý thông báo
+        request.setAttribute("currentPage", page);
         String service = request.getParameter("service");
         String msg = request.getParameter("msg");
         if (service != null) {
@@ -81,10 +74,8 @@ public class Wallet extends HttpServlet {
                 request.setAttribute("msg", msg);
             }
         }
-
         request.getRequestDispatcher("view/Wallet.jsp").forward(request, response);
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
