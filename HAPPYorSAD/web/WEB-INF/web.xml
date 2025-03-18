@@ -104,6 +104,10 @@
         <servlet-name>JoinCourse</servlet-name>
         <servlet-class>controller.JoinCourse</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>Att</servlet-name>
+        <servlet-class>controller.Att</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>AcceptCV</servlet-name>
         <servlet-class>controller.AcceptCV</servlet-class>
@@ -184,6 +188,10 @@
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>Att</servlet-name>
+        <url-pattern>/Att</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>

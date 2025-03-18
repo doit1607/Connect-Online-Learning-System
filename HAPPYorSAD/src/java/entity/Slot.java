@@ -26,8 +26,8 @@ public class Slot {
     private int request_id;
 
     // Constructor cho Slot Template
-    public Slot(int slotNumber, Time startTime, Time endTime) {
-        this.slotNumber = slotNumber;
+    public Slot(int id, Time startTime, Time endTime) {
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -38,6 +38,8 @@ public class Slot {
 
     public Slot() {
     }
+    
+    
 
     public Slot(int id, Date slotDate, int slotNumber, Time startTime) {
         this.id = id;

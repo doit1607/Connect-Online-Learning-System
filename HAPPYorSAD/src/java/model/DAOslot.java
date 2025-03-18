@@ -253,6 +253,29 @@ public class DAOslot extends DBConnection {
         return slots;
     }
 
+    public Slot getSlotById(int slotId) {
+        String query = "SELECT s.id, st.start_time, st.end_time \n"
+                + "FROM slot s \n"
+                + "JOIN slot_template st ON s.slot_number_id = st.id \n"
+                + "WHERE s.id = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, slotId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Slot(
+                        rs.getInt("id"),
+                        rs.getTime("start_time"), // Lấy start_time từ slot_template
+                        rs.getTime("end_time") // Lấy end_time từ slot_template
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
+
     public List<Slot> getSlotsByDate1(Date date, int mentorId) {
         List<Slot> slots = new ArrayList<>();
 

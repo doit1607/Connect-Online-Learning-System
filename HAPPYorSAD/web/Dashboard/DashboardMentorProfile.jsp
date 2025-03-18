@@ -108,6 +108,12 @@
                                                 <i class="bx bxs-graduation"></i>Attendance
                                             </a>
                                         </li>
+                                        
+                                        <li class="nav-item">
+                                            <a href="/../HAPPYorSAD/Att" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>ATT
+                                            </a>
+                                        </li>
                                     </ul>
                                     <h3>Account Settings</h3>
                                     <ul>

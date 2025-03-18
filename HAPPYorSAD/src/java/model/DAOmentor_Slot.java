@@ -40,6 +40,21 @@ public class DAOmentor_Slot extends DBConnection {
         return false;
 
     }
+    public boolean updateSlotStatus2(int mentorId, int slotId, String status) {
+    // Cập nhật trạng thái slot trong database
+    // Ví dụ: UPDATE Mentor_Slot SET status = ? WHERE mentorId = ? AND slot_id = ?
+        return false;
+    // Cập nhật trạng thái slot trong database
+    // Ví dụ: UPDATE Mentor_Slot SET status = ? WHERE mentorId = ? AND slot_id = ?
+}
+    
+    public List<Mentor_Slot> getFilteredSlots(int mentorId, Integer month, String status, Date requestTime) {
+    // Truy vấn SQL để lấy slot theo mentorId và các bộ lọc
+    // Ví dụ: SELECT * FROM Mentor_Slot WHERE mentorId = ? AND MONTH(slot_date) = ? AND status = ? AND request_time = ?
+        return null;
+    // Truy vấn SQL để lấy slot theo mentorId và các bộ lọc
+    // Ví dụ: SELECT * FROM Mentor_Slot WHERE mentorId = ? AND MONTH(slot_date) = ? AND status = ? AND request_time = ?
+}
 
     public Mentor getMentorBySlotId(String slotDate, int slotNumberId) {
         String sql = "SELECT m.name, m.image, m.email \n"

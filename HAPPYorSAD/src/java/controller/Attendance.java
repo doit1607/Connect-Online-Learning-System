@@ -63,12 +63,15 @@ public class Attendance extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
+            LOGGER.info("No active session or userId not found, redirecting to login");
             response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
             return;
         }
 
         int userId = (Integer) session.getAttribute("userId");
+        LOGGER.info("Processing request for userId: " + userId);
         Integer mentorId = DAOMentor.getMentorIdByUserId(userId);
+        LOGGER.info("Retrieved mentorId: " + mentorId);
 
         Integer selectedMonthAttr = (Integer) request.getAttribute("selectedMonth");
         Integer selectedYearAttr = (Integer) request.getAttribute("selectedYear");
@@ -81,6 +84,8 @@ public class Attendance extends HttpServlet {
         String selectedMonthStr = request.getParameter("month");
         String selectedYearStr = request.getParameter("year");
         String weekOffsetStr = request.getParameter("weekOffset");
+
+        LOGGER.info("Initial date parameters - Month: " + selectedMonth + ", Year: " + selectedYear + ", WeekOffset: " + weekOffset);
 
         if (selectedMonthStr != null && !selectedMonthStr.isEmpty()) {
             try {
@@ -122,12 +127,14 @@ public class Attendance extends HttpServlet {
         } else if (!schedules.isEmpty()) {
             scheduleId = schedules.get(0).getId();
         }
+        LOGGER.info("Selected scheduleId: " + scheduleId);
         request.setAttribute("scheduleId", scheduleId);
 
         String[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         request.setAttribute("weekDays", weekDays);
 
         java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+        LOGGER.info("Schedule start date: " + startDate);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<String> weekDates = new ArrayList<>();
 
@@ -148,11 +155,12 @@ public class Attendance extends HttpServlet {
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
             for (int i = 0; i < 7; i++) {
-                weekDates.add(new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter));
+                String formattedDate = new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter);
+                weekDates.add(formattedDate);
                 calendar.add(Calendar.DATE, 1);
             }
         }
-
+        LOGGER.info("Generated week dates: " + weekDates);
         request.setAttribute("weekDates", weekDates);
 
         String weekStartDate = weekDates.isEmpty() ? "" : weekDates.get(0);
@@ -172,7 +180,30 @@ public class Attendance extends HttpServlet {
             for (int i = 0; i < 7; i++) {
                 java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
                 String formattedDate = date.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                slotsByDay.put(formattedDate, daoMSL.getSlotsByDateMentorAttendance(date, mentorId));
+
+                List<Mentor_Slot> mentorSlots = daoMSL.getSlotsByDateMentorAttendance(date, mentorId);
+                List<Mentor_Slot> filteredSlots = new ArrayList<>();
+
+                for (Mentor_Slot slot : mentorSlots) {
+                    String status = slot.getStatus();
+                    if (status != null && (status.equals("Studying") || status.equals("pending_present")
+                            || status.equals("pending_absent") || status.equals("present")
+                            || status.equals("absent") || status.equals("done") || status.equals("cancel"))) {
+                        Slot slotDetails = daoSlot.getSlotById(slot.getSlot_id());
+                        if (slotDetails != null) {
+                            slot.setStart_time(slotDetails.getStartTime());
+                            slot.setEnd_time(slotDetails.getEndTime());
+                            LOGGER.info("Slot Details - ID: " + slot.getSlot_id()
+                                    + ", Date: " + formattedDate
+                                    + ", Start: " + slot.getStart_time()
+                                    + ", End: " + slot.getEnd_time()
+                                    + ", Status: " + slot.getStatus());
+                        }
+                        filteredSlots.add(slot);
+                    }
+                }
+                slotsByDay.put(formattedDate, filteredSlots);
+
                 List<Mentee_Slot> menteeSlots = daoMeSL.getSlotsByDateMenteeAttendancee(date);
                 for (Mentee_Slot menteeSlot : menteeSlots) {
                     if ("rejected_by_mentee".equals(menteeSlot.getStatus())) {
@@ -184,6 +215,7 @@ public class Attendance extends HttpServlet {
                 calendar.add(Calendar.DATE, 1);
             }
         }
+        LOGGER.info("Total rejection notices: " + rejectionNotices.size());
         request.setAttribute("slotsByDay", slotsByDay);
         request.setAttribute("rejectionNotices", rejectionNotices);
 
@@ -191,19 +223,25 @@ public class Attendance extends HttpServlet {
             String message = (String) session.getAttribute("message");
             String error = (String) session.getAttribute("error");
             if (message != null) {
+                LOGGER.info("Setting message attribute: " + message);
                 request.setAttribute("message", message);
                 session.removeAttribute("message");
             }
             if (error != null) {
+                LOGGER.info("Setting error attribute: " + error);
                 request.setAttribute("error", error);
                 session.removeAttribute("error");
             }
-            if (session.getAttribute("showModal") == null || !((Boolean) session.getAttribute("showModal"))) {
-                session.removeAttribute("mentee");
-                session.removeAttribute("slot");
-                session.removeAttribute("selectedDate");
-                session.removeAttribute("selectedSlot");
-                session.removeAttribute("showModal");
+            String referer = request.getHeader("Referer");
+            if (referer == null || !referer.contains("/Attendance")) {
+                if (session.getAttribute("showModal") != null && (Boolean) session.getAttribute("showModal")) {
+                    LOGGER.info("Detected page refresh without POST action, clearing modal-related session attributes");
+                    session.removeAttribute("mentee");
+                    session.removeAttribute("slot");
+                    session.removeAttribute("selectedDate");
+                    session.removeAttribute("selectedSlot");
+                    session.removeAttribute("showModal");
+                }
             }
         }
 
@@ -214,12 +252,13 @@ public class Attendance extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
+            LOGGER.info("No active session or userId not found in POST, redirecting to login");
             response.sendRedirect("/HAPPYorSAD/view/LoginUser.jsp");
             return;
         }
 
         String action = request.getParameter("action");
-        System.out.println("Received action: " + action);
+        LOGGER.info("Received POST action: " + action);
 
         String selectedMonthStr = request.getParameter("month");
         String selectedYearStr = request.getParameter("year");
@@ -243,17 +282,25 @@ public class Attendance extends HttpServlet {
         DAOatt daoA = new DAOatt();
         DAORequest daoR = new DAORequest();
 
+        String redirectUrl = String.format("/Attendance?month=%d&year=%d&weekOffset=%d", selectedMonth, selectedYear, weekOffset);
+
         try {
             if ("getMentees".equals(action)) {
                 String date = request.getParameter("date");
                 String slotNumberStr = request.getParameter("slot");
                 int slotNumber = Integer.parseInt(slotNumberStr);
 
-                System.out.println("Fetching mentees for Date: " + date + ", Slot: " + slotNumber);
+                LOGGER.info("Fetching mentees for Date: " + date + ", Slot: " + slotNumber);
 
                 Mentee m = daoMeSL.getMenteeBySlotId(date, slotNumber);
                 Mentor_Slot slot = daoMSL.getSlotsByDateMentorAtt(date, slotNumber);
+                LOGGER.info("Retrieved Mentee: " + (m != null ? m.getName() : "null")
+                        + ", Slot Details - ID: " + (slot != null ? slot.getSlot_id() : "null")
+                        + ", Start: " + (slot != null ? slot.getStart_time() : "null")
+                        + ", End: " + (slot != null ? slot.getEnd_time() : "null")
+                        + ", Status: " + (slot != null ? slot.getStatus() : "null"));
 
+                
                 session.setAttribute("mentee", m);
                 session.setAttribute("slot", slot);
                 session.setAttribute("selectedDate", date);
@@ -266,31 +313,48 @@ public class Attendance extends HttpServlet {
                 String status = request.getParameter("status");
 
                 int slotNumber = Integer.parseInt(slotNumberStr);
-                System.out.println("Updating attendance for Date: " + date + ", Slot: " + slotNumber + " to " + status);
+                LOGGER.info("Updating attendance for Date: " + date + ", Slot: " + slotNumber + " to " + status);
 
                 Mentor_Slot slot = daoMSL.getSlotsByDateMentorAtt(date, slotNumber);
+                LOGGER.info("Retrieved Slot for update - ID: " + (slot != null ? slot.getSlot_id() : "null")
+                        + ", Start: " + (slot != null ? slot.getStart_time() : "null")
+                        + ", End: " + (slot != null ? slot.getEnd_time() : "null")
+                        + ", Current Status: " + (slot != null ? slot.getStatus() : "null"));
+
                 String menteeStatus = status.equals("pending_present") ? "confirm_present" : "confirm_absent";
                 Mentee_Slot menteeSlot = daoMeSL.getMenteeSlotsByMentorSlotId(slot.getSlot_id());
                 if (menteeSlot != null) {
                     daoMeSL.updateSlotStatus(menteeSlot.getSlot_id(), menteeStatus);
-                    System.out.println("Mentee slots updated to " + menteeStatus);
+                    LOGGER.info("Mentee slot updated - ID: " + menteeSlot.getSlot_id()
+                            + ", New Status: " + menteeStatus);
                 }
                 if (slot != null) {
                     daoMSL.updateSlotStatus(slot.getSlot_id(), status.equals("pending_present") ? "pending_present" : "pending_absent");
-                    System.out.println("Slot updated successfully to " + status);
+                    LOGGER.info("Mentor slot updated - ID: " + slot.getSlot_id()
+                            + ", New Status: " + (status.equals("pending_present") ? "pending_present" : "pending_absent"));
                 }
 
                 session.setAttribute("message", "Attendance saved successfully!");
+                // Xóa các thuộc tính modal sau khi lưu thành công
+                session.removeAttribute("mentee");
+                session.removeAttribute("slot");
+                session.removeAttribute("selectedDate");
+                session.removeAttribute("selectedSlot");
+                session.removeAttribute("showModal");
 
             } else if ("viewAttendance".equals(action)) {
                 String date = request.getParameter("date");
                 String slotNumberStr = request.getParameter("slot");
                 int slotNumber = Integer.parseInt(slotNumberStr);
 
-                System.out.println("Viewing attendance for Date: " + date + ", Slot: " + slotNumber);
+                LOGGER.info("Viewing attendance for Date: " + date + ", Slot: " + slotNumber);
 
                 Mentee m = daoM.getMenteeBySlotId(date, slotNumber);
                 Slot slot = daoSlot.getSlotByDateAndNumber(date, slotNumber);
+                LOGGER.info("Retrieved Mentee: " + (m != null ? m.getName() : "null")
+                        + ", Slot Details - ID: " + (slot != null ? slot.getId() : "null")
+                        + ", Start: " + (slot != null ? slot.getStartTime() : "null")
+                        + ", End: " + (slot != null ? slot.getEndTime() : "null"));
 
                 session.setAttribute("mentee", m);
                 session.setAttribute("slot", slot);
@@ -299,29 +363,29 @@ public class Attendance extends HttpServlet {
                 session.setAttribute("showModal", true);
 
             } else if ("clearModal".equals(action)) {
+                LOGGER.info("Clearing modal attributes");
                 session.removeAttribute("mentee");
                 session.removeAttribute("slot");
                 session.removeAttribute("selectedDate");
                 session.removeAttribute("selectedSlot");
                 session.removeAttribute("showModal");
-                return;
 
             } else {
-                System.out.println("Unknown action: " + action);
+                LOGGER.warning("Unknown action received: " + action);
                 session.setAttribute("error", "Invalid action.");
             }
         } catch (Exception e) {
-            System.out.println("Error processing action: " + action);
+            LOGGER.severe("Error processing action " + action + ": " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("error", "An error occurred. Please try again.");
         }
 
-        String redirectUrl = String.format("/Attendance?month=%d&year=%d&weekOffset=%d", selectedMonth, selectedYear, weekOffset);
+        LOGGER.info("Redirecting to: " + redirectUrl);
         response.sendRedirect(request.getContextPath() + redirectUrl);
     }
 
     @Override
     public String getServletInfo() {
-        return "Servlet for managing attendance of mentees without JSON";
+        return "Servlet for managing attendance ";
     }
 }

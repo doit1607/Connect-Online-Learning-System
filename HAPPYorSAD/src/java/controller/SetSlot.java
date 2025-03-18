@@ -104,89 +104,105 @@ public class SetSlot extends HttpServlet {
         }
 
         List<String> weekDates = new ArrayList<>();
-        java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        if (startDate != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(startDate);
-            calendar.add(Calendar.WEEK_OF_YEAR, weekOffset);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-            for (int i = 0; i < 7; i++) {
-                weekDates.add(new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter));
-                calendar.add(Calendar.DATE, 1);
-            }
+        // Calculate the nearest future Monday
+        LocalDate currentDate = LocalDate.now(); // Today: 2025-03-18
+        LocalDate selectedMonthStart = LocalDate.of(selectedYear, selectedMonth, 1);
+        LocalDate targetDate = currentDate.isBefore(selectedMonthStart) ? selectedMonthStart : currentDate;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Date.valueOf(targetDate));
+        int daysUntilMonday = (Calendar.MONDAY - calendar.get(Calendar.DAY_OF_WEEK) + 7) % 7;
+        calendar.add(Calendar.DATE, daysUntilMonday);
+        calendar.add(Calendar.WEEK_OF_YEAR, weekOffset);
+        String nextMonday = new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter);
+        weekDates.add(nextMonday); // Monday is the nearest future Monday (e.g., 2025-04-07)
+        LOGGER.info("Next Monday: " + nextMonday);
+
+        // Add the first week of the month for Tuesday-Sunday (e.g., 2025-04-01 to 2025-04-06)
+        calendar.setTime(Date.valueOf(selectedMonthStart)); // Start from April 1st
+        for (int i = 0; i < 6; i++) {
+            String formattedDate = new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter);
+            weekDates.add(formattedDate);
+            LOGGER.info("Week date " + weekDays[i + 1] + ": " + formattedDate);
+            calendar.add(Calendar.DATE, 1);
         }
-        request.setAttribute("weekDates", weekDates);
 
-        String weekStartDate = weekDates.isEmpty() ? "" : weekDates.get(0);
-        String weekEndDate = weekDates.isEmpty() ? "" : weekDates.get(6);
+        request.setAttribute("weekDates", weekDates);
+        // Adjust weekStartDate and weekEndDate to reflect Tuesday-Sunday
+        String weekStartDate = weekDates.isEmpty() ? "" : weekDates.get(1); // April 1st
+        String weekEndDate = weekDates.isEmpty() ? "" : weekDates.get(6);   // April 6th
         request.setAttribute("weekOffset", weekOffset);
         request.setAttribute("weekStartDate", weekStartDate);
         request.setAttribute("weekEndDate", weekEndDate);
 
         // Slots by day for "Your Schedule"
         Map<String, List<entity.Slot>> slotsByDay = new HashMap<>();
-        if (startDate != null && mentorId != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(startDate);
-            calendar.add(Calendar.WEEK_OF_YEAR, weekOffset);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
-            for (int i = 0; i < 7; i++) {
-                java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
-                String formattedDate = date.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                slotsByDay.put(formattedDate, daoMs.getSlotsByDate1(date, mentorId));
-                calendar.add(Calendar.DATE, 1);
+        if (mentorId != null) {
+            for (String dateStr : weekDates) {
+                java.sql.Date date = java.sql.Date.valueOf(dateStr);
+                String formattedDate = date.toLocalDate().format(dateFormatter);
+                List<entity.Slot> slots = daoMs.getSlotsByDate1(date, mentorId);
+                slotsByDay.put(formattedDate, slots);
+                LOGGER.info("Slots for " + formattedDate + ": " + slots.size());
             }
         }
         request.setAttribute("slotsByDay", slotsByDay);
 
         // Slots by day for "General Availability" (next month)
+        // Slots by day for "General Availability" (next month)
         List<String> nextWeekDates = new ArrayList<>();
         java.sql.Date nextStartDate = daoSc.getStartDateByScheduleId(nextScheduleId);
         if (nextStartDate != null) {
-            Calendar calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance();
             calendar.setTime(nextStartDate);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            // Instead of forcing to Monday, start from nextStartDate and adjust if needed
+            LOGGER.info("Start date for nextWeekDates: " + nextStartDate);
 
             for (int i = 0; i < 7; i++) {
-                nextWeekDates.add(new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter));
+                String formattedDate = new java.sql.Date(calendar.getTimeInMillis()).toLocalDate().format(dateFormatter);
+                nextWeekDates.add(formattedDate);
+                LOGGER.info("Next week date " + i + ": " + formattedDate);
                 calendar.add(Calendar.DATE, 1);
             }
+        } else {
+            LOGGER.warning("nextStartDate is null for nextScheduleId: " + nextScheduleId);
         }
         request.setAttribute("nextWeekDates", nextWeekDates);
 
         Map<String, List<entity.Slot>> nextSlotsByDay = new HashMap<>();
         if (nextStartDate != null && mentorId != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(nextStartDate);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            calendar = Calendar.getInstance();
+            calendar.setTime(nextStartDate); // Reset calendar to nextStartDate
+            // Remove the DAY_OF_WEEK reset to ensure we start from nextStartDate
 
             for (int i = 0; i < 7; i++) {
                 java.sql.Date date = new java.sql.Date(calendar.getTimeInMillis());
-                String formattedDate = date.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                nextSlotsByDay.put(formattedDate, daoMs.getSlotsByDate1(date, mentorId));
+                String formattedDate = date.toLocalDate().format(dateFormatter);
+                List<entity.Slot> slots = daoMs.getSlotsByDate1(date, mentorId);
+                nextSlotsByDay.put(formattedDate, slots);
+                LOGGER.info("Next slots for " + formattedDate + ": " + slots.size());
+                LOGGER.info("Date: " + formattedDate + ", Slots: " + slots);
                 calendar.add(Calendar.DATE, 1);
             }
         }
+        request.setAttribute("nextSlotsByDay", nextSlotsByDay);
         // Lấy danh sách các tháng đã set slot (trừ tháng hiện tại) cho General Availability
-        LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
 
-        List<Schedule> allAssignedSchedules = daoSc.getAssignedSchedulesByMentor(mentorId); // Hàm mới trong DAOschedule
+        List<Schedule> allAssignedSchedules = daoSc.getAssignedSchedulesByMentor(mentorId);
         List<String> assignedMonthsForGeneral = new ArrayList<>();
 
         for (Schedule schedule : allAssignedSchedules) {
-            Date startDatee = schedule.getStart_date(); // Giả định Schedule có getStartDate()
+            Date startDatee = schedule.getStart_date();
             if (startDatee != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(startDatee);
-                int scheduleMonth = cal.get(Calendar.MONTH) + 1; // Tháng bắt đầu từ 0
+                int scheduleMonth = cal.get(Calendar.MONTH) + 1;
                 int scheduleYear = cal.get(Calendar.YEAR);
 
-                // Loại bỏ tháng hiện tại
                 if (!(scheduleMonth == currentMonth && scheduleYear == currentYear)) {
                     assignedMonthsForGeneral.add(scheduleMonth + " " + scheduleYear);
                 }
@@ -196,18 +212,17 @@ public class SetSlot extends HttpServlet {
         request.setAttribute("assignedMonthsForGeneral", assignedMonthsForGeneral);
         LOGGER.log(Level.INFO, "Assigned months for General Availability for mentorId {0}: {1}",
                 new Object[]{mentorId, assignedMonthsForGeneral});
-        request.setAttribute("nextSlotsByDay", nextSlotsByDay);
 
         // Handle actions for POST requests
         if ("POST".equalsIgnoreCase(request.getMethod()) && action != null) {
             if ("add".equals(action)) {
-                handleAddSlot(request, response, session, nextScheduleId, mentorId); // Use nextScheduleId for General Availability
+                handleAddSlot(request, response, session, nextScheduleId, mentorId);
                 return;
             } else if ("save".equals(action)) {
-                handleSaveSlots(request, response, session, nextScheduleId, mentorId); // Use nextScheduleId
+                handleSaveSlots(request, response, session, nextScheduleId, mentorId);
                 return;
             } else if ("addSchedule".equals(action)) {
-                handleAddSchedule(request, response, mentorId, nextMonth, nextYear); // Pass nextMonth and nextYear
+                handleAddSchedule(request, response, mentorId, nextMonth, nextYear);
                 return;
             } else if ("selectSchedule".equals(action)) {
                 session.setAttribute("scheduleId", scheduleId);
@@ -247,12 +262,14 @@ public class SetSlot extends HttpServlet {
 
             cal.setTime(selectedDate);
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            LOGGER.info("Selected day of week: " + dayOfWeek + " for date: " + selectedDate);
 
             cal.setTime(startDate);
             cal.set(Calendar.DAY_OF_MONTH, 1);
             while (cal.get(Calendar.MONTH) == month && cal.get(Calendar.YEAR) == year) {
                 if (cal.get(Calendar.DAY_OF_WEEK) == dayOfWeek) {
                     Date date = new Date(cal.getTimeInMillis());
+                    LOGGER.info("Found matching day: " + date);
                     List<TempSlot> tempSlots = tempSlotsByDate.getOrDefault(date, new ArrayList<>());
                     int slotId = daoSlot.getSlotId(scheduleId, date, slotNumber);
 
@@ -302,7 +319,6 @@ public class SetSlot extends HttpServlet {
         LOGGER.log(Level.INFO, "Starting handleAddSchedule for mentorId: {0}, selectedMonth: {1}, selectedYear: {2}",
                 new Object[]{mentorId, selectedMonth, selectedYear});
 
-        // Bắt đầu từ tháng tiếp theo của tháng hiện tại
         int nextMonth = (selectedMonth % 12) + 1;
         int nextYear = (selectedMonth == 12) ? selectedYear + 1 : selectedYear;
         int nextScheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
@@ -310,9 +326,7 @@ public class SetSlot extends HttpServlet {
         LOGGER.log(Level.INFO, "Checking initial next month: {0}/{1}, scheduleId: {2}",
                 new Object[]{nextMonth, nextYear, nextScheduleId});
 
-        // Kiểm tra xem scheduleId của tháng tiếp theo đã được gán với mentor chưa
         while (nextScheduleId != -1 && daoSc.isScheduleAssignedToMentor(mentorId, nextScheduleId)) {
-            // Nếu đã gán, nhảy sang tháng tiếp theo
             nextMonth = (nextMonth % 12) + 1;
             nextYear = (nextMonth == 1) ? nextYear + 1 : nextYear;
             nextScheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
@@ -320,17 +334,14 @@ public class SetSlot extends HttpServlet {
                     new Object[]{selectedMonth, selectedYear, nextMonth, nextYear, nextScheduleId});
         }
 
-        // Khi tìm được tháng chưa gán hoặc không có schedule
         if (nextScheduleId == -1) {
             LOGGER.log(Level.WARNING, "No schedule available for month {0}/{1}, creating a new one",
                     new Object[]{nextMonth, nextYear});
-            // Nếu không có schedule, tạo mới (tùy thuộc vào logic của bạn, có thể cần thêm hàm tạo schedule)
             session.setAttribute("message", "No existing schedule for " + nextMonth + "/" + nextYear + ". Please contact admin to create one.");
             response.sendRedirect("SetSlot");
             return;
         }
 
-        // Gắn mentorId với nextScheduleId
         LOGGER.log(Level.INFO, "Attempting to add schedule with mentorId: {0}, nextScheduleId: {1}",
                 new Object[]{mentorId, nextScheduleId});
         boolean success = daoSc.addSchedule(mentorId, nextScheduleId);
@@ -338,10 +349,8 @@ public class SetSlot extends HttpServlet {
         if (success) {
             LOGGER.log(Level.INFO, "Successfully added schedule for mentorId: {0}, scheduleId: {1}",
                     new Object[]{mentorId, nextScheduleId});
-            // Cập nhật session và các thuộc tính để hiển thị tháng vừa thêm
             session.setAttribute("scheduleId", nextScheduleId);
             session.setAttribute("message", "Schedule for " + nextMonth + "/" + nextYear + " added successfully!");
-            // Chuyển hướng với tháng và năm mới
             response.sendRedirect("SetSlot?month=" + nextMonth + "&year=" + nextYear);
         } else {
             LOGGER.log(Level.SEVERE, "Failed to add schedule for mentorId: {0}, scheduleId: {1}",

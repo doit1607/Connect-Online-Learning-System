@@ -8,6 +8,7 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -17,6 +18,16 @@ public class DAOMentor extends DBConnection {
 
     public static DAOuser userDao = new DAOuser();
 
+    public List<Mentor> filterMentors(Integer month, String status, String searchQuery, Date requestTime) {
+    // Truy vấn SQL để lọc mentor dựa trên các tiêu chí
+    // Ví dụ: SELECT * FROM Mentor WHERE name LIKE ? OR mentorId LIKE ?
+    // Kết hợp với slot nếu cần
+        return null;
+    // Truy vấn SQL để lọc mentor dựa trên các tiêu chí
+    // Ví dụ: SELECT * FROM Mentor WHERE name LIKE ? OR mentorId LIKE ?
+    // Kết hợp với slot nếu cần
+}
+    
     public static Integer getMentorIdByUserId(int userId) {
         String sql = "SELECT id FROM Mentor WHERE user_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
