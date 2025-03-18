@@ -344,7 +344,10 @@
                 background: #ffffff;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
                 overflow: hidden;
-                max-width: 320px;
+                min-width: 320px; /* Giữ chiều rộng tối thiểu */
+                max-width: 500px; /* Giới hạn chiều rộng tối đa */
+                width: auto; /* Tự động mở rộng theo nội dung */
+                overflow-x: auto; /* Thêm thanh cuộn ngang nếu cần */
             }
             .info-header {
                 background: linear-gradient(90deg, #00c4cc, #7b3fe4);
@@ -377,9 +380,7 @@
                 font-weight: 600;
                 margin: 0;
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-                white-space: nowrap;
-                overflow: visible;
-                max-width: none;
+                white-space: nowrap; /* Ngăn xuống dòng */
                 color: #333;
             }
             .amount-text {
@@ -478,9 +479,7 @@
                 font-weight: 600;
                 margin: 0;
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-                white-space: nowrap;
-                overflow: visible;
-                max-width: none;
+                white-space: nowrap; /* Ngăn xuống dòng */
                 color: #333;
             }
             .wallet-balance .amount-text {
