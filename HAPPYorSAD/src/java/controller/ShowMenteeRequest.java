@@ -80,8 +80,18 @@ public class ShowMenteeRequest extends HttpServlet {
         }
         request.setAttribute("endPage", endPage);
         request.setAttribute("tag", index);
-        List<Request> listAllRequest = dao.getAllRequest(menteeId,index);
-        LOGGER.log(Level.INFO, "Retrieved {0} requests for menteeId: {1}", new Object[]{listAllRequest.size(), menteeId});
+        String status = request.getParameter("status");
+        List<Request> listAllRequest;
+
+        if (status != null && !status.isEmpty()) {
+            listAllRequest = dao.getRequestByStatus(menteeId, status, index);
+            LOGGER.log(Level.INFO, "Filtered {0} requests with status {1} for menteeId: {2}",
+                    new Object[]{listAllRequest.size(), status, menteeId});
+        } else {
+            listAllRequest = dao.getAllRequest(menteeId, index);
+            LOGGER.log(Level.INFO, "Retrieved {0} requests for menteeId: {1}",
+                    new Object[]{listAllRequest.size(), menteeId});
+        }
         session.setAttribute("listAllRequest", listAllRequest);
 
         // Tính toán thông tin chi tiết cho từng request
