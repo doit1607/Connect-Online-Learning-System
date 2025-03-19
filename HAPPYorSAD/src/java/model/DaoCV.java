@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DaoCV extends DBConnection {
 
-    public void createCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username, Double price) {
+    public void createCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username) {
         String sql = "INSERT INTO [dbo].[CV]\n"
                 + "           ([profession]\n"
                 + "           ,[professionIntro]\n"
@@ -29,9 +29,8 @@ public class DaoCV extends DBConnection {
                 + "           ,[achievementDescription]\n"
                 + "           ,[created_at]\n"
                 + "           ,[username]\n"
-                + "           ,[status]\n"
-                + "           ,[price])\n"
-                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "           ,[status])\n"
+                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, profession);
@@ -42,7 +41,6 @@ public class DaoCV extends DBConnection {
             pre.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             pre.setString(7, username);
             pre.setString(8, "draft");
-            pre.setDouble(9, price);
             pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,14 +49,15 @@ public class DaoCV extends DBConnection {
 
     public String getCVStatusByUsername(String username) {
         String sql = "SELECT [status] FROM CV WHERE username = ?";
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
             pre.setString(1, username);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                return rs.getString("status");
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("status");
+                }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -82,7 +81,7 @@ public class DaoCV extends DBConnection {
                 return new CV(
                         rs.getString("username"), rs.getString("profession"),
                         rs.getString("professionIntro"), courses, rs.getString("serviceDescription"),
-                        rs.getString("achievementDescription"), createdAt, "Pending", rs.getDouble("price")
+                        rs.getString("achievementDescription"), createdAt, "Pending"
                 );
             }
         } catch (Exception e) {
@@ -126,14 +125,13 @@ public class DaoCV extends DBConnection {
         return listApproved;
     }
 
-    public void updateCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username, Double price) {
+    public void updateCV(String profession, String professionIntro, List<String> courses, String serviceDescription, String achievementDescription, String username) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [profession] = ?\n"
                 + "      ,[professionIntro] = ?\n"
                 + "      ,[courses] = ?\n"
                 + "      ,[serviceDescription] = ?\n"
                 + "      ,[achievementDescription] = ?\n"
-                + "      ,[price] = ?\n"
                 + " WHERE [username] = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -143,8 +141,7 @@ public class DaoCV extends DBConnection {
             pre.setString(3, coursesStr);
             pre.setString(4, serviceDescription);
             pre.setString(5, achievementDescription);
-            pre.setDouble(6, price);
-            pre.setString(7, username);
+            pre.setString(6, username);
 
             pre.executeUpdate();
         } catch (Exception e) {
@@ -181,7 +178,7 @@ public class DaoCV extends DBConnection {
                 cv.setCreatedAt(timestamp != null ? timestamp.toLocalDateTime() : null);
 
                 cv.setMessage(rs.getString("message"));
-                
+
                 listCV.add(cv);
             }
         } catch (Exception e) {
@@ -191,11 +188,11 @@ public class DaoCV extends DBConnection {
 
     public static void main(String[] args) {
         DaoCV dao = new DaoCV();
-        dao.createCV("Software Engineer", "Experienced in Java and SQL",
+        dao.updateCV("Software Engineering", "Experienced in Java and SQL",
                 Arrays.asList("Business Administration", "Graphic Design"),
                 "Freelance software development",
                 "Built multiple web applications",
-                "nancy_miller", 140.00);
+                "olivia_wright");
 
     }
 }
