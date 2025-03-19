@@ -40,9 +40,12 @@ public class ShowAllCourseByMajorId extends HttpServlet {
         request.setAttribute("listAllMaojor", listAllMaojor);
         List<Course> listCourseByMajorId = daoM.getListAllCourseByMajorId(majorId);
         int countMentee = 0;
+        int getTotalMentorsByCourse = 0;
         for (Course course : listCourseByMajorId) {
             countMentee = dao.countMenteeOfCourse(course.getId());
+            getTotalMentorsByCourse = dao.getTotalMentorsByCourse(course.getId());
             course.setTotal_Mentee(countMentee);
+            course.setTotal_Mentor(getTotalMentorsByCourse);
         }
         request.setAttribute("listAllCousre", listCourseByMajorId);
         request.setAttribute("tagg", majorId);
