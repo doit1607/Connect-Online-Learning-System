@@ -157,9 +157,11 @@
                                             <% if (mentorList != null) {
                                                 for (Mentor mentor : mentorList) { 
                                                     boolean isReviewed = reviewedMentorIds != null && reviewedMentorIds.contains(mentor.getId());
+                                                    boolean isSelected = selectedMentorId != null && selectedMentorId.equals(mentor.getId());
                                             %>
                                             <li>
-                                                <a href="/HAPPYorSAD/reviewmentor?mentorId=<%= mentor.getId() %>" class="btn btn-link">
+                                                <a href="/HAPPYorSAD/reviewmentor?mentorId=<%= mentor.getId() %>" 
+                                                   class="btn btn-link <%= isSelected ? "selected-mentor" : "" %>">
                                                     <%= mentor.getName() %>
                                                 </a>
                                             </li>
@@ -167,10 +169,9 @@
                                         </ul>
                                     </div>
 
-                                    <!-- Nếu mentor được chọn, hiển thị form đánh giá -->
                                     <% if (selectedMentorId != null) { %>
                                     <div id="review-form">
-                                        <h2 class="mb-3">Rate & Comment for </h2>
+                                        <h2 class="mb-3">Rate & Comment</h2>
                                         <form action="/HAPPYorSAD/reviewmentor" method="get">
                                             <input type="hidden" name="username" value="${sessionScope.usernameUser}">
                                             <input type="hidden" name="mentorId" value="<%= selectedMentorId %>">
@@ -180,7 +181,7 @@
                                             <div class="rating mb-3">
                                                 <% for (int i = 5; i >= 1; i--) { %>
                                                 <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" <%= (i == rating) ? "checked" : "" %> required>
-                                                <label for="star<%= i %>">&#9733;</label>
+                                                <label for="star<%= i %>">★</label>
                                                 <% } %>
                                             </div>
 
@@ -196,20 +197,21 @@
                                     <% } %>
                                 </div>
                             </div>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    document.querySelectorAll(".mentor-btn").forEach(button => {
-                                        button.addEventListener("click", function () {
-                                            const mentorId = this.getAttribute("data-mentor-id");
-                                            const mentorName = this.getAttribute("data-mentor-name");
-                                            document.getElementById("mentor-name").textContent = mentorName;
-                                            document.getElementById("mentorId").value = mentorId;
-                                            document.getElementById("review-form").style.display = "block";
-                                        });
-                                    });
-                                });
-                            </script>
                         </div>
+
+                        <!-- CSS để làm nổi bật mentor được chọn -->
+                        <style>
+                            .selected-mentor {
+                                background-color: #007bff; /* Màu nền xanh */
+                                color: white; /* Chữ trắng */
+                                padding: 5px 10px; /* Khoảng đệm */
+                                border-radius: 5px; /* Bo góc */
+                                text-decoration: none; /* Bỏ gạch chân */
+                            }
+                            .selected-mentor:hover {
+                                color: white; /* Giữ màu chữ trắng khi hover */
+                            }
+                        </style>
                         <!-- /Main Content -->
                     </div>
                 </div>
