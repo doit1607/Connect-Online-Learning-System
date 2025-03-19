@@ -43,9 +43,12 @@ public class ShowAllCourse extends HttpServlet {
 
             List<Course> searchResults = dao.searchCourseByTitle(searchKeyword);
             int countMentee = 0;
+            int getTotalMentorsByCourse = 0;
             for (Course course : searchResults) {
                 countMentee = dao.countMenteeOfCourse(course.getId());
+                getTotalMentorsByCourse = dao.getTotalMentorsByCourse(course.getId());
                 course.setTotal_Mentee(countMentee);
+                course.setTotal_Mentor(getTotalMentorsByCourse);
             }
             request.setAttribute("listAllCousre", searchResults);
         } else {
@@ -63,9 +66,12 @@ public class ShowAllCourse extends HttpServlet {
 
             List<Course> listAllCousre = dao.pagingCourse(index);
             int countMentee = 0;
+            int getTotalMentorsByCourse = 0;
             for (Course course : listAllCousre) {
                 countMentee = dao.countMenteeOfCourse(course.getId());
+                getTotalMentorsByCourse = dao.getTotalMentorsByCourse(course.getId());
                 course.setTotal_Mentee(countMentee);
+                course.setTotal_Mentor(getTotalMentorsByCourse);
             }
             request.setAttribute("endPage", endPage);
             request.setAttribute("tag", index);
