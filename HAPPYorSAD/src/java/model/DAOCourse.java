@@ -372,19 +372,17 @@ public class DAOCourse extends DBConnection {
         return course;
     }
 
-     public List<Mentor> getMentorByCourseId(int cid) {
+    public List<Mentor> getMentorByCourseId(int cid) {
         List<Mentor> mentors = new ArrayList<>();
-        String sql = "SELECT \n"
+        String sql = "	SELECT \n"
                 + "    m.id AS mentor_id,\n"
-                + "    m.name AS mentor_name,\n"
-                + "    m.email AS mentor_email,\n"
-                + "    m.rating,\n"
-                + "    m.price_per_slot,\n"
-                + "    m.expertise,\n"
-                + "    m.bio,\n"
-                + "	m.image,\n"
-                + "	m.reviews,\n"
-                + "    u.username\n"
+                + "    MAX(m.name) AS mentor_name,\n"
+                + "    MAX(m.email) AS mentor_email,\n"
+                + "    MAX(m.rating) AS rating,\n"
+                + "    MAX(m.price_per_slot) AS price_per_slot,\n"
+                + "    MAX(CAST(m.bio AS NVARCHAR(MAX))) AS bio,\n"
+                + "    MAX(CAST(m.image AS NVARCHAR(MAX))) AS image,\n"
+                + "    MAX(CAST(m.reviews AS NVARCHAR(MAX))) AS reviews\n"
                 + "FROM \n"
                 + "    Course c\n"
                 + "INNER JOIN \n"
@@ -395,9 +393,15 @@ public class DAOCourse extends DBConnection {
                 + "    Mentor m ON m.user_id = (SELECT id FROM Users WHERE username = cv.username)\n"
                 + "INNER JOIN \n"
                 + "    Users u ON m.user_id = u.id\n"
+                + "INNER JOIN \n"
+                + "    mentor_slot ms ON m.id = ms.mentor_id\n"
                 + "WHERE \n"
                 + "    c.id = ? \n"
-                + "    AND m.is_deleted = 0;";
+                + "    AND cv.status = 'approved' \n"
+                + "    AND m.price_per_slot IS NOT NULL\n"
+                + "    AND ms.status = 'Available'\n"
+                + "GROUP BY \n"
+                + "    m.id;";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -769,7 +773,6 @@ public class DAOCourse extends DBConnection {
 
         return 0;
     }
-
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
