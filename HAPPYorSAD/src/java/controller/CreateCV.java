@@ -82,25 +82,13 @@ public class CreateCV extends HttpServlet {
         String[] coursesArray = request.getParameterValues("courses");
         List<String> courses = (coursesArray != null) ? Arrays.asList(coursesArray) : null;
 
-        Double price = null;
-        try {
-            String priceStr = request.getParameter("price");
-            if (priceStr != null && !priceStr.trim().isEmpty()) {
-                price = Double.parseDouble(priceStr);
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid price format.");
-            request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
-            return;
-        }
-
         if (profession != null && !profession.isEmpty()
                 && professionIntro != null && !professionIntro.isEmpty()
                 && serviceDescription != null && !serviceDescription.isEmpty()
                 && achievementDescription != null && !achievementDescription.isEmpty()) {
 
             DaoCV dao = new DaoCV();
-            dao.createCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username, price);
+            dao.createCV(profession, professionIntro, courses, serviceDescription, achievementDescription, username);
 
             String cvSta = dao.getCVStatusByUsername(username);
             session.setAttribute("cvStatus", cvSta);
@@ -116,7 +104,6 @@ public class CreateCV extends HttpServlet {
         request.setAttribute("professionIntro", professionIntro);
         request.setAttribute("serviceDescription", serviceDescription);
         request.setAttribute("achievementDescription", achievementDescription);
-        request.setAttribute("price", price);
 
         request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
     }
