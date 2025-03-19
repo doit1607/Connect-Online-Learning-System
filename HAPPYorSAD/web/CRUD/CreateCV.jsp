@@ -170,11 +170,6 @@
                             <label for="me">Mechanical Engineering</label>
                         </div>
                     </div>
-                    
-                    <div class="input-block">
-                        <label>Price</label>
-                        <textarea name="price" rows="3"></textarea>
-                    </div>
 
                     <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
