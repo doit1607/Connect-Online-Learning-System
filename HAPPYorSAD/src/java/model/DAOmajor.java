@@ -86,10 +86,7 @@ public class DAOmajor extends DBConnection {
                 + "    c.created_at AS CreatedAt,\n"
                 + "    c.updated_at AS UpdatedAt,\n"
                 + "    c.course_major_id AS CourseMajorID,\n"
-                + "    c.image AS CourseImage,\n"
-                + "    \n"
-                + "    -- Đếm số lượng mentor\n"
-                + "    COUNT(cv.id) AS MentorCount\n"
+                + "    c.image AS CourseImage \n"
                 + "FROM \n"
                 + "    Course c\n"
                 + "LEFT JOIN \n"
@@ -117,7 +114,6 @@ public class DAOmajor extends DBConnection {
                 course.setStatus(rs.getString("CourseStatus"));
                 course.setCourseMajorId(rs.getInt("CourseMajorID"));
                 course.setImage(rs.getString("CourseImage"));
-                course.setTotal_Mentor(rs.getInt("MentorCount"));
 
                 listCourse.add(course);
             }
