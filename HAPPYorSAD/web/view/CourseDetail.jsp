@@ -183,13 +183,10 @@
                                                 <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}">
                                                     <img class="img-fluid" alt="Img" src="${mentor.image}">
                                                 </a>
-                                                <div class="price">
-                                                    <h3> ${mentor.pricePerSlot}đ</h3>
-                                                </div>
                                             </div>
                                             <div class="instructor-content">												
                                                 <h5><a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}">${mentor.name}</a></h5>
-                                                <h6>${mentor.username}</h6>
+
                                                 <div class="instructor-info">
                                                     <div class="rating-img d-flex align-items-center">
                                                         <img src="assets/img/icon/user-icon.svg" class="me-1" alt="Img">
@@ -210,13 +207,16 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </c:forEach>
-                                                        <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${mentor.total_reviews})</span>
-                                                    </div>                                                  
-                                                </div>
-                                                <div class="instructor-badge">
-                                                    <span class="web-badge">${mentor.expertise}</span>
+                                                        <span class="d-inline-block average-rating"><span>${ratingValue}</span> (${mentor.total_reviews})</span>                                                       
+                                                    </div> 
+                                                    <br>
 
                                                 </div>
+                                                <br>
+                                                <div >
+                                                    <h3> ${mentor.pricePerSlot}đ/ Slot</h3>
+                                                </div>
+
                                             </div>
                                             <h2>
                                                 <a href="MentorDetail?mentorId=${mentor.mentorId}&courseId=${detail.id}&price=${mentor.pricePerSlot}" 
