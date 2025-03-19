@@ -144,39 +144,229 @@
                             </div>
                         </div>
                         <div class="col-xl-9 col-lg-9">
-                            <!-- Mentee Settings -->
                             <div class="content-area" id="content-area">
+                                <!-- Profile Heading -->
                                 <div class="profile-heading">
-                                    <h2>CV Details</h2>
+                                    <h2 class="heading-title">CV Details</h2>
                                 </div>
-                                <ul>
-<!--                                    <li><span class="icon"><strong>Account name :</strong></span> <span class="text">${mentor.username}</span></li>-->
-                                    <li><span class="icon"><strong>Full name 👤:</strong></span> <span class="text">${mentor.fullname}</span></li>
-                                    <li><span class="icon"><strong>Phone 📱:</strong></span> <span class="text">${mentor.phoneNumber}</span></li>
-                                    <li><span class="icon"><strong>Date of Birth 🎂:</strong></span> <span class="text">${mentor.dateOfBirth}</span></li>
-                                    <li><span class="icon"><strong>Gmail 📧:</strong></span> <span class="text">${mentor.email}</span></li>
-                                    <li><span class="icon"><strong>Gender ⚧:</strong></span> <span class="text">${mentor.gender}</span></li>
-                                    <li><span class="icon"><strong>Address 📍:</strong></span> <span class="text">${mentor.address}</span></li>
-                                </ul>
 
+                                <!-- Personal Information -->
+                                <div class="info-section">
+                                    <h3 class="section-title">Personal Information</h3>
+                                    <ul class="info-list">
+                                        <li>
+                                            <span class="icon-label"><strong>Full name 👤:</strong></span>
+                                            <span class="text-value">${mentor.fullname}</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon-label"><strong>Phone 📱:</strong></span>
+                                            <span class="text-value">${mentor.phoneNumber}</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon-label"><strong>Date of Birth 🎂:</strong></span>
+                                            <span class="text-value">${mentor.dateOfBirth}</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon-label"><strong>Gmail 📧:</strong></span>
+                                            <span class="text-value">${mentor.email}</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon-label"><strong>Gender ⚧:</strong></span>
+                                            <span class="text-value">${mentor.gender}</span>
+                                        </li>
+                                        <li>
+                                            <span class="icon-label"><strong>Address 📍:</strong></span>
+                                            <span class="text-value">${mentor.address}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- CV Details -->
                                 <c:if test="${cvDetail != null}">
-                                    <p><strong>Profession:</strong> ${cvDetail.profession}</p>
-                                    <p><strong>Introduction:</strong> ${cvDetail.professionIntro}</p>
-                                    <p><strong>Service Description:</strong> ${cvDetail.serviceDescription}</p>
-                                    <p><strong>Achievements:</strong> ${cvDetail.achievementDescription}</p>
-                                    <p><strong>Major:</strong> ${cvDetail.courses}</p>
-                                    <p><strong>Created At:</strong> 
-                                        <fmt:formatDate value="${cvDetail.createdAtAsDate}" pattern="dd-MM-yyyy HH:mm:ss" />
-                                    </p>
+                                    <div class="cv-section">
+                                        <h3 class="section-title">Professional Details</h3>
+                                        <div class="cv-content">
+                                            <p><span class="detail-label">Profession:</span> ${cvDetail.profession}</p>
+                                            <p><span class="detail-label">Introduction:</span> ${cvDetail.professionIntro}</p>
+                                            <p><span class="detail-label">Service Description:</span> ${cvDetail.serviceDescription}</p>
+                                            <p><span class="detail-label">Achievements:</span> ${cvDetail.achievementDescription}</p>
+                                            <p><span class="detail-label">Major:</span> ${cvDetail.courses}</p>
+                                            <p><span class="detail-label">Created At:</span>
+                                                <fmt:formatDate value="${cvDetail.createdAtAsDate}" pattern="dd-MM-yyyy HH:mm:ss" />
+                                            </p>
+                                        </div>
+                                    </div>
                                 </c:if>
 
                                 <c:if test="${cvDetail == null}">
-                                    <p style="color: red;">No CV details available.</p>
+                                    <div class="no-data">
+                                        <p>No CV details available.</p>
+                                    </div>
                                 </c:if>
 
-                                <a href="AcceptCV" class="btn btn-secondary">Back</a>
+                                <!-- Back Button -->
+                                <div class="action-section">
+                                    <a href="AcceptCV" class="btn btn-secondary back-btn">Back</a>
+                                </div>
                             </div>
                         </div>
+
+                        <style>
+                            /* General Content Area Styling */
+                            .content-area {
+                                background-color: #fff;
+                                border-radius: 10px;
+                                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                                padding: 30px;
+                                margin-bottom: 20px;
+                                transition: transform 0.3s ease;
+                            }
+
+                            .content-area:hover {
+                                transform: translateY(-5px);
+                            }
+
+                            /* Profile Heading */
+                            .profile-heading {
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+
+                            .heading-title {
+                                font-size: 2rem;
+                                color: #333;
+                                position: relative;
+                                display: inline-block;
+                                padding-bottom: 10px;
+                            }
+
+                            .heading-title::after {
+                                content: '';
+                                position: absolute;
+                                width: 50%;
+                                height: 3px;
+                                background-color: #007bff;
+                                bottom: 0;
+                                left: 25%;
+                                transition: width 0.3s ease;
+                            }
+
+                            .profile-heading:hover .heading-title::after {
+                                width: 100%;
+                                left: 0;
+                            }
+
+                            /* Section Titles */
+                            .section-title {
+                                font-size: 1.5rem;
+                                color: #444;
+                                margin-bottom: 20px;
+                                border-left: 4px solid #007bff;
+                                padding-left: 10px;
+                            }
+
+                            /* Personal Information Section */
+                            .info-section {
+                                margin-bottom: 40px;
+                            }
+
+                            .info-list {
+                                list-style: none;
+                                padding: 0;
+                            }
+
+                            .info-item {
+                                display: flex;
+                                align-items: center;
+                                padding: 12px 15px;
+                                margin-bottom: 10px;
+                                background-color: #f8f9fa;
+                                border-radius: 8px;
+                                transition: background-color 0.3s ease, transform 0.2s ease;
+                            }
+
+                            .info-item:hover {
+                                background-color: #e9ecef;
+                                transform: translateX(5px);
+                            }
+
+                            .icon-label {
+                                flex: 0 0 200px;
+                                font-weight: 600;
+                                color: #555;
+                            }
+
+                            .text-value {
+                                flex: 1;
+                                color: #333;
+                            }
+
+                            /* CV Details Section */
+                            .cv-section {
+                                margin-bottom: 40px;
+                            }
+
+                            .cv-content {
+                                background-color: #f8f9fa;
+                                padding: 20px;
+                                border-radius: 8px;
+                            }
+
+                            .cv-item {
+                                margin-bottom: 15px;
+                                padding: 10px;
+                                border-left: 3px solid #007bff;
+                                transition: background-color 0.3s ease, border-color 0.3s ease;
+                            }
+
+                            .cv-item:hover {
+                                background-color: #e9ecef;
+                                border-left-color: #0056b3;
+                            }
+
+                            .detail-label {
+                                font-weight: 600;
+                                color: #555;
+                                display: inline-block;
+                                width: 150px;
+                            }
+
+                            .cv-item p {
+                                margin: 0;
+                                display: inline;
+                                color: #333;
+                            }
+
+                            /* No Data Section */
+                            .no-data {
+                                text-align: center;
+                                padding: 20px;
+                                background-color: #f8d7da;
+                                color: #721c24;
+                                border-radius: 8px;
+                                margin-bottom: 40px;
+                            }
+
+                            /* Action Section */
+                            .action-section {
+                                text-align: center;
+                            }
+
+                            .back-btn {
+                                padding: 10px 30px;
+                                font-size: 1rem;
+                                background-color: #6c757d;
+                                border: none;
+                                border-radius: 5px;
+                                color: white;
+                                transition: background-color 0.3s ease, transform 0.2s ease;
+                            }
+
+                            .back-btn:hover {
+                                background-color: #5a6268;
+                                transform: scale(1.05);
+                            }
+                        </style>
                     </div>
                 </div>
             </div>
