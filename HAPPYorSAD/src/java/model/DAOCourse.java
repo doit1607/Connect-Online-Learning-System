@@ -448,15 +448,21 @@ public class DAOCourse extends DBConnection {
 //    }
     public int getTotalMentorsByCourse(int courseId) {
         String sql = "SELECT \n"
-                + "    COUNT(cv.id) AS mentorCount\n"
+                + "    COUNT(DISTINCT m.id) AS mentorCount\n"
                 + "FROM \n"
                 + "    Course c\n"
-                + "LEFT JOIN \n"
+                + "INNER JOIN \n"
                 + "    CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "LEFT JOIN \n"
+                + "INNER JOIN \n"
                 + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
+                + "INNER JOIN \n"
+                + "    Mentor m ON cv.username = (SELECT u.username FROM Users u WHERE u.id = m.user_id)\n"
+                + "INNER JOIN \n"
+                + "    mentor_slot ms ON ms.mentor_id = m.id AND ms.status = 'Available'\n"
                 + "WHERE \n"
-                + "    c.id = ?";
+                + "    c.id = ?\n"
+                + "    AND cv.status = 'approved'\n"
+                + "    AND m.price_per_slot IS NOT NULL;";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -635,9 +641,7 @@ public class DAOCourse extends DBConnection {
                 + "    c.created_at AS CreatedAt,\n"
                 + "    c.updated_at AS UpdatedAt,\n"
                 + "    c.course_major_id AS CourseMajorID,\n"
-                + "    c.image AS CourseImage,\n"
-                + "    \n"
-                + "    COUNT(cv.id) AS MentorCount\n"
+                + "    c.image AS CourseImage\n"
                 + "FROM \n"
                 + "    Course c\n"
                 + "LEFT JOIN \n"
@@ -663,7 +667,6 @@ public class DAOCourse extends DBConnection {
                 course.setStatus(rs.getString("CourseStatus"));
                 course.setCourseMajorId(rs.getInt("CourseMajorID"));
                 course.setImage(rs.getString("CourseImage"));
-                course.setTotal_Mentor(rs.getInt("MentorCount"));
 
                 list.add(course);
             }
@@ -715,9 +718,7 @@ public class DAOCourse extends DBConnection {
                 + "    c.created_at AS CreatedAt,\n"
                 + "    c.updated_at AS UpdatedAt,\n"
                 + "    c.course_major_id AS CourseMajorID,\n"
-                + "    c.image AS CourseImage,\n"
-                + "    \n"
-                + "    COUNT(cv.id) AS MentorCount\n"
+                + "    c.image AS CourseImage\n"
                 + "FROM \n"
                 + "    Course c\n"
                 + "LEFT JOIN \n"
@@ -742,7 +743,6 @@ public class DAOCourse extends DBConnection {
                 course.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
                 course.setCourseMajorId(rs.getInt("CourseMajorID"));
                 course.setImage(rs.getString("CourseImage"));
-                course.setTotal_Mentor(rs.getInt("MentorCount"));
                 list.add(course);
             }
         } catch (SQLException e) {
