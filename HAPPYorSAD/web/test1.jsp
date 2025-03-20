@@ -296,6 +296,7 @@
                     font-size: 16px;
                 }
 
+
                 .modal button {
                     margin-top: 15px;
                     padding: 8px 15px;
@@ -438,74 +439,74 @@
             }
 
             /* Style cơ bản cho tất cả các slot */
-           /* Style cơ bản cho tất cả các slot */
-.timing {
-    display: inline-block;
-    padding: 10px 15px;
-    margin: 5px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    min-width: 100px;
-    text-align: center;
-    border: 2px solid transparent; /* Đặt border mặc định để tránh giật khi đổi trạng thái */
-}
+            /* Style cơ bản cho tất cả các slot */
+            .timing {
+                display: inline-block;
+                padding: 10px 15px;
+                margin: 5px;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                min-width: 100px;
+                text-align: center;
+                border: 2px solid transparent; /* Đặt border mặc định để tránh giật khi đổi trạng thái */
+            }
 
-.timing.slot-studying {
-    background-color: #ff0000; /* Màu đỏ */
-    color: white;
-    border: 2px solid #cc0000;
-}
+            .timing.slot-studying {
+                background-color: #ff0000; /* Màu đỏ */
+                color: white;
+                border: 2px solid #cc0000;
+            }
 
-.timing.slot-booked {
-    background-color: #ffff00; /* Màu vàng */
-    color: #333;
-    border: 2px solid #cccc00;
-}
+            .timing.slot-booked {
+                background-color: #ffff00; /* Màu vàng */
+                color: #333;
+                border: 2px solid #cccc00;
+            }
 
-.timing.slot-available {
-    background-color: #4CAF50; /* Màu xanh lá */
-    color: white;
-    border: 2px solid #3d8b40;
-}
+            .timing.slot-available {
+                background-color: #4CAF50; /* Màu xanh lá */
+                color: white;
+                border: 2px solid #3d8b40;
+            }
 
-.timing.slot-notset {
-    background-color: #f0f0f0; /* Màu xám nhạt */
-    color: #999;
-    border: 2px solid #d3d3d3;
-    cursor: not-allowed;
-    opacity: 0.7;
-    pointer-events: none;
-}
+            .timing.slot-notset {
+                background-color: #f0f0f0; /* Màu xám nhạt */
+                color: #999;
+                border: 2px solid #d3d3d3;
+                cursor: not-allowed;
+                opacity: 0.7;
+                pointer-events: none;
+            }
 
-/* Đảm bảo slot được chọn (selected) không ghi đè màu trạng thái */
-.timing.selected {
-    /* Xóa các thuộc tính background-color và border mặc định của .selected */
-    /* Chỉ giữ lại hiệu ứng chọn nếu cần */
-    /* Ví dụ: thêm biểu tượng check mà không thay đổi màu nền */
-}
+            /* Đảm bảo slot được chọn (selected) không ghi đè màu trạng thái */
+            .timing.selected {
+                /* Xóa các thuộc tính background-color và border mặc định của .selected */
+                /* Chỉ giữ lại hiệu ứng chọn nếu cần */
+                /* Ví dụ: thêm biểu tượng check mà không thay đổi màu nền */
+            }
 
-/* Xóa hoặc điều chỉnh style cũ của .timing.selected nếu không cần thiết */
-.timing.selected::before {
-    color: white; /* Giữ biểu tượng trắng để nổi bật trên mọi nền */
-    content: "\f00c";
-    font-family: "Font Awesome 5 Free";
-    font-size: 12px;
-    font-weight: 900;
-    position: absolute;
-    top: 6px;
-    right: 6px;
-}
+            /* Xóa hoặc điều chỉnh style cũ của .timing.selected nếu không cần thiết */
+            .timing.selected::before {
+                color: white; /* Giữ biểu tượng trắng để nổi bật trên mọi nền */
+                content: "\f00c";
+                font-family: "Font Awesome 5 Free";
+                font-size: 12px;
+                font-weight: 900;
+                position: absolute;
+                top: 6px;
+                right: 6px;
+            }
 
-/* Vô hiệu hóa slot không khả dụng */
-.timing.disabled {
-    background-color: #f0f0f0; /* Màu xám nhạt */
-    color: #999;
-    border: 2px solid #d3d3d3;
-    cursor: not-allowed;
-    opacity: 0.7;
-    pointer-events: none;
-}
+            /* Vô hiệu hóa slot không khả dụng */
+            .timing.disabled {
+                background-color: #f0f0f0; /* Màu xám nhạt */
+                color: #999;
+                border: 2px solid #d3d3d3;
+                cursor: not-allowed;
+                opacity: 0.7;
+                pointer-events: none;
+            }
 
             /* Đảm bảo span hiển thị đồng đều */
             .timing span {
@@ -573,7 +574,7 @@
                 }
             }
 
-           
+
 
         </style>
 
@@ -794,41 +795,41 @@
                                                 <c:forEach var="entry" items="${weekDateInfoMap}">
                                                     <li>
                                                         <c:choose>
-                                                          <c:when test="${not empty slotsByDay[entry.key]}">
-    <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
-    <c:forEach var="slotNumber" begin="1" end="5">
-        <div class="slot-row">
-            <c:set var="slotKey" value="${entry.key}_${slotNumber}" />
-            <c:set var="slotFound" value="false" />
-            <c:forEach var="slot" items="${slotsByDay[entry.key]}">
-                <c:if test="${slot.slotNumber == slotNumber}">
-                    <c:set var="mentorStatus" value="${slot.status}" /> <!-- Trạng thái từ Mentor_Slot -->
-                    <c:set var="menteeStatus" value="${slotStatusMap[slotKey]}" /> <!-- Trạng thái từ Mentee_Slot -->
-                    <a href="#" 
-                       class="timing 
-                       ${mentorStatus == 'Studying' && menteeStatus != 'Studying' ? 'slot-studying' : ''} 
-                       ${mentorStatus == 'Studying' && menteeStatus == 'Studying' ? 'slot-booked' : ''} 
-                       ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus != 'Studying') ? 'slot-available' : ''}"
-                       data-slot-info="${entry.key}_${slot.slotNumber}"
-                       data-bs-toggle="tooltip" 
-                       data-bs-title="Date: ${entry.key} | Start: ${slot.startTime} | End: ${slot.endTime} | Mentor Status: ${mentorStatus} | Mentee Status: ${menteeStatus != null ? menteeStatus : 'Not Booked'}">
-                        <span>Slot ${slotNumber}</span>
-                    </a>
-                    <c:set var="slotFound" value="true" />
-                </c:if>
-            </c:forEach>
-            <c:if test="${not slotFound}">
-                <a href="#" 
-                   class="timing slot-notset"
-                   data-slot-info="${entry.key}_${slotNumber}" 
-                   data-bs-toggle="tooltip" 
-                   data-bs-title="Date: ${entry.key} | Start: ${slotTimeMap[slotNumber].split('-')[0]} | End: ${slotTimeMap[slotNumber].split('-')[1]} | Status: Unavailable">
-                    <span>Slot ${slotNumber}</span>
-                </a>
-            </c:if>
-        </div>
-    </c:forEach>
-</c:when>
+                                                            <c:when test="${not empty slotsByDay[entry.key]}">
+                                                                <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
+                                                                <c:forEach var="slotNumber" begin="1" end="5">
+                                                                    <div class="slot-row">
+                                                                        <c:set var="slotKey" value="${entry.key}_${slotNumber}" />
+                                                                        <c:set var="slotFound" value="false" />
+                                                                        <c:forEach var="slot" items="${slotsByDay[entry.key]}">
+                                                                            <c:if test="${slot.slotNumber == slotNumber}">
+                                                                                <c:set var="mentorStatus" value="${slot.status}" /> <!-- Trạng thái từ Mentor_Slot -->
+                                                                                <c:set var="menteeStatus" value="${slotStatusMap[slotKey]}" /> <!-- Trạng thái từ Mentee_Slot -->
+                                                                                <a href="#" 
+                                                                                   class="timing
+                                                                                   ${mentorStatus == 'Studying' && menteeStatus != 'Studying' ? 'slot-studying' : ''}
+                                                                                   ${mentorStatus == 'Studying' && menteeStatus == 'Studying' ? 'slot-booked' : ''}
+                                                                                   ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus != 'Studying') ? 'slot-available' : ''}"
+                                                                                   data-slot-info="${entry.key}_${slot.slotNumber}"
+                                                                                   data-bs-toggle="tooltip" 
+                                                                                   data-bs-title="Date: ${entry.key} | Start: ${slot.startTime} | End: ${slot.endTime} | Mentor Status: ${mentorStatus} | Mentee Status: ${menteeStatus != null ? menteeStatus : 'Not Booked'}">
+                                                                                    <span>Slot ${slotNumber}</span>
+                                                                                </a>
+                                                                                <c:set var="slotFound" value="true" />
+                                                                            </c:if>
+                                                                        </c:forEach>
+                                                                        <c:if test="${not slotFound}">
+                                                                            <a href="#" 
+                                                                               class="timing slot-notset"
+                                                                               data-slot-info="${entry.key}_${slotNumber}" 
+                                                                               data-bs-toggle="tooltip" 
+                                                                               data-bs-title="Date: ${entry.key} | Start: ${slotTimeMap[slotNumber].split('-')[0]} | End: ${slotTimeMap[slotNumber].split('-')[1]} | Status: Unavailable">
+                                                                                <span>Slot ${slotNumber}</span>
+                                                                            </a>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </c:forEach>
+                                                            </c:when>
                                                             <c:otherwise>
                                                                 <div class="slot-row">
                                                                     <!-- Nếu không có slot nào, hiển thị 5 hàng disabled -->
@@ -1521,6 +1522,7 @@
                 monthItems.forEach(item => {
                     item.addEventListener("click", function (event) {
                         event.preventDefault();
+
                         const selectedMonth = this.getAttribute("data-month");
                         document.getElementById("selectedMonth").textContent = selectedMonth;
 
