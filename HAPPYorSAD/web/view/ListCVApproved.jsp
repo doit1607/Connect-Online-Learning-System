@@ -117,10 +117,10 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
@@ -215,92 +215,145 @@
                         </div>
 
                         <style>
-                            /* Container Styling */
+                            /* Reset và font */
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: 'Poppins', sans-serif;
+                                background: #f5f7fa;
+                                color: #333;
+                            }
+
+                            /* Content Area */
                             .content-area {
-                                background: #ffffff;
-                                border-radius: 12px;
-                                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                                padding: 25px;
-                                margin: 20px 0;
-                                transition: transform 0.3s ease;
+                                max-width: 1200px;
+                                margin: 30px auto;
+                                padding: 20px;
                             }
 
-                            .content-area:hover {
-                                transform: translateY(-5px);
-                            }
-
-                            /* Heading Styling */
-                            .heading-title {
-                                color: #2c3e50;
-                                border-bottom: 3px solid #27ae60;
-                                padding-bottom: 10px;
-                                margin-bottom: 25px;
-                                font-weight: 700;
-                            }
-
-                            /* Search Form Styling */
-                            .search-form {
+                            /* Profile Heading */
+                            .profile-heading {
+                                text-align: center;
                                 margin-bottom: 30px;
+                            }
+
+                            .heading-title {
+                                font-size: 2rem;
+                                font-weight: 600;
+                                color: #2c3e50;
+                                position: relative;
+                                display: inline-block;
+                            }
+
+                            .heading-title::after {
+                                content: '';
+                                position: absolute;
+                                width: 50%;
+                                height: 3px;
+                                background: linear-gradient(90deg, #28a745, #1a73e8);
+                                bottom: -10px;
+                                left: 25%;
+                                border-radius: 2px;
+                                transition: width 0.3s ease;
+                            }
+
+                            .heading-title:hover::after {
+                                width: 100%;
+                                left: 0;
+                            }
+
+                            /* Search Form */
+                            .search-form {
+                                max-width: 500px;
+                                margin: 0 auto 30px;
                             }
 
                             .search-group {
                                 display: flex;
+                                gap: 10px;
                                 align-items: center;
-                                gap: 15px;
-                                max-width: 400px;
                             }
 
                             .search-input {
-                                padding: 10px 15px;
-                                border: 1px solid #ddd;
-                                border-radius: 5px;
                                 flex: 1;
+                                padding: 12px 15px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                background: #fff;
                                 transition: border-color 0.3s ease, box-shadow 0.3s ease;
                             }
 
                             .search-input:focus {
-                                border-color: #27ae60;
-                                box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);
                                 outline: none;
+                                border-color: #1a73e8;
+                                box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
                             }
 
                             .search-btn {
-                                padding: 10px 20px;
-                                background: #27ae60;
-                                color: white;
+                                padding: 12px 25px;
+                                background: #1a73e8;
+                                color: #fff;
                                 border: none;
-                                border-radius: 5px;
-                                cursor: pointer;
-                                transition: all 0.3s ease;
+                                border-radius: 8px;
+                                font-weight: 500;
+                                text-transform: uppercase;
+                                transition: background 0.3s ease, transform 0.3s ease;
                             }
 
                             .search-btn:hover {
-                                background: #219653;
+                                background: #1557b0;
                                 transform: translateY(-2px);
                             }
 
-                            /* Table Styling */
+                            /* Checkout Form */
+                            .checkout-form {
+                                background: #fff;
+                                border-radius: 15px;
+                                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                                padding: 20px;
+                                transition: transform 0.3s ease;
+                            }
+
+                            .checkout-form:hover {
+                                transform: translateY(-5px);
+                            }
+
+                            /* Table */
+                            .custom-table {
+                                overflow-x: auto;
+                            }
+
                             .modern-table {
-                                border-collapse: separate;
-                                border-spacing: 0;
                                 width: 100%;
+                                border-collapse: collapse;
+                                font-size: 0.95rem;
                             }
 
                             .table-header th {
-                                background: #27ae60;
-                                color: white;
-                                padding: 12px 15px;
+                                background: #2c3e50;
+                                color: #fff;
+                                padding: 15px;
+                                text-align: left;
                                 font-weight: 600;
                                 text-transform: uppercase;
                                 letter-spacing: 0.5px;
                             }
 
                             .table-row {
-                                transition: background-color 0.3s ease;
+                                transition: background 0.3s ease;
+                            }
+
+                            .table-row:nth-child(even) {
+                                background: #f9f9f9;
                             }
 
                             .table-row:hover {
-                                background-color: #f8f9fa;
+                                background: #e9f1ff;
                             }
 
                             .table-row td {
@@ -310,51 +363,87 @@
                             }
 
                             .course-list {
-                                padding-left: 20px;
                                 margin: 0;
+                                padding-left: 20px;
                             }
 
                             .course-list li {
                                 margin: 5px 0;
                             }
 
-                            /* Detail Button */
-                            .detail-btn {
+                            /* Action Buttons */
+                            .btn.btn-info.detail-btn {
                                 padding: 8px 15px;
-                                border-radius: 5px;
-                                background: #3498db;
-                                color: white;
-                                text-decoration: none;
-                                transition: all 0.3s ease;
-                            }
-
-                            .detail-btn:hover {
-                                background: #2980b9;
-                                transform: translateY(-2px);
-                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                            }
-
-                            /* Back Link Styling */
-                            .action-section {
-                                text-align: right;
-                                margin-top: 20px;
-                            }
-
-                            .back-btn {
-                                display: inline-block;
-                                padding: 10px 20px;
-                                background: #ecf0f1;
-                                color: #27ae60;
-                                text-decoration: none;
+                                background: #17a2b8;
+                                color: #fff;
+                                border: none;
                                 border-radius: 5px;
                                 font-weight: 500;
+                                text-decoration: none;
+                                transition: all 0.3s ease;
+                                display: inline-block;
+                            }
+
+                            .btn.btn-info.detail-btn:hover {
+                                background: #138496;
+                                transform: translateY(-2px);
+                                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+                            }
+
+                            /* Action Section */
+                            .action-section {
+                                text-align: center;
+                                margin-top: 30px;
+                            }
+
+                            .back-btn.badge-light-success {
+                                display: inline-block;
+                                padding: 12px 25px;
+                                background: linear-gradient(135deg, #28a745, #218838);
+                                color: #fff;
+                                text-decoration: none;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
                                 transition: all 0.3s ease;
                             }
 
-                            .back-btn:hover {
-                                background: #27ae60;
-                                color: white;
-                                transform: translateY(-2px);
+                            .back-btn.badge-light-success:hover {
+                                background: linear-gradient(135deg, #218838, #1e7e34);
+                                transform: translateY(-3px);
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                            }
+
+                            /* Responsive */
+                            @media (max-width: 768px) {
+                                .content-area {
+                                    padding: 15px;
+                                }
+
+                                .heading-title {
+                                    font-size: 1.8rem;
+                                }
+
+                                .search-group {
+                                    flex-direction: column;
+                                }
+
+                                .search-input,
+                                .search-btn {
+                                    width: 100%;
+                                }
+
+                                .modern-table th,
+                                .modern-table td {
+                                    padding: 10px;
+                                    font-size: 0.85rem;
+                                }
+
+                                .btn.btn-info.detail-btn {
+                                    width: 100%;
+                                    text-align: center;
+                                }
                             }
                         </style>
                     </div>
