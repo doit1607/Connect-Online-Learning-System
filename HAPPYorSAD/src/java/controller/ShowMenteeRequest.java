@@ -208,10 +208,6 @@ public class ShowMenteeRequest extends HttpServlet {
                 double refundAmount = Double.parseDouble(refundAmountStr);
                 double finalPrice = Double.parseDouble(finalPriceStr);
                 daoR.updateRequestStatus(requestId, "PendingCompleted");
-                if (refundAmount > 0) {
-                    daoR.processRefund(requestId, refundAmount); // Refund 70% đã tính ở processRequest
-                }
-                daoR.updateRequestTotalPrice(requestId, finalPrice);
 
                 LOGGER.log(Level.INFO, "Request {0} completed. Refund: {1}, FinalPrice: {2}", new Object[]{requestId, refundAmount, finalPrice});
                 request.getSession().setAttribute("msg", "Yêu cầu " + requestId + " đã hoàn thành. Đã hoàn tiền: " + refundAmount + "₫. Tổng tiền cuối: " + finalPrice + "₫");
@@ -224,6 +220,9 @@ public class ShowMenteeRequest extends HttpServlet {
                 LOGGER.log(Level.SEVERE, "SQLException while completing requestId: {0}", requestId);
                 LOGGER.log(Level.SEVERE, "SQLException: ", ex);
             }
+        } else {
+            // Nếu action không hợp lệ, quay lại trang chính
+            response.sendRedirect("/HAPPYorSAD/ShowMenteeRequest");
         }
     }
 

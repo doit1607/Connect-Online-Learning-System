@@ -8,10 +8,12 @@ import entity.Transaction;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import static model.DBConnection.conn;
 
 /**
  *
@@ -88,6 +90,15 @@ public class TransactionDAO extends DBConnection {
             stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+        public void processRefund(String username, double refundAmount) throws SQLException {
+        String sql = "UPDATE Wallets SET balance = balance + ? WHERE username = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setDouble(1, refundAmount);
+            ps.setString(2, username);
+            ps.executeUpdate();
         }
     }
 

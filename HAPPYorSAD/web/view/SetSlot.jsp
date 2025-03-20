@@ -265,7 +265,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                         <div class="slot-box">
                                                             <div class="slot-header">
                                                                 <h5>${weekDays[status.index]}</h5>
-                                                                <small>${day}</small>
                                                             </div>
                                                             <div class="slot-body">
                                                                 <table class="table table-bordered text-center">

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import entity.Mentee_Slot;
 import entity.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,12 +60,29 @@ public class ShowAllRequest extends HttpServlet {
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
         String service = request.getParameter("service");
+
+
+//        int requestId = Integer.parseInt(request.getParameter("requestid"));
+//            Request newrequest = dao.getRequestById(requestId);
+//            int menteeid = newrequest.getMenteeId();
+//            int menteeuser_id = daomentee.getMenteeUserid(menteeid);
+//            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
+//            double totalprice = newrequest.gettotalprice();
+//            dao.updateRequestStatus(requestId, "Processing");
+//            daotran.updateHoldAfterReject(usernamementee, totalprice);
+//            daotran.withdrawToWallet(usernamementee, totalprice);
+//            daotran.depositToWallet((String)session.getAttribute("usernameUser"), totalprice);
+//            daotran.createTransaction((String)session.getAttribute("usernameUser"), totalprice, "DEPOSIT");
+//            double balance = daotran.getBalance((String)session.getAttribute("usernameUser"));
+//            session.setAttribute("walletBalance", balance);
+//            
         if ("confirm".equals(service)) {
             int requestId = Integer.parseInt(request.getParameter("requestid"));
             Request newrequest = dao.getRequestById(requestId);
             int menteeid = newrequest.getMenteeId();
             int menteeuser_id = daomentee.getMenteeUserid(menteeid);
             int mentorId = dao.getMentorIdByRequestId(requestId);
+            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
             System.out.println("MentorId" + mentorId);
             try {
                 List<entity.Mentee_Slot> slots = daoMs.getSlotsByRequestIdd(requestId);
@@ -79,25 +97,76 @@ public class ShowAllRequest extends HttpServlet {
                 Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
             double totalprice = newrequest.gettotalprice();
+            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT", "Tien khoa hoc cua mentee " + usernamementee);
+            double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
             dao.updateRequestStatus(requestId, "Processing");
         }
         if ("closed".equals(service)) {
+            DAOmentee_Slot daoMSL = new DAOmentee_Slot();
+            DAOMentor daoMentor = new DAOMentor();
+
             int requestId = Integer.parseInt(request.getParameter("requestid"));
             Request newrequest = dao.getRequestById(requestId);
+
+            List<Mentee_Slot> slots = daoMSL.getSlotsByRequestId(requestId);
+            int presentCount = 0;
+            int absentCount = 0;
+
+            for (Mentee_Slot slot : slots) {
+                if ("present".equals(slot.getStatus())) {
+                    presentCount++;
+                } else if ("absent".equals(slot.getStatus())) {
+                    absentCount++;
+                }
+            }
+            double pricePerSlot = daoMentor.getMentorPrice(newrequest.getCourseId());
+            double totalPrice = newrequest.getTotalSlot() * pricePerSlot;
+
+            double refundAmount = absentCount * pricePerSlot * 0.7; // Tiền hoàn lại cho mentee
+            double mentorAmount = presentCount * pricePerSlot * 0.8; // Tiền trả cho mentor
+
             int mentorid = newrequest.getMentorId();
             int mentoruser_id = daomentor.getMentorUserid(mentorid);
             int menteeid = newrequest.getMenteeId();
             int menteeuser_id = daomentee.getMenteeUserid(menteeid);
             String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
-            double finalprice = Double.parseDouble(request.getParameter("finalprice"));
             String usernamementor = daomentor.getMentorUsername(mentoruser_id);
+            double finalprice = refundAmount + mentorAmount; // Tổng tiền manager phải rút
+
+            // Bước 3: Thực hiện các giao dịch tài chính
+            // Hoàn tiền cho Mentee nếu có slot "absent"
+            if (refundAmount > 0) {
+                daotran.processRefund(usernamementee, refundAmount);
+                // Manager rút tiền để hoàn cho mentee
+                daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), refundAmount);
+                daotran.createTransaction((String) session.getAttribute("usernameUser"), refundAmount, "WITHDRAW",
+                        "Hoàn tiền " + refundAmount + " cho mentee " + usernamementee + " với " + absentCount + " slot absent");
+            }
+
+            // Trả tiền cho Mentor nếu có slot "present"
+            if (mentorAmount > 0) {
+                // Manager rút tiền để trả cho mentor
+                daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), mentorAmount);
+                daotran.createTransaction((String) session.getAttribute("usernameUser"), mentorAmount, "WITHDRAW",
+                        "Trả tiền khóa học " + mentorAmount + " cho mentor " + usernamementor + " với " + presentCount + " slot present");
+
+                // Thêm tiền vào ví mentor
+                daotran.depositToWallet(usernamementor, mentorAmount);
+                daotran.createTransaction(usernamementor, mentorAmount, "DEPOSIT",
+                        "Tiền khóa học của mentee " + usernamementee + " với " + presentCount + " slot");
+            }
+
+            // Ghi lại giao dịch hoàn tiền cho mentee (nếu có)
+            if (refundAmount > 0) {
+                daotran.createTransaction(usernamementee, refundAmount, "DEPOSIT",
+                        "Tiền refund cho " + absentCount + " slot absent với khóa học của mentor " + usernamementor);
+            }
+
+            // Bước 4: Cập nhật trạng thái yêu cầu thành "Closed"
             dao.updateRequestStatus(requestId, "Closed");
-            daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), finalprice);
-            daotran.createTransaction((String) (String) session.getAttribute("usernameUser"), finalprice, "WITHDRAW", "Chuyen tien khoa hoc cho mentor " + usernamementor);
-            daotran.depositToWallet(usernamementor, finalprice);
-            daotran.createTransaction((String) usernamementor, finalprice, "DEPOSIT", "Tien khoa hoc cua mentee " + usernamementee);
+
+            // Cập nhật số dư ví của manager
             double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
             session.setAttribute("walletBalance", balance);
         }

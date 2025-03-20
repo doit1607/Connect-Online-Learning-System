@@ -26,14 +26,6 @@ import static model.DBConnection.conn;
 
 public class DAORequest extends DBConnection {
 
-    public void processRefund(int requestId, double refundAmount) throws SQLException {
-        String sql = "UPDATE request SET refund_amount = ? WHERE request_id = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, refundAmount);
-            ps.setInt(2, requestId);
-            ps.executeUpdate();
-        }
-    }
 
     public void updateRequestTotalPrice(int requestId, double finalPrice) throws SQLException {
         String sql = "UPDATE request SET totalprice = ? WHERE id = ?";
