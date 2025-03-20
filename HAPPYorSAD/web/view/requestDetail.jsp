@@ -37,10 +37,234 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        
+
         <link rel="stylesheet" type="text/css" href="/HAPPYorSAD/css/cssRequestMnetee/AllRequest.css">
 
+        <style>
+            /* Reset m?c ??nh */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
+            /* Styling t?ng th? */
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: #f4f7fa;
+                color: #333;
+            }
+
+            /* Container chính */
+            .col-xl-9.col-lg-9 {
+                margin: 0 auto;
+                padding: 20px;
+                max-width: 900px;
+            }
+
+            /* Tiêu ?? */
+            .request-title {
+                font-size: 2.5rem;
+                color: #1a73e8;
+                font-weight: 600;
+                position: relative;
+                margin-bottom: 40px;
+                text-align: center;
+            }
+
+            .request-title::after {
+                content: '';
+                position: absolute;
+                width: 80px;
+                height: 4px;
+                background: linear-gradient(90deg, #1a73e8, #34c759);
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 2px;
+                transition: width 0.4s ease;
+            }
+
+            .request-title:hover::after {
+                width: 120px;
+            }
+
+            /* Container form */
+            .checkout-form {
+                background: #ffffff;
+                border-radius: 15px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .checkout-form:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Styling chi ti?t */
+            .custom-detail {
+                padding: 10px 0;
+            }
+
+            .detail-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                margin: 10px 0;
+                background: #fafafa;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                opacity: 0;
+                animation: slideIn 0.5s ease forwards;
+            }
+
+            .detail-item:hover {
+                background: #e9f1ff;
+                transform: translateX(5px);
+            }
+
+            .detail-item strong {
+                font-weight: 600;
+                color: #2c3e50;
+                min-width: 120px;
+            }
+
+            .detail-value {
+                color: #555;
+                font-weight: 400;
+                flex: 1;
+                text-align: right;
+                transition: color 0.3s ease;
+            }
+
+            .detail-item:hover .detail-value {
+                color: #1a73e8;
+            }
+
+            /* Animation cho các item */
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .detail-item:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+            .detail-item:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+            .detail-item:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+            .detail-item:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+            .detail-item:nth-child(5) {
+                animation-delay: 0.5s;
+            }
+            .detail-item:nth-child(6) {
+                animation-delay: 0.6s;
+            }
+            .detail-item:nth-child(7) {
+                animation-delay: 0.7s;
+            }
+            .detail-item:nth-child(8) {
+                animation-delay: 0.8s;
+            }
+
+            /* Styling khi không có d? li?u */
+            .no-data {
+                padding: 40px;
+                text-align: center;
+                color: #e63946;
+                font-size: 1.25rem;
+                font-weight: 500;
+                background: #fff5f5;
+                border-radius: 10px;
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            /* Styling nút Back */
+            .btn.btn-secondary {
+                display: inline-block;
+                padding: 12px 30px;
+                background: linear-gradient(135deg, #6c757d, #495057);
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: 600;
+                letter-spacing: 1px;
+                border: none;
+                border-radius: 25px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                margin-top: 20px;
+            }
+
+            .btn.btn-secondary:hover {
+                background: linear-gradient(135deg, #495057, #343a40);
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn.btn-secondary::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                transition: width 0.5s ease, height 0.5s ease;
+            }
+
+            .btn.btn-secondary:hover::after {
+                width: 300px;
+                height: 300px;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .col-xl-9.col-lg-9 {
+                    padding: 15px;
+                }
+
+                .request-title {
+                    font-size: 2rem;
+                }
+
+                .detail-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 12px 15px;
+                }
+
+                .detail-value {
+                    text-align: left;
+                    margin-top: 5px;
+                }
+            }
+        </style>
 
         <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
 
@@ -109,10 +333,10 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
