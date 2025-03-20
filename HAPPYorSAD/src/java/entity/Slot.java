@@ -38,6 +38,21 @@ public class Slot {
 
     public Slot() {
     }
+
+    public Slot(String status) {
+        this.status = status;
+    }
+    
+
+    public Slot(int id, int scheduleId, Date slotDate, int slotNumber, String status) {
+        this.id = id;
+        this.scheduleId = scheduleId;
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.status = status;
+    }
+    
+    
     
     
 

@@ -31,18 +31,8 @@ import model.DAOmentee_Slot;
  */
 public class ShowMenteeRequest extends HttpServlet {
 
-    // Khởi tạo logger cho class này
     private static final Logger LOGGER = Logger.getLogger(ShowMenteeRequest.class.getName());
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -66,7 +56,6 @@ public class ShowMenteeRequest extends HttpServlet {
 
         session.setAttribute("mentee", mentee);
 
-        // Lấy danh sách tất cả request
         String indexPage = request.getParameter("index");
         if (indexPage == null) {
             indexPage = "1";
@@ -118,8 +107,8 @@ public class ShowMenteeRequest extends HttpServlet {
 
             double pricePerSlot = daomentor.getMentorPrice(req.getCourseId());
             double totalPrice = req.getTotalSlot() * pricePerSlot; // Tổng tiền ban đầu
-            double refundAmount = absentCount * pricePerSlot; // Tiền hoàn lại
-            double finalPrice = presentCount * pricePerSlot; // Tiền cuối cùng
+            double refundAmount = absentCount * pricePerSlot * 0.7; // Tiền hoàn lại (70%)
+            double finalPrice = totalPrice - refundAmount; // Tiền cuối cùng
 
             // Lưu vào Map
             Map<String, Object> data = new HashMap<>();
@@ -154,8 +143,8 @@ public class ShowMenteeRequest extends HttpServlet {
 
                     double pricePerSlot = daomentor.getMentorPrice(specificRequest.getCourseId());
                     double totalPrice = specificRequest.getTotalSlot() * pricePerSlot;
-                    double refundAmount = absentCount * pricePerSlot;
-                    double finalPrice = presentCount * pricePerSlot;
+                    double refundAmount = absentCount * pricePerSlot * 0.7; // Tiền hoàn lại (70%)
+                    double finalPrice = totalPrice - refundAmount;
 
                     LOGGER.log(Level.INFO, "RequestId: {0}, Present: {1}, Absent: {2}, TotalPrice: {3}, Refund: {4}, FinalPrice: {5}",
                             new Object[]{requestId, presentCount, absentCount, totalPrice, refundAmount, finalPrice});
@@ -207,8 +196,6 @@ public class ShowMenteeRequest extends HttpServlet {
                     new Object[]{requestId, refundAmountStr, finalPriceStr, totalPriceStr});
 
             double totalPrice = Double.parseDouble(totalPriceStr);
-            LOGGER.log(Level.INFO, "Completing requestId: {0}, TotalPrice: {1}", new Object[]{requestId, totalPrice});
-            LOGGER.log(Level.INFO, "Completing requestId: {0}, TotalPrice: {1}", new Object[]{requestId, totalPrice});
 
             if (refundAmountStr == null || finalPriceStr == null) {
                 LOGGER.log(Level.WARNING, "Invalid input data for requestId: {0}", requestId);
@@ -220,9 +207,9 @@ public class ShowMenteeRequest extends HttpServlet {
             try {
                 double refundAmount = Double.parseDouble(refundAmountStr);
                 double finalPrice = Double.parseDouble(finalPriceStr);
-                daoR.updateRequestStatus(requestId, "Completed");
+                daoR.updateRequestStatus(requestId, "PendingCompleted");
                 if (refundAmount > 0) {
-                    daoR.processRefund(requestId, refundAmount);
+                    daoR.processRefund(requestId, refundAmount); // Refund 70% đã tính ở processRequest
                 }
                 daoR.updateRequestTotalPrice(requestId, finalPrice);
 
@@ -237,13 +224,6 @@ public class ShowMenteeRequest extends HttpServlet {
                 LOGGER.log(Level.SEVERE, "SQLException while completing requestId: {0}", requestId);
                 LOGGER.log(Level.SEVERE, "SQLException: ", ex);
             }
-        } else if ("addMoreSlots".equals(action)) {
-            int requestId = Integer.parseInt(request.getParameter("requestId"));
-            LOGGER.log(Level.INFO, "Redirecting to add more slots for requestId: {0}", requestId);
-            response.sendRedirect("/HAPPYorSAD/ScheduleSlots?requestId=" + requestId);
-        } else {
-            LOGGER.log(Level.WARNING, "Unknown action: {0}", action);
-            processRequest(request, response);
         }
     }
 

@@ -254,24 +254,24 @@
                                     <tbody>
                                         <c:forEach items="${sessionScope.listAllRequest}" var="o">
                                             <c:if test="${empty param.status or o.status eq param.status}">
-                                            <tr>
-                                                <td>${o.title}</td>
-                                                <td>${o.content}</td>
-                                                <td>${o.totalSlot}</td>
-                                                <td>${o.startDate}</td>
-                                                <td>${o.endDate}</td>                                            
-                                                <td>${o.status}</td>
-                                                <td>
-                                                    <c:if test="${o.status eq 'Draft'}">                                                           
-                                                        <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" class="updatebtn">Update</a>
-                                                    </c:if>
-                                                    <c:if test="${o.status != 'Draft'}">
-                                                        <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">
-                                                            View
-                                                        </button>
-                                                    </c:if>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>${o.title}</td>
+                                                    <td>${o.content}</td>
+                                                    <td>${o.totalSlot}</td>
+                                                    <td>${o.startDate}</td>
+                                                    <td>${o.endDate}</td>                                            
+                                                    <td>${o.status}</td>
+                                                    <td>
+                                                        <c:if test="${o.status eq 'Draft'}">                                                           
+                                                            <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" class="updatebtn">Update</a>
+                                                        </c:if>
+                                                        <c:if test="${o.status != 'Draft'}">
+                                                            <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">
+                                                                View
+                                                            </button>
+                                                        </c:if>
+                                                    </td>
+                                                </tr>
                                             </c:if>
                                         </c:forEach>
                                     </tbody>
@@ -303,7 +303,10 @@
                                                         <c:if test="${specificRequestId eq o.id}">
                                                             <p><strong>Present Slots:</strong> ${presentCount}</p>
                                                             <p><strong>Absent Slots:</strong> ${absentCount}</p>
-                                                            <p><strong>Refund Amount (for Absent Slots):</strong> <fmt:formatNumber value="${refundAmount}" type="number" groupingUsed="true" />₫</p>
+                                                            <p><strong>Price per Slot (Original):</strong> <fmt:formatNumber value="${totalPrice / specificRequest.totalSlot}" type="number" groupingUsed="true" />₫</p>
+                                                            <p><strong>Refund per Absent Slot (70%):</strong> <fmt:formatNumber value="${refundAmount / (absentCount == 0 ? 1 : absentCount)}" type="number" groupingUsed="true" />₫</p>
+                                                            <p><strong>Total Refund Amount (for Absent Slots):</strong> <fmt:formatNumber value="${refundAmount}" type="number" groupingUsed="true" />₫</p>
+                                                            <p><strong>Total Price (before Refund):</strong> <fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />₫</p>
                                                             <p><strong>Final Price (after Refund):</strong> <fmt:formatNumber value="${finalPrice}" type="number" groupingUsed="true" />₫</p>
                                                         </c:if>
                                                     </div>
@@ -340,14 +343,6 @@
                                                             <button type="submit" class="btn btn-success">Complete Request</button>
                                                         </form>
 
-                                                        <!-- Add More Slots Button -->
-                                                        <c:if test="${absentCount > 0}">
-                                                            <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
-                                                                <input type="hidden" name="action" value="addMoreSlots">
-                                                                <input type="hidden" name="requestId" value="${o.id}">
-                                                                <button type="submit" class="btn btn-primary">Add More Slots</button>
-                                                            </form>
-                                                        </c:if>
                                                     </c:if>
 
                                                     <!-- Complete Request Button (for Accepted status with no absent slots) -->

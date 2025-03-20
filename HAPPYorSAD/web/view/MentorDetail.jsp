@@ -14,30 +14,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mentor Detail</title>
         <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-
-        <!-- Theme Settings Js -->
         <script src="/HAPPYorSAD/assets/js/theme-script.js" type="text/javascript"></script>
-
-        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/bootstrap.min.css">
-
-        <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
-
-        <!-- Feather CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
-
-        <!-- Select2 CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-
-        <!-- Dropzone -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
-
-        <!-- Boxioons CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
-
-        <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">   
         <style>
 

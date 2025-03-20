@@ -290,9 +290,9 @@
                                                                                     <c:when test="${slot.status == 'Studying'}">
                                                                                         <span class="slot-studying">Studying</span>
                                                                                     </c:when>
-                                                                                        <c:when test="${slot.status == 'rejected_by_mentee'}">
-                                                                                    <span class="slot-rejected">Rejected (Waiting)</span>
-                                                                                </c:when>
+                                                                                    <c:when test="${slot.status == 'rejected_by_mentee'}">
+                                                                                        <span class="slot-rejected">Rejected (Waiting)</span>
+                                                                                    </c:when>
                                                                                     <c:when test="${slot.status == 'confirm_present' || slot.status == 'confirm_absent'}">
                                                                                         <span class="slot-pending">Pending Confirmation</span>
                                                                                     </c:when>
@@ -410,11 +410,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Scripts -->
-                <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-                <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
-                <script>
+            <!-- Scripts -->
+            <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+            <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js"></script>
+            <script>
                                                                                         document.addEventListener("DOMContentLoaded", function () {
                                                                                             // Auto-hide alerts
                                                                                             setTimeout(function () {
@@ -440,15 +441,15 @@
                                                                                             });
 
                                                                                             // Show modals if triggered
-                    <c:if test="${showModal}">
+                <c:if test="${showModal}">
                                                                                             var confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
                                                                                             confirmationModal.show();
-                    </c:if>
+                </c:if>
 
-                    <c:if test="${showCompletionModal}">
+                <c:if test="${showCompletionModal}">
                                                                                             var completionModal = new bootstrap.Modal(document.getElementById("completionModal"));
                                                                                             completionModal.show();
-                    </c:if>
+                </c:if>
                                                                                         });
 
                                                                                         // Form validation
@@ -459,13 +460,13 @@
                                                                                                 return false;
                                                                                             }
                                                                                         });
-                </script>
+            </script>
 
-                <!-- Hidden Form for Month Selection -->
-                <form id="monthForm" action="/HAPPYorSAD/AttendanceMentee" method="get" style="display:none;">
-                    <input type="hidden" name="month" id="hiddenMonth">
-                    <input type="hidden" name="year" id="hiddenYear">
-                    <input type="hidden" name="weekOffset" value="${weekOffset}">
-                </form>
+            <!-- Hidden Form for Month Selection -->
+            <form id="monthForm" action="/HAPPYorSAD/AttendanceMentee" method="get" style="display:none;">
+                <input type="hidden" name="month" id="hiddenMonth">
+                <input type="hidden" name="year" id="hiddenYear">
+                <input type="hidden" name="weekOffset" value="${weekOffset}">
+            </form>
         </body>
     </html>

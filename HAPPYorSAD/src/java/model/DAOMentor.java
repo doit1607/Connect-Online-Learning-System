@@ -8,6 +8,7 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,16 +19,6 @@ public class DAOMentor extends DBConnection {
 
     public static DAOuser userDao = new DAOuser();
 
-    public List<Mentor> filterMentors(Integer month, String status, String searchQuery, Date requestTime) {
-    // Truy vấn SQL để lọc mentor dựa trên các tiêu chí
-    // Ví dụ: SELECT * FROM Mentor WHERE name LIKE ? OR mentorId LIKE ?
-    // Kết hợp với slot nếu cần
-        return null;
-    // Truy vấn SQL để lọc mentor dựa trên các tiêu chí
-    // Ví dụ: SELECT * FROM Mentor WHERE name LIKE ? OR mentorId LIKE ?
-    // Kết hợp với slot nếu cần
-}
-    
     public static Integer getMentorIdByUserId(int userId) {
         String sql = "SELECT id FROM Mentor WHERE user_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -40,6 +31,48 @@ public class DAOMentor extends DBConnection {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Mentor> getMentorsWithPendingSchedules() {
+        List<Mentor> mentors = new ArrayList<>();
+        String sql = "SELECT DISTINCT m.id as mentorId, m.name -- Chỉ chọn các cột có thể so sánh\n"
+                + "FROM mentor m\n"
+                + "JOIN mentor_slot ms ON m.id = ms.mentor_id\n"
+                + "WHERE ms.status = 'nonAvailable';";
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("mentorId"));
+                mentor.setName(rs.getString("name"));
+                // Map các trường khác nếu cần
+                mentors.add(mentor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mentors;
+    }
+
+    public int getMentorIdByNameOrId(String searchQuery) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            String sql = "SELECT id FROM Mentor WHERE name LIKE ? OR CAST(id AS VARCHAR) = ?";
+            pstmt = conn.prepareStatement(sql);
+            String pattern = "%" + searchQuery + "%";
+            pstmt.setString(1, pattern);
+            pstmt.setString(2, searchQuery);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+        }
+        return -1;
     }
 
     public String getMentorNameById(int mentorId) {
@@ -411,7 +444,7 @@ public class DAOMentor extends DBConnection {
             pre.setInt(1, mentorId);
             try (ResultSet rs = pre.executeQuery()) {
                 if (rs.next()) {
-                   price = rs.getDouble("price_per_slot");
+                    price = rs.getDouble("price_per_slot");
                 }
             }
         } catch (Exception e) {
@@ -575,18 +608,18 @@ public class DAOMentor extends DBConnection {
         }
         return mentor;
     }
-    
-     // Đếm số lượng mentor được review
+
+    // Đếm số lượng mentor được review
     public int countMentorsReviewed(int mid) {
         String sql = "SELECT COUNT(*) AS total_reviews FROM mentor_reviews WHERE mentor_id = ? ";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, mid);
             ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("total_reviews");
-                }
-            
+            if (rs.next()) {
+                return rs.getInt("total_reviews");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -600,27 +633,127 @@ public class DAOMentor extends DBConnection {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, mid);
             ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("total_mentees");
-                }
-            
+            if (rs.next()) {
+                return rs.getInt("total_mentees");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-    
-    public static void main(String[] args) {
-        DAOMentor dao = new DAOMentor();
 
-//        String price = DAOMentor.getMentorPriceByID(1);
-//        if (price == null) {
-//            System.out.println("Mentor chưa có giá tiền.");
-//        } else {
-//            System.out.println("Giá tiền: " + price);
-//        }
-        int a = dao.countMenteesReviewed(1);
-        System.out.println(a);
+    public List<Mentor> filterMentors(Integer month, String status, String searchQuery, Date requestTime) {
+        List<Mentor> mentorList = new ArrayList<>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Đảm bảo kết nối luôn mở
+            if (conn == null || conn.isClosed()) {
+                conn = getConnection();
+            }
+
+            StringBuilder sql = new StringBuilder(
+                    "SELECT m.name, ms.mentor_id, sl.slot_date, sl.slot_number_id, "
+                    + "       CONVERT(VARCHAR(8), st.start_time, 108) AS start_time, "
+                    + "       CONVERT(VARCHAR(8), st.end_time, 108) AS end_time, ms.status "
+                    + "FROM Mentor m "
+                    + "LEFT JOIN Mentor_Slot ms ON m.id = ms.mentor_id "
+                    + "JOIN Slot sl ON sl.id = ms.slot_id "
+                    + "JOIN Slot_Template st ON st.id = sl.slot_number_id "
+                    + "WHERE 1=1");
+
+            List<Object> parameters = new ArrayList<>();
+            if (month != null) {
+                sql.append(" AND MONTH(sl.slot_date) = ?");
+                parameters.add(month);
+            }
+            if (status != null && !status.isEmpty()) {
+                sql.append(" AND ms.status = ?");
+                parameters.add(status);
+            }
+            if (searchQuery != null && !searchQuery.isEmpty()) {
+                sql.append(" AND (m.name LIKE ? OR m.id LIKE ?)");
+                String searchPattern = "%" + searchQuery + "%";
+                parameters.add(searchPattern);
+                parameters.add(searchPattern);
+            }
+
+            sql.append(" GROUP BY ms.mentor_id, m.name, sl.slot_date, sl.slot_number_id, st.start_time, st.end_time, ms.status");
+
+            pstmt = conn.prepareStatement(sql.toString());
+            for (int i = 0; i < parameters.size(); i++) {
+                pstmt.setObject(i + 1, parameters.get(i));
+            }
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("mentor_id"));
+                mentor.setName(rs.getString("name"));
+                mentorList.add(mentor);
+            }
+            return mentorList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return mentorList;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                // Không đóng conn tại đây, để các truy vấn tiếp theo không bị lỗi
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    public static void main(String[] args) {
+        try {
+            DAOMentor dao = new DAOMentor();
+
+            System.out.println("Test 1: Filter by month (March)");
+            List<Mentor> mentors1 = dao.filterMentors(3, null, null, null);
+            printMentors(mentors1);
+
+            System.out.println("\nTest 2: Filter by status (Accepted)");
+            List<Mentor> mentors2 = dao.filterMentors(null, "Available", null, null);
+            printMentors(mentors2);
+
+            System.out.println("\nTest 3: Filter by name search (John)");
+            List<Mentor> mentors3 = dao.filterMentors(null, null, "John", null);
+            printMentors(mentors3);
+
+            System.out.println("\nTest 4: Filter by specific date");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date testDate = sdf.parse("2025-03-20");
+            List<Mentor> mentors4 = dao.filterMentors(null, null, null, testDate);
+            printMentors(mentors4);
+
+            System.out.println("\nTest 5: All filters combined");
+            List<Mentor> mentors5 = dao.filterMentors(3, "nonAvailable", "John", testDate);
+            printMentors(mentors5);
+
+        } catch (Exception e) {
+            System.err.println("Test Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void printMentors(List<Mentor> mentors) {
+        if (mentors.isEmpty()) {
+            System.out.println("No mentors found.");
+            return;
+        }
+        System.out.println("Found " + mentors.size() + " mentors:");
+        for (Mentor mentor : mentors) {
+            System.out.println("ID: " + mentor.getMentorId() + ", Name: " + mentor.getName());
+        }
+    }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import entity.Request;
@@ -20,11 +16,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DAORequest;
-import model.DAOa;
 import model.DAOmentee;
 import model.DAOslot;
-import model.DAOuser;
-import entity.Slot;
 import model.DAOmentee_Slot;
 import model.TransactionDAO;
 
@@ -35,15 +28,6 @@ import model.TransactionDAO;
 @WebServlet(name = "viewRequest", urlPatterns = {"/viewRequest"})
 public class ViewRequest extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,15 +36,6 @@ public class ViewRequest extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,7 +61,7 @@ public class ViewRequest extends HttpServlet {
             if (limitParam != null && !limitParam.isEmpty()) {
                 limit = Integer.parseInt(limitParam);
                 if (limit <= 0) {
-                    limit = 5; // Nếu limit <= 0, đặt lại giá trị mặc định
+                    limit = 5;
                 }
             }
 
@@ -112,24 +87,14 @@ public class ViewRequest extends HttpServlet {
                 date = LocalDate.now().minusDays(7);
                 break;
             case 3:
-                date = LocalDate.now()
-                        .withDayOfMonth(1);
+                date = LocalDate.now().withDayOfMonth(1);
                 break;
             default:
-//                throw new AssertionError();
+            // Không cần throw AssertionError
         }
         int totalRequests = daoReq.getRequestCount(mentorUsername, title, status, date);
         int totalPages = (int) Math.ceil((double) totalRequests / limit);
 
-//        List<Mentor1> list = dao.getAllMentors(search, page, limit);
-//        int totalMentors = dao.getTotalMentors(search); // Lấy tổng số mentor
-//        int totalPages = (int) Math.ceil((double) totalMentors / limit); // Tính tổng số trang
-//
-//        HttpSession session = request.getSession();
-//        session.setAttribute("listMentor", list);
-//        session.setAttribute("currentPage", page);
-//        session.setAttribute("limit", limit);
-//        session.setAttribute("totalPages", totalPages); // Gửi tổng số trang đến session
         List<Request> requests = daoReq.getRequestByMentor(mentorUsername, title, status, date, page, limit);
 
         request.setAttribute("requests", requests);
@@ -145,19 +110,10 @@ public class ViewRequest extends HttpServlet {
                 request.setAttribute("selectedRequest", selectedRequest);
             }
         }
-        request.setAttribute("requests", requests);
 
         request.getRequestDispatcher("view/viewRequest.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -174,7 +130,8 @@ public class ViewRequest extends HttpServlet {
         Request newrequest = dao.getRequestById(requestId);
         if (newrequest == null) {
             System.out.println("Error: Request not found with ID " + requestId);
-            response.sendRedirect("/HAPPYorSAD/errorPage"); // Chuyển hướng đến trang lỗi (tuỳ chọn)
+            session.setAttribute("error", "Request không tồn tại.");
+            response.sendRedirect("/HAPPYorSAD/errorPage");
             return;
         }
 
@@ -189,91 +146,56 @@ public class ViewRequest extends HttpServlet {
             System.out.println("Updating request status to Pending");
             try {
                 dao.updateRequestStatus(requestId, "Pending");
+                List<entity.Mentee_Slot> slots = daoMs.getSlotsByRequestId(requestId);
+                for (entity.Mentee_Slot slot : slots) {
+                    int slotId = slot.getSlot_id();
+                    daoSl.updateSlotStatusss(slotId, mentorId, "Pending");
+                    System.out.println("Updated slot ID: " + slotId);
+                }
+                daotran.updateHoldAfterReject(usernamementee, totalprice);
+                daotran.withdrawToWallet(usernamementee, totalprice);
+                daotran.depositToWallet("robert_jones", totalprice);
+                daotran.createTransaction("robert_jones", totalprice, "DEPOSIT", "Tien dang ky khoa hoc cua mentee " + usernamementee);
+                session.setAttribute("msg", "Yêu cầu " + requestId + " đã được chấp nhận.");
             } catch (SQLException ex) {
                 Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+                session.setAttribute("error", "Lỗi khi chấp nhận yêu cầu.");
             }
-            try {
-                List<entity.Mentee_Slot> slots = daoMs.getSlotsByRequestId(requestId); // Lấy slotId từ requestId
-                for (entity.Mentee_Slot slot : slots) {
-                    System.out.println(slot);
-                    int slotId = slot.getSlot_id(); // Lấy slotId từ đối tượng Slot
-                    daoSl.updateSlotStatusss(slotId, mentorId, "Pending");
-                    System.out.println(slotId);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ShowAllRequest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            daotran.updateHoldAfterReject(usernamementee, totalprice);
-            daotran.withdrawToWallet(usernamementee, totalprice);
-            daotran.depositToWallet("robert_jones", totalprice);
-            daotran.createTransaction("robert_jones", totalprice, "DEPOSIT", "Tien dang ky khoa hoc cua mentee " + usernamementee);
         } else if (status.equals("Cancel")) {
             System.out.println("Updating request status to Cancel");
-            daotran.updateHoldAfterReject(usernamementee, totalprice);
-            double hold = daotran.getHold(usernamementee);
-            daotran.createTransaction(usernamementee, totalprice, "DEPOSIT", "Mentor tu choi khoa hoc");
             try {
-                dao.updateRequestStatus(requestId, status);
+                daotran.updateHoldAfterReject(usernamementee, totalprice);
+                double hold = daotran.getHold(usernamementee);
+                daotran.createTransaction(usernamementee, totalprice, "DEPOSIT", "Mentor tu choi khoa hoc");
+                dao.updateRequestStatus(requestId, "Cancel");
+                session.setAttribute("msg", "Yêu cầu " + requestId + " đã bị hủy.");
+                session.setAttribute("walletHold", hold);
             } catch (SQLException ex) {
                 Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+                session.setAttribute("error", "Lỗi khi hủy yêu cầu.");
             }
-            session.setAttribute("walletHold", hold);
+        } else if ("Completed".equals(status) && "PendingCompleted".equals(newrequest.getStatus())) {
+            try {
+                dao.updateRequestStatus(requestId, "Completed");
+                session.setAttribute("msg", "Yêu cầu " + requestId + " đã được xác nhận hoàn thành.");
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
+                session.setAttribute("error", "Lỗi khi xác nhận hoàn thành request.");
+            }
         } else {
             System.out.println("Error: Invalid status received - " + status);
+            session.setAttribute("error", "Trạng thái không hợp lệ: " + status);
         }
 
-        response.sendRedirect("/HAPPYorSAD/viewRequest");
-
-//        int requestId = Integer.parseInt(request.getParameter("id"));
-//        String status = request.getParameter("status");
-//        TransactionDAO trandao = new TransactionDAO();
-//
-//        DAORequest dao = new DAORequest();
-//
-//        // *** Thêm xử lý điểm danh slot ***
-//        String action = request.getParameter("action");
-//        DAOslot slotDAO = new DAOslot();
-//        DAOa attendanceDAO = new DAOa();
-//        if ("markDone".equals(action)) {
-//            int slotId = Integer.parseInt(request.getParameter("slotId"));
-//            int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-//            try {
-//                attendanceDAO.markAttendance(slotId, mentorId, true);
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            try {
-//                slotDAO.updateSlotStatus(slotId, "Complete");
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//
-//            try {
-//                // Kiểm tra nếu tất cả slot đã hoàn thành
-//                if (slotDAO.areAllSlotsComplete(requestId)) {
-//                    dao.updateRequestStatus(requestId, "Complete");
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } else if (status.equals("Processing")) {
-//            dao.updateRequestStatus(requestId, status);
-//        } else if (status.equals("Cancel")) {
-//            dao.updateRequestStatus(requestId, status);
-//            String reason = request.getParameter("reject_reason");
-//            dao.addRejectReason(requestId, reason);
-//        }
-//        response.sendRedirect("/HAPPYorSAD/viewRequest");
+        // Giữ lại các tham số lọc khi redirect
+        String page = request.getParameter("page") != null ? request.getParameter("page") : "1";
+        String date = request.getParameter("date") != null ? request.getParameter("date") : "0";
+        String redirectUrl = "/HAPPYorSAD/viewRequest?page=" + page + "&date=" + date;
+        response.sendRedirect(redirectUrl);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

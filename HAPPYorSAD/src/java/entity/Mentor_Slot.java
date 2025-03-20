@@ -22,6 +22,7 @@ public class Mentor_Slot {
     private Time start_time;
     private Time end_time;
     private int request_id;
+    private String name;
 
     public Mentor_Slot() {
     }
@@ -43,8 +44,7 @@ public class Mentor_Slot {
         this.status = status;
 
     }
-    
- 
+
     public Mentor_Slot(int mentor_id, String status, Date slot_date, int slot_number_id, Time start_time, Time end_time) {
         this.mentor_id = mentor_id;
         this.status = status;
@@ -53,9 +53,8 @@ public class Mentor_Slot {
         this.start_time = start_time;
         this.end_time = end_time;
     }
-     
-    
-  public Mentor_Slot(int slot_id, int mentor_id, Date slot_date, int slot_number_id, Time start_time, Time end_time, String status) {
+
+    public Mentor_Slot(int slot_id, int mentor_id, Date slot_date, int slot_number_id, Time start_time, Time end_time, String status) {
         this.slot_id = slot_id;
         this.mentor_id = mentor_id;
         this.slot_date = slot_date;
@@ -65,7 +64,8 @@ public class Mentor_Slot {
         this.status = status;
 
     }
-       public Mentor_Slot( int mentor_id, Date slot_date, int slot_number_id, Time start_time, Time end_time, String status) {
+
+    public Mentor_Slot(int mentor_id, Date slot_date, int slot_number_id, Time start_time, Time end_time, String status) {
         this.mentor_id = mentor_id;
         this.slot_date = slot_date;
         this.slot_number_id = slot_number_id;
@@ -74,8 +74,26 @@ public class Mentor_Slot {
         this.status = status;
 
     }
-     
 
+    public Mentor_Slot(int slot_id, int mentor_id, String status, Date slot_date, int slot_number_id, Time start_time,Time end_time, String name) {
+        this.slot_id = slot_id;
+        this.mentor_id = mentor_id;
+        this.status = status;
+        this.slot_date = slot_date;
+        this.slot_number_id = slot_number_id;
+        this.start_time = start_time;
+        this.end_time = end_time;
+
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getRequest_id() {
         return request_id;
@@ -143,7 +161,7 @@ public class Mentor_Slot {
 
     @Override
     public String toString() {
-        return "Mentor_Slot{" + "mentor_id=" + mentor_id + ", slot_id=" + slot_id + ", status=" + status + ", slot_date=" + slot_date + ", slot_number_id=" + slot_number_id + ", start_time=" + start_time + ", end_time=" + end_time + ", request_id=" + request_id + '}';
+        return "Mentor_Slot{" + "mentor_id=" + mentor_id + ", slot_id=" + slot_id + ", status=" + status + ", slot_date=" + slot_date + ", slot_number_id=" + slot_number_id + ", start_time=" + start_time + ", end_time=" + end_time + ", request_id=" + request_id + ", name=" + name + '}';
     }
 
 }

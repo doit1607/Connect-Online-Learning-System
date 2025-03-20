@@ -39,10 +39,11 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             .temp-slot-item {
                 background: #fffae6;
                 border-left: 4px solid #ffc107;
-                padding: 5px 10px;
+                padding: 10px 15px; /* Tăng padding để ô to hơn */
                 font-weight: bold;
                 display: inline-flex;
                 align-items: center;
+                font-size: 16px; /* Tăng kích thước chữ */
             }
             .slot-box {
                 display: flex;
@@ -68,6 +69,11 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 width: 100%;
                 margin-bottom: 0;
             }
+            .slot-body td {
+                padding: 10px; /* Tăng padding cho ô trong bảng */
+                font-size: 16px; /* Tăng kích thước chữ trong ô */
+                height: 50px; /* Tăng chiều cao tối thiểu của ô */
+            }
             .slot-footer {
                 padding: 10px;
             }
@@ -87,19 +93,19 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             .temp-slot-highlight {
                 background-color: rgba(0, 128, 0, 0.1);
                 border: 1px solid green;
-                padding: 3px 6px;
+                padding: 10px 15px; /* Tăng padding để ô to hơn */
                 border-radius: 4px;
                 color: green;
+                font-size: 16px; /* Tăng kích thước chữ */
             }
             .add-temp-slot {
                 margin-left: 5px;
+                font-size: 14px; /* Giữ nút nhỏ gọn */
+                padding: 5px 10px;
             }
             .loading {
                 opacity: 0.5;
                 pointer-events: none;
-            }
-            .schedule-list {
-                margin-bottom: 20px;
             }
             .week-navigation {
                 display: flex;
@@ -109,36 +115,28 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 max-width: 600px;
                 margin: 0 auto;
             }
-            .week-navigation form {
-                display: inline-block;
+            .week-navigation span {
+                font-size: 16px;
+                font-weight: bold;
             }
             .week-navigation button {
                 font-size: 14px;
                 padding: 6px 12px;
             }
-            .dropdown-menu {
-                display: none;
+            .week-navigation button.disabled {
+                opacity: 0.5;
+                pointer-events: none;
             }
-            .dropdown:hover .dropdown-menu {
-                display: none !important;
+            #rejectedSlotsModal .modal-body {
+                font-size: 16px;
             }
-            .dropdown.show .dropdown-menu {
-                display: block !important;
+
+            #rejectedSlotsModal .modal-footer .btn {
+                min-width: 100px;
             }
         </style>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    let alerts = document.querySelectorAll(".alert");
-                    alerts.forEach(alert => {
-                        alert.style.transition = "opacity 0.5s";
-                        alert.style.opacity = "0";
-                        setTimeout(() => alert.style.display = "none", 500);
-                    });
-                }, 3000);
-            });
-        </script>
+
     </head>
     <body>
         <%@include file="../sourcesHome/homeHeader.jsp" %>
@@ -238,27 +236,20 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                             <p class="text-muted">Schedule ID: ${nextScheduleId}</p>
                                         </div>
                                         <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                            <div class="dropdown d-inline-block">
-                                                <a href="#" class="dropdown-toggle text-primary" id="scheduleMonthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="far fa-calendar-alt me-2"></i>
-                                                    <span id="selectedScheduleMonth">${nextMonth} ${nextYear}</span>
-                                                    <i class="fas fa-chevron-down ms-2"></i>
-                                                </a>
-                                                <ul class="dropdown-menu" aria-labelledby="scheduleMonthDropdown">
-                                                    <c:forEach var="schedule" items="${assignedSchedulesForDropdown}">
-                                                        <c:set var="scheduleMonth" value="${schedule.start_date.toLocalDate().monthValue}"/>
-                                                        <c:set var="scheduleYear" value="${schedule.start_date.toLocalDate().year}"/>
-                                                        <li>
-                                                            <form action="/HAPPYorSAD/SetSlot" method="post" style="margin: 0;">
-                                                                <input type="hidden" name="action" value="selectSchedule">
-                                                                <input type="hidden" name="scheduleId" value="${schedule.id}">
-                                                                <button type="submit" class="dropdown-item schedule-month-item ${(schedule.id == nextScheduleId) ? 'active' : ''}">
-                                                                    ${scheduleMonth} ${scheduleYear}
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
+                                            <div class="week-navigation">
+                                                <form id="prevForm" action="/HAPPYorSAD/SetSlot" method="post" style="display:inline;">
+                                                    <input type="hidden" name="action" value="changeMonth">
+                                                    <input type="hidden" name="direction" value="previous">
+                                                    <input type="hidden" name="currentScheduleId" value="${nextScheduleId}">
+                                                    <button type="submit" class="btn btn-primary" id="prevButton">Previous</button>
+                                                </form>
+                                                <span id="currentMonthYear">${nextMonth} ${nextYear}</span>
+                                                <form id="nextForm" action="/HAPPYorSAD/SetSlot" method="post" style="display:inline;">
+                                                    <input type="hidden" name="action" value="changeMonth">
+                                                    <input type="hidden" name="direction" value="next">
+                                                    <input type="hidden" name="currentScheduleId" value="${nextScheduleId}">
+                                                    <button type="submit" class="btn btn-primary" id="nextButton">Next</button>
+                                                </form>
                                             </div>
                                             <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
                                         </div>
@@ -292,7 +283,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                     <c:forEach var="temp" items="${sessionScope.tempSlotsByDate[day]}">
                                                                                         <c:if test="${temp.slotNumber == i}">
                                                                                             <span class="temp-slot-item temp-slot-highlight">
-                                                                                                <i class="isax isax-clock"></i> Slot ${temp.slotNumber}
+                                                                                                Slot ${temp.slotNumber}
                                                                                             </span>
                                                                                             <c:set var="slotFound" value="true"/>
                                                                                         </c:if>
@@ -300,7 +291,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                     <c:if test="${not slotFound}">
                                                                                         <span class="text-muted">Empty</span>
                                                                                         <button type="button" class="btn btn-sm btn-success add-temp-slot" 
-                                                                                                data-date="${day}" data-slot="${i}">+</button>
+                                                                                                data-date="${day}" data-slot="${i}" data-schedule="${nextScheduleId}">+</button>
                                                                                     </c:if>
                                                                                 </td>
                                                                             </tr>
@@ -316,9 +307,9 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     </div>
                                 </div>
                                 <div class="card-footer text-end">
-                                    <form action="/HAPPYorSAD/SetSlot?action=save" method="post">
+                                    <form id="saveForm" action="/HAPPYorSAD/SetSlot?action=save" method="post">
                                         <input type="hidden" name="scheduleId" value="${nextScheduleId}">
-                                        <button type="button" class="btn btn-gray" onclick="window.location.reload()">Cancel</button>
+                                        <button type="button" class="btn btn-gray" onclick="window.location.reload()">Clear</button>
                                         <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
                                     </form>
                                 </div>
@@ -329,34 +320,94 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             </div>
         </div>
 
-        <!-- Hidden Forms -->
-        <form id="tempSlotForm" action="/HAPPYorSAD/SetSlot?action=add" method="post" style="display:none;">
-            <input type="hidden" name="scheduleId" id="scheduleIdInput" value="${nextScheduleId}">
-            <input type="hidden" name="slot_date" id="slotDateInput">
-            <input type="hidden" name="slotNumber" id="slotNumberInput">
-        </form>
-        <form id="monthForm" action="/HAPPYorSAD/SetSlot" method="get" style="display:none;">
-            <input type="hidden" name="month" id="hiddenMonth">
-            <input type="hidden" name="year" id="hiddenYear">
-        </form>
+     
+
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Thông báo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <c:if test="${not empty message}">
+                            <div class="alert alert-info">${message}</div>
+                        </c:if>
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger">${errorMessage}</div>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add this modal after the existing messageModal -->
+        <div class="modal fade" id="rejectedSlotsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Rejected Slots Detected</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some of your slots for ${nextMonth} ${nextYear} have been rejected. Would you like to clear them and set new slots?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="/HAPPYorSAD/SetSlot" method="post" style="display:inline;">
+                            <input type="hidden" name="action" value="resetRejectedSlots">
+                            <input type="hidden" name="scheduleId" value="${nextScheduleId}">
+                            <button type="submit" class="btn btn-primary">Set Slots Again</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const scheduleId = "${nextScheduleId}";
-                const addScheduleBtn = document.getElementById("addSchedule");
-                const addSlotButtons = document.querySelectorAll(".add-temp-slot");
+            document.addEventListener("DOMContentLoaded", function () {
+                // Alert fade out
+                setTimeout(function () {
+                    let alerts = document.querySelectorAll(".alert");
+                    alerts.forEach(alert => {
+                        alert.style.transition = "opacity 0.5s";
+                        alert.style.opacity = "0";
+                        setTimeout(() => alert.style.display = "none", 500);
+                    });
+                }, 3000);
 
-                // Handle adding slots
+                // Message/Error Modal
+                const message = "${message}";
+                const errorMessage = "${errorMessage}";
+                if (message || errorMessage) {
+                    const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+                    messageModal.show();
+                    setTimeout(() => messageModal.hide(), 3000);
+                }
+
+                // Rejected Slots Modal
+                const hasRejectedSlots = ${hasRejectedSlots != null ? hasRejectedSlots : 'false'};
+                const scheduleId = "${nextScheduleId}";
+                console.log("hasRejectedSlots:", hasRejectedSlots); // Debug
+                console.log("scheduleId:", scheduleId); // Debug
+                if (hasRejectedSlots && scheduleId !== "-1") {
+                    const rejectedModal = new bootstrap.Modal(document.getElementById("rejectedSlotsModal"));
+                    rejectedModal.show();
+                }
+
+                // Add Slot Buttons
+                const addSlotButtons = document.querySelectorAll(".add-temp-slot");
                 addSlotButtons.forEach(button => {
                     button.addEventListener("click", async () => {
                         const date = button.dataset.date;
                         const slotNumber = button.dataset.slot;
-
+                        const scheduleId = "${nextScheduleId}";
                         if (!date || !slotNumber || !scheduleId || scheduleId === "-1") {
                             alert("Invalid slot data or no schedule selected");
                             return;
                         }
-
                         button.classList.add("loading");
                         try {
                             const response = await fetch("/HAPPYorSAD/SetSlot?action=add", {
@@ -382,13 +433,14 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     const slotCell = button.closest("td");
                     if (slotCell) {
                         slotCell.innerHTML = `
-                            <span class="temp-slot-item temp-slot-highlight">
-                                <i class="isax isax-clock"></i> Slot ${slotNumber}
-                            </span>`;
+                             <span class="temp-slot-item temp-slot-highlight">
+                                 Slot ${slotNumber}
+                             </span>`;
                     }
                 }
 
-                // Handle adding new schedule
+                // Add Schedule
+                const addScheduleBtn = document.getElementById("addSchedule");
                 if (addScheduleBtn) {
                     addScheduleBtn.addEventListener("click", (e) => {
                         e.preventDefault();
@@ -396,38 +448,19 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                 .then(() => location.reload());
                     });
                 }
-            });
-        </script>
 
-        <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thông báo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <c:if test="${not empty message}">
-                            <div class="alert alert-info">${message}</div>
-                        </c:if>
-                        <c:if test="${not empty errorMessage}">
-                            <div class="alert alert-danger">${errorMessage}</div>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let message = "${message}";
-                let errorMessage = "${errorMessage}";
-                if (message || errorMessage) {
-                    let modal = new bootstrap.Modal(document.getElementById("messageModal"));
-                    modal.show();
-                    setTimeout(function () {
-                        modal.hide();
-                    }, 3000);
+                // Disable Previous Button
+                const currentMonth = <%= currentMonth %>;
+                const currentYear = <%= currentYear %>;
+                const displayedMonth = "${nextMonth}";
+                const displayedYear = "${nextYear}";
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                const displayedMonthNum = monthNames.indexOf(displayedMonth) + 1;
+                const prevButton = document.getElementById("prevButton");
+                if ((displayedYear == currentYear && displayedMonthNum <= currentMonth) || (displayedYear < currentYear)) {
+                    prevButton.disabled = true;
+                    prevButton.classList.add("disabled");
                 }
             });
         </script>

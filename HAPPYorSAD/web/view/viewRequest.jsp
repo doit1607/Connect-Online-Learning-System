@@ -87,60 +87,60 @@
                 <!-- sidebar -->
                 <div class="col-xl-3 col-lg-3 theiaStickySidebar">
 
-                            <div class="settings-widget account-settings">
-                                <div class="settings-menu">
-                                    <h3>Dashboard</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Profile
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
-                                                <i class="bx bxs-tachometer"></i>Schedule
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="Notifications" class="nav-link">
-                                                <i class="bx bxs-bell"></i>Notifications
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <h3>Instructor</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
-                                                <i class="bx bxs-rocket"></i>Curriculum Vitae
-                                            </a>
-                                        </li>
-                                        <li class="nav-item active">
-                                            <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Inviting Request
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/Attendance" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Attendance
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <h3>Account Settings</h3>
-                                    <ul>
-                                        <li class="nav-item">
-                                            <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
-                                                <i class="bx bxs-cog"></i>Settings
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="LoginUser?service=logout" class="nav-link">
-                                                <i class="bx bxs-log-out"></i>Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="settings-widget account-settings">
+                        <div class="settings-menu">
+                            <h3>Dashboard</h3>
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="/../HAPPYorSAD/ProfileServlet" class="nav-link">
+                                        <i class="bx bxs-tachometer"></i>Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/../HAPPYorSAD/SetSlot" class="nav-link">
+                                        <i class="bx bxs-tachometer"></i>Schedule
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="Notifications" class="nav-link">
+                                        <i class="bx bxs-bell"></i>Notifications
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3>Instructor</h3>
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="/../HAPPYorSAD/ViewCV" class="nav-link ">
+                                        <i class="bx bxs-rocket"></i>Curriculum Vitae
+                                    </a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="/../HAPPYorSAD/viewRequest" class="nav-link">
+                                        <i class="bx bxs-graduation"></i>Inviting Request
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/../HAPPYorSAD/Attendance" class="nav-link">
+                                        <i class="bx bxs-graduation"></i>Attendance
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3>Account Settings</h3>
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="updatementorprofile?username=${sessionScope.usernameUser}" class="nav-link ">
+                                        <i class="bx bxs-cog"></i>Settings
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="LoginUser?service=logout" class="nav-link">
+                                        <i class="bx bxs-log-out"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                </div>
                 <div class="col-lg-9 col-xl-9">
                     <div>
                         <h3>Requests</h3>
@@ -265,8 +265,16 @@
                         </div>
                     </div>-->
 
+                    <c:if test="${not empty sessionScope.msg}">
+                        <div class="alert alert-success">${sessionScope.msg}</div>
+                        <c:remove var="msg" scope="session"/>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.error}">
+                        <div class="alert alert-danger">${sessionScope.error}</div>
+                        <c:remove var="error" scope="session"/>
+                    </c:if>
                     <c:forEach var="request" items="${requests}">
-                        <div class="appointment-wrap " >
+                        <div class="appointment-wrap">
                             <ul>
                                 <li>
                                     <div class="patinet-information">
@@ -291,22 +299,14 @@
                                     <p class="md-text">End Date</p>
                                     <p><i class="isax isax-clock5"></i>${request.getEndDate()}</p>
                                 </li>
-                                <!--            <li>
-                                                <button type="button" class="btn btn-outline-secondary" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#acceptAppointmentModal_${request.getId()}">
-                                                    <i class="fa-solid fa-info"></i>&nbsp;Details
-                                                </button>
-                                            </li>-->
                             </ul>
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-secondary" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#acceptAppointmentModal_${request.getId()}">
-                                    <i class="fa-solid fa-info"></i>&nbsp;Details
+                                    <i class="fa-solid fa-info"></i> Details
                                 </button>
                             </div>
-
                         </div>
 
                         <!-- Modal cho từng request -->
@@ -335,8 +335,6 @@
                                         <hr/>
 
                                         <h3 style="margin-bottom: 18px">Courses</h3>
-
-
                                         <c:forEach var="course" items="${request.getRequestedCourses()}">
                                             <div class="card mb-3" style="max-width: 540px;">
                                                 <div class="row g-0">
@@ -357,73 +355,7 @@
                                         <h3 style="margin-bottom: 18px">Schedule</h3>
                                         <div id="schedule-table-${request.id}" class="schedule-container">
                                             <p>Loading schedule...</p>
-                                            <!-- Debug -->
-                                            <script>console.log("JSP Generated Schedule ID: schedule-table-${request.id}");</script>
                                         </div>
-
-
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function () {
-                                                const modals = document.querySelectorAll('.modal[id^="acceptAppointmentModal_"]');
-                                                if (modals.length === 0) {
-                                                    console.warn("No modals found with ID pattern 'acceptAppointmentModal_'");
-                                                    return;
-                                                }
-                                                modals.forEach(modal => {
-                                                    const requestIdMatch = modal.id.match(/acceptAppointmentModal_(\d+)/);
-                                                    const requestId = requestIdMatch ? requestIdMatch[1] : null;
-                                                    if (!requestId) {
-                                                        console.error(`Could not extract requestId from modal ID: ${modal.id}`);
-                                                        return;
-                                                    }
-                                                    modal.addEventListener('shown.bs.modal', function () {
-                                                        const safeRequestId = requestId; // Avoid any potential redefinition
-                                                        const fullId = 'schedule-table-' + safeRequestId; // Explicit concatenation
-                                                        const scheduleContainer = document.getElementById(fullId);
-
-                                                        scheduleContainer.innerHTML = '<p>Loading schedule...</p>';
-                                                        const fetchUrl = `fetchSlot?requestId=${request.id}`;
-                                                        console.log("Fetching URL:", fetchUrl);
-
-                                                        fetch(fetchUrl)
-                                                                .then(response => {
-                                                                    console.log(`Fetch response status for requestId ${safeRequestId}:`, response.status);
-                                                                    if (!response.ok) {
-                                                                        throw new Error(`HTTP error! Status: ${response.status}`);
-                                                                    }
-                                                                    return response.text();
-                                                                })
-                                                                .then(data => {
-                                                                    console.log(`Schedule data loaded for requestId ${safeRequestId}`);
-                                                                    scheduleContainer.innerHTML = data;
-                                                                    scheduleContainer.dataset.loaded = "true";
-                                                                })
-                                                                .catch(error => {
-                                                                    console.error(`Error loading schedule for requestId ${safeRequestId}:`, error);
-                                                                    scheduleContainer.innerHTML = '<p>Failed to load schedule. Please try again later.</p>';
-                                                                });
-                                                    });
-                                                    modal.addEventListener('hidden.bs.modal', function () {
-                                                        const scheduleContainer = document.getElementById('schedule-table-' + requestId);
-                                                        if (scheduleContainer) {
-                                                            scheduleContainer.dataset.loaded = "false";
-                                                            console.log(`Reset loaded flag for requestId ${requestId}`);
-                                                        }
-                                                    });
-                                                });
-                                            });
-                                        </script>
-
-
-                                        <style>
-                                            .schedule-container {
-                                                min-height: 100px;
-                                                padding: 15px;
-                                                background: #f8f9fa;
-                                                border-radius: 5px;
-                                            }
-                                        </style>
-
                                     </div>
                                     <div class="modal-footer">
                                         <ul class="request-action">
@@ -448,7 +380,7 @@
                                                         </form>
                                                     </li>
                                                     <li>
-                                                        <form action="viewRequest" method="POST" >
+                                                        <form action="viewRequest" method="POST">
                                                             <input type="hidden" name="id" value="${request.id}">
                                                             <input type="hidden" name="status" value="Cancel">
                                                             <button type="button" class="btn btn-danger" onclick="return confirmReject(this)">
@@ -457,15 +389,32 @@
                                                         </form>
                                                     </li>
                                                 </c:when>
+                                                <c:when test="${request.status eq 'PendingCompleted'}">
+                                                    <li>
+                                                        <form action="viewRequest" method="POST" style="display:inline;">
+                                                            <input type="hidden" name="id" value="${request.id}">
+                                                            <input type="hidden" name="status" value="Completed">
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="fa-solid fa-check"></i> Complete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form action="viewRequest" method="POST" style="display:inline;">
+                                                            <input type="hidden" name="id" value="${request.id}">
+                                                            <input type="hidden" name="status" value="Cancel">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fa-solid fa-xmark"></i> Close
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </c:when>
                                             </c:choose>
                                         </ul>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </c:forEach>
 
                     <nav>
@@ -476,9 +425,7 @@
                                 </li>
                             </c:forEach>
                         </ul>
-
                     </nav>
-
                     <!-- Modal xác nhận hoàn thành request -->
                     <div class="modal fade" id="completeRequestModal" tabindex="-1" aria-labelledby="completeRequestModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
