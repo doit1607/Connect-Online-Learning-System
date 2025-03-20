@@ -310,7 +310,9 @@ public class DAOmentor_Slot extends DBConnection {
                         rs.getDate("slot_date"),
                         rs.getInt("slot_number"),
                         rs.getTime("start_time"),
-                        rs.getTime("end_time")));
+                        rs.getTime("end_time"),
+                        rs.getString("status")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -42,7 +42,6 @@ public class Slot {
     public Slot(String status) {
         this.status = status;
     }
-    
 
     public Slot(int id, int scheduleId, Date slotDate, int slotNumber, String status) {
         this.id = id;
@@ -51,10 +50,6 @@ public class Slot {
         this.slotNumber = slotNumber;
         this.status = status;
     }
-    
-    
-    
-    
 
     public Slot(int id, Date slotDate, int slotNumber, Time startTime) {
         this.id = id;
@@ -68,7 +63,17 @@ public class Slot {
         this.slotDate = slotDate;
         this.slotNumber = slotNumber;
         this.startTime = startTime;
-          this.endTime = endTime;
+        this.endTime = endTime;
+    }
+
+    public Slot(int id, Date slotDate, int slotNumber, Time startTime, Time endTime, String status) {
+        this.id = id;
+        this.slotDate = slotDate;
+        this.slotNumber = slotNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+
     }
 
     public Slot(int id, Date slotDate, int slotNumber) {

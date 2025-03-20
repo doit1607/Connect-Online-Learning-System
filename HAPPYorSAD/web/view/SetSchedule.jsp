@@ -776,24 +776,30 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /Remove Slots -->
+                </div>
+            </div>
+        </div>
 
-                    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"
-                    type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"
-                    type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/js/moment.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/js/bootstrap-datetimepicker.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/assets/js/script.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
-                    <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
-                    data-cf-settings="a18776aee842a8e5f3a30141-|49" defer></script>
-                    <script defer
-                            src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-                            integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-                            data-cf-beacon='{"rayId":"9127c0ff5d5b02d2","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}'
-                    crossorigin="anonymous"></script>
-                    </body>
-                    </html>
+
+
+        <!-- /Remove Slots -->
+
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"
+        type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"
+        type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/moment.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/bootstrap-datetimepicker.min.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js" type="a18776aee842a8e5f3a30141-text/javascript"></script>
+        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+        data-cf-settings="a18776aee842a8e5f3a30141-|49" defer></script>
+        <script defer
+                src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+                integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+                data-cf-beacon='{"rayId":"9127c0ff5d5b02d2","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}'
+        crossorigin="anonymous"></script>
+    </body>
+</html>

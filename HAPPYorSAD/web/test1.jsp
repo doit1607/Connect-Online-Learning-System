@@ -110,89 +110,137 @@
                 padding: 0;
             }
 
+            /* Schedule Content */
             .schedule-cont {
                 padding: 20px;
             }
 
+            /* Time Slot Container */
+            .time-slot {
+                width: 100%;
+            }
+
             .time-slot ul {
                 list-style: none;
-                margin: auto -5px 0 -5px;
+                margin: 0;
                 padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
             }
+
             .time-slot ul li {
                 float: left;
-                padding-left: 5px;
-                padding-right: 5px;
-                width: 14.28%;
+                padding: 0 5px;
+                width: 14.28%; /* 7 cột cho 7 ngày trong tuần */
+                box-sizing: border-box;
             }
-            .time-slot ul li .timing {
-                background-color: #e9e9e9;
-                border: 1px solid #e9e9e9;
-                border-radius: 3px;
-                color: #757575;
-                display: block;
-                font-size: 14px;
-                margin-bottom: 10px;
-                padding: 5px 5px;
+
+            /* Slot Row */
+            .slot-row {
+                margin: 5px 0;
+            }
+
+            /* Style cơ bản cho tất cả các slot */
+            .timing {
+                display: block; /* Đảm bảo slot chiếm toàn bộ chiều rộng của li */
+                padding: 10px 15px;
+                margin: 5px 0; /* Khoảng cách giữa các slot trong cùng một ngày */
+                text-decoration: none;
+                border-radius: 5px;
+                transition: all 0.3s ease;
                 text-align: center;
+                border: 2px solid transparent;
+                background-color: #e9e9e9; /* Màu nền mặc định nếu không có trạng thái */
+                color: #757575;
+                font-size: 14px;
                 position: relative;
+                cursor: pointer;
+
             }
-            .time-slot ul li .timing:hover {
-                background-color: #FFF;
+
+            .timing:hover {
+                background-color: #fff; /* Hiệu ứng hover cho slot không bị vô hiệu hóa */
             }
-            .time-slot ul li .timing:last-child {
-                margin-bottom: 0;
+
+            /* Các trạng thái slot */
+            .timing.slot-studying {
+                background-color: #ff0000; /* Màu đỏ cho Studying (Mentor bận) */
+                color: white;
+                border: 2px solid #cc0000;
             }
-            .time-slot ul li .timing.selected {
-                background-color: #0E82FD;
-                border: 1px solid #0E82FD;
-                color: #FFF;
+
+            .timing.slot-booked {
+                background-color: #ffff00; /* Màu vàng cho Booked (Đã được đặt bởi Mentee) */
+                color: #333;
+                border: 2px solid #cccc00;
             }
-            .time-slot ul li .timing.selected::before {
-                color: #FFF;
-                content: "\f00c";
+
+            .timing.slot-available {
+                background-color: #4CAF50; /* Màu xanh lá cho Available (Còn trống) */
+                color: white;
+                border: 2px solid #3d8b40;
+            }
+
+            .timing.slot-notset {
+                background-color: #f0f0f0; /* Màu xám nhạt cho Notset (Không khả dụng) */
+                color: #999;
+                border: 2px solid #d3d3d3;
+                cursor: not-allowed;
+                opacity: 0.7;
+                pointer-events: none; /* Không cho phép nhấp */
+            }
+
+            /* Trạng thái selected */
+            .timing.selected {
+                border: 2px dashed #007bff; /* Viền nét đứt xanh dương khi chọn */
+                /* Không ghi đè màu nền để giữ màu trạng thái */
+            }
+
+            .timing.selected::before {
+                content: "\f00c"; /* Biểu tượng check */
                 font-family: "Font Awesome 5 Free";
                 font-size: 12px;
                 font-weight: 900;
                 position: absolute;
                 top: 6px;
                 right: 6px;
-            }
-            @media (max-width: 991.96px) {
-                .time-slot ul li .timing.selected::before {
-                    display: none;
-                }
-            }
-            .time-slot ul li .timing.selected:hover {
-                color: #757575;
-            }
-            .time-slot ul li .timing.selected:hover::before {
-                color: #757575;
+                color: #007bff; /* Màu xanh dương cho biểu tượng */
             }
 
-            .schedule-list {
-                border-bottom: 1px solid #cfcfcf;
-                margin-bottom: 50px;
-                padding-bottom: 50px;
-            }
-            .schedule-list:last-child {
-                border-bottom: 0;
-                margin-bottom: 0;
-                padding-bottom: 0;
+            /* Đảm bảo span trong slot hiển thị đồng đều */
+            .timing span {
+                font-size: 14px;
+                display: block;
             }
 
-            .submit-section.proceed-btn {
-                margin: 0 0 30px;
-            }
+            /* Responsive */
             @media (max-width: 767.96px) {
-                .submit-section.proceed-btn {
-                    margin-bottom: 20px;
+                .time-slot ul li {
+                    width: 33.33%; /* 3 cột trên mobile */
+                }
+
+                .timing {
+                    font-size: 12px;
+                    padding: 8px 10px;
+                }
+
+                .timing span {
+                    font-size: 12px;
+                }
+
+                .timing.selected::before {
+                    font-size: 10px;
+                    top: 4px;
+                    right: 4px;
                 }
             }
-            /* ... (các style ?ã có) ... */
 
-            /* ... (các style ?ã có) ... */
-
+            @media (max-width: 991.96px) {
+                .time-slot ul li {
+                    width: 20%; /* 5 cột trên tablet */
+                }
+            }
             .title-container {
                 margin-bottom: 20px;
             }
@@ -440,78 +488,7 @@
 
             /* Style cơ bản cho tất cả các slot */
             /* Style cơ bản cho tất cả các slot */
-            .timing {
-                display: inline-block;
-                padding: 10px 15px;
-                margin: 5px;
-                text-decoration: none;
-                border-radius: 5px;
-                transition: all 0.3s ease;
-                min-width: 100px;
-                text-align: center;
-                border: 2px solid transparent; /* Đặt border mặc định để tránh giật khi đổi trạng thái */
-            }
 
-            .timing.slot-studying {
-                background-color: #ff0000; /* Màu đỏ */
-                color: white;
-                border: 2px solid #cc0000;
-            }
-
-            .timing.slot-booked {
-                background-color: #ffff00; /* Màu vàng */
-                color: #333;
-                border: 2px solid #cccc00;
-            }
-
-            .timing.slot-available {
-                background-color: #4CAF50; /* Màu xanh lá */
-                color: white;
-                border: 2px solid #3d8b40;
-            }
-
-            .timing.slot-notset {
-                background-color: #f0f0f0; /* Màu xám nhạt */
-                color: #999;
-                border: 2px solid #d3d3d3;
-                cursor: not-allowed;
-                opacity: 0.7;
-                pointer-events: none;
-            }
-
-            /* Đảm bảo slot được chọn (selected) không ghi đè màu trạng thái */
-            .timing.selected {
-                /* Xóa các thuộc tính background-color và border mặc định của .selected */
-                /* Chỉ giữ lại hiệu ứng chọn nếu cần */
-                /* Ví dụ: thêm biểu tượng check mà không thay đổi màu nền */
-            }
-
-            /* Xóa hoặc điều chỉnh style cũ của .timing.selected nếu không cần thiết */
-            .timing.selected::before {
-                color: white; /* Giữ biểu tượng trắng để nổi bật trên mọi nền */
-                content: "\f00c";
-                font-family: "Font Awesome 5 Free";
-                font-size: 12px;
-                font-weight: 900;
-                position: absolute;
-                top: 6px;
-                right: 6px;
-            }
-
-            /* Vô hiệu hóa slot không khả dụng */
-            .timing.disabled {
-                background-color: #f0f0f0; /* Màu xám nhạt */
-                color: #999;
-                border: 2px solid #d3d3d3;
-                cursor: not-allowed;
-                opacity: 0.7;
-                pointer-events: none;
-            }
-
-            /* Đảm bảo span hiển thị đồng đều */
-            .timing span {
-                font-size: 14px;
-            }
             .dropdown-item.active {
                 background-color: #007bff;
                 color: white;
@@ -557,20 +534,189 @@
                 font-size: 14px;
                 color: #757575;
             }
-            .mentor-course-info .rating .fas.fa-star.filled {
-                color: #f4c150;
-            }
-            .mentor-course-info .rating .fas.fa-star {
-                color: #e6e8ee;
-            }
-            .mentor-course-info .rating .average-rating {
-                margin-left: 5px;
-                font-size: 14px;
-                color: #757575;
-            }
+
             @media (max-width: 767.96px) {
                 .mentor-course-info .col-md-6 {
                     margin-bottom: 20px;
+                }
+            }
+
+
+
+            .yellow {
+                background-color: #ffff99; /* Màu vàng nhạt */
+                border: 1px solid #ffcc00; /* Viền vàng đậm */
+            }
+
+            .red {
+                background-color: #ff9999; /* Màu đỏ nhạt */
+                border: 1px solid #ff0000; /* Viền đỏ đậm */
+            }
+
+            .green {
+                background-color: #99ff99; /* Màu xanh nhạt */
+                border: 1px solid #00cc00; /* Viền xanh đậm */
+            }
+
+            .slot-notset {
+                background-color: #cccccc; /* Màu xám cho slot không được set */
+                border: 1px solid #999999;
+            }
+            /* Custom Modal Styles */
+            .custom-modal {
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .custom-modal-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                width: 90%;
+                max-width: 400px;
+                text-align: center;
+            }
+
+            .custom-modal-content p {
+                margin: 0 0 15px;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .modal-btn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-btn:hover {
+                background-color: #0056b3;
+            }
+            /* Repeat Booking Section */
+            #repeatBooking {
+                margin-right: 5px;
+            }
+
+            #repeatOptions {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 5px;
+                border: 1px solid #e6e8ee;
+                margin-top: 10px;
+            }
+
+            #repeatOptions label {
+                font-weight: bold;
+                color: #333;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            /* Repeat Mode Options */
+            .repeat-mode-options {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 10px;
+            }
+
+            .repeat-mode-options input[type="radio"] {
+                margin-right: 5px;
+            }
+
+            .repeat-mode-options label {
+                font-weight: normal;
+                margin-bottom: 0;
+            }
+
+            /* Repeat Option Blocks */
+            .repeat-option {
+                margin-top: 10px;
+            }
+
+            .repeat-option label {
+                display: inline-block;
+                margin-right: 10px;
+            }
+
+            .repeat-option .form-select,
+            .repeat-option .form-input {
+                display: inline-block;
+                width: auto;
+                padding: 6px 12px;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                font-size: 14px;
+                vertical-align: middle;
+            }
+
+            .repeat-option .form-select:focus,
+            .repeat-option .form-input:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+            .repeat-option .form-input {
+                width: 80px; /* Giới hạn chiều rộng cho input number */
+            }
+
+            /* Buttons */
+            .btn {
+                padding: 8px 15px;
+                font-size: 14px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-primary {
+                background-color: #007bff;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+            .btn-danger {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
+
+            /* Responsive */
+            @media (max-width: 767.96px) {
+                .repeat-mode-options {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .repeat-option .form-select,
+                .repeat-option .form-input {
+                    width: 100%;
+                }
+
+                .btn {
+                    width: 100%;
+                    margin-top: 5px;
                 }
             }
 
@@ -619,6 +765,8 @@
                     }
                 });
             });
+
+
         </script>
     </head>
     <div id="notification" class="notification">
@@ -630,6 +778,13 @@
             <div class="modal-content">
                 <p id="alert-message"></p>
                 <button id="close-alert">OK</button>
+            </div>
+        </div>
+        <!-- Custom Modal for Notifications -->
+        <div id="customModal" class="custom-modal" style="display: none;">
+            <div class="custom-modal-content">
+                <p id="customModalMessage"></p>
+                <button id="closeModalBtn" class="modal-btn">OK</button>
             </div>
         </div>
 
@@ -672,7 +827,6 @@
                                             <img src="${requestScope.course.image}" alt="Course Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.course.title}</h5>
-
                                             </div>
                                         </div>
                                     </div>
@@ -689,7 +843,6 @@
                                             <img src="${requestScope.mentorrequest.image}" alt="Mentor Image" class="img-fluid rounded me-3" style="max-width: 100px; max-height: 100px;">
                                             <div>
                                                 <h5>${requestScope.mentorrequest.name}</h5>
-
                                             </div>
                                         </div>
                                     </div>
@@ -721,7 +874,7 @@
                                     </div>
                                     <div class="date-container">
                                         <div>
-                                            <label for="end-date">Deadline Expected Confirm:</label>
+                                            <label for="end-date">Expected Confirmation Deadline:</label>
                                             <input type="date" id="end-date" name="enddate" value="${requestScope.enddate}" required>
                                     </div>
                                 </div>
@@ -796,23 +949,25 @@
                                                     <li>
                                                         <c:choose>
                                                             <c:when test="${not empty slotsByDay[entry.key]}">
-                                                                <!-- Lặp 5 lần cho mỗi slot từ 1 đến 5 -->
+                                                                <!-- Repeat 5 times for slots 1 to 5 -->
                                                                 <c:forEach var="slotNumber" begin="1" end="5">
                                                                     <div class="slot-row">
                                                                         <c:set var="slotKey" value="${entry.key}_${slotNumber}" />
                                                                         <c:set var="slotFound" value="false" />
                                                                         <c:forEach var="slot" items="${slotsByDay[entry.key]}">
                                                                             <c:if test="${slot.slotNumber == slotNumber}">
-                                                                                <c:set var="mentorStatus" value="${slot.status}" /> <!-- Trạng thái từ Mentor_Slot -->
-                                                                                <c:set var="menteeStatus" value="${slotStatusMap[slotKey]}" /> <!-- Trạng thái từ Mentee_Slot -->
+                                                                                <c:set var="mentorStatus" value="${slot.status}" />
+                                                                                <c:set var="menteeStatus" value="${slotStatusMap[slotKey]}" />
+                                                                                <c:set var="isSelectable" value="${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus == 'Available')}" />
                                                                                 <a href="#" 
                                                                                    class="timing
-                                                                                   ${mentorStatus == 'Studying' && menteeStatus != 'Studying' ? 'slot-studying' : ''}
-                                                                                   ${mentorStatus == 'Studying' && menteeStatus == 'Studying' ? 'slot-booked' : ''}
-                                                                                   ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus != 'Studying') ? 'slot-available' : ''}"
+                                                                                   ${menteeStatus == 'Studying' && mentorStatus == 'Studying' ? 'red' : ''}
+                                                                                   ${menteeStatus == 'Duplicated' && mentorStatus == 'Available' ? 'yellow' : ''}
+                                                                                   ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus == 'Available') ? 'green' : ''}"
                                                                                    data-slot-info="${entry.key}_${slot.slotNumber}"
+                                                                                   data-selectable="${isSelectable}"
                                                                                    data-bs-toggle="tooltip" 
-                                                                                   data-bs-title="Date: ${entry.key} | Start: ${slot.startTime} | End: ${slot.endTime} | Mentor Status: ${mentorStatus} | Mentee Status: ${menteeStatus != null ? menteeStatus : 'Not Booked'}">
+                                                                                   data-bs-title="Start: ${slot.startTime} | End: ${slot.endTime} | Mentor Status: ${mentorStatus} | Your Slot Status: ${menteeStatus != null ? menteeStatus : 'Not Booked'}">
                                                                                     <span>Slot ${slotNumber}</span>
                                                                                 </a>
                                                                                 <c:set var="slotFound" value="true" />
@@ -822,6 +977,7 @@
                                                                             <a href="#" 
                                                                                class="timing slot-notset"
                                                                                data-slot-info="${entry.key}_${slotNumber}" 
+                                                                               data-selectable="false"
                                                                                data-bs-toggle="tooltip" 
                                                                                data-bs-title="Date: ${entry.key} | Start: ${slotTimeMap[slotNumber].split('-')[0]} | End: ${slotTimeMap[slotNumber].split('-')[1]} | Status: Unavailable">
                                                                                 <span>Slot ${slotNumber}</span>
@@ -832,14 +988,12 @@
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div class="slot-row">
-                                                                    <!-- Nếu không có slot nào, hiển thị 5 hàng disabled -->
                                                                     <c:forEach var="slotNumber" begin="1" end="5">
                                                                         <a href="#" 
-                                                                           class="timing disabled" 
+                                                                           class="timing slot-notset"
                                                                            data-slot-info="${entry.key}_${slotNumber}" 
                                                                            data-bs-toggle="tooltip" 
-                                                                           data-bs-title="Date: ${entry.key} | Start: ${slotTimeMap[slotNumber].split('-')[0]} | End: ${slotTimeMap[slotNumber].split('-')[1]} | Status: Unavailable"
-                                                                           style="background-color: #f0f0f0; color: #999;">
+                                                                           data-bs-title="Date: ${entry.key} | Start: ${slotTimeMap[slotNumber].split('-')[0]} | End: ${slotTimeMap[slotNumber].split('-')[1]} | Status: Unavailable">
                                                                             <span>Slot ${slotNumber}</span>
                                                                         </a>
                                                                     </c:forEach>
@@ -855,78 +1009,69 @@
                                             <input type="checkbox" id="repeatBooking"> Repeat Booking
                                         </label>
                                         <div id="repeatOptions" style="display: none; margin-top: 10px;">
-                                            <label>Chế độ lặp lại:</label>
-                                            <div>
+                                            <label>Repeat Mode:</label>
+                                            <div class="repeat-mode-options">
                                                 <input type="radio" id="repeatByWeeks" name="repeatMode" value="weeks" checked>
-                                                <label for="repeatByWeeks">Theo số tuần</label>
+                                                <label for="repeatByWeeks">By Weeks</label>
                                                 <input type="radio" id="repeatBySlots" name="repeatMode" value="slots">
-                                                <label for="repeatBySlots">Theo số lượng slot</label>
+                                                <label for="repeatBySlots">By Number of Slots</label>
                                             </div>
-                                            <div id="weeksOption">
-                                                <label for="repeatWeeks">Số tuần (tối đa 4): </label>
-                                                <select id="repeatWeeks">
-                                                    <option value="1">+1 tuần</option>
-                                                    <option value="2">+2 tuần</option>
-                                                    <option value="3">+3 tuần</option>
-                                                    <option value="4">+4 tuần</option>
+                                            <div id="weeksOption" class="repeat-option">
+                                                <label for="repeatWeeks">Number of Weeks (max 4):</label>
+                                                <select id="repeatWeeks" class="form-select">
+                                                    <option value="1">+ 1 week</option>
+                                                    <option value="2">+ 2 weeks</option>
+                                                    <option value="3">+ 3 weeks</option>
+                                                    <option value="4">+ 4 weeks</option>
                                                 </select>
                                             </div>
-                                            <div id="slotsOption" style="display: none;">
-                                                <label for="maxSlots">Số lượng slot tối đa: </label>
-                                                +<input type="number" id="maxSlots" min="1" max="20" value="5">
+                                            <div id="slotsOption" class="repeat-option" style="display: none;">
+                                                <label for="maxSlots">Maximum Number of Slots:</label>
+                                                <input type="number" id="maxSlots" class="form-input" min="1" max="20" value="5">
                                             </div>
                                         </div>
-                                        <button id="bookSlots" type="button">Book Selected Slots</button>
-                                        <button type="button" id="clearAllBtn" class="clear-btn">Clear</button>
+                                        <button id="bookSlots" type="button" class="btn btn-primary">Book Selected Slots</button>
+                                        <button type="button" id="clearAllBtn" class="btn btn-danger clear-btn">Clear</button>
                                     </div>
                                 </div>
                             </div>
                             <!-- /Schedule Content -->
-                            <!-- Schedule hiển thị slot đã book -->
-                            <%-- Bảng cho các slot đã lưu trước đó từ database (Saved/Draft) --%>
-                            <div id="savedSchedule">
-                                <h3>Thời Khóa Biểu Đã Lưu</h3>
-                                <table class="schedule-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Thứ</th>
-                                            <th>Ngày</th>
-                                            <th>Tháng</th>
-                                            <th>Năm</th>
-                                            <th>Slot</th>
-                                            <th>Thời Gian</th>
-                                            <th>Trạng Thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="savedSlotsContainer">
-                                        <c:if test="${not empty tempSlotBooked}">
-                                            <c:forEach var="slot" items="${requestScope.tempSlotBooked}">
-                                                <tr>
 
-                                                </tr>
-                                            </c:forEach>
-                                        </c:if>
-                                    </tbody>
+                            <div class="legend">
+                                <h5>Legend:</h5>
+                                <table class="legend-table">
+                                    <tr>
+                                        <td><span class="timing red"></span></td>
+                                        <td>This slot has been booked</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="timing yellow"></span></td>
+                                        <td>This slot conflicts with another your subject’s slot</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="timing green"></span></td>
+                                        <td>Available to book</td>
+                                    </tr>
                                 </table>
                             </div>
 
-                            <%-- Bảng cho các slot book động --%>
+                            <!-- Schedule for selected slots -->
                             <div id="bookedSchedule">
-                                <h3>Thời Khóa Biểu Đang Chọn</h3>
+                                <h3>Selected Schedule</h3>
                                 <table class="schedule-table">
                                     <thead>
                                         <tr>
-                                            <th>Thứ</th>
-                                            <th>Ngày</th>
-                                            <th>Tháng</th>
-                                            <th>Năm</th>
+                                            <th>Day</th>
+                                            <th>Date</th>
+                                            <th>Month</th>
+                                            <th>Year</th>
                                             <th>Slot</th>
-                                            <th>Thời Gian</th>
-                                            <th>Trạng Thái</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody id="bookedSlotsContainer">
-                                        <!-- Trống ban đầu, được cập nhật động bởi JavaScript -->
+                                        <!-- Empty initially, updated dynamically by JavaScript -->
                                     </tbody>
                                 </table>
                             </div>
@@ -1005,9 +1150,23 @@
         </script>
 
         <script>
-            // Hàm hiển thị thông báo
             function showNotification(message) {
-                alert(message);
+                const modal = document.getElementById("customModal");
+                const modalMessage = document.getElementById("customModalMessage");
+                const closeBtn = document.getElementById("closeModalBtn");
+
+                modalMessage.textContent = message;
+                modal.style.display = "flex";
+
+                closeBtn.onclick = function () {
+                    modal.style.display = "none";
+                };
+
+                modal.onclick = function (event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                };
             }
 
             const eventHandlersAttached = {
@@ -1019,7 +1178,6 @@
             };
 
             document.addEventListener("DOMContentLoaded", function () {
-
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
                 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                     return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -1099,9 +1257,9 @@
                         };
                         let [dateStr, slotNumber] = slot.split("_");
                         let date = new Date(dateStr);
-                        let dayOfWeek = date.toLocaleString("vi-VN", {weekday: "long"});
+                        let dayOfWeek = date.toLocaleString("en-US", {weekday: "long"});
                         let day = date.getDate();
-                        let month = date.toLocaleString("vi-VN", {month: "long"});
+                        let month = date.toLocaleString("en-US", {month: "long"});
                         let year = date.getFullYear();
                         let slotTime = slotTimeMap[slotNumber] || "Unknown Time";
 
@@ -1120,7 +1278,7 @@
                         tdYear.textContent = year;
                         tdSlot.textContent = "Slot " + slotNumber;
                         tdSlotTime.textContent = slotTime;
-                        tdStatus.textContent = "Đã chọn";
+                        tdStatus.textContent = "Selected";
 
                         tr.appendChild(tdDayOfWeek);
                         tr.appendChild(tdDay);
@@ -1140,7 +1298,7 @@
                     document.getElementById("totalPriceInput").value = totalPrice;
 
                     if (totalPrice > walletBalance) {
-                        showNotification("Bạn không đủ tiền trong ví để đặt thêm slot!");
+                        showNotification("Insufficient wallet balance to book more slots!");
                         submitBtn.disabled = true;
                         saveBtn.disabled = true;
                         submitBtn.classList.add("disabled");
@@ -1228,6 +1386,19 @@
                         slot.addEventListener("click", function (event) {
                             event.preventDefault();
                             let slotInfo = this.dataset.slotInfo;
+                            let isSelectable = this.dataset.selectable === "true";
+
+                            if (!isSelectable) {
+                                if (this.classList.contains("yellow")) {
+                                    showNotification("Your study schedule conflicts with this slot, please choose another slot.");
+                                } else if (this.classList.contains("red")) {
+                                    showNotification("This slot has already been booked, please choose another slot.");
+                                } else {
+                                    showNotification("Only green (Available) slots can be selected!");
+                                }
+                                return;
+                            }
+
                             if (tempSlotBooked.has(slotInfo)) {
                                 tempSlotBooked.delete(slotInfo);
                                 this.classList.remove("selected");
@@ -1243,7 +1414,19 @@
                                     let weeks = parseInt(repeatWeeks.value) || 1;
                                     let maxSlots = parseInt(maxSlotsInput.value) || 5;
                                     let repeatedSlots = generateRepeatedSlots(slotInfo, mode, weeks, maxSlots);
-                                    repeatedSlots.forEach(s => tempSlotBooked.add(s));
+                                    repeatedSlots.forEach(s => {
+                                        let repeatedSlotElement = document.querySelector(`.timing[data-slot-info="${s}"]`);
+                                        if (repeatedSlotElement && repeatedSlotElement.dataset.selectable === "true") {
+                                            tempSlotBooked.add(s);
+                                            repeatedSlotElement.classList.add("selected");
+                                        } else if (repeatedSlotElement) {
+                                            if (repeatedSlotElement.classList.contains("yellow")) {
+                                                showNotification("Your study schedule conflicts with repeated slot " + s + ", please adjust your selection.");
+                                            } else if (repeatedSlotElement.classList.contains("red")) {
+                                                showNotification("Repeated slot " + s + " has already been booked, please adjust your selection.");
+                                            }
+                                        }
+                                    });
                                 }
                             }
                             saveFormData();
@@ -1270,7 +1453,7 @@
                         bookSlotsBtn.classList.add("disabled");
 
                         if (tempSlotBooked.size === 0) {
-                            showNotification("Vui lòng chọn ít nhất một slot!");
+                            showNotification("Please select at least one slot!");
                             isBookProcessing = false;
                             bookSlotsBtn.disabled = false;
                             bookSlotsBtn.classList.remove("disabled");
@@ -1296,12 +1479,12 @@
                                     console.log("Raw response from Book:", data);
                                     if (!data.includes("error")) {
                                         updateTempSlotUI();
-                                        showNotification(`Đã đặt thành công ${tempSlotBooked.size} slot!`);
+                                        showNotification(`Successfully booked ${tempSlotBooked.size} slots!`);
                                     }
                                 })
                                 .catch(error => {
-                                    console.error("Lỗi khi gửi Book:", error);
-                                    showNotification("Lỗi khi gửi Book: " + error.message);
+                                    console.error("Error during booking:", error);
+                                    showNotification("Error during booking: " + error.message);
                                 })
                                 .finally(() => {
                                     isBookProcessing = false;
@@ -1352,8 +1535,8 @@
                                     console.log("Clear response:", data);
                                 })
                                 .catch(error => {
-                                    console.error("Lỗi khi clear:", error);
-                                    showNotification("Lỗi khi xóa slot: " + error.message);
+                                    console.error("Error during clearing:", error);
+                                    showNotification("Error clearing slots: " + error.message);
                                 })
                                 .finally(() => {
                                     isClearProcessing = false;
@@ -1416,13 +1599,13 @@
                                             totalSlots = 0;
                                             totalPrice = 0;
                                             updateUI();
-                                            showNotification("Đã tạo request thành công!");
+                                            showNotification("Request created successfully!");
                                             window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
                                         }
                                     })
                                     .catch(error => {
-                                        console.error("Lỗi khi gửi Submit:", error);
-                                        showNotification("Lỗi khi gửi Submit: " + error.message);
+                                        console.error("Error during submission:", error);
+                                        showNotification("Error during submission: " + error.message);
                                     })
                                     .finally(() => {
                                         isSubmitProcessing = false;
@@ -1477,15 +1660,14 @@
                                 credentials: "same-origin"
                             })
                                     .then(response => {
-                                        if (!response.ok) {
+                                        if (!response.ok)
                                             throw new Error("Network response was not ok " + response.status);
-                                        }
                                         return response.text();
                                     })
                                     .then(data => {
                                         console.log("Raw response from Save:", data);
-                                        if (data.includes("ShowMenteeRequest")) { // Kiểm tra redirect URL hoặc thông báo thành công
-                                            clearFormData(); // Xóa dữ liệu tạm thời sau khi lưu thành công
+                                        if (data.includes("ShowMenteeRequest")) {
+                                            clearFormData();
                                             tempSlotBooked.clear();
                                             slotRepeatMap.clear();
                                             updateTempSlotUI();
@@ -1493,15 +1675,15 @@
                                             totalSlots = 0;
                                             totalPrice = 0;
                                             updateUI();
-                                            showNotification("Đã lưu request thành công!");
-                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest"; // Chuyển hướng sau khi lưu
+                                            showNotification("Request saved successfully!");
+                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
                                         } else {
-                                            showNotification("Lưu request không thành công. Vui lòng thử lại.");
+                                            showNotification("Failed to save request. Please try again.");
                                         }
                                     })
                                     .catch(error => {
-                                        console.error("Lỗi khi gửi Save:", error);
-                                        showNotification("Lỗi khi gửi Save: " + error.message);
+                                        console.error("Error during saving:", error);
+                                        showNotification("Error during saving: " + error.message);
                                     })
                                     .finally(() => {
                                         isSaveProcessing = false;
