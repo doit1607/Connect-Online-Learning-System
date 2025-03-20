@@ -48,7 +48,167 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
 
+        <style>
+            /* Reset và font */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: #f5f7fa;
+                color: #333;
+            }
+
+            /* Container form */
+            .add-course-form {
+                max-width: 600px;
+                margin: 30px auto;
+                padding: 30px;
+                background: #ffffff;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                transition: transform 0.3s ease;
+            }
+
+            .add-course-form:hover {
+                transform: translateY(-5px);
+            }
+
+            /* Input block */
+            .input-block {
+                margin-bottom: 25px;
+            }
+
+            .add-course-label {
+                display: block;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 8px;
+                transition: color 0.3s ease;
+            }
+
+            .input-block:hover .add-course-label {
+                color: #1a73e8;
+            }
+
+            /* File upload */
+            .relative-form {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #f9f9f9;
+                padding: 10px 15px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                transition: border-color 0.3s ease;
+            }
+
+            .relative-form:hover {
+                border-color: #1a73e8;
+            }
+
+            #file-name {
+                color: #777;
+                font-size: 0.9rem;
+            }
+
+            .relative-file-upload {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .relative-file-upload input[type="file"] {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            .relative-file-upload {
+                background: #1a73e8;
+                color: #fff;
+                padding: 8px 15px;
+                border-radius: 5px;
+                font-weight: 500;
+                transition: background 0.3s ease;
+            }
+
+            .relative-file-upload:hover {
+                background: #1557b0;
+            }
+
+            /* Form control */
+            .form-control {
+                width: 100%;
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 1rem;
+                color: #333;
+                background: #f9f9f9;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #1a73e8;
+                box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+                background: #fff;
+            }
+
+            textarea.form-control {
+                resize: vertical;
+                min-height: 100px;
+            }
+
+            /* Select */
+            select.form-control {
+                appearance: none;
+                background: #f9f9f9 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%23777" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+                padding-right: 40px;
+            }
+
+            /* Button */
+            .btn.btn-success-dark {
+                background: linear-gradient(135deg, #28a745, #218838);
+                color: #fff;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 25px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                width: 100%;
+                max-width: 200px;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .btn.btn-success-dark:hover {
+                background: linear-gradient(135deg, #218838, #1e7e34);
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Preview image */
+            #image-preview {
+                transition: opacity 0.3s ease;
+            }
+
+            #image-preview.visible {
+                display: block;
+                opacity: 1;
+            }
+        </style>
 
 
 
@@ -120,10 +280,10 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
@@ -197,7 +357,7 @@
                                                 <label class="add-course-label">Course Description</label>
                                                 <textarea name="description" id="description" class="form-control" placeholder="Course Description" rows="3" required></textarea>
                                             </div>
-                                            
+
                                             <div class="add-course-btns">
                                                 <ul class="nav">
 
