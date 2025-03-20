@@ -200,7 +200,7 @@
                                         
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Schedule
+                                                <i class="bx bxs-graduation"></i>Manage Scheudle
                                             </a>
                                         </li>
 
