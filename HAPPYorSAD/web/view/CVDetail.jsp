@@ -119,10 +119,10 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
@@ -218,13 +218,27 @@
                         </div>
 
                         <style>
-                            /* General Content Area Styling */
+                            /* Reset và font */
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: 'Poppins', sans-serif;
+                                background: #f5f7fa;
+                                color: #333;
+                            }
+
+                            /* Content Area */
                             .content-area {
-                                background-color: #fff;
-                                border-radius: 10px;
-                                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                                padding: 30px;
-                                margin-bottom: 20px;
+                                max-width: 900px;
+                                margin: 30px auto;
+                                padding: 20px;
+                                background: #fff;
+                                border-radius: 15px;
+                                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
                                 transition: transform 0.3s ease;
                             }
 
@@ -239,138 +253,199 @@
                             }
 
                             .heading-title {
-                                font-size: 2rem;
-                                color: #333;
+                                font-size: 2.2rem;
+                                font-weight: 600;
+                                color: #2c3e50;
                                 position: relative;
                                 display: inline-block;
-                                padding-bottom: 10px;
                             }
 
                             .heading-title::after {
                                 content: '';
                                 position: absolute;
-                                width: 50%;
-                                height: 3px;
-                                background-color: #007bff;
-                                bottom: 0;
-                                left: 25%;
+                                width: 60%;
+                                height: 4px;
+                                background: linear-gradient(90deg, #1a73e8, #34c759);
+                                bottom: -10px;
+                                left: 20%;
+                                border-radius: 2px;
                                 transition: width 0.3s ease;
                             }
 
-                            .profile-heading:hover .heading-title::after {
+                            .heading-title:hover::after {
                                 width: 100%;
                                 left: 0;
                             }
 
-                            /* Section Titles */
+                            /* Info Section */
+                            .info-section,
+                            .cv-section {
+                                margin-bottom: 40px;
+                                padding: 20px;
+                                background: #fafafa;
+                                border-radius: 10px;
+                                transition: all 0.3s ease;
+                            }
+
+                            .info-section:hover,
+                            .cv-section:hover {
+                                background: #f0f4ff;
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                            }
+
                             .section-title {
                                 font-size: 1.5rem;
-                                color: #444;
+                                font-weight: 600;
+                                color: #1a73e8;
                                 margin-bottom: 20px;
-                                border-left: 4px solid #007bff;
+                                position: relative;
+                            }
+
+                            .section-title::before {
+                                content: '';
+                                position: absolute;
+                                width: 30px;
+                                height: 3px;
+                                background: #1a73e8;
+                                bottom: -5px;
+                                left: 0;
+                            }
+
+                            /* Info List */
+                            .info-list {
+                                list-style: none;
+                            }
+
+                            .info-list li {
+                                display: flex;
+                                align-items: center;
+                                padding: 12px 0;
+                                border-bottom: 1px solid #eee;
+                                transition: all 0.3s ease;
+                            }
+
+                            .info-list li:last-child {
+                                border-bottom: none;
+                            }
+
+                            .info-list li:hover {
                                 padding-left: 10px;
                             }
 
-                            /* Personal Information Section */
-                            .info-section {
-                                margin-bottom: 40px;
-                            }
-
-                            .info-list {
-                                list-style: none;
-                                padding: 0;
-                            }
-
-                            .info-item {
-                                display: flex;
-                                align-items: center;
-                                padding: 12px 15px;
-                                margin-bottom: 10px;
-                                background-color: #f8f9fa;
-                                border-radius: 8px;
-                                transition: background-color 0.3s ease, transform 0.2s ease;
-                            }
-
-                            .info-item:hover {
-                                background-color: #e9ecef;
-                                transform: translateX(5px);
-                            }
-
                             .icon-label {
-                                flex: 0 0 200px;
+                                min-width: 180px;
                                 font-weight: 600;
-                                color: #555;
+                                color: #2c3e50;
+                            }
+
+                            .icon-label strong {
+                                margin-right: 5px;
                             }
 
                             .text-value {
+                                color: #555;
+                                font-weight: 400;
                                 flex: 1;
-                                color: #333;
+                                transition: color 0.3s ease;
                             }
 
-                            /* CV Details Section */
-                            .cv-section {
-                                margin-bottom: 40px;
+                            .info-list li:hover .text-value {
+                                color: #1a73e8;
                             }
 
-                            .cv-content {
-                                background-color: #f8f9fa;
-                                padding: 20px;
-                                border-radius: 8px;
-                            }
-
-                            .cv-item {
-                                margin-bottom: 15px;
+                            /* CV Content */
+                            .cv-content p {
+                                margin: 15px 0;
                                 padding: 10px;
-                                border-left: 3px solid #007bff;
-                                transition: background-color 0.3s ease, border-color 0.3s ease;
+                                background: #fff;
+                                border-radius: 8px;
+                                transition: all 0.3s ease;
                             }
 
-                            .cv-item:hover {
-                                background-color: #e9ecef;
-                                border-left-color: #0056b3;
+                            .cv-content p:hover {
+                                background: #e9f1ff;
+                                transform: translateX(5px);
                             }
 
                             .detail-label {
                                 font-weight: 600;
-                                color: #555;
-                                display: inline-block;
-                                width: 150px;
+                                color: #2c3e50;
+                                margin-right: 10px;
                             }
 
-                            .cv-item p {
-                                margin: 0;
-                                display: inline;
-                                color: #333;
-                            }
-
-                            /* No Data Section */
+                            /* No Data */
                             .no-data {
                                 text-align: center;
-                                padding: 20px;
-                                background-color: #f8d7da;
-                                color: #721c24;
-                                border-radius: 8px;
-                                margin-bottom: 40px;
+                                padding: 30px;
+                                background: #fff5f5;
+                                border-radius: 10px;
+                                margin: 20px 0;
+                            }
+
+                            .no-data p {
+                                color: #e63946;
+                                font-size: 1.2rem;
+                                font-weight: 500;
                             }
 
                             /* Action Section */
                             .action-section {
                                 text-align: center;
+                                margin-top: 30px;
                             }
 
-                            .back-btn {
-                                padding: 10px 30px;
-                                font-size: 1rem;
-                                background-color: #6c757d;
+                            .btn.btn-secondary.back-btn {
+                                background: linear-gradient(135deg, #6c757d, #495057);
+                                color: #fff;
+                                padding: 12px 30px;
                                 border: none;
-                                border-radius: 5px;
-                                color: white;
-                                transition: background-color 0.3s ease, transform 0.2s ease;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                transition: all 0.3s ease;
+                                display: inline-block;
                             }
 
-                            .back-btn:hover {
-                                background-color: #5a6268;
-                                transform: scale(1.05);
+                            .btn.btn-secondary.back-btn:hover {
+                                background: linear-gradient(135deg, #495057, #343a40);
+                                transform: translateY(-3px);
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                            }
+
+                            /* Responsive */
+                            @media (max-width: 768px) {
+                                .content-area {
+                                    padding: 15px;
+                                    margin: 15px;
+                                }
+
+                                .heading-title {
+                                    font-size: 1.8rem;
+                                }
+
+                                .section-title {
+                                    font-size: 1.3rem;
+                                }
+
+                                .info-list li {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    padding: 10px 0;
+                                }
+
+                                .icon-label {
+                                    min-width: unset;
+                                    margin-bottom: 5px;
+                                }
+
+                                .text-value {
+                                    padding-left: 20px;
+                                }
+
+                                .cv-content p {
+                                    font-size: 0.9rem;
+                                }
                             }
                         </style>
                     </div>
