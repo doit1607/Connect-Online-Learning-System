@@ -119,10 +119,10 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
@@ -185,7 +185,7 @@
                                                         <ul>
                                                             <c:forEach var="course" items="${cv.courses}">
                                                                 <li>${course}</li>
-                                                            </c:forEach>
+                                                                </c:forEach>
                                                         </ul>
                                                     </td>
                                                     <td>${cv.serviceDescription}</td>
@@ -206,6 +206,234 @@
                                 <a href="AcceptCV" class="resut-badge badge-light-success">Back to RequestCV</a>
                             </div>
                         </div>
+
+                        <style>
+                            /* Reset và font */
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: 'Poppins', sans-serif;
+                                background: #f5f7fa;
+                                color: #333;
+                            }
+
+                            /* Content Area */
+                            .content-area {
+                                max-width: 1200px;
+                                margin: 30px auto;
+                                padding: 20px;
+                            }
+
+                            /* Profile Heading */
+                            .profile-heading {
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+
+                            .profile-heading h3 {
+                                font-size: 2rem;
+                                font-weight: 600;
+                                color: #2c3e50;
+                                position: relative;
+                                display: inline-block;
+                            }
+
+                            .profile-heading h3::after {
+                                content: '';
+                                position: absolute;
+                                width: 50%;
+                                height: 3px;
+                                background: linear-gradient(90deg, #dc3545, #e63946);
+                                bottom: -10px;
+                                left: 25%;
+                                border-radius: 2px;
+                                transition: width 0.3s ease;
+                            }
+
+                            .profile-heading h3:hover::after {
+                                width: 100%;
+                                left: 0;
+                            }
+
+                            /* Search Form */
+                            form[action="AcceptCV"] {
+                                max-width: 500px;
+                                margin: 0 auto 30px;
+                                display: flex;
+                                gap: 10px;
+                                align-items: center;
+                            }
+
+                            form[action="AcceptCV"] input[type="text"] {
+                                flex: 1;
+                                padding: 12px 15px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                background: #fff;
+                                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                            }
+
+                            form[action="AcceptCV"] input[type="text"]:focus {
+                                outline: none;
+                                border-color: #dc3545;
+                                box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
+                            }
+
+                            form[action="AcceptCV"] button {
+                                padding: 12px 25px;
+                                background: #dc3545;
+                                color: #fff;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 500;
+                                text-transform: uppercase;
+                                transition: background 0.3s ease, transform 0.3s ease;
+                            }
+
+                            form[action="AcceptCV"] button:hover {
+                                background: #c82333;
+                                transform: translateY(-2px);
+                            }
+
+                            /* Checkout Form */
+                            .checkout-form {
+                                background: #fff;
+                                border-radius: 15px;
+                                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                                padding: 20px;
+                                transition: transform 0.3s ease;
+                            }
+
+                            .checkout-form:hover {
+                                transform: translateY(-5px);
+                            }
+
+                            /* Table */
+                            .custom-table {
+                                overflow-x: auto;
+                            }
+
+                            .table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                font-size: 0.95rem;
+                            }
+
+                            .table th {
+                                background: #2c3e50;
+                                color: #fff;
+                                padding: 15px;
+                                text-align: left;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                            }
+
+                            .table tr {
+                                transition: background 0.3s ease;
+                            }
+
+                            .table tr:nth-child(even) {
+                                background: #f9f9f9;
+                            }
+
+                            .table tr:hover {
+                                background: #ffe5e5;
+                            }
+
+                            .table td {
+                                padding: 15px;
+                                vertical-align: middle;
+                                border-bottom: 1px solid #eee;
+                            }
+
+                            .table td ul {
+                                margin: 0;
+                                padding-left: 20px;
+                            }
+
+                            .table td ul li {
+                                margin: 5px 0;
+                            }
+
+                            /* Action Button */
+                            .btn.btn-info {
+                                padding: 8px 15px;
+                                background: #17a2b8;
+                                color: #fff;
+                                border: none;
+                                border-radius: 5px;
+                                font-weight: 500;
+                                text-decoration: none;
+                                transition: all 0.3s ease;
+                                display: inline-block;
+                            }
+
+                            .btn.btn-info:hover {
+                                background: #138496;
+                                transform: translateY(-2px);
+                                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+                            }
+
+                            /* Back Link */
+                            .resut-badge.badge-light-success {
+                                display: inline-block;
+                                padding: 12px 25px;
+                                background: linear-gradient(135deg, #28a745, #218838);
+                                color: #fff;
+                                text-decoration: none;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                transition: all 0.3s ease;
+                                margin-top: 30px;
+                                display: block;
+                                text-align: center;
+                            }
+
+                            .resut-badge.badge-light-success:hover {
+                                background: linear-gradient(135deg, #218838, #1e7e34);
+                                transform: translateY(-3px);
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                            }
+
+                            /* Responsive */
+                            @media (max-width: 768px) {
+                                .content-area {
+                                    padding: 15px;
+                                }
+
+                                .profile-heading h3 {
+                                    font-size: 1.8rem;
+                                }
+
+                                form[action="AcceptCV"] {
+                                    flex-direction: column;
+                                }
+
+                                form[action="AcceptCV"] input[type="text"],
+                                form[action="AcceptCV"] button {
+                                    width: 100%;
+                                }
+
+                                .table th,
+                                .table td {
+                                    padding: 10px;
+                                    font-size: 0.85rem;
+                                }
+
+                                .btn.btn-info {
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+                        </style>
                     </div>
                 </div>
             </div>	
