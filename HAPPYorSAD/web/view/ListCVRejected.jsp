@@ -109,31 +109,37 @@
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
-                                    <ul>                                        
+                                    <ul>
                                         <li class="nav-item active">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
                                                 <i class="fas fa-user"></i>Manage CV
                                             </a>
                                         <li class="nav-item">
                                             <a href="CourseManager" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Course
+                                                <i class="bx bxs-graduation"></i>Manage Courses
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="nav-item">
+                                            <a href="ConfirmSchedule" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Manage Scheudle
                                             </a>
                                         </li>
 
                                         <li class="nav-item">
                                             <a href="ShowAllRequest" class="nav-link">
-                                                <i class="bx bxs-heart"></i>Request of Mentee
+                                                <i class="bx bxs-heart"></i>Manage Request Mentee
                                             </a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a href="menteestatistic" class="nav-link">
-                                                <i class="bx bxs-user-plus"></i>Static Mentee
+                                                <i class="bx bxs-user-plus"></i>Manage Static Mentee
                                             </a>
                                         </li>
                                     </ul>
 
-                                    <ul>                                        
+                                    <ul>
                                         <li class="nav-item">
                                             <a href="LoginUser?service=logout" class="nav-link">
                                                 <i class="bx bxs-log-out"></i>Logout
