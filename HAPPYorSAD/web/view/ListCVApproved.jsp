@@ -211,6 +211,25 @@
                                 <div class="action-section">
                                     <a href="AcceptCV" class="back-btn badge-light-success">Back to Request CV</a>
                                 </div>
+                                <div class="pagination">
+                                    <c:if test="${tag > 1}">
+                                        <li class="page-item">
+                                            <a href="AcceptCV?status=approved&index=${tag-1}" class="page-link">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:if test="${endPage > 0}">
+                                        <c:forEach begin="1" end="${endPage - 1}" var="i">
+                                            <a class="page-link ${tag == i ? 'active' : ''}" href="AcceptCV?status=approved&index=${i}">${i}</a>
+                                        </c:forEach>
+                                    </c:if>
+
+                                    <c:if test="${tag < endPage - 1}">
+                                        <li class="page-item">
+                                            <a href="AcceptCV?status=approved&index=${tag+1}" class="page-link">Next</a>
+                                        </li>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
 
