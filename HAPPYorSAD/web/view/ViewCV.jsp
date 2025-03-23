@@ -206,11 +206,11 @@
                                                     <label>Major I Can Teach</label>
                                                     <div class="checkbox-group">
                                                         <c:set var="selectedCourses" value="${requestScope.selectedCourses}" />
-
                                                         <c:set var="coursesList" value="Computer Science,Data Science,Business Administration,Graphic Design,Mechanical Engineering"/>
+
                                                         <c:forEach var="course" items="${fn:split(coursesList, ',')}">
                                                             <input type="checkbox" id="${course}" name="courses" value="${course}" 
-                                                                   <c:if test="${selectedCourses.contains(course)}">checked</c:if> >
+                                                                   <c:if test="${selectedCourses.contains(course)}">checked</c:if> disabled>
                                                             <label for="${course}">${course}</label>
                                                         </c:forEach>
                                                     </div>
