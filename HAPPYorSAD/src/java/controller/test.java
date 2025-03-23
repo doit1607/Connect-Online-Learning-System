@@ -193,7 +193,7 @@ public class test extends HttpServlet {
                         String coursename = dao.getCourseName(courseId);
                         daowallet.createTransaction(usernamementee, totalprice, "HOLD", "Hold for course " + coursename);
 
-                        // Cập nhật session attributes
+
                         session.setAttribute("walletBalance", balance);
                         session.setAttribute("walletTotalbalance", totalbalance);
                         session.setAttribute("walletHold", hold);
