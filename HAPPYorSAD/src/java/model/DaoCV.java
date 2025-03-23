@@ -90,11 +90,28 @@ public class DaoCV extends DBConnection {
         return new CV();
     }
 
-    public List<CV> getCVApproved() {
-        List<CV> listApproved = new ArrayList<>();
-        String sql = "SELECT * FROM CV WHERE status = 'approved'";
+    // dem so luong CV
+    public int getTotalRequest() {
+        String sql = "select count(*) from CV";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<CV> getCVApproved(int index) {
+        List<CV> listApproved = new ArrayList<>();
+        String sql = "SELECT * FROM CV WHERE status = 'approved'\n"
+                + "order by created_at\n"
+                + "offset ? rows fetch next 3 rows only";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 3);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String courseData = rs.getString("courses");
