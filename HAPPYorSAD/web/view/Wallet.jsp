@@ -119,6 +119,7 @@
                                                             <option value="">All</option>
                                                             <option value="DEPOSIT" ${param.type == 'DEPOSIT' ? 'selected' : ''}>Deposit</option>
                                                             <option value="WITHDRAW" ${param.type == 'WITHDRAW' ? 'selected' : ''}>Withdraw</option>
+                                                            <option value="HOLD" ${param.type == 'HOLD' ? 'selected' : ''}>Hold</option>
                                                         </select>
                                                     </div>
                                                     <!-- Description -->
@@ -168,6 +169,9 @@
                                                                     </c:when>
                                                                     <c:when test="${i.type == 'WITHDRAW'}">
                                                                         <span class="withdraw-tag">${i.type}</span>
+                                                                    </c:when>
+                                                                    <c:when test="${i.type == 'HOLD'}">
+                                                                        <span class="hold-tag">${i.type}</span>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         ${i.type}
@@ -424,6 +428,13 @@
                 color: #ff0000;
                 font-weight: 600;
                 background: #ffe6e6;
+                padding: 4px 8px;
+                border-radius: 12px;
+            }
+            .hold-tag {
+                color: #6c757d;
+                font-weight: 600;
+                background: #e9ecef;
                 padding: 4px 8px;
                 border-radius: 12px;
             }
