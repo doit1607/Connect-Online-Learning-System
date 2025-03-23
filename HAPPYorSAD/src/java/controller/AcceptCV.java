@@ -78,7 +78,19 @@ public class AcceptCV extends HttpServlet {
                 searchQuery = searchQuery.trim().toLowerCase();
             }
 
-            List<CV> cvApproved = dao1.getCVApproved();
+            String indexPage = request.getParameter("index");
+            if (indexPage == null) {
+                indexPage = "1";
+            }
+            int index = Integer.parseInt(indexPage);
+
+            int count = dao1.getTotalRequest();
+            int endPage = count / 3;
+            if (count % 3 != 0) {
+                endPage++;
+            }
+
+            List<CV> cvApproved = dao1.getCVApproved(index);
             if (searchQuery != null && !searchQuery.isEmpty()) {
                 final String finalSearchQuery = searchQuery;
                 cvApproved = cvApproved.stream()
@@ -88,6 +100,8 @@ public class AcceptCV extends HttpServlet {
             }
 
             request.setAttribute("cvApproved", cvApproved);
+            request.setAttribute("tag", index);
+            request.setAttribute("endPage", endPage);
             request.getRequestDispatcher("/view/ListCVApproved.jsp").forward(request, response);
             return;
         }
@@ -110,9 +124,8 @@ public class AcceptCV extends HttpServlet {
 
             request.setAttribute("cvRejected", cvRejected);
             request.getRequestDispatcher("/view/ListCVRejected.jsp").forward(request, response);
-            return; 
+            return;
         }
-
 
         List<CV> cv = dao.getCVtoAccept();
         request.setAttribute("acceptCV", cv);
