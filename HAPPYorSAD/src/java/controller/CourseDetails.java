@@ -10,7 +10,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +59,12 @@ public class CourseDetails extends HttpServlet {
                 listCourseToPrint.add(course1);
             }
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("listAllMentorByCourse", list);
-        session.setAttribute("detail", course);
+        request.setAttribute("listAllMentorByCourse", list);
+        request.setAttribute("detail", course);
 //      session.setAttribute("countMenteOfCourse", countMenteOfCourse);
-        session.setAttribute("countMentorOfCourse", countMentorOfCourse);
-        session.setAttribute("majorName", majorName);
-        session.setAttribute("listCourseToPrint", listCourseToPrint);
+        request.setAttribute("countMentorOfCourse", countMentorOfCourse);
+        request.setAttribute("majorName", majorName);
+        request.setAttribute("listCourseToPrint", listCourseToPrint);
         request.getRequestDispatcher("view/CourseDetail.jsp").forward(request, response);
 
     }
