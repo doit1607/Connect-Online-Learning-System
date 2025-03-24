@@ -215,10 +215,10 @@
                                                             <input type="checkbox" id="${course}" name="courses" value="${course}" 
                                                                    <c:if test="${isChecked}">checked</c:if> disabled>
 
-                                                                   <!-- Nhấp vào Major để chọn môn học -->
-                                                                   <label for="${course}" style="cursor: pointer;" 
-                                                                   <c:if test="${!isChecked}"> style="pointer-events: none; opacity: 0.5;" </c:if> 
-                                                                   onclick="loadCourses('${course}')">
+                                                                   <!-- Chỉ có thể nhấp vào Major nếu nó đã được chọn -->
+                                                                   <label for="${course}" style="cursor: <c:if test='${isChecked}'>pointer</c:if>;
+                                                                   <c:if test='${!isChecked}'>pointer-events: none; opacity: 0.5;</c:if>"
+                                                                   onclick="<c:if test='${isChecked}'>loadCourses('${course}')</c:if>">
                                                                 ${course}
                                                             </label>
                                                         </c:forEach>
