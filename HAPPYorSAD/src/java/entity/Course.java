@@ -83,6 +83,12 @@ public class Course {
         this.courseMajorId = courseMajorId;
         this.image = image;
     }
+    
+    public Course(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
 
     public Course(int total_Mentee, int total_Courses) {
         this.total_Mentee = total_Mentee;
