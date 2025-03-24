@@ -66,21 +66,6 @@
                             <!-- Filter -->
                             <div class="showing-list">
                                 <div class="row">
-                                    <!--                                    <div class="col-lg-6">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <div class="view-icons">
-                                                                                    <a href="course-grid.html" class="grid-view">
-                                                                                        <i class="feather-grid"></i>
-                                                                                    </a>
-                                                                                    <a href="course-list.html" class="list-view active">
-                                                                                        <i class="feather-list"></i>
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="show-result">
-                                                                                    <h4>Showing 1-9 of 50 results</h4>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>-->
                                     <div class="col-lg-6">
                                         <div class="show-filter add-course-info ">
                                             <form action="ShowAllCourse" method="get">
