@@ -76,44 +76,23 @@ public class DAOmajor extends DBConnection {
 
     public List<Course> getListAllCourseByMajorId(int id) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    c.id AS CourseID,\n"
-                + "    c.title AS CourseTitle,\n"
-                + "    c.description AS CourseDescription,\n"
-                + "    c.manager_id AS ManagerID,\n"
-                + "    c.mentor_id AS MentorID,\n"
-                + "    c.status AS CourseStatus,\n"
-                + "    c.created_at AS CreatedAt,\n"
-                + "    c.updated_at AS UpdatedAt,\n"
-                + "    c.course_major_id AS CourseMajorID,\n"
-                + "    c.image AS CourseImage \n"
-                + "FROM \n"
-                + "    Course c\n"
-                + "LEFT JOIN \n"
-                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "LEFT JOIN \n"
-                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
-                + "WHERE \n"
-                + "    c.course_major_id = ?\n"
-                + "GROUP BY \n"
-                + "    c.id, c.title, c.description, c.manager_id, c.mentor_id, \n"
-                + "    c.status, c.created_at, c.updated_at, c.course_major_id, c.image;";
+        String sql = "SELECT c.id, c.title, c.description,c.mentor_id, c.image\n"
+                + "FROM Course c\n"
+                + "INNER JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
+                + "WHERE cm.id = ?;";
 
         try {
             PreparedStatement connect = conn.prepareStatement(sql);
             connect.setInt(1, id);
             ResultSet rs = connect.executeQuery();
 
-           while (rs.next()) {
+            while (rs.next()) {
                 Course course = new Course();
-                course.setId(rs.getInt("CourseID"));
-                course.setTitle(rs.getString("CourseTitle"));
-                course.setDescription(rs.getString("CourseDescription"));
-                course.setManagerId(rs.getInt("ManagerID"));
-                course.setMentorId(rs.getInt("MentorID"));
-                course.setStatus(rs.getString("CourseStatus"));
-                course.setCourseMajorId(rs.getInt("CourseMajorID"));
-                course.setImage(rs.getString("CourseImage"));
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+                course.setDescription(rs.getString("description"));               
+                course.setMentorId(rs.getInt("mentor_id"));
+                course.setImage(rs.getString("image"));
 
                 listCourse.add(course);
             }
