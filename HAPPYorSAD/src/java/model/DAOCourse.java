@@ -774,10 +774,45 @@ public class DAOCourse extends DBConnection {
         return 0;
     }
 
+    // lay ra courseID de day
+    public List<Course> getCoursesByMajor(String name) {
+        List<Course> courseList = new ArrayList<>();
+        String sql = "SELECT c.id, c.title FROM Course c \n"
+                + "join CourseMajor cm on c.course_major_id = cm.id\n"
+                + "where cm.name = ?";
+
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setString(1, name);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                courseList.add(new Course(rs.getInt("id"), rs.getString("title")));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return courseList;
+    }
+
+    // Lay course theo Major de day
+    public void MentorCourses(int mentorId, int courseId) {
+        String sql = "INSERT INTO MentorCourse (mentor_id, course_id) VALUES (?, ?)";
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setInt(1, mentorId);
+            pre.setInt(2, courseId);
+            pre.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        List<Course> listCourseHome = dao.pagingCourse(5);
+        dao.MentorCourses(2, 1);
+
+        // List<Course> listCourseHome = dao.pagingCourse(5);
 //
 //        for (Course course : listCourseHome) {
 //            System.out.println(course);
@@ -799,9 +834,9 @@ public class DAOCourse extends DBConnection {
 ////        System.out.println(a);
 //        System.out.println(b);
 //        System.out.println(str);
-        for (Course course : listCourseHome) {
-            System.out.println(course);
-        }
+//        for (Course course : listCourseHome) {
+//            System.out.println(course);
+//        }
 //        int a = dao.getTotalMentorsByCourse(1);
 //        System.out.println(a);
     }
