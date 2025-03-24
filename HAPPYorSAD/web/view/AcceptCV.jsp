@@ -350,7 +350,11 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-
+                                        <li class="nav-item">
+                                            <a href="ApproveCourse" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request Course
+                                            </a>
+                                        </li>
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Manage Schedule
@@ -387,7 +391,7 @@
                                     <h3>Request CV</h3>
                                 </div>
                                 <form action="AcceptCV" method="get">
-                                    
+
                                     <select name="status" id="statusFilter" class="form-control">
                                         <option value="">--Select status of CV--</option>
                                         <option value="approved">Approved</option>
