@@ -189,6 +189,10 @@
         <servlet-name>MySchedule</servlet-name>
         <servlet-class>controller.MySchedule</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ApproveCourse</servlet-name>
+        <servlet-class>controller.ApproveCourse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -377,6 +381,10 @@
     <servlet-mapping>
         <servlet-name>MySchedule</servlet-name>
         <url-pattern>/MySchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveCourse</servlet-name>
+        <url-pattern>/ApproveCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
