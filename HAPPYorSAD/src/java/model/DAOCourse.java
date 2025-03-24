@@ -374,34 +374,15 @@ public class DAOCourse extends DBConnection {
 
     public List<Mentor> getMentorByCourseId(int cid) {
         List<Mentor> mentors = new ArrayList<>();
-        String sql = "	SELECT \n"
-                + "    m.id AS mentor_id,\n"
-                + "    MAX(m.name) AS mentor_name,\n"
-                + "    MAX(m.email) AS mentor_email,\n"
-                + "    MAX(m.rating) AS rating,\n"
-                + "    MAX(m.price_per_slot) AS price_per_slot,\n"
-                + "    MAX(CAST(m.bio AS NVARCHAR(MAX))) AS bio,\n"
-                + "    MAX(CAST(m.image AS NVARCHAR(MAX))) AS image,\n"
-                + "    MAX(CAST(m.reviews AS NVARCHAR(MAX))) AS reviews\n"
-                + "FROM \n"
-                + "    Course c\n"
-                + "INNER JOIN \n"
-                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "INNER JOIN \n"
-                + "    CV cv ON cv.courses LIKE '%' + cm.name + '%'\n"
-                + "INNER JOIN \n"
-                + "    Mentor m ON m.user_id = (SELECT id FROM Users WHERE username = cv.username)\n"
-                + "INNER JOIN \n"
-                + "    Users u ON m.user_id = u.id\n"
-                + "INNER JOIN \n"
-                + "    mentor_slot ms ON m.id = ms.mentor_id\n"
-                + "WHERE \n"
-                + "    c.id = ? \n"
-                + "    AND cv.status = 'approved' \n"
-                + "    AND m.price_per_slot IS NOT NULL\n"
-                + "    AND ms.status = 'Available'\n"
-                + "GROUP BY \n"
-                + "    m.id;";
+        String sql = "SELECT m.id, m.name, m.email, m.rating, m.price_per_slot, m.image\n"
+                + "FROM Mentor m\n"
+                + "INNER JOIN MentorCourse mc ON m.id = mc.mentor_id\n"
+                + "INNER JOIN Course c ON mc.course_id = c.id\n"
+                + "INNER JOIN Users u ON m.user_id = u.id\n"
+                + "INNER JOIN CV cv ON cv.username = u.username\n"
+                + "WHERE c.id = ? \n"
+                + "AND cv.status = 'approved'\n"
+                + "AND m.price_per_slot IS NOT NULL;";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -411,13 +392,11 @@ public class DAOCourse extends DBConnection {
 
             while (rs.next()) {
                 Mentor mentor = new Mentor();
-                mentor.setMentorId(rs.getInt("mentor_id"));
-                mentor.setName(rs.getString("mentor_name"));
-                mentor.setEmail(rs.getString("mentor_email"));
-                mentor.setReviews(rs.getString("reviews"));
+                mentor.setMentorId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentor.setEmail(rs.getString("email"));
                 mentor.setRating(rs.getDouble("rating"));
                 mentor.setPricePerSlot(rs.getDouble("price_per_slot"));
-                mentor.setBio(rs.getString("bio"));
                 mentor.setImage(rs.getString("image"));
                 mentors.add(mentor);
             }
@@ -447,29 +426,22 @@ public class DAOCourse extends DBConnection {
 //        return 0;
 //    }
     public int getTotalMentorsByCourse(int courseId) {
-        String sql = "SELECT \n"
-                + "    COUNT(DISTINCT m.id) AS mentorCount\n"
-                + "FROM \n"
-                + "    Course c\n"
-                + "INNER JOIN \n"
-                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "INNER JOIN \n"
-                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
-                + "INNER JOIN \n"
-                + "    Mentor m ON cv.username = (SELECT u.username FROM Users u WHERE u.id = m.user_id)\n"
-                + "INNER JOIN \n"
-                + "    mentor_slot ms ON ms.mentor_id = m.id AND ms.status = 'Available'\n"
-                + "WHERE \n"
-                + "    c.id = ?\n"
-                + "    AND cv.status = 'approved'\n"
-                + "    AND m.price_per_slot IS NOT NULL;";
+        String sql = "SELECT COUNT(DISTINCT m.id) AS mentor_count\n"
+                + "FROM Mentor m\n"
+                + "INNER JOIN MentorCourse mc ON m.id = mc.mentor_id\n"
+                + "INNER JOIN Course c ON mc.course_id = c.id\n"
+                + "INNER JOIN Users u ON m.user_id = u.id\n"
+                + "INNER JOIN CV cv ON cv.username = u.username\n"
+                + "WHERE mc.course_id = ? \n"
+                + "AND cv.status = 'approved'\n"
+                + "AND m.price_per_slot IS NOT NULL;";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, courseId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt("mentorCount");
+                return rs.getInt("mentor_Count");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -708,27 +680,9 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> searchCourseByTitle(String keyword) {
         List<Course> list = new ArrayList<>();
-        String sql = "	SELECT \n"
-                + "    c.id AS CourseID,\n"
-                + "    c.title AS CourseTitle,\n"
-                + "    c.description AS CourseDescription,\n"
-                + "    c.manager_id AS ManagerID,\n"
-                + "    c.mentor_id AS MentorID,\n"
-                + "    c.status AS CourseStatus,\n"
-                + "    c.created_at AS CreatedAt,\n"
-                + "    c.updated_at AS UpdatedAt,\n"
-                + "    c.course_major_id AS CourseMajorID,\n"
-                + "    c.image AS CourseImage\n"
-                + "FROM \n"
-                + "    Course c\n"
-                + "LEFT JOIN \n"
-                + "    CourseMajor cm ON c.course_major_id = cm.id\n"
-                + "LEFT JOIN \n"
-                + "    CV cv ON ',' + cv.courses + ',' LIKE '%,' + cm.name + ',%'\n"
-                + "WHERE LOWER(c.title) LIKE LOWER(?) \n"
-                + "GROUP BY \n"
-                + "    c.id, c.title, c.description, c.manager_id, c.mentor_id, \n"
-                + "    c.status, c.created_at, c.updated_at, c.course_major_id, c.image ";
+        String sql = "SELECT id, title, image\n"
+                + "FROM Course\n"
+                + "WHERE LOWER(title) LIKE LOWER(?);";
 
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -736,13 +690,10 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Course course = new Course();
-                course.setId(rs.getInt("CourseID"));
-                course.setTitle(rs.getString("CourseTitle"));
-                course.setDescription(rs.getString("CourseDescription"));
-                course.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
-                course.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
-                course.setCourseMajorId(rs.getInt("CourseMajorID"));
-                course.setImage(rs.getString("CourseImage"));
+                course.setId(rs.getInt("id"));
+                course.setTitle(rs.getString("title"));
+
+                course.setImage(rs.getString("image"));
                 list.add(course);
             }
         } catch (SQLException e) {
