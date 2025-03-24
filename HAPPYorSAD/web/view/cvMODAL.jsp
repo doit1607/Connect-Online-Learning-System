@@ -45,12 +45,12 @@
         <link href="css/cssCRUD/createCV.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-       
+
         <div class="page-content">
             <div class="container">
                 <div class="row">
 
-                  
+
                     <div class="col-xl-9 col-lg-9">	
 
                         <div class="settings-widget card-details mb-0">
@@ -83,7 +83,7 @@
                                                     <ul>
                                                         <li>
                                                             <span class="icon">Account name 👤:</span>
-                                                            <span class="text">${sessionScope.usernameUser}</span>
+                                                            <span class="text">${mentor.username}</span>
                                                         </li>
                                                         <li>
                                                             <span class="icon">Full name 📛:</span>
@@ -133,12 +133,12 @@
                                                     <label>Courses I Can Teach</label>
                                                     <div class="checkbox-group">
                                                         <c:set var="selectedCourses" value="${requestScope.selectedCourses}" />
-
                                                         <c:set var="coursesList" value="Computer Science,Data Science,Business Administration,Graphic Design,Mechanical Engineering"/>
                                                         <c:forEach var="course" items="${fn:split(coursesList, ',')}">
                                                             <input type="checkbox" id="${course}" name="courses" value="${course}" 
-                                                                   <c:if test="${selectedCourses.contains(course)}">checked</c:if> >
-                                                            <label for="${course}">${course}</label>
+                                                                   <c:if test="${selectedCourses.contains(course)}">checked</c:if> 
+                                                                       disabled >
+                                                                   <label for="${course}">${course}</label>
                                                         </c:forEach>
                                                     </div>
                                                 </div>

@@ -53,7 +53,7 @@ public class viewCVMODAL extends HttpServlet {
 
         // Lấy thông tin mentor để lấy username
         DAOuser mentorDao = new DAOuser();
-        User u = mentorDao.getMentorById(mentorId); // Giả sử có phương thức getMentorById
+        User u = mentorDao.getMentorById2(mentorId); // Giả sử có phương thức getMentorById
         if (u == null) {
             LOGGER.log(Level.SEVERE, "Mentor not found for ID: {0}", mentorId);
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
