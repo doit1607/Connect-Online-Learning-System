@@ -202,6 +202,7 @@
                                                     <textarea name="achievementDescription" rows="3" readonly>${cv.achievementDescription}</textarea>
                                                 </div>
 
+                                                <c:set var="majorCourses" value="${requestScope.majorCourses}" />
                                                 <div class="input-block">
                                                     <label>Major I Can Teach</label>
                                                     <div class="checkbox-group">
@@ -209,16 +210,215 @@
                                                         <c:set var="coursesList" value="Computer Science,Data Science,Business Administration,Graphic Design,Mechanical Engineering"/>
 
                                                         <c:forEach var="course" items="${fn:split(coursesList, ',')}">
+                                                            <c:set var="isChecked" value="${selectedCourses.contains(course)}" />
+
                                                             <input type="checkbox" id="${course}" name="courses" value="${course}" 
-                                                                   <c:if test="${selectedCourses.contains(course)}">checked</c:if> disabled>
-                                                            <label for="${course}">${course}</label>
+                                                                   <c:if test="${isChecked}">checked</c:if> disabled>
+
+                                                                   <!-- Nhấp vào Major để chọn môn học -->
+                                                                   <label for="${course}" style="cursor: pointer;" 
+                                                                   <c:if test="${!isChecked}"> style="pointer-events: none; opacity: 0.5;" </c:if> 
+                                                                   onclick="loadCourses('${course}')">
+                                                                ${course}
+                                                            </label>
                                                         </c:forEach>
                                                     </div>
                                                 </div>
-
                                                 <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
                                             </form>
+                                            <div id="coursePopup" class="popup">
+                                                <div class="popup-content">
+                                                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                                                    <h3>Select Courses to Teach</h3>
+                                                    <form action="ViewCV" method="get">
+                                                        <div id="courseList"></div> <!-- Danh sách các khóa học sẽ được AJAX điền vào đây -->
+                                                        <button type="submit">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <c:if test="${not empty requestScope.successMessage}">
+                                                <div class="alert success">
+                                                    ${requestScope.successMessage}
+                                                </div>
+                                            </c:if>
+
+                                            <c:if test="${not empty requestScope.errorMessage}">
+                                                <div class="alert error">
+                                                    ${requestScope.errorMessage}
+                                                </div>
+                                            </c:if>
+                                            <style>
+                                                /* Style cho popup container */
+                                                .popup {
+                                                    display: none; /* Ẩn mặc định */
+                                                    position: fixed;
+                                                    top: 0;
+                                                    left: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+                                                    z-index: 1000;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
+
+                                                /* Style cho nội dung popup */
+                                                .popup-content {
+                                                    background-color: white;
+                                                    padding: 20px;
+                                                    border-radius: 8px;
+                                                    width: 90%;
+                                                    max-width: 500px;
+                                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                                    position: relative;
+                                                    animation: popupFadeIn 0.3s ease-in-out;
+                                                }
+
+                                                /* Hiệu ứng xuất hiện */
+                                                @keyframes popupFadeIn {
+                                                    from {
+                                                        opacity: 0;
+                                                        transform: translateY(-20px);
+                                                    }
+                                                    to {
+                                                        opacity: 1;
+                                                        transform: translateY(0);
+                                                    }
+                                                }
+
+                                                /* Style cho nút đóng */
+                                                .close-btn {
+                                                    position: absolute;
+                                                    top: 10px;
+                                                    right: 15px;
+                                                    font-size: 24px;
+                                                    color: #666;
+                                                    cursor: pointer;
+                                                    transition: color 0.3s;
+                                                }
+
+                                                .close-btn:hover {
+                                                    color: #000;
+                                                }
+
+                                                /* Style cho tiêu đề */
+                                                h3 {
+                                                    margin: 0 0 20px 0;
+                                                    color: #333;
+                                                    font-size: 24px;
+                                                    font-weight: 600;
+                                                }
+
+                                                /* Style cho danh sách khóa học */
+                                                #courseList {
+                                                    max-height: 300px;
+                                                    overflow-y: auto;
+                                                    margin-bottom: 20px;
+                                                    padding: 10px;
+                                                    border: 1px solid #ddd;
+                                                    border-radius: 4px;
+                                                }
+
+                                                /* Style cho form */
+                                                form {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    gap: 15px;
+                                                }
+
+                                                /* Style cho nút Save */
+                                                button[type="submit"] {
+                                                    background-color: #007bff;
+                                                    color: white;
+                                                    padding: 10px 20px;
+                                                    border: none;
+                                                    border-radius: 4px;
+                                                    cursor: pointer;
+                                                    font-size: 16px;
+                                                    transition: background-color 0.3s;
+                                                }
+
+                                                button[type="submit"]:hover {
+                                                    background-color: #0056b3;
+                                                }
+
+                                                /* Style cho thông báo */
+                                                .alert {
+                                                    padding: 10px;
+                                                    margin: 10px 0;
+                                                    border-radius: 4px;
+                                                    font-size: 16px;
+                                                    text-align: center;
+                                                }
+
+                                                /* Style cho thông báo thành công */
+                                                .alert.success {
+                                                    background-color: #28a745; /* Màu xanh lá */
+                                                    color: white;
+                                                }
+
+                                                /* Style cho thông báo lỗi */
+                                                .alert.error {
+                                                    background-color: #dc3545; /* Màu đỏ */
+                                                    color: white;
+                                                }
+
+                                                /* Responsive design */
+                                                @media (max-width: 480px) {
+                                                    .popup-content {
+                                                        width: 95%;
+                                                        padding: 15px;
+                                                    }
+
+                                                    h3 {
+                                                        font-size: 20px;
+                                                    }
+
+                                                    button[type="submit"] {
+                                                        padding: 8px 15px;
+                                                        font-size: 14px;
+                                                    }
+
+                                                    .alert {
+                                                        font-size: 14px;
+                                                        padding: 8px;
+                                                    }
+                                                }
+                                            </style>
+
+                                            <script>
+                                                function loadCourses(majorName) {
+                                                    console.log("Clicked major:", majorName); // Kiểm tra sự kiện click có chạy không
+
+                                                    let xhr = new XMLHttpRequest();
+                                                    xhr.open("GET", "getCoursesByMajorServlet?major=" + encodeURIComponent(majorName), true);
+
+                                                    xhr.onreadystatechange = function () {
+                                                        if (xhr.readyState == 4) {
+                                                            console.log("Server response:", xhr.responseText); // Xem server có trả về gì không
+                                                            if (xhr.status == 200) {
+                                                                document.getElementById("courseList").innerHTML = xhr.responseText;
+                                                                document.getElementById("coursePopup").style.display = "block";
+                                                            } else {
+                                                                console.error("Error fetching courses");
+                                                            }
+                                                        }
+                                                    };
+
+                                                    xhr.send();
+                                                }
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    let closeBtn = document.querySelector(".close-btn");
+                                                    let modal = document.getElementById("coursePopup");
+
+                                                    if (closeBtn && modal) {
+                                                        closeBtn.addEventListener("click", function () {
+                                                            modal.style.display = "none";
+                                                        });
+                                                    }
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
