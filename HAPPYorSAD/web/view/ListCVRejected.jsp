@@ -119,7 +119,11 @@
                                                 <i class="bx bxs-graduation"></i>Manage Courses
                                             </a>
                                         </li>
-
+                                        <li class="nav-item">
+                                            <a href="ApproveCourse" class="nav-link">
+                                                <i class="bx bxs-graduation"></i>Request Course
+                                            </a>
+                                        </li>
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Manage Schedule
