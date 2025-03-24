@@ -176,7 +176,7 @@
                             <div class="row">
                                 <h2 class="subs-title">List of suggested course mentors</h2>
                                 <!-- Instructor List -->
-                                <c:forEach var="mentor" items="${sessionScope.listAllMentorByCourse}"> 
+                                <c:forEach var="mentor" items="${listAllMentorByCourse}"> 
                                     <div class="col-lg-12 d-flex">
                                         <div class="instructor-list flex-fill">
                                             <div class="instructor-img">
@@ -230,7 +230,7 @@
 
                             <div class="row">
                                 <h2 class="subs-title">List of suggested course have same major</h2>
-                                <c:forEach var="o" items="${sessionScope.listCourseToPrint}"> 
+                                <c:forEach var="o" items="${listCourseToPrint}"> 
                                     <div class="col-lg-4 col-md-6 d-flex">
                                         <div class="course-box course-design d-flex ">
                                             <div class="product">
