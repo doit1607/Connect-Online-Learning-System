@@ -5,6 +5,7 @@
 package controller;
 
 import entity.CV;
+import entity.Course;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
+import model.DAOCourse;
+import model.DAORequest;
 import model.DAOuser;
 import model.DaoCV;
 
@@ -53,6 +57,35 @@ public class ViewCV extends HttpServlet {
 
         String cvStatus = dao.getCVStatusByUsername(username);
         session.setAttribute("cvStatus", cvStatus);
+        
+        DAOCourse daoCourse = new DAOCourse();
+        DAORequest daoRequest = new DAORequest();
+
+        int userId = mentor.getUserIdByUsername(username);
+        int mentorId = daoRequest.getMentorIdByUserId(userId);
+        
+        // Lấy danh sách khóa học theo tên Major
+        String selectedMajorName = request.getParameter("majorName"); // Lấy theo tên
+
+        if (selectedMajorName != null && !selectedMajorName.trim().isEmpty()) {
+            List<Course> courses = daoCourse.getCoursesByMajor(selectedMajorName); // Gọi theo tên
+            request.setAttribute("majorCourses", courses);
+        }
+
+        // Lưu môn học mà mentor chọn để dạy
+        String selectedCourse = request.getParameter("selectedCourses");
+        if (selectedCourse != null && !selectedCourse.trim().isEmpty()) {
+            try {
+                int courseId = Integer.parseInt(selectedCourse);
+                if (courseId > 0) {
+                    daoCourse.MentorCourses(mentorId, courseId);
+                    request.setAttribute("successMessage", "Course assigned successfully!");
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                request.setAttribute("errorMessage", "Invalid course ID.");
+            }
+        }
 
         request.getRequestDispatcher("/view/ViewCV.jsp").forward(request, response);
 
