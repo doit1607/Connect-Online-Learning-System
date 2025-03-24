@@ -6,6 +6,7 @@ package model;
 
 import entity.Course;
 import entity.Mentor;
+import entity.MentorCourse;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -758,11 +759,156 @@ public class DAOCourse extends DBConnection {
         }
     }
 
+    // dem so luong CV
+    public int getTotalRequest() {
+        String sql = "select count(*) from MentorCourse";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    // lay danh sach cac mentor course o trang thai la Pending
+    public static List<MentorCourse> getPendingCourses(int index) {
+        List<MentorCourse> courses = new ArrayList<>();
+        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+                + "join Course c on mc.course_id = c.id where mc.status = 'pending'\n"
+                + "order by status\n"
+                + "offset ? rows fetch next 5 rows only";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 5);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                courses.add(new MentorCourse(
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
+
+    // cho manager duyet mentorcourse
+    public static boolean updateCourseStatus(int mentorId, int courseId, String status) {
+        String sql = "UPDATE MentorCourse SET status = ? WHERE mentor_id = ? AND course_id = ?";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, status);
+            pre.setInt(2, mentorId);
+            pre.setInt(3, courseId);
+
+            return pre.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // lay ra tat ca MentorCourse
+    public List<MentorCourse> getAllCourses() {
+        List<MentorCourse> courses = new ArrayList<>();
+        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+                + "join Course c on mc.course_id = c.id";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                courses.add(new MentorCourse(
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    // lay ra MentorCourse theo trang thai approved
+    public List<MentorCourse> getApprovedCourses() {
+        List<MentorCourse> courses = new ArrayList<>();
+        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+                + "join Course c on mc.course_id = c.id where mc.status = 'approved'";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                courses.add(new MentorCourse(
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    // lay ra MentorCourse theo trang thai rejected
+    public List<MentorCourse> getRejectedCourses() {
+        List<MentorCourse> courses = new ArrayList<>();
+        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+                + "join Course c on mc.course_id = c.id where mc.status = 'rejected'";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                courses.add(new MentorCourse(
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    // lay ra MentorCourse theo trang thai
+    public List<MentorCourse> getCoursesByStatus(String status) {
+        List<MentorCourse> courses = new ArrayList<>();
+        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+                + "join Course c on mc.course_id = c.id where mc.status = ?";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, status);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                courses.add(new MentorCourse(
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
 
-        dao.MentorCourses(2, 1);
-
+//        dao.MentorCourses(2, 1);
         // List<Course> listCourseHome = dao.pagingCourse(5);
 //
 //        for (Course course : listCourseHome) {
