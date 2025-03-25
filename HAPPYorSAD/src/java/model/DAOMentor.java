@@ -2,6 +2,7 @@ package model;
 
 import entity.Mentor;
 import entity.Mentor1;
+import entity.MentorDTO;
 import entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -712,6 +713,51 @@ public class DAOMentor extends DBConnection {
                 e.printStackTrace();
             }
         }
+    }
+    public List<MentorDTO> getTop10Mentors(int type) {
+        List<MentorDTO> mentors = new ArrayList<>();
+        String sql = "";
+
+        if (type == 1) {
+            // Doanh thu
+            sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n" +
+"           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n" +
+"    FROM Mentor m\n" +
+"    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n" +
+"    GROUP BY m.id, m.name, m.email, m.image, m.rating\n" +
+"	ORDER BY total_revenue DESC;";
+        } else if (type == 2) {
+            // Rating
+            sql = sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n" +
+"           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n" +
+"    FROM Mentor m\n" +
+"    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n" +
+"    GROUP BY m.id, m.name, m.email, m.image, m.rating\n" +
+"	ORDER BY m.rating DESC;";
+        } else {
+            return mentors; // Nếu type không hợp lệ
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    MentorDTO mentor = new MentorDTO();
+                    mentor.setId(rs.getInt("id"));
+                    mentor.setName(rs.getString("name"));
+                    mentor.setRating(rs.getDouble("rating"));
+                    mentor.setEmail(rs.getString("email"));
+                    mentor.setImage(rs.getString("image"));
+                    mentor.setRevenue(rs.getDouble("total_revenue"));
+
+                    mentors.add(mentor);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mentors;
     }
 
     public static void main(String[] args) {
