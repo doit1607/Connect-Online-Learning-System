@@ -32,23 +32,23 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-        <link rel="stylesheet" href="/HAPPYorSAD/css/cssCourse/cssCourse.css"/>
+        <link rel="stylesheet" href="/HAPPYorSAD/css/cssCourse/cssCourse.css"/> <style>
+            .tablecontent td.active a {
+                color: #f0ad4e; /* Màu ch? tr?ng */
+                font-weight: bold;
+                text-decoration: none;
+                padding: 5px;
+                border-radius: 5px;
+            }
+            .product-img img {
+                width: 100%; /* ??t chi?u r?ng c? ??nh cho ?nh */
+                height: 200px; /* ??t chi?u cao c? ??nh cho ?nh */
+                object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
+                border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
+            }
+        </style>
     </head>
-    <style>
-        .tablecontent td.active a {
-            color: #f0ad4e; /* Màu ch? tr?ng */
-            font-weight: bold;
-            text-decoration: none;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .product-img img {
-            width: 100%; /* ??t chi?u r?ng c? ??nh cho ?nh */
-            height: 200px; /* ??t chi?u cao c? ??nh cho ?nh */
-            object-fit: cover; /* C?t và ?i?u ch?nh ?nh ?? v?a v?i khung mà không b? méo */
-            border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
-        }
-    </style>
+
     <body>
 
         <!-- Main Wrapper -->

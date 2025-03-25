@@ -119,8 +119,8 @@
                             <div class="col-md-6">
                                 <div class="privacy-policy">
                                     <ul>
-                                        <li><a href="term-condition.html">Terms</a></li>
-                                        <li><a href="privacy-policy.html">Privacy</a></li>
+                                        <li><a href="viewStatic/term-condition.html">Terms</a></li>
+                                        <li><a href="viewStatic/privacy-policy.html">Privacy</a></li>
                                     </ul>
                                 </div>
                             </div>

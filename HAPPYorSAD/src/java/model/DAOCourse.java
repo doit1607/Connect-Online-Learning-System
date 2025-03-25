@@ -137,24 +137,25 @@ public class DAOCourse extends DBConnection {
 
     public List<Course> getAllCourseHome() {
         ArrayList<Course> listCourseHome = new ArrayList<>();
-        String query = "Select  c.title, cm.name as CourseMajor,c.image,\n"
+        String query = "Select  c.id,c.title, cm.name as CourseMajor,c.image,\n"
                 + "COUNT(DISTINCT u_mentor.id) AS total_Mentor,\n"
                 + "COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
                 + "From Course c\n"
                 + "Join CourseMajor cm on c.course_major_id = cm.id\n"
                 + "left join Users u_mentor on c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
                 + "LEFT JOIN Users u_mentee ON c.mentor_id = u_mentee.id AND u_mentee.role = 'mentee'\n"
-                + "GROUP BY c.title, c.image, cm.name";
+                + "GROUP BY c.title, c.image, cm.name,c.id";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
             while (result.next()) {
+                int id = result.getInt("id");
                 String title = result.getString("title");
                 String courseMajor = result.getString("CourseMajor");
                 int total_Mentor = result.getInt("total_Mentor");
                 int total_Mentee = result.getInt("total_Mentee");
                 String image = result.getString("image");
-                Course course = new Course(title, courseMajor, total_Mentor, total_Mentee, image);
+                Course course = new Course(id, title, courseMajor, total_Mentor, total_Mentee, image);
                 listCourseHome.add(course);
             }
             result.close();
@@ -187,7 +188,7 @@ public class DAOCourse extends DBConnection {
         ArrayList<Course> listCourseHome = new ArrayList<>();
         String query = "SELECT TOP 4\n"
                 + "    c.title,\n"
-                + "	c.image,\n"
+                + "	c.image, c.id,\n"
                 + "    cm.name as CourseMajor,\n"
                 + "    COUNT(DISTINCT CASE WHEN u_mentor.status = 'active' THEN u_mentor.id END) AS total_Mentor,\n"
                 + "    COUNT(DISTINCT u_mentee.id) AS total_Mentee\n"
@@ -195,18 +196,20 @@ public class DAOCourse extends DBConnection {
                 + "JOIN CourseMajor cm ON c.course_major_id = cm.id\n"
                 + "LEFT JOIN Users u_mentor ON c.mentor_id = u_mentor.id AND u_mentor.role = 'mentor'\n"
                 + "LEFT JOIN Users u_mentee ON c.mentor_id = u_mentee.id AND u_mentee.role = 'mentee'\n"
-                + "GROUP BY c.title, c.image, cm.name\n"
+                + "GROUP BY c.title, c.image, cm.name, c.id\n"
                 + "ORDER BY total_Mentee DESC;";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
             while (result.next()) {
+                                int id = result.getInt("id");
+
                 String title = result.getString("title");
                 String courseMajor = result.getString("CourseMajor");
                 int total_Mentor = result.getInt("total_Mentor");
                 int total_Mentee = result.getInt("total_Mentee");
                 String image = result.getString("image");
-                Course course = new Course(title, courseMajor, total_Mentor, total_Mentee, image);
+                Course course = new Course(id,title, courseMajor, total_Mentor, total_Mentee, image);
                 listCourseHome.add(course);
             }
             result.close();
@@ -909,7 +912,10 @@ public class DAOCourse extends DBConnection {
         DAOCourse dao = new DAOCourse();
 
 //        dao.MentorCourses(2, 1);
-        // List<Course> listCourseHome = dao.pagingCourse(5);
+         List<Course> listCourseHome = dao.getAllCourseHome();
+         for (Course course : listCourseHome) {
+             System.out.println(course);
+        }
 //
 //        for (Course course : listCourseHome) {
 //            System.out.println(course);

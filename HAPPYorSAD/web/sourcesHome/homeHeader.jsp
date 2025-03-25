@@ -50,11 +50,10 @@
                                     <c:if test = "${sessionScope.usernameRole eq 'mentee'}">
                                         <ul class="main-nav">
                                             <li class="has-submenu">
-                                                <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
-                                                <ul class="submenu">
-                                                </ul>
+                                                <a href="/../HAPPYorSAD/Home">Home</a>
+                                               
                                             </li>
-                                            <li class="has-submenu">
+<!--                                            <li class="has-submenu">
                                                 <a href="/../HAPPYorSAD/ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="ViewMentor_Mentee">Mentor List</a></li>
@@ -67,15 +66,22 @@
                                                         </li>
                                                     </c:if>
                                                 </ul>
-                                            </li>	
+                                            </li>	-->
                                             <c:if test="${sessionScope.usernameRole eq 'mentee'}">
                                                 <li class="has-submenu">
                                                     <a href="#">Mentee<i class="fas fa-chevron-down"></i></a>
                                                     <ul class="submenu first-submenu">
                                                         <li><a href="/../HAPPYorSAD/ProfileServlet"> Mentee Dashboard</a></li>
-                                                        <li><a href="/../HAPPYorSAD/EnrolledCourses">Enrolled Courses</a></li>
-                                                        <li><a href="Schedule">Book</a></li>
+<!--                                                        <li><a href="/../HAPPYorSAD/EnrolledCourses">Enrolled Courses</a></li>-->
+<!--                                                        <li><a href="Schedule">Book</a></li>-->
                                                         <li><a href="ShowMenteeRequest">View Request</a></li>
+                                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                                        <li class="nav-item ">
+                                                            <a href="reviewmentor" class="nav-link">
+                                                                <i class="bx bxs-bell"></i> Review Mentor
+                                                            </a>
+                                                        </li>
+                                                    </c:if>
 
                                                     </ul>
                                                 </li>	

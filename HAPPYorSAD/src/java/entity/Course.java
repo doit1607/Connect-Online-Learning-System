@@ -127,7 +127,8 @@ public class Course {
         this.courseMajorId = courseMajorId;
     }
 
-    public Course(String title, String CourseMajor, int total_Mentor, int total_Mentee, String image) {
+    public Course(int id, String title, String CourseMajor, int total_Mentor, int total_Mentee, String image) {
+       this.id = id;
         this.title = title;
         this.total_Mentor = total_Mentor;
         this.total_Mentee = total_Mentee;
