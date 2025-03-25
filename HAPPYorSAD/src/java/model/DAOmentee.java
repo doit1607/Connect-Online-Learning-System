@@ -5,8 +5,11 @@
 package model;
 
 import entity.Mentee;
+import entity.Mentor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import static model.DBConnection.conn;
 
 /**
@@ -69,7 +72,25 @@ public class DAOmentee extends DBConnection {
         }
         return null;
     }
+public List<Mentee> getAllMentee() {
+        List<Mentee> mentors = new ArrayList<>();
+        String sql = "SELECT id, name, image FROM Mentee"; // Điều chỉnh cột theo bảng của bạn
 
+        try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Mentee mentor = new Mentee();
+                mentor.setId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentor.setImage(rs.getString("image"));
+                mentors.add(mentor);
+            }
+            System.out.println("Successfully retrieved " + mentors.size() + " mentors.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentors;
+    }
     public int getMenteeUserid(int menteeId) {
         String sql = "SELECT user_id FROM Mentee WHERE id = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {

@@ -184,6 +184,28 @@ public class DAORequest extends DBConnection {
 
         return count;
     }
+    public int getRequestCount(String status) {
+        int count = 0;
+
+        String sql = "SELECT COUNT(*) AS total_count FROM Request r Where r.status = ?";
+        
+
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, status);
+            
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt("total_count");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
 
     public void updateRequestStatus1(int requestId, String status) throws SQLException {
         String sql = "UPDATE Request SET status = ?, updated_at = GETDATE() WHERE id = ?";
@@ -717,6 +739,29 @@ public class DAORequest extends DBConnection {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    //for admin
+    public double getTotalReceivedAmount() {
+        double totalAmount = 0.0;
+
+        String sql = "SELECT COALESCE(SUM(c.price), 0) AS total_received "
+                + "FROM Request r "
+                + "JOIN Course c ON r.course_id = c.id "
+                + "WHERE r.status = 'Closed'";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    totalAmount = rs.getDouble("total_received");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalAmount;
     }
 
     public static void main(String[] args) {
