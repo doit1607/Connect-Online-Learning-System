@@ -47,7 +47,192 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
 
+        <style>
+            /* Style cho khu vực nội dung */
+            .content-area {
+                background-color: #f5f7fa;
+                padding: 30px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
 
+            /* Style cho tiêu đề */
+            .profile-heading {
+                margin-bottom: 25px;
+            }
+
+            .heading-title {
+                font-size: 26px;
+                font-weight: 700;
+                color: #2c3e50;
+                position: relative;
+                display: inline-block;
+            }
+
+            .heading-title::after {
+                content: '';
+                width: 60px;
+                height: 4px;
+                background-color: #dc3545; /* Màu đỏ phù hợp với trạng thái Rejected */
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                border-radius: 2px;
+            }
+
+            /* Style cho form tìm kiếm */
+            .search-form {
+                margin-bottom: 30px;
+            }
+
+            .search-group {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+                max-width: 500px;
+            }
+
+            .search-input {
+                flex: 1;
+                padding: 12px 15px;
+                font-size: 14px;
+                border: 1px solid #ced4da;
+                border-radius: 8px;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .search-input:focus {
+                border-color: #dc3545;
+                box-shadow: 0 0 8px rgba(220, 53, 69, 0.2);
+                outline: none;
+            }
+
+            .search-btn {
+                background-color: #dc3545;
+                color: white;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .search-btn:hover {
+                background-color: #c82333;
+                transform: translateY(-2px);
+            }
+
+            /* Style cho bảng */
+            .custom-table {
+                overflow-x: auto;
+            }
+
+            .modern-table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #ffffff;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .table-header th {
+                background-color: #f5f7fa;
+                color: #2c3e50;
+                font-weight: 600;
+                font-size: 14px;
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+                text-transform: uppercase;
+            }
+
+            .table-row td {
+                padding: 15px;
+                font-size: 14px;
+                color: #34495e;
+                border-bottom: 1px solid #e2e8f0;
+                transition: background-color 0.3s ease;
+            }
+
+            .table-row:hover {
+                background-color: #f8fafc;
+            }
+
+            /* Style cho trạng thái */
+            .status-badge {
+                display: inline-block;
+                padding: 8px 15px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+                text-transform: capitalize;
+                transition: transform 0.2s ease;
+            }
+
+            .status-badge.rejected {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .status-badge:hover {
+                transform: scale(1.05);
+            }
+
+            /* Style cho nút Back */
+            .action-section {
+                margin-top: 25px;
+                text-align: center;
+            }
+
+            .back-btn {
+                display: inline-block;
+                padding: 12px 25px;
+                background-color: #dc3545;
+                color: white;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .back-btn:hover {
+                background-color: #c82333;
+                transform: translateY(-2px);
+            }
+
+            /* Responsive design */
+            @media (max-width: 768px) {
+                .content-area {
+                    padding: 20px;
+                }
+
+                .heading-title {
+                    font-size: 22px;
+                }
+
+                .search-group {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .search-input, .search-btn {
+                    width: 100%;
+                }
+
+                .table-header th, .table-row td {
+                    font-size: 13px;
+                    padding: 10px;
+                }
+
+                .back-btn {
+                    padding: 10px 20px;
+                    font-size: 13px;
+                }
+            }
+        </style>
 
 
 
@@ -150,54 +335,54 @@
                             </div>
                         </div>
                     </div>
-                    <body>
-                        <div class="col-xl-9 col-lg-9">
-                            <div class="content-area" id="content-area">
-                                <!-- Profile Heading -->
-                                <div class="profile-heading">
-                                    <h3 class="heading-title">Manage Course - Rejected</h3>
+                    <div class="col-xl-9 col-lg-9">
+                        <div class="content-area" id="content-area">
+                            <!-- Profile Heading -->
+                            <div class="profile-heading">
+                                <h3 class="heading-title">Manage Course - Rejected</h3>
+                            </div>
+
+                            <!-- Search Form -->
+                            <form action="ApproveCourse" method="get" class="search-form">
+                                <input type="hidden" name="status" value="rejected">
+                                <div class="search-group">
+                                    <input type="text" name="searchQuery" class="search-input" placeholder="Search by course name" value="${searchQuery}">
+                                    <button type="submit" class="search-btn">Search</button>
                                 </div>
+                            </form>
 
-                                <!-- Search Form -->
-                                <form action="ApproveCourse" method="get" class="search-form">
-                                    <input type="hidden" name="status" value="rejected">
-                                    <div class="search-group">
-                                        <input type="text" name="searchQuery" class="search-input" placeholder="Search by course name" value="${searchQuery}">
-                                        <button type="submit" class="search-btn">Search</button>
-                                    </div>
-                                </form>
-
-                                <!-- Table Section -->
-                                <div class="checkout-form">
-                                    <div class="table-responsive custom-table">
-                                        <table class="table table-nowrap mb-0 modern-table">
-                                            <thead class="table-header">
-                                                <tr>
-                                                    <th>Mentor Name</th>
-                                                    <th>Title</th>
-                                                    <th>Actions</th>
+                            <!-- Table Section -->
+                            <div class="checkout-form">
+                                <div class="table-responsive custom-table">
+                                    <table class="table table-nowrap mb-0 modern-table">
+                                        <thead class="table-header">
+                                            <tr>
+                                                <th>Mentor Name</th>
+                                                <th>Title</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="course" items="${courseList}">
+                                                <tr class="table-row">
+                                                    <td>${course.name}</td>
+                                                    <td>${course.title}</td>
+                                                    <td>
+                                                        <span class="status-badge rejected">${course.status}</span>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach var="course" items="${courseList}">
-                                                    <tr class="table-row">
-                                                        <td>${course.name}</td>
-                                                        <td>${course.title}</td>
-                                                        <td>${course.status}</td>
-                                                        
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <!-- Back Link -->
-                                <div class="action-section">
-                                    <a href="ApproveCourse" class="back-btn badge-light-success">Back to Pending Courses</a>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+
+                            <!-- Back Link -->
+                            <div class="action-section">
+                                <a href="ApproveCourse" class="back-btn badge-light-success">Back to Pending Courses</a>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
