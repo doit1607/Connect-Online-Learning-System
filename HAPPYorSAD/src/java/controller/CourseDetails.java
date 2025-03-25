@@ -52,7 +52,7 @@ public class CourseDetails extends HttpServlet {
         int countMentorOfCourse = dao.getTotalMentorsByCourse(id);
         String majorName = dao.getCourseMajor(id);
         int majorId = course.getCourseMajorId();
-        List<Course> listc = dao.getTop3CoursesByMajor(majorId);
+        List<Course> listc = dao.getCoursesByMajor(majorId);
         ArrayList<Course> listCourseToPrint = new ArrayList<>();
         for (Course course1 : listc) {
             if (course1.getId() != course.getId()) {
