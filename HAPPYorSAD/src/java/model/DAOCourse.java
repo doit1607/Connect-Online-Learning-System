@@ -311,7 +311,7 @@ public class DAOCourse extends DBConnection {
 
     public ArrayList<Course> getCourseByMentorId(int mentorId) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT TOP 3 c.[id]\n"
+        String query = "SELECT c.[id]\n"
                 + "      ,c.[title]\n"
                 + "      ,c.[description]\n"
                 + "      ,c.[manager_id]\n"
@@ -386,6 +386,7 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN Users u ON m.user_id = u.id\n"
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
                 + "WHERE c.id = ?\n"
+                + "AND mc.status = 'approved'\n"
                 + "AND cv.status = 'approved'\n"
                 + "AND m.price_per_slot IS NOT NULL\n"
                 + "AND EXISTS (\n"
@@ -443,6 +444,7 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN Users u ON m.user_id = u.id\n"
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
                 + "WHERE mc.course_id = ?\n"
+                + "AND mc.status = 'approved'\n"
                 + "AND cv.status = 'approved'\n"
                 + "AND m.price_per_slot IS NOT NULL\n"
                 + "AND EXISTS (\n"
@@ -485,9 +487,9 @@ public class DAOCourse extends DBConnection {
     }
 
     // hoang
-    public List<Course> getTop3CoursesByMajor(int majorId) {
+    public List<Course> getCoursesByMajor(int majorId) {
         List<Course> courses = new ArrayList<>();
-        String sql = "SELECT top 3  [id]\n"
+        String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
                 + "      ,[description]\n"
                 + "      ,[manager_id]\n"

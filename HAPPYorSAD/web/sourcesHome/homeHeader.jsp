@@ -208,26 +208,7 @@
                                             <i class="fas fa-times"></i>
                                         </a>
                                     </div>
-                                    <ul class="main-nav">
-                                        <li class="has-submenu">
-                                            <a href="/../HAPPYorSAD/Home">Home <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-                                            </ul>
-                                        </li>
-                                        <li class="has-submenu">
-                                            <a href="ViewMentor_Mentee">Mentor <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="course-list.html">Mentor List</a></li>
-                                            </ul>
-                                        </li>	
-                                        <li class="has-submenu">
-                                            <a href="#">Courses <i class="fas fa-chevron-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="/../HAPPYorSAD/ShowAllCourse">Course List</a></li>
-                                            </ul>
-                                        </li>
-
-                                    </ul>		 
+                                  		 
                                 </div>
                                 <ul class="nav header-navbar-rht">
                                     <li class="nav-item">
