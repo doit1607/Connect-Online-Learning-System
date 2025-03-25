@@ -121,21 +121,27 @@ public class ApproveCourse extends HttpServlet {
         String action = request.getParameter("action");
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         int courseId = Integer.parseInt(request.getParameter("courseId"));
-
-        boolean isUpdated = false;
+        String status = request.getParameter("status");
 
         if ("approve".equals(action)) {
-            isUpdated = dao.updateCourseStatus(mentorId, courseId, "approved");
+            dao.updateCourseStatus(mentorId, courseId, "approved");
+            response.sendRedirect("ApproveCourse?status=approved");
+            return;
         } else if ("reject".equals(action)) {
-            isUpdated = dao.updateCourseStatus(mentorId, courseId, "rejected");
+            dao.updateCourseStatus(mentorId, courseId, "rejected");
+            response.sendRedirect("ApproveCourse?status=rejected");
+            return;
         }
 
-        if (isUpdated) {
-            response.sendRedirect("ApproveCourse.jsp?status=" + action);
+        List<MentorCourse> pendingCourses;
+        if (status == null || status.isEmpty()) {
+            pendingCourses = dao.getAllCourses(); // Lấy tất cả khóa học
         } else {
-            request.setAttribute("errorMessage", "Failed to update course status.");
-            request.getRequestDispatcher("/view/ApproveCourse.jsp").forward(request, response);
+            pendingCourses = dao.getCoursesByStatus(status); // Lọc theo trạng thái
         }
+
+        request.setAttribute("pendingCourses", pendingCourses);
+        request.getRequestDispatcher("/view/ApproveCourse.jsp").forward(request, response);
     }
 
     /**
