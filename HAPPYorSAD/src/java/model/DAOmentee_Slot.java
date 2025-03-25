@@ -84,21 +84,43 @@ public class DAOmentee_Slot extends DBConnection {
         return slots;
     }
 
+    public List<Mentee_Slot> getSlotsBySlotId(int slotId) {
+        List<Mentee_Slot> slots = new ArrayList<>();
+        String sql = "SELECT * FROM mentee_slot WHERE slot_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, slotId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Mentee_Slot slot = new Mentee_Slot();
+                    slot.setSlot_id(rs.getInt("slot_id"));
+                    slot.setMentee_id(rs.getInt("mentee_id"));
+                    slot.setStatus(rs.getString("status"));
+                    slots.add(slot);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
+
     public List<Mentee_Slot> getSlotsByRequestId1(int requestId) throws SQLException {
         List<Mentee_Slot> slots = new ArrayList<>();
-        String sql = "SELECT sl.slot_date, ms.status, sl.slot_number_id, \n"
+        String sql = "SELECT ms.mentee_id,ms.slot_id, sl.slot_date, ms.status, sl.slot_number_id, \n"
                 + "       st.start_time, st.end_time, ms.request_id\n"
                 + "FROM Mentee_Slot ms\n"
                 + "join Slot sl on sl.id = ms.slot_id\n"
                 + "JOIN Slot_Template st ON sl.slot_number_id = st.id\n"
                 + "WHERE ms.request_id = ?\n"
                 + "GROUP BY sl.slot_date, ms.status, sl.slot_number_id, \n"
-                + "       st.start_time, st.end_time, ms.request_id";
+                + "       st.start_time,ms.slot_id, st.end_time,ms.mentee_id, ms.request_id";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, requestId);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Mentee_Slot slot = new Mentee_Slot(
+                    rs.getInt("slot_id"),
+                    rs.getInt("mentee_id"),
                     rs.getInt("request_id"),
                     rs.getString("status"),
                     rs.getDate("slot_date"),
@@ -273,7 +295,7 @@ public class DAOmentee_Slot extends DBConnection {
         }
         return slots;
     }
-    
+
     public List<Mentee_Slot> getSlotsByDateMenteeAttendancee(java.sql.Date date) {
         List<Mentee_Slot> slots = new ArrayList<>();
 
@@ -334,6 +356,17 @@ public class DAOmentee_Slot extends DBConnection {
         }
     }
 
+    public boolean deleteSlot(int slotId) {
+        String sql = "DELETE FROM mentee_slot WHERE slot_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, slotId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<Slot> getSlotsByRequestIdAndStatus(int requestId, String status) {
         List<Slot> slots = new ArrayList<>();
         String sql = "SELECT s.* FROM mentee_slot ms JOIN Slot s ON ms.slot_id = s.id WHERE ms.request_id = ? AND ms.status = ?";
@@ -385,7 +418,7 @@ public class DAOmentee_Slot extends DBConnection {
         LocalDate localDate = LocalDate.parse("2025-03-03");
         java.sql.Date sqlDate = java.sql.Date.valueOf(localDate); // Chuyển LocalDate thành java.sql.Date
 
-        List<Slot> slots = dao.getSlotsByMenteeIdAndStatus(2, "Studying");
+        List<Slot> slots = dao.getSlotsByRequestIdAndStatus(2773, "Draft");
         System.out.println(slots);
     }
 

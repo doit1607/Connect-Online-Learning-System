@@ -212,58 +212,7 @@
 
                         </div>           
                     </div>
-                    <!--<div class="col-lg-9 col-xl-9">
-                        <h3>
-                            Requests 
-                            <span id="toggleFilter" style="cursor: pointer;">
-                                <i class="fas fa-chevron-down"></i>
-                            </span>
-                        </h3>
-                    
-                        <div class="dashboard-header">
-                            <div id="filterContainer" style="display: none;">
-                                <form action="viewRequest" method="GET">
-                                    <div class="row">
-                                         Search Title 
-                                        <div class="col-md-4">
-                                            <input type="text" name="" class="form-control" placeholder="Search title" value="">
-                                        </div>
-                    
-                                         Status Checkbox 
-                                        <div class="col-md-5">
-                                            <label>Status:</label><br>
-                                            <input type="checkbox" name="" value="Open" id="status-opening" >
-                                            <label for="status-opening">Opening</label>
-                    
-                                            <input type="checkbox" name="" value="Closed" id="status-closed">
-                                            <label for="status-closed">Closed</label>
-                    
-                                            <input type="checkbox" name="" value="Cancelled" id="status-cancelled" >
-                                            <label for="status-cancelled">Cancelled</label>
-                    
-                                            <input type="checkbox" name="" value="Processing" id="status-processing">
-                                            <label for="status-processing">Processing</label>
-                                        </div>
-                    
-                                         Date Range Dropdown 
-                                        <div class="col-md-3">
-                                            <select name="date" id="date-range" class="form-select">
-                                                <option value="0" ${param.date == '0' || empty param.date ? 'selected' : ''}>All</option>
-                                                <option value="1" ${param.date == '1' ? 'selected' : ''}>Today</option>
-                                                <option value="2" ${param.date == '2' ? 'selected' : ''}>Last 7 Days</option>
-                                                <option value="3" ${param.date == '3' ? 'selected' : ''}>This Month</option>
-                                            </select>
-                                        </div>
-                    
-                                         Filter Button 
-                                        <div class="col-md-12 mt-2">
-                                            <button type="submit" class="btn btn-primary">Filter</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>-->
+
 
                     <c:if test="${not empty sessionScope.msg}">
                         <div class="alert alert-success">${sessionScope.msg}</div>
@@ -352,11 +301,35 @@
                                             </div>
                                         </c:forEach>
 
+                                        
                                         <h3 style="margin-bottom: 18px">Schedule</h3>
-                                        <div id="schedule-table-${request.id}" class="schedule-container">
+                                        <div id="schedule-table-${request.id}" >
                                             <p>Loading schedule...</p>
                                         </div>
                                     </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const modals = document.querySelectorAll('.modal');
+                                            modals.forEach(modal => {
+                                                modal.addEventListener('shown.bs.modal', function () {
+                                                    const requestId = modal.id.replace('acceptAppointmentModal_', '');
+                                                    const scheduleTable = document.getElementById('schedule-table-' + requestId);
+                                                    fetch('fetchSlot?requestId=' + requestId)
+                                                            .then(response => {
+                                                                if (!response.ok)
+                                                                    throw new Error('Network response was not ok: ' + response.status);
+                                                                return response.text();
+                                                            })
+                                                            .then(data => scheduleTable.innerHTML = data)
+                                                            .catch(error => {
+                                                                console.error('Error loading schedule:', error);
+                                                                scheduleTable.innerHTML = '<p>Failed to load schedule. Please try again later.</p>';
+                                                            });
+                                                });
+                                            });
+                                        });
+
+                                    </script>
                                     <div class="modal-footer">
                                         <ul class="request-action">
                                             <c:choose>
@@ -492,6 +465,8 @@
                                                                         modal.show();
                                                                     }
                                                                 });
+
+
         </script>
         <script>
             function confirmAccept(button) {

@@ -4,307 +4,326 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Dreams LMS</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
-    <link rel="stylesheet" href="/HAPPYorSAD/css/cssRequestMnetee/RequestMentee.css"/>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Dreams LMS</title>
+        <link rel="shortcut icon" type="image/x-icon" href="/HAPPYorSAD/assets/img/favicon.svg">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/feather.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/slick/slick-theme.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/aos/aos.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
+        <link rel="stylesheet" href="/HAPPYorSAD/css/cssRequestMnetee/RequestMentee.css"/>
 
-    <style>
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .notification.show { opacity: 1; }
-        .notification p { margin: 0; }
-        .updatebtn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-        .updatebtn:hover { background-color: #0056b3; }
-        .viewbtn {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-        .viewbtn:hover { background-color: #1e7e34; }
-    </style>
+        <style>
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: red;
+                color: white;
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                z-index: 1000;
+            }
+            .notification.show {
+                opacity: 1;
+            }
+            .notification p {
+                margin: 0;
+            }
+            .updatebtn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
+            .updatebtn:hover {
+                background-color: #0056b3;
+            }
+            .viewbtn {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
+            .viewbtn:hover {
+                background-color: #1e7e34;
+            }
+        </style>
 
-    <c:if test="${not empty sessionScope.msg}">
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                showNotification("${sessionScope.msg}");
-            });
-        </script>
-        <c:remove var="msg" scope="session"/>
-    </c:if>
-</head>
+        <c:if test="${not empty sessionScope.msg}">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    showNotification("${sessionScope.msg}");
+                });
+            </script>
+            <c:remove var="msg" scope="session"/>
+        </c:if>
+    </head>
 
-<body>
-    <div id="notification" class="notification">
-        <p id="notification-message"></p>
-    </div>
+    <body>
+        <div id="notification" class="notification">
+            <p id="notification-message"></p>
+        </div>
 
-    <!-- Header -->
-    <%@include file="../sourcesHome/homeHeader.jsp" %>
+        <!-- Header -->
+        <%@include file="../sourcesHome/homeHeader.jsp" %>
 
-    <div class="page-content">
-        <div class="container">
-            <div class="row">
-                <!-- Breadcrumb -->
-                <div class="breadcrumb-bar breadcrumb-bar-info">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 col-12">
-                                <div class="breadcrumb-list">
-                                    <h2 class="breadcrumb-title">List Request</h2>
-                                    <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="Home">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">List Request</li>
-                                        </ol>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sidebar -->
-                <div class="col-xl-3 col-lg-3 theiaStickySidebar">
-                    <div class="settings-widget account-settings">
-                        <div class="settings-menu">
-                            <h3>Dashboard</h3>
-                            <ul>
-                                <li class="nav-item"><a href="/../HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-user"></i>Profile</a></li>
-                                <li class="nav-item active"><a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link"><i class="bx bxs-graduation"></i>Request</a></li>
-                                <li class="nav-item"><a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link"><i class="bx bxs-check-circle"></i>Attendance</a></li>
-                                <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
-                                    <li class="nav-item"><a href="reviewmentor" class="nav-link"><i class="bx bxs-bell"></i>Review Mentor</a></li>
-                                </c:if>
-                            </ul>
-                            <h3>Account Settings</h3>
-                            <ul>
-                                <li class="nav-item"><a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link"><i class="bx bxs-cog"></i>Settings</a></li>
-                                <li class="nav-item"><a href="LoginUser?service=logout" class="nav-link"><i class="bx bxs-log-out"></i>Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Page Content -->
-                <div class="col-md-9">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <h4>Status: </h4>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Draft"><button type="submit" class="btn btn-outline-secondary">Draft</button></form>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Open"><button type="submit" class="btn btn-outline-success">Open</button></form>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Processing"><button type="submit" class="btn btn-outline-primary">Processing</button></form>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Cancel"><button type="submit" class="btn btn-outline-danger">Cancel</button></form>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Completed"><button type="submit" class="btn btn-outline-warning">Completed</button></form>
-                            <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Closed"><button type="submit" class="btn btn-outline-dark">Closed</button></form>
-                        </div>
-                    </div>
-
-                    <div class="formcontent">
-                        <table class="tablecontent">
-                            <thead>
-                                <tr>
-                                    <td>Title</td><td>Content</td><td>TotalSlot</td><td>Deadline Start</td><td>Deadline End</td><td>Status</td><td>Action</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${sessionScope.listAllRequest}" var="o">
-                                    <c:if test="${empty param.status or o.status eq param.status}">
-                                        <tr>
-                                            <td>${o.title}</td>
-                                            <td>${o.content}</td>
-                                            <td>${o.totalSlot}</td>
-                                            <td>${o.startDate}</td>
-                                            <td>${o.endDate}</td>
-                                            <td>${o.status}</td>
-                                            <td>
-                                                <c:if test="${o.status eq 'Draft'}">
-                                                    <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" class="updatebtn">Update</a>
-                                                </c:if>
-                                                <c:if test="${o.status ne 'Draft'}">
-                                                    <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">View</button>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:if>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-
-                        <!-- Modals -->
-                        <c:forEach items="${sessionScope.listAllRequest}" var="o">
-                            <div class="modal fade" id="requestModal_${o.id}" tabindex="-1" aria-labelledby="requestModalLabel_${o.id}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="requestModalLabel_${o.id}">Request Details</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="request-details">
-                                                <p><strong>Mentor name:</strong> ${o.mentorname}</p>
-                                                <p><strong>Course name:</strong> ${o.coursename}</p>
-                                                <p><strong>Title:</strong> ${o.title}</p>
-                                                <p><strong>Content:</strong> ${o.content}</p>
-                                                <p><strong>Total Slots:</strong> ${o.totalSlot}</p>
-                                                <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />₫</p>
-                                                <p><strong>Deadline Start:</strong> ${o.startDate}</p>
-                                                <p><strong>Deadline End:</strong> ${o.endDate}</p>
-                                                <p><strong>Status:</strong> ${o.status}</p>
-                                                <p><strong>Schedule:</strong></p>
-                                                <div id="schedule-table-${o.id}"></div>
-
-                                                <c:if test="${o.status eq 'Processing' and specificRequestId eq o.id}">
-                                                    <p><strong>Present Slots:</strong> ${presentCount}</p>
-                                                    <p><strong>Absent Slots:</strong> ${absentCount}</p>
-                                                    <p><strong>Price per Slot (Original):</strong> <fmt:formatNumber value="${totalPrice / o.totalSlot}" type="number" groupingUsed="true" />₫</p>
-                                                    <p><strong>Refund per Absent Slot (70%):</strong> <fmt:formatNumber value="${refundAmount / (absentCount == 0 ? 1 : absentCount)}" type="number" groupingUsed="true" />₫</p>
-                                                    <p><strong>Total Refund Amount:</strong> <fmt:formatNumber value="${refundAmount}" type="number" groupingUsed="true" />₫</p>
-                                                    <p><strong>Total Price (before Refund):</strong> <fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />₫</p>
-                                                    <p><strong>Final Price (after Refund):</strong> <fmt:formatNumber value="${finalPrice}" type="number" groupingUsed="true" />₫</p>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <c:if test="${o.status eq 'Processing' and specificRequestId eq o.id}">
-                                                <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
-                                                    <input type="hidden" name="action" value="CompleteRequest">
-                                                    <input type="hidden" name="requestId" value="${o.id}">
-                                                    <input type="hidden" name="totalPrice" value="${totalPrice}">
-                                                    <input type="hidden" name="refundAmount" value="${refundAmount}">
-                                                    <input type="hidden" name="finalPrice" value="${finalPrice}">
-                                                    <button type="submit" class="btn btn-success">Complete Request</button>
-                                                </form>
-                                            </c:if>
-                                            <c:if test="${o.status eq 'Accepted' and specificRequestId eq o.id and absentCount == 0}">
-                                                <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
-                                                    <input type="hidden" name="action" value="CompleteRequest">
-                                                    <input type="hidden" name="requestId" value="${o.id}">
-                                                    <input type="hidden" name="totalPrice" value="${totalPrice}">
-                                                    <input type="hidden" name="refundAmount" value="${refundAmount}">
-                                                    <input type="hidden" name="finalPrice" value="${finalPrice}">
-                                                    <button type="submit" class="btn btn-warning">Complete Request</button>
-                                                </form>
-                                            </c:if>
-                                        </div>
+        <div class="page-content">
+            <div class="container">
+                <div class="row">
+                    <!-- Breadcrumb -->
+                    <div class="breadcrumb-bar breadcrumb-bar-info">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="breadcrumb-list">
+                                        <h2 class="breadcrumb-title">List Request</h2>
+                                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="Home">Home</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">List Request</li>
+                                            </ol>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
-                        </c:forEach>
+                        </div>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="pagination">
-                                <c:if test="${tag > 1}">
-                                    <li class="page-item"><a href="ShowMenteeRequest?index=${tag-1}&status=${param.status}" class="page-link">Previous</a></li>
-                                </c:if>
-                                <c:forEach begin="1" end="${endPage}" var="i">
-                                    <a class="page-link ${tag == i?'active':''}" href="ShowMenteeRequest?index=${i}&status=${param.status}">${i}</a>
-                                </c:forEach>
-                                <c:if test="${tag < endPage}">
-                                    <li class="page-item"><a href="ShowMenteeRequest?index=${tag+1}&status=${param.status}" class="page-link">Next</a></li>
-                                </c:if>
+                    <!-- Sidebar -->
+                    <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                        <div class="settings-widget account-settings">
+                            <div class="settings-menu">
+                                <h3>Dashboard</h3>
+                                <ul>
+                                    <li class="nav-item"><a href="/../HAPPYorSAD/ProfileServlet" class="nav-link"><i class="bx bxs-user"></i>Profile</a></li>
+                                    <li class="nav-item active"><a href="/../HAPPYorSAD/ShowMenteeRequest" class="nav-link"><i class="bx bxs-graduation"></i>Request</a></li>
+                                    <li class="nav-item"><a href="/../HAPPYorSAD/AttendanceMentee" class="nav-link"><i class="bx bxs-check-circle"></i>Attendance</a></li>
+                                        <c:if test="${sessionScope.menteeRequestStatus eq 'Completed'}">
+                                        <li class="nav-item"><a href="reviewmentor" class="nav-link"><i class="bx bxs-bell"></i>Review Mentor</a></li>
+                                        </c:if>
+                                </ul>
+                                <h3>Account Settings</h3>
+                                <ul>
+                                    <li class="nav-item"><a href="updatementeeprofile?username=${sessionScope.usernameUser}" class="nav-link"><i class="bx bxs-cog"></i>Settings</a></li>
+                                    <li class="nav-item"><a href="LoginUser?service=logout" class="nav-link"><i class="bx bxs-log-out"></i>Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page Content -->
+                    <div class="col-md-9">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h4>Status: </h4>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Draft"><button type="submit" class="btn btn-outline-secondary">Draft</button></form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Open"><button type="submit" class="btn btn-outline-success">Open</button></form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Processing"><button type="submit" class="btn btn-outline-primary">Processing</button></form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Cancel"><button type="submit" class="btn btn-outline-danger">Cancel</button></form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Completed"><button type="submit" class="btn btn-outline-warning">Completed</button></form>
+                                <form action="ShowMenteeRequest" method="get" class="d-inline"><input type="hidden" name="status" value="Closed"><button type="submit" class="btn btn-outline-dark">Closed</button></form>
+                            </div>
+                        </div>
+
+                        <div class="formcontent">
+                            <table class="tablecontent">
+                                <thead>
+                                    <tr>
+                                        <td>Title</td><td>Content</td><td>TotalSlot</td><td>Deadline Start</td><td>Deadline End</td><td>Status</td><td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${sessionScope.listAllRequest}" var="o">
+                                        <c:if test="${empty param.status or o.status eq param.status}">
+                                            <tr>
+                                                <td>${o.title}</td>
+                                                <td>${o.content}</td>
+                                                <td>${o.totalSlot}</td>
+                                                <td>${o.startDate}</td>
+                                                <td>${o.endDate}</td>
+                                                <td>${o.status}</td>
+                                                <td>
+                                                    <c:if test="${o.status eq 'Draft'}">
+                                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                                            <a href="/../HAPPYorSAD/test?mentorId=${o.mentorId}&courseId=${o.courseId}&title=${o.title}&content=${o.content}&startdate=${o.startDate}&enddate=${o.endDate}&requestId=${o.id}&service=update" 
+                                                               class="btn btn-primary btn-sm updatebtn">
+                                                                Update
+                                                            </a>
+                                                            <button type="button" class="btn btn-success btn-sm viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">
+                                                                View
+                                                            </button>
+                                                        </div>
+                                                    </c:if>
+
+
+                                                    <c:if test="${o.status ne 'Draft'}">
+                                                        <button type="button" class="viewbtn" data-bs-toggle="modal" data-bs-target="#requestModal_${o.id}">View</button>
+                                                    </c:if>
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+
+                            <!-- Modals -->
+                            <c:forEach items="${sessionScope.listAllRequest}" var="o">
+                                <div class="modal fade" id="requestModal_${o.id}" tabindex="-1" aria-labelledby="requestModalLabel_${o.id}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="requestModalLabel_${o.id}">Request Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="request-details">
+                                                    <p><strong>Mentor name:</strong> ${o.mentorname}</p>
+                                                    <p><strong>Course name:</strong> ${o.coursename}</p>
+                                                    <p><strong>Title:</strong> ${o.title}</p>
+                                                    <p><strong>Content:</strong> ${o.content}</p>
+                                                    <p><strong>Total Slots:</strong> ${o.totalSlot}</p>
+                                                    <p><strong>Total Price:</strong> <fmt:formatNumber value="${o.totalprice}" type="number" groupingUsed="true" />₫</p>
+                                                    <p><strong>Deadline Start:</strong> ${o.startDate}</p>
+                                                    <p><strong>Deadline End:</strong> ${o.endDate}</p>
+                                                    <p><strong>Status:</strong> ${o.status}</p>
+                                                    <p><strong>Schedule:</strong></p>
+                                                    <div id="schedule-table-${o.id}"></div>
+
+                                                    <c:if test="${o.status eq 'Processing' and specificRequestId eq o.id}">
+                                                        <p><strong>Present Slots:</strong> ${presentCount}</p>
+                                                        <p><strong>Absent Slots:</strong> ${absentCount}</p>
+                                                        <p><strong>Price per Slot (Original):</strong> <fmt:formatNumber value="${totalPrice / o.totalSlot}" type="number" groupingUsed="true" />₫</p>
+                                                        <p><strong>Refund per Absent Slot (70%):</strong> <fmt:formatNumber value="${refundAmount / (absentCount == 0 ? 1 : absentCount)}" type="number" groupingUsed="true" />₫</p>
+                                                        <p><strong>Total Refund Amount:</strong> <fmt:formatNumber value="${refundAmount}" type="number" groupingUsed="true" />₫</p>
+                                                        <p><strong>Total Price (before Refund):</strong> <fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />₫</p>
+                                                        <p><strong>Final Price (after Refund):</strong> <fmt:formatNumber value="${finalPrice}" type="number" groupingUsed="true" />₫</p>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <c:if test="${o.status eq 'Processing' and specificRequestId eq o.id}">
+                                                    <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
+                                                        <input type="hidden" name="action" value="CompleteRequest">
+                                                        <input type="hidden" name="requestId" value="${o.id}">
+                                                        <input type="hidden" name="totalPrice" value="${totalPrice}">
+                                                        <input type="hidden" name="refundAmount" value="${refundAmount}">
+                                                        <input type="hidden" name="finalPrice" value="${finalPrice}">
+                                                        <button type="submit" class="btn btn-success">Complete Request</button>
+                                                    </form>
+                                                </c:if>
+                                                <c:if test="${o.status eq 'Accepted' and specificRequestId eq o.id and absentCount == 0}">
+                                                    <form action="/HAPPYorSAD/ShowMenteeRequest" method="post" style="display:inline;">
+                                                        <input type="hidden" name="action" value="CompleteRequest">
+                                                        <input type="hidden" name="requestId" value="${o.id}">
+                                                        <input type="hidden" name="totalPrice" value="${totalPrice}">
+                                                        <input type="hidden" name="refundAmount" value="${refundAmount}">
+                                                        <input type="hidden" name="finalPrice" value="${finalPrice}">
+                                                        <button type="submit" class="btn btn-warning">Complete Request</button>
+                                                    </form>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pagination">
+                                    <c:if test="${tag > 1}">
+                                        <li class="page-item"><a href="ShowMenteeRequest?index=${tag-1}&status=${param.status}" class="page-link">Previous</a></li>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-link ${tag == i?'active':''}" href="ShowMenteeRequest?index=${i}&status=${param.status}">${i}</a>
+                                    </c:forEach>
+                                    <c:if test="${tag < endPage}">
+                                        <li class="page-item"><a href="ShowMenteeRequest?index=${tag+1}&status=${param.status}" class="page-link">Next</a></li>
+                                        </c:if>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <%@include file="../sourcesHome/homeFooter.jsp" %>
+        <!-- Footer -->
+        <%@include file="../sourcesHome/homeFooter.jsp" %>
 
-    <!-- Scripts -->
-    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
-    <script src="/HAPPYorSAD/assets/js/ckeditor.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
-    <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
-    <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
-    <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
-    <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
-    <script src="/HAPPYorSAD/assets/js/script.js"></script>
-    <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
+        <!-- Scripts -->
+        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/ckeditor.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+        <script src="/HAPPYorSAD/assets/js/owl.carousel.min.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/slick/slick.js"></script>
+        <script src="/HAPPYorSAD/assets/plugins/aos/aos.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.waypoints.js"></script>
+        <script src="/HAPPYorSAD/assets/js/jquery.counterup.min.js"></script>
+        <script src="/HAPPYorSAD/assets/js/script.js"></script>
+        <script src="/HAPPYorSAD/assets/js/theme-script.js"></script>
 
-    <script>
-        function showNotification(message) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
-            notificationMessage.textContent = message;
-            notification.classList.add("show");
-            setTimeout(() => notification.classList.remove("show"), 3000);
-        }
+        <script>
+                function showNotification(message) {
+                    const notification = document.getElementById("notification");
+                    const notificationMessage = document.getElementById("notification-message");
+                    notificationMessage.textContent = message;
+                    notification.classList.add("show");
+                    setTimeout(() => notification.classList.remove("show"), 3000);
+                }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.addEventListener('shown.bs.modal', function () {
-                    const requestId = modal.id.replace('requestModal_', '');
-                    const scheduleTable = document.getElementById('schedule-table-' + requestId);
-                    fetch('fetchSlot?requestId=' + requestId)
-                        .then(response => {
-                            if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                            return response.text();
-                        })
-                        .then(data => scheduleTable.innerHTML = data)
-                        .catch(error => {
-                            console.error('Error loading schedule:', error);
-                            scheduleTable.innerHTML = '<p>Failed to load schedule. Please try again later.</p>';
+                document.addEventListener('DOMContentLoaded', function () {
+                    const modals = document.querySelectorAll('.modal');
+                    modals.forEach(modal => {
+                        modal.addEventListener('shown.bs.modal', function () {
+                            const requestId = modal.id.replace('requestModal_', '');
+                            const scheduleTable = document.getElementById('schedule-table-' + requestId);
+                            fetch('fetchSlot?requestId=' + requestId)
+                                    .then(response => {
+                                        if (!response.ok)
+                                            throw new Error('Network response was not ok: ' + response.status);
+                                        return response.text();
+                                    })
+                                    .then(data => scheduleTable.innerHTML = data)
+                                    .catch(error => {
+                                        console.error('Error loading schedule:', error);
+                                        scheduleTable.innerHTML = '<p>Failed to load schedule. Please try again later.</p>';
+                                    });
                         });
+                    });
                 });
-            });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

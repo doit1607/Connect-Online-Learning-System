@@ -193,6 +193,15 @@
         <servlet-name>ApproveCourse</servlet-name>
         <servlet-class>controller.ApproveCourse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>fetchSlotRequest</servlet-name>
+        <servlet-class>controller.fetchSlotRequest</servlet-class>
+    </servlet>
+        <servlet>
+        <servlet-name>FetchSlotsForRequest</servlet-name>
+        <servlet-class>controller.FetchSlotsForRequest</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>ShowAllCourse</servlet-name>
         <url-pattern>/ShowAllCourse</url-pattern>
@@ -385,6 +394,14 @@
     <servlet-mapping>
         <servlet-name>ApproveCourse</servlet-name>
         <url-pattern>/ApproveCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fetchSlotRequest</servlet-name>
+        <url-pattern>/fetchSlotRequest</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>FetchSlotsForRequest</servlet-name>
+        <url-pattern>/FetchSlotsForRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

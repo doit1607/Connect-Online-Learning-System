@@ -37,8 +37,8 @@ public class DAOschedule extends DBConnection {
             while (rs.next()) {
                 Schedule schedule = new Schedule();
                 schedule.setId(rs.getInt("id"));
-                schedule.setStart_date(rs.getDate("start_date")); 
-                schedule.setEnd_date(rs.getDate("end_date")); 
+                schedule.setStart_date(rs.getDate("start_date"));
+                schedule.setEnd_date(rs.getDate("end_date"));
                 schedules.add(schedule);
             }
         } catch (SQLException e) {
@@ -107,6 +107,27 @@ public class DAOschedule extends DBConnection {
     public List<Schedule> getSchedulesByMonth(int year, int month) {
         List<Schedule> schedules = new ArrayList<>();
         String query = "SELECT * FROM Schedule WHERE YEAR(start_date) = ? AND MONTH(start_date) = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(rs.getInt("id"));
+                schedule.setStart_date(rs.getDate("start_date"));
+                schedules.add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
+    public List<Schedule> getMentorSchedulesByMonth(int year, int month) {
+        List<Schedule> schedules = new ArrayList<>();
+        String query = "SELECT s.*, ms.* FROM Schedule s\n"
+                + "join Mentor_Schedule ms on s.id = ms.schedule_id\n"
+                + "WHERE YEAR(s.start_date) = ? AND MONTH(s.start_date) = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, year);
             stmt.setInt(2, month);
@@ -318,6 +339,31 @@ public class DAOschedule extends DBConnection {
     public Map<String, List<Schedule>> getSchedulesByMonth() {
         Map<String, List<Schedule>> schedulesByMonth = new LinkedHashMap<>();
         String query = "SELECT * FROM schedule ORDER BY start_date";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        try (PreparedStatement stmt = conn.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Date startDate = rs.getDate("start_date");
+                Date endDate = rs.getDate("end_date");
+                Schedule schedule = new Schedule(startDate, endDate);
+                // Định dạng lại tháng & năm (Ví dụ: "Tháng 3, 2025")
+                String monthKey = formatter.format(startDate);
+                schedulesByMonth
+                        .computeIfAbsent(monthKey, k -> new ArrayList<>())
+                        .add(schedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return schedulesByMonth;
+    }
+
+    public Map<String, List<Schedule>> getMentorSchedulesByMonth() {
+        Map<String, List<Schedule>> schedulesByMonth = new LinkedHashMap<>();
+        String query = "SELECT s.*, ms.* FROM schedule s\n"
+                + "join Mentor_Schedule ms on s.id = ms.schedule_id\n"
+                + "ORDER BY s.start_date";
 
         SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
         try (PreparedStatement stmt = conn.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {

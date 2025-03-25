@@ -35,8 +35,9 @@ public class Mentee_Slot {
         this.end_time = end_time;
     }
 
-    public Mentee_Slot(int slot_id, int request_id, String status, Date slot_date, int slot_number, Time start_time, Time end_time) {
+    public Mentee_Slot(int slot_id,int mentee_id, int request_id, String status, Date slot_date, int slot_number, Time start_time, Time end_time) {
         this.slot_id = slot_id;
+        this.mentee_id = mentee_id;
         this.request_id = request_id;
         this.status = status;
         this.slot_date = slot_date;
@@ -45,9 +46,10 @@ public class Mentee_Slot {
         this.end_time = end_time;
     }
 
-    public Mentee_Slot(int mentee_id, int slot_id, int request_id, String status, Date slot_date, int slot_number, Time start_time, Time end_time) {
+
+
+    public Mentee_Slot(int mentee_id, int request_id, String status, Date slot_date, int slot_number, Time start_time, Time end_time) {
         this.mentee_id = mentee_id;
-        this.slot_id = slot_id;
         this.request_id = request_id;
         this.status = status;
         this.slot_date = slot_date;
