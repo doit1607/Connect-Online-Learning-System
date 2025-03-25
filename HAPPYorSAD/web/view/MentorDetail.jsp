@@ -357,7 +357,6 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-14">
-
                             <!-- Overview -->
                             <div class="card overview-sec">
                                 <div class="card-body">
@@ -629,7 +628,6 @@
             </section>
             <!-- /Pricing Plan -->
         </div>
-
         <!-- /Main Wrapper -->
         <%@include file="../sourcesHome/homeFooter.jsp" %>            
         <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="text/javascript"></script>
