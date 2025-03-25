@@ -202,14 +202,14 @@ public class DAOCourse extends DBConnection {
             PreparedStatement connect = conn.prepareStatement(query);
             ResultSet result = connect.executeQuery();
             while (result.next()) {
-                                int id = result.getInt("id");
+                int id = result.getInt("id");
 
                 String title = result.getString("title");
                 String courseMajor = result.getString("CourseMajor");
                 int total_Mentor = result.getInt("total_Mentor");
                 int total_Mentee = result.getInt("total_Mentee");
                 String image = result.getString("image");
-                Course course = new Course(id,title, courseMajor, total_Mentor, total_Mentee, image);
+                Course course = new Course(id, title, courseMajor, total_Mentor, total_Mentee, image);
                 listCourseHome.add(course);
             }
             result.close();
@@ -311,19 +311,20 @@ public class DAOCourse extends DBConnection {
 
     public ArrayList<Course> getCourseByMentorId(int mentorId) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT top 3 [id]\n"
-                + "      ,[title]\n"
-                + "      ,[description]\n"
-                + "      ,[manager_id]\n"
-                + "      ,[mentor_id]\n"
-                + "      ,[status]\n"
-                + "      ,[created_at]\n"
-                + "      ,[updated_at]\n"
-                + "      ,[course_major_id]\n"
-                + "      ,[image]\n"
-                + "     ,[price]\n"
-                + "  FROM [SWP1].[dbo].[Course]\n"
-                + "  where [mentor_id] = ?";
+        String query = "SELECT TOP 3 c.[id]\n"
+                + "      ,c.[title]\n"
+                + "      ,c.[description]\n"
+                + "      ,c.[manager_id]\n"
+                + "      ,c.[mentor_id]\n"
+                + "      ,c.[status]\n"
+                + "      ,c.[created_at]\n"
+                + "      ,c.[updated_at]\n"
+                + "      ,c.[course_major_id]\n"
+                + "      ,c.[image]\n"
+                + "      ,c.[price]\n"
+                + "FROM [SWP1].[dbo].[Course] c\n"
+                + "INNER JOIN [SWP1].[dbo].[mentorCourse] mc ON c.[id] = mc.[course_id]\n"
+                + "WHERE mc.[mentor_id] = ?";
         try {
             PreparedStatement connect = conn.prepareStatement(query);
             connect.setInt(1, mentorId);
@@ -384,9 +385,14 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN Course c ON mc.course_id = c.id\n"
                 + "INNER JOIN Users u ON m.user_id = u.id\n"
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
-                + "WHERE c.id = ? \n"
+                + "WHERE c.id = ?\n"
                 + "AND cv.status = 'approved'\n"
-                + "AND m.price_per_slot IS NOT NULL;";
+                + "AND m.price_per_slot IS NOT NULL\n"
+                + "AND EXISTS (\n"
+                + "    SELECT 1\n"
+                + "    FROM Mentor_Schedule ms\n"
+                + "    WHERE ms.mentor_id = m.id\n"
+                + ");";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -436,9 +442,15 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN Course c ON mc.course_id = c.id\n"
                 + "INNER JOIN Users u ON m.user_id = u.id\n"
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
-                + "WHERE mc.course_id = ? \n"
+                + "WHERE mc.course_id = ?\n"
                 + "AND cv.status = 'approved'\n"
-                + "AND m.price_per_slot IS NOT NULL;";
+                + "AND m.price_per_slot IS NOT NULL\n"
+                + "AND EXISTS (\n"
+                + "    SELECT 1\n"
+                + "    FROM Mentor_Schedule ms\n"
+                + "    WHERE ms.mentor_id = m.id\n"
+                + "    AND ms.schedule_id IS NOT NULL\n"
+                + ");";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -912,9 +924,9 @@ public class DAOCourse extends DBConnection {
         DAOCourse dao = new DAOCourse();
 
 //        dao.MentorCourses(2, 1);
-         List<Course> listCourseHome = dao.getAllCourseHome();
-         for (Course course : listCourseHome) {
-             System.out.println(course);
+        List<Course> listCourseHome = dao.getAllCourseHome();
+        for (Course course : listCourseHome) {
+            System.out.println(course);
         }
 //
 //        for (Course course : listCourseHome) {
