@@ -282,12 +282,12 @@
                 border-radius: 8px; /* Bo tròn góc ?nh (tu? ch?nh n?u mu?n) */
             }
 
-            .mentee-img {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
+            .mentor_image {
+                width: 250px;
+                height: 250px;
+                border-radius: 10px;
                 object-fit: cover;
-                border: 2px solid #ddd;
+                border: 2px solid #ddd;               
             }
 
             .rating {
@@ -328,39 +328,23 @@
             <!-- /Breadcrumb -->
 
             <!-- Inner Banner -->
-            <div class="inner-banner">
+            <div class="inner-banner" style="background-image: url('https://png.pngtree.com/thumb_back/fh260/back_pic/00/03/83/64561fca51da066.jpg');background-size: cover; background-position: center;">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-12"> 
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <!-- Left Column: Mentor Image -->
-                                    <div class="col-md-4 col-12">
-                                        <a href="" class="video-thumbnail" data-fancybox="">
-                                            <img class="img-fluid mentor-image" src="${mentor.image}" alt="Mentor Image">
-                                        </a>
-                                    </div>
-                                    <!-- Right Column: Mentor Info -->
-                                    <div class="col-md-8 col-12 text-md-start text-center">
-                                        <h1 style="color: white">${mentorname}</h1>
-                                        <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0 flex-wrap">
-                                            <div class="cou-info">
-                                                <p></p>
-                                                <p></p>
-                                            </div>
-                                            <div class="cou-info">
-                                                <p></p>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                        <div class="video-details col-md-2">
-                                            <h2>
-                                                <a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" 
-                                                   class="btn btn-enroll w-100">Invite</a>
-                                            </h2>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Left Column: Mentor Image -->
+                        <div class="col-md-3">
+                            <a>
+                                <img class="mentor_image" src="${mentor.image}" alt="Mentor Image">
+                            </a>
+                        </div>
+                        <!-- Right Column: Mentor Info -->
+                        <div class="col-md-9">
+                            <h1 style="color: white">${mentorname}</h1>
+                            <div class="col-md-2">
+                                <h2>
+                                    <a href="test?mentorId=${requestScope.mentorId}&courseId=${requestScope.courseId}&price=${requestScope.price}" 
+                                       class="btn btn-enroll w-100">Invite</a>
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -383,9 +367,7 @@
                                             <h5>Mentor name</h5>
                                             <h5><p>- ${mentor.name}</p></h5>
                                             <h5>Email</h5>
-                                            <h5><p>- ${mentor.email}</p></h5>
-                                            <h5>Review from mentees</h5>
-                                            <h5><p>- ${mentor.reviews}</p></h5>
+                                            <h5><p>- ${mentor.email}</p></h5>                                          
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Expertise</h5>
