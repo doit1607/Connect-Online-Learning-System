@@ -1777,6 +1777,7 @@
                         }
                     });
                     eventHandlersAttached.saveBtn = true;
+                    
                 }
                 monthItems.forEach(item => {
                     item.addEventListener("click", function (event) {
