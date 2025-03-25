@@ -42,8 +42,8 @@ public class CourseManager extends HttpServlet {
         int index = Integer.parseInt(indexPage);
 
         int count = dao.getTotalCourse();
-        int endPage = count / 2;
-        if (count % 2 != 0) {
+        int endPage = count / 7;
+        if (count % 7 != 0) {
             endPage++;
         }
         List<Course> list = dao.pagingCourseManager(index);
