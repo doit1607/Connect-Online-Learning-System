@@ -46,6 +46,31 @@
 
     </head>
     <style>
+        /* CSS cho phần giá */
+        /* CSS cho phần giá */
+        .price-slot {
+            display: inline-block;
+            padding: 8px 16px; /* Khoảng cách bên trong vừa phải */
+            background-color: #28a745; /* Nền xanh lá để nổi bật (có thể đổi màu) */
+            color: #fff; /* Chữ trắng để tương phản */
+            font-size: 16px; /* Kích thước chữ nhỏ gọn */
+            font-weight: 500; /* Đậm vừa phải, không quá nặng */
+            border-radius: 12px; /* Bo tròn nhẹ, hiện đại */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bóng nhẹ tạo chiều sâu */
+            transition: all 0.3s ease; /* Hiệu ứng mượt mà khi hover */
+        }
+
+        /* Hiệu ứng khi hover */
+        .price-slot:hover {
+            background-color: #218838; /* Xanh đậm hơn khi hover */
+            transform: translateY(-2px); /* Nhấc lên nhẹ thay vì phóng to */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Bóng đậm hơn */
+        }
+
+        /* Đảm bảo nội dung không tràn */
+        .price-slot span {
+            white-space: nowrap; /* Giữ chữ trên một dòng */
+        }
         .video-sec .card {
             position: relative;
             overflow: hidden;
@@ -213,8 +238,8 @@
 
                                                 </div>
                                                 <br>
-                                                <div >
-                                                    <h3> ${mentor.pricePerSlot}đ/ Slot</h3>
+                                                <div class="price-slot">
+                                                    <span>${mentor.pricePerSlot}đ/Slot</span>
                                                 </div>
 
                                             </div>
