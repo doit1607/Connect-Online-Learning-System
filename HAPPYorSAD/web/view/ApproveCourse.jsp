@@ -47,7 +47,202 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
 
 
+        <style>
+            /* Style cho khu vực nội dung */
+            .content-area {
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
 
+            /* Style cho tiêu đề */
+            .profile-heading h3 {
+                font-size: 24px;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 20px;
+                position: relative;
+            }
+
+            .profile-heading h3::after {
+                content: '';
+                width: 50px;
+                height: 3px;
+                background-color: #3498db;
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+            }
+
+            /* Style cho form lọc */
+            .filter-form {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                align-items: center;
+            }
+
+            .filter-form .form-control {
+                padding: 10px;
+                font-size: 14px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .filter-form .form-control:focus {
+                border-color: #3498db;
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+                outline: none;
+            }
+
+            .filter-form .btn-primary {
+                background-color: #3498db;
+                border: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .filter-form .btn-primary:hover {
+                background-color: #2980b9;
+                transform: translateY(-2px);
+            }
+
+            /* Style cho bảng */
+            .custom-table table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            .custom-table th, .custom-table td {
+                padding: 15px;
+                text-align: left;
+                font-size: 14px;
+                color: #2c3e50;
+            }
+
+            .custom-table th {
+                background-color: #f1f5f9;
+                font-weight: 600;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+            .custom-table tbody tr {
+                transition: background-color 0.3s ease;
+            }
+
+            .custom-table tbody tr:hover {
+                background-color: #f8fafc;
+            }
+
+            /* Style cho trạng thái */
+            .status-badge {
+                color: white;
+                padding: 8px 12px;
+                border-radius: 15px;
+                display: inline-block;
+                font-size: 12px;
+                font-weight: 500;
+                text-transform: capitalize;
+                transition: transform 0.2s ease;
+            }
+
+            .status-badge:hover {
+                transform: scale(1.05);
+            }
+
+            /* Style cho nút Approve và Reject */
+            .action-form {
+                display: flex;
+                gap: 10px;
+            }
+
+            .action-form .btn {
+                padding: 8px 15px;
+                font-size: 13px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .action-form .btn-success {
+                background-color: #28a745;
+                border: none;
+            }
+
+            .action-form .btn-success:hover {
+                background-color: #218838;
+                transform: translateY(-2px);
+            }
+
+            .action-form .btn-danger {
+                background-color: #dc3545;
+                border: none;
+            }
+
+            .action-form .btn-danger:hover {
+                background-color: #c82333;
+                transform: translateY(-2px);
+            }
+
+            /* Style cho phân trang */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                gap: 5px;
+            }
+
+            .pagination .page-link {
+                padding: 8px 12px;
+                font-size: 14px;
+                color: #3498db;
+                border: 1px solid #e2e8f0;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .pagination .page-link:hover {
+                background-color: #3498db;
+                color: white;
+            }
+
+            .pagination .page-link.active {
+                background-color: #3498db;
+                color: white;
+                border-color: #3498db;
+            }
+
+            /* Responsive design */
+            @media (max-width: 768px) {
+                .filter-form {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .filter-form .form-control, .filter-form .btn-primary {
+                    width: 100%;
+                }
+
+                .custom-table th, .custom-table td {
+                    font-size: 13px;
+                    padding: 10px;
+                }
+
+                .action-form {
+                    flex-direction: column;
+                    gap: 5px;
+                }
+
+                .action-form .btn {
+                    width: 100%;
+                }
+            }
+        </style>
 
 
 
