@@ -791,7 +791,7 @@ public class DAOCourse extends DBConnection {
     // lay danh sach cac mentor course o trang thai la Pending
     public static List<MentorCourse> getPendingCourses(int index) {
         List<MentorCourse> courses = new ArrayList<>();
-        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+        String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
                 + "join Course c on mc.course_id = c.id where mc.status = 'pending'\n"
                 + "order by status\n"
                 + "offset ? rows fetch next 5 rows only";
@@ -802,7 +802,9 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
+                        rs.getInt("mentor_id"),
                         rs.getString("name"),
+                        rs.getInt("course_id"),
                         rs.getString("title"),
                         rs.getString("status")
                 ));
@@ -834,7 +836,7 @@ public class DAOCourse extends DBConnection {
     // lay ra tat ca MentorCourse
     public List<MentorCourse> getAllCourses() {
         List<MentorCourse> courses = new ArrayList<>();
-        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+        String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
                 + "join Course c on mc.course_id = c.id";
 
         try {
@@ -842,7 +844,9 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
+                        rs.getInt("mentor_id"),
                         rs.getString("name"),
+                        rs.getInt("course_id"),
                         rs.getString("title"),
                         rs.getString("status")
                 ));
@@ -856,7 +860,7 @@ public class DAOCourse extends DBConnection {
     // lay ra MentorCourse theo trang thai approved
     public List<MentorCourse> getApprovedCourses() {
         List<MentorCourse> courses = new ArrayList<>();
-        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+        String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
                 + "join Course c on mc.course_id = c.id where mc.status = 'approved'";
 
         try {
@@ -864,7 +868,9 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
+                        rs.getInt("mentor_id"),
                         rs.getString("name"),
+                        rs.getInt("course_id"),
                         rs.getString("title"),
                         rs.getString("status")
                 ));
@@ -878,7 +884,7 @@ public class DAOCourse extends DBConnection {
     // lay ra MentorCourse theo trang thai rejected
     public List<MentorCourse> getRejectedCourses() {
         List<MentorCourse> courses = new ArrayList<>();
-        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+        String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
                 + "join Course c on mc.course_id = c.id where mc.status = 'rejected'";
 
         try {
@@ -886,7 +892,9 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
+                        rs.getInt("mentor_id"),
                         rs.getString("name"),
+                        rs.getInt("course_id"),
                         rs.getString("title"),
                         rs.getString("status")
                 ));
@@ -900,7 +908,7 @@ public class DAOCourse extends DBConnection {
     // lay ra MentorCourse theo trang thai
     public List<MentorCourse> getCoursesByStatus(String status) {
         List<MentorCourse> courses = new ArrayList<>();
-        String sql = "select m.name, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
+        String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
                 + "join Course c on mc.course_id = c.id where mc.status = ?";
 
         try {
@@ -909,7 +917,9 @@ public class DAOCourse extends DBConnection {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
+                        rs.getInt("mentor_id"),
                         rs.getString("name"),
+                        rs.getInt("course_id"),
                         rs.getString("title"),
                         rs.getString("status")
                 ));
