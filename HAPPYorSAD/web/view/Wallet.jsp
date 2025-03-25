@@ -44,14 +44,39 @@
                                     <li class="breadcrumb-item active" aria-current="page">Checkout</li>
                                 </ol>
                             </nav>
+
+
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Main Content -->
             <section class="payment-section py-5">
                 <div class="container">
+                    <div class="back-to-home mb-3">
+                        <c:choose>
+                            <c:when test="${usernameRole == 'mentor'}">
+                                <a href="/../HAPPYorSAD/ProfileServlet" class="btn btn-gradient">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Home
+                                </a>
+                            </c:when>
+                            <c:when test="${usernameRole == 'mentee'}">
+                                <a href="/../HAPPYorSAD/Home" class="btn btn-gradient">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Home
+                                </a>
+                            </c:when>
+                            <c:when test="${usernameRole == 'manager'}">
+                                <a href="/../HAPPYorSAD/Manager" class="btn btn-gradient">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Home
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/../HAPPYorSAD/Home" class="btn btn-gradient">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Home
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                     <div class="row justify-content-start">
                         <div class="col-md-6 col-sm-8 col-12"> 
                             <div class="user-info-box shadow-lg">
@@ -325,20 +350,29 @@
                 font-family: 'Poppins', sans-serif;
                 background: #f4f7fc;
             }
+            .back-to-home {
+                margin-top: 15px;
+            }
+
             .btn-gradient {
                 background: linear-gradient(90deg, #00c4cc, #7b3fe4);
                 color: white;
                 border: none;
                 font-size: 0.9rem;
-                padding: 8px 12px;
+                padding: 8px 16px;
                 border-radius: 6px;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
+                display: inline-flex;
+                align-items: center;
             }
+
             .btn-gradient:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0, 196, 204, 0.3);
                 color: white;
+                text-decoration: none;
             }
+
             .btn-gradient i {
                 font-size: 1.1rem;
             }
