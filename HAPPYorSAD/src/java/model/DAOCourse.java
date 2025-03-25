@@ -487,7 +487,7 @@ public class DAOCourse extends DBConnection {
     }
 
     // hoang
-    public List<Course> getTop3CoursesByMajor(int majorId) {
+    public List<Course> getCoursesByMajor(int majorId) {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
