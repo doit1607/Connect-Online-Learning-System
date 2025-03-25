@@ -19,15 +19,11 @@ public class MentorCourse {
     public MentorCourse() {
     }
 
-    public MentorCourse(String name, String title, String status) {
-        this.name = name;
-        this.title = title;
-        this.status = status;
-    }
-    
-    public MentorCourse(int mentorId, int courseId, String status) {
+    public MentorCourse(int mentorId, String name, int courseId, String title, String status) {
         this.mentorId = mentorId;
+        this.name = name;
         this.courseId = courseId;
+        this.title = title;
         this.status = status;
     }
 
