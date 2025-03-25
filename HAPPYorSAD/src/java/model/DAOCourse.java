@@ -311,7 +311,7 @@ public class DAOCourse extends DBConnection {
 
     public ArrayList<Course> getCourseByMentorId(int mentorId) {
         ArrayList<Course> listCourse = new ArrayList<>();
-        String query = "SELECT TOP 3 c.[id]\n"
+        String query = "SELECT c.[id]\n"
                 + "      ,c.[title]\n"
                 + "      ,c.[description]\n"
                 + "      ,c.[manager_id]\n"
@@ -387,6 +387,7 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
                 + "WHERE c.id = ?\n"
                 + "AND mc.status = 'approved'\n"
+                + "AND cv.status = 'approved'\n"
                 + "AND m.price_per_slot IS NOT NULL\n"
                 + "AND EXISTS (\n"
                 + "    SELECT 1\n"
@@ -444,6 +445,7 @@ public class DAOCourse extends DBConnection {
                 + "INNER JOIN CV cv ON cv.username = u.username\n"
                 + "WHERE mc.course_id = ?\n"
                 + "AND mc.status = 'approved'\n"
+                + "AND cv.status = 'approved'\n"
                 + "AND m.price_per_slot IS NOT NULL\n"
                 + "AND EXISTS (\n"
                 + "    SELECT 1\n"
