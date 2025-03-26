@@ -1140,11 +1140,18 @@
                 <input type="hidden" name="weekOffset" id="weekOffset" value="${weekOffset}">
                 <input type="hidden" name="service" id="hiddenService">
                 <!-- Thêm các trường mới -->
-                <input type="hidden" name="title" id="hiddenTitle">
-                <input type="hidden" name="content" id="hiddenContent">
-                <input type="hidden" name="enddate" id="hiddenEndDate">
-                <input type="hidden" name="requestId" id="hiddenRequestId">
-                <input type="hidden" name="tempSlotBooked" id="hiddenTempSlotBooked">
+                <input type="hidden" name="title" value="${requestScope.title}">
+                <input type="hidden" name="content" value="${requestScope.content}">
+                <input type="hidden" name="startdate" value="<%= java.time.LocalDate.now().toString() %>">
+                <input type="hidden" name="enddate" value="${requestScope.enddate}">
+                <c:if test="${not empty requestScope.requestId}">
+                    <input type="hidden" name="pricee" id="hiddenPrice" value="${requestScope.pricee}">
+                </c:if>
+
+                <c:if test="${not empty requestScope.requestId}">
+                    <input type="hidden" name="requestId" id="hiddenRequestId" value="${requestScope.requestId}">
+                </c:if>
+
             </form>
 
             <span id="selectedMonth" style="display:none;">${currentMonth} ${currentYear}</span>
@@ -1166,25 +1173,26 @@
                     const year = parts[1];
 
                     try {
-                        // Lấy dữ liệu từ form chính
-                        document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']").value || "";
-                        document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']").value || "";
-                        document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']").value || "";
+                        document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']")?.value || "";
+                        document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']")?.value || "";
+
+
+                        console.log("Price from input[name='price']: ", document.querySelector("input[name='price']")?.value);
+                        document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']")?.value || "";
+
+
                         document.getElementById("hiddenYear").value = year;
                         document.getElementById("hiddenMonth").value = month;
                         document.getElementById("weekOffset").value = newOffset;
+
+// Giữ nguyên service từ URL hiện tại
                         const urlParams = new URLSearchParams(window.location.search);
-                        const serviceFromUrl = urlParams.get('service') || document.getElementById("serviceInput").value || "";
-                        document.getElementById("hiddenService").value = serviceFromUrl;
+                        const service = urlParams.get('service');
+                        if (service) {
+                            document.getElementById("hiddenService").value = service;
+                        }
 
-                        // Thêm các tham số từ form chính
-                        document.getElementById("hiddenTitle").value = document.getElementById("request-title").value || "";
-                        document.getElementById("hiddenContent").value = document.getElementById("request-content").value || "";
-                        document.getElementById("hiddenEndDate").value = document.getElementById("end-date").value || "";
-                        document.getElementById("hiddenRequestId").value = document.querySelector("input[name='requestId']")?.value || "";
-                        document.getElementById("hiddenTempSlotBooked").value = Array.from(tempSlotBooked).join(",") || ""; // Chuyển Set thành chuỗi
-
-                        console.log('Submitting form with offset:', newOffset, 'month:', month, 'year:', year);
+                        console.log('Submitting form with offset:', newOffset);
                         document.getElementById("hiddenForm").submit();
                     } catch (error) {
                         console.error('Error while submitting form:', error);
@@ -1809,8 +1817,11 @@
                                 document.getElementById("hiddenYear").value = year;
                                 document.getElementById("hiddenMonth").value = month;
                                 document.getElementById("weekOffset").value = 0; // Reset weekOffset khi chọn tháng mới
-                                const serviceFromUrl = urlParams.get('service') || document.getElementById("serviceInput").value || "";
-                                document.getElementById("hiddenService").value = serviceFromUrl;
+                                const urlParams = new URLSearchParams(window.location.search);
+                                const service = urlParams.get('service');
+                                if (service) {
+                                    document.getElementById("hiddenService").value = service;
+                                }
                                 document.getElementById("hiddenForm").submit();
                             }
                         });
@@ -1822,10 +1833,6 @@
                         const currentMonth = currentDate.toLocaleString("en-US", {month: "long"});
                         const currentYear = currentDate.getFullYear();
                         const defaultMonth = `${currentMonth} ${currentYear}`;
-                                    const serviceFromUrl = urlParams.get('service');
-                                    if (serviceFromUrl) {
-                                        document.getElementById("serviceInput").value = serviceFromUrl;
-                                    }
 
                                     if (savedMonth) {
                                         document.getElementById("selectedMonth").textContent = savedMonth;

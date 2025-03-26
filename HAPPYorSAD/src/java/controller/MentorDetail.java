@@ -6,6 +6,8 @@ import entity.MentorReview;
 import entity.Mentor_Slot;
 import entity.Schedule;
 import entity.Slot;
+import entity.CV;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +32,7 @@ import model.DAOmentor_Slot;
 import model.DAOschedule;
 import model.DAOslot;
 import model.DAOuser;
+import model.DaoCV;
 
 /**
  *
@@ -92,7 +95,7 @@ public class MentorDetail extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("mentorId"));
         int mentorIdDetail = id;
         DAOMentor dao = new DAOMentor();
-
+        DaoCV daoCV = new DaoCV();
         DAOCourse daoC = new DAOCourse();
         Mentor1 mentor = dao.getMentorById(mentorIdDetail);
         Double priceperslot = Double.parseDouble(request.getParameter("price"));
@@ -100,10 +103,13 @@ public class MentorDetail extends HttpServlet {
 
         HttpSession session = request.getSession();
         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
+        String username = dao.getMentorUsername(mentorId);
+        CV cv = daoCV.getCVByUsername(username);
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         session.setAttribute("mentor", mentor);
         session.setAttribute("list", list);
         request.setAttribute("mentorId", mentorId);
+        request.setAttribute("cv", cv);
         request.setAttribute("price", priceperslot);
         request.setAttribute("courseId", courseId);
         request.setAttribute("mentorname", mentor.getName());

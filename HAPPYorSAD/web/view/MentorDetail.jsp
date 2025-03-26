@@ -370,9 +370,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Expertise</h5>
-                                            <h5><p>- ${mentor.expertise}</p></h5>
+                                            <h5><p>- ${cv.professionIntro}</p></h5>
                                             <h5>Bio</h5>
-                                            <h5><p>- ${mentor.bio}</p></h5>
+                                            <h5><p>- ${cv.achievementDescription}</p></h5>
                                             <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#cvModal">
                                                 View CV
                                             </button>

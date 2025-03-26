@@ -70,7 +70,7 @@ public class test extends HttpServlet {
         String content = request.getParameter("content");
         LocalDate startDate = LocalDate.now();
         String endDateStr = request.getParameter("enddate");
-        
+
         String service = request.getParameter("service");
         String usernamementee = (String) session.getAttribute("usernameUser");
         Double walletbalance = (Double) session.getAttribute("walletBalance");
@@ -441,8 +441,6 @@ public class test extends HttpServlet {
         request.setAttribute("mentorrequest", mentor);
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("courseId", courseId);
-        request.setAttribute("price", price);
-        LOGGER.info("Set basic attributes - Mentor: " + mentor + ", Price: " + price);
 
         if ("update".equals(service)) {
             LOGGER.info("Processing update service");
@@ -457,10 +455,17 @@ public class test extends HttpServlet {
                 int requestId = Integer.parseInt(requestIdStr);
                 Request existingRequest = new DAORequest().getRequestById(requestId);
                 if (existingRequest != null) {
-                    request.setAttribute("totalSlots", existingRequest.getTotalSlot());
-                    request.setAttribute("totalprice", existingRequest.gettotalprice());
+                    int totalSlots = existingRequest.getTotalSlot();
+                    double totalPrice = existingRequest.gettotalprice();
+                    request.setAttribute("totalSlots", totalSlots);
+                    request.setAttribute("totalprice", totalPrice);
+
+                    double pricee = (totalSlots != 0) ? totalPrice / totalSlots : 0.0;
+                    request.setAttribute("pricee", pricee);
+                    LOGGER.info("Calculated price = " + totalPrice + " / " + totalSlots + " = " + pricee);
                 } else {
                     LOGGER.warning("Request not found for ID: " + requestId);
+                    request.setAttribute("price", price); // Giữ giá trị mặc định nếu không tìm thấy
                 }
             }
         }
@@ -510,15 +515,14 @@ public class test extends HttpServlet {
 
         // Lấy danh sách slot Studying của mentee
         Set<String> studyingSlots = getStudyingSlotsForMentee(menteeId);
-        LOGGER.info("Studying slots for mentee " + menteeId + ": " + studyingSlots);
-        System.out.println("Heloooooooooooooooooooooooooooooooo" + studyingSlots + "");
+//        LOGGER.info("Studying slots for mentee " + menteeId + ": " + studyingSlots);
 
         LocalDate currentDay = firstDayOfWeek;
         while (!currentDay.isAfter(lastDayOfWeek)) {
             String formattedDate = currentDay.format(dateFormatter);
             java.sql.Date sqlDate = java.sql.Date.valueOf(currentDay);
             List<Slot> slots = daoMentorSL.getSlotsByDateForRequest(sqlDate, mentorId);
-            System.out.println("hellooo" + slots);
+//            System.out.println("hellooo" + slots);
             slotsByDay.put(formattedDate, slots);
 
             Map<String, String> dateInfo = Map.of(
@@ -536,7 +540,7 @@ public class test extends HttpServlet {
                 // 1. Kiểm tra trạng thái Studying của mentee trước (giữ nguyên logic cũ)
                 if (studyingSlots.contains(slotKey)) {
                     slotStatusMap.put(slotKey, "Duplicated"); // Slot đã học bởi mentee này
-                    LOGGER.info("Slot " + slotKey + " -> Studying (Mentee)");
+//                    LOGGER.info("Slot " + slotKey + " -> Studying (Mentee)");
                     continue; // Bỏ qua các kiểm tra tiếp theo nếu mentee đã Studying
                 }
 
@@ -554,10 +558,10 @@ public class test extends HttpServlet {
                 // 3. Xác định trạng thái slot dựa trên trạng thái của mentor
                 if (mentorSlotFound) {
                     slotStatusMap.put(slotKey, mentorStatus); // Sử dụng trạng thái thực tế của mentor
-                    LOGGER.info("Slot " + slotKey + " -> " + mentorStatus + " (Mentor)");
+//                    LOGGER.info("Slot " + slotKey + " -> " + mentorStatus + " (Mentor)");
                 } else {
                     slotStatusMap.put(slotKey, "Available"); // Không có slot của mentor -> Available
-                    LOGGER.info("Slot " + slotKey + " -> Available (No Mentor Slot)");
+//                    LOGGER.info("Slot " + slotKey + " -> Available (No Mentor Slot)");
                 }
             }
 
@@ -587,7 +591,7 @@ public class test extends HttpServlet {
         request.setAttribute("mentorId", mentorId);
         request.setAttribute("courseId", courseId);
         request.setAttribute("price", price);
-
+        LOGGER.info("Final price before forward: " + request.getAttribute("price"));
         request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
         LOGGER.info("Before forwarding to test1.jsp");
         LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
