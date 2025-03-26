@@ -5,6 +5,8 @@
 
 package controller;
 
+import entity.CourseDTO;
+import entity.MenteeDTO;
 import entity.MentorDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 import model.DAOCourse;
 import model.DAOMentor;
 import model.DAORateMentor;
@@ -56,7 +58,7 @@ public class Manager extends HttpServlet {
         TransactionDAO dAOTransaction = new TransactionDAO();
         
         
-        
+        List<CourseDTO> favoriteCourses = dAOCourse.getTopFavoriteCourses();
         Double earning = dAORequest.getTotalReceivedAmount()*0.2;
         
         int requestCompleted = dAORequest.getRequestCount("Closed");
@@ -68,9 +70,38 @@ public class Manager extends HttpServlet {
         List<MentorDTO> top10mentorByEarning = dAOMentor.getTop10Mentors(1);
 
         List<MentorDTO> top10mentorByRating = dAOMentor.getTop10Mentors(2);
+        List<MenteeDTO> top10Mentee = dAOmentee.getTop10MenteesBySpending();
         
+        List<Map<String, Object>> mentorMenteeStats = dAOMentor.getMentorMenteeStats();
+        
+        int cancelReq = dAORequest.getRequestCount("Cancel");
+        int closedReq = dAORequest.getRequestCount("Closed");
+        int draftReq = dAORequest.getRequestCount("Draft");
+        int openReq = dAORequest.getRequestCount("Open");
+        int pendingReq = dAORequest.getRequestCount("Pending");
+        int processingReq = dAORequest.getRequestCount("Processing");
+
+        List<Integer> listRequestByStatus = new ArrayList<Integer>();
+        listRequestByStatus.add(cancelReq);
+        listRequestByStatus.add(closedReq);
+        listRequestByStatus.add(draftReq);
+        listRequestByStatus.add(openReq);
+        listRequestByStatus.add(pendingReq);
+        listRequestByStatus.add(processingReq);
+
+        
+        
+        
+        request.setAttribute("listRequestByStatus", listRequestByStatus);
+
+        request.setAttribute("mentorMenteeStats", mentorMenteeStats);
+        
+        request.setAttribute("favoriteCourses", favoriteCourses);
+
         request.setAttribute("top10mentorByEarning", top10mentorByEarning);
         request.setAttribute("top10mentorByRating", top10mentorByRating);
+        request.setAttribute("top10Mentee", top10Mentee);
+
 
         request.setAttribute("earning", earning);
         request.setAttribute("requestCompleted", requestCompleted);

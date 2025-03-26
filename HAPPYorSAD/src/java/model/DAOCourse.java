@@ -5,6 +5,7 @@
 package model;
 
 import entity.Course;
+import entity.CourseDTO;
 import entity.Mentor;
 import entity.MentorCourse;
 import java.sql.PreparedStatement;
@@ -931,6 +932,33 @@ public class DAOCourse extends DBConnection {
         }
         return courses;
     }
+     public List<CourseDTO> getTopFavoriteCourses() {
+        List<CourseDTO> courses = new ArrayList<>();
+        String sql = "SELECT TOP 5 c.id, c.title, c.image , c.description, c.mentor_id, c.created_at, c.updated_at, COUNT(r.id) AS MenteeCount " +
+                     "FROM Course c " +
+                     "LEFT JOIN Request r ON c.id = r.course_id AND r.status IN ('Processing', 'Closed') " +
+                     "GROUP BY c.id, c.title, c.description, c.mentor_id, c.created_at, c.updated_at, c.image " +
+                     "ORDER BY COUNT(r.id) DESC";
+
+        try {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                CourseDTO course = new CourseDTO();
+                course.setId(rs.getInt("id"));
+                course.setImage(rs.getString("image"));
+                course.setDescription(rs.getString("description"));
+                course.setTitle(rs.getString("title"));
+                course.setMenteeCount(rs.getInt("MenteeCount"));
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();

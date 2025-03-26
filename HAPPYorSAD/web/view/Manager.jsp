@@ -75,6 +75,48 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <!--<link href="css/cssCRUD/rating.css" rel="stylesheet" type="text/css"/>-->
+        <style>
+            .table-responsive {
+    max-height: 300px; /* Giới hạn chiều cao của bảng */
+    overflow-y: auto; /* Tạo thanh cuộn dọc */
+}
+            .badge-rank {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff5722;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #ff5722;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e64a19;
+}
+.avatar {
+    width: 50px; /* Điều chỉnh kích thước nhỏ hơn */
+    height: 50px; /* Phải bằng width để ảnh tròn */
+    border-radius: 50%; /* Làm cho ảnh tròn */
+    object-fit: cover; /* Cắt ảnh để vừa khung tròn */
+}
+        </style>
     </head>
     <body>
         <!-- Main Wrapper -->
@@ -106,7 +148,7 @@
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
-                                    <h3>Dashboard</h3>
+                                    <h3 onclick="window.location.href='/HAPPYorSAD/Manager'">Dashboard</h3>
                                     <ul>
                                         <li class="nav-item">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
@@ -242,11 +284,11 @@
                             <div class="col-12 col-lg-7" >
                 <div class="card">
                         <div class="card-header">
-                                <h5 class="card-title">Request Number Received</h5>
+                                <h5 class="card-title">Number of new Mentors and Mentees by month</h5>
                         </div>
                         <div class="card-body">
-                                <div class="chart">
-                                        <canvas id="chartjs-bar" style="height: 400px"></canvas>
+                                <div class="chart" style="height: 400px">
+                                        <canvas id="mentorMenteeChart"></canvas>
                                 </div>
                         </div>
                 </div>
@@ -258,8 +300,8 @@
                                    
                             </div>
                             <div class="card-body">
-                                    <div class="chart">
-                                            <canvas id="chartjs-pie" style="height: 400px"></canvas>
+                                    <div class="chart" style="height: 400px">
+                                            <canvas id="requestStatusChart" ></canvas>
                                     </div>
                             </div>
                     </div>
@@ -270,7 +312,7 @@
                                                 
                                                 
 						<div class="row">
-							<div class="col-5 grid-margin">
+							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
 										<h4 class="card-title">Top 10 Mentors By Earning</h4>
@@ -278,11 +320,10 @@
 											<table class="table">
 												<thead>
 													<tr>
-														<th>Assignee</th>
-														<th>Subject</th>
-														<th>Status</th>
-														<th>Last Update</th>
-														<th>Tracking ID</th>
+														<th></th>
+														<th>Name</th>
+														<th>Email</th>
+														<th>Earning</th>
 													</tr>
 												</thead>
                                                                                                 
@@ -292,20 +333,18 @@
 													<tr>
 														<td>
 															<img
-																src="assets/images/faces/face1.jpg"
-																class="me-2"
+																src="${m.image}"
+																class="me-2 avatar"
 																alt="image"
 															/>
-															David Grey
+															
 														</td>
-														<td>Fund is not recieved</td>
+														<td>${m.name}</td>
 														<td>
-															<label class="badge badge-gradient-success"
-																>DONE</label
-															>
+															${m.email}
 														</td>
-														<td>Dec 5, 2017</td>
-														<td>WD-12345</td>
+														
+														<td>${m.revenue*0.8}</td>
 													</tr>
                                                                                                         </c:forEach>
 													
@@ -315,7 +354,7 @@
 									</div>
 								</div>
 							</div>
-                                                    <div class="col-7 grid-margin">
+                                                    <div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
 										<h4 class="card-title">Top 10 Mentors By Earning</h4>
@@ -323,11 +362,10 @@
 											<table class="table">
 												<thead>
 													<tr>
-														<th>Assignee</th>
-														<th>Subject</th>
-														<th>Status</th>
-														<th>Last Update</th>
-														<th>Tracking ID</th>
+														<th></th>
+														<th>Name</th>
+														<th>Email</th>
+														<th>Rating</th>
 													</tr>
 												</thead>
                                                                                                 
@@ -337,20 +375,18 @@
 													<tr>
 														<td>
 															<img
-																src="assets/images/faces/face1.jpg"
-																class="me-2"
+																src="${m.image}"
+																class="me-2 avatar"
 																alt="image"
 															/>
-															David Grey
+															
 														</td>
-														<td>Fund is not recieved</td>
+														<td>${m.name}</td>
 														<td>
-															<label class="badge badge-gradient-success"
-																>DONE</label
-															>
+															${m.email}
 														</td>
-														<td>Dec 5, 2017</td>
-														<td>WD-12345</td>
+														
+														<td>${m.rating}</td>
 													</tr>
                                                                                                         </c:forEach>
 													
@@ -365,37 +401,37 @@
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">Top 5 Mentees</h4>
+										<h4 class="card-title">Top 10 Mentees</h4>
 										<div class="table-responsive">
 											<table class="table">
 												<thead>
 													<tr>
-														<th>Assignee</th>
-														<th>Subject</th>
-														<th>Status</th>
-														<th>Last Update</th>
-														<th>Tracking ID</th>
+														<th></th>
+														<th>Name</th>
+														<th>Email</th>
+														<th>Spending</th>
 													</tr>
 												</thead>
 												<tbody>
+													<c:forEach var="m" items="${top10Mentee}">
+
 													<tr>
 														<td>
 															<img
-																src="assets/images/faces/face1.jpg"
-																class="me-2"
+																src="${m.image}"
+																class="me-2 avatar"
 																alt="image"
 															/>
-															David Grey
+															
 														</td>
-														<td>Fund is not recieved</td>
+														<td>${m.name}</td>
 														<td>
-															<label class="badge badge-gradient-success"
-																>DONE</label
-															>
+															${m.email}
 														</td>
-														<td>Dec 5, 2017</td>
-														<td>WD-12345</td>
+														
+														<td>${m.totalSpent}</td>
 													</tr>
+                                                                                                        </c:forEach>
 													
 												</tbody>
 											</table>
@@ -404,8 +440,44 @@
 								</div>
 							</div>
 						</div>
-						
-						<div class="row">
+                                                
+<!--                                                <div class="row row-cols-1 row-cols-md-5 g-3">
+                                                    <h4 class="col-12">Top 5 Favorite Courses</h4>
+                                                    <c:forEach var="course" items="${favoriteCourses}">
+                                                        <div class="col">
+                                                            <div class="card h-100">
+                                                                <img src="${course.image}" class="card-img-top" style="height: 200px;" alt="Course Image">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">${course.title}</h5>
+                                                                    <p class="card-text">${course.description}</p>
+                                                                    <a href="/CourseDetails?Cid=${course.id}" class="btn btn-primary">View details</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>-->
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🏆 Top 5 Favorite Courses 🏆</h2>
+    <div class="row">
+        <c:forEach var="course" items="${favoriteCourses}" varStatus="status">
+            <div class="col-md-4 mb-4" <c:if test="${status.index >= 3}">style="flex: 0 0 50%; max-width: 33%;"</c:if>>
+                <div class="card h-100 shadow-lg">
+                    <div class="position-relative">
+                        <span class="badge-rank">#${status.index + 1}</span>
+                        <img src="${course.image}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Course Image">
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${course.title}</h5>
+                        Total Enroll: ${course.menteeCount+1}
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+                                                                               <!-- jQuery -->
+
+<!--						<div class="row">
 							<div class="col-12 grid-margin">
 								<div class="card">
 									<div class="card-body">
@@ -447,14 +519,13 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>	
         </div>	
-                                                                                  <!-- jQuery -->
     <script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.7.1.min.js" type="27bb6e11b88bb1c6a1b7b5ff-text/javascript"></script>
 
     <!-- Bootstrap Core JS -->
@@ -478,7 +549,83 @@
 
     <script src="../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27bb6e11b88bb1c6a1b7b5ff-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9107445c681fe2ec","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' crossorigin="anonymous"></script>
         <!-- /Page Content -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+
+<script>
+    var ctx = document.getElementById('mentorMenteeChart').getContext('2d');
+
+    var chartData = {
+        labels: [],
+        datasets: [
+            {
+                label: 'Mentors',
+                data: [],
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                borderWidth: 2
+            },
+            {
+                label: 'Mentees',
+                data: [],
+                borderColor: 'green',
+                backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                borderWidth: 2
+            }
+        ]
+    };
+
+    <c:forEach var="stat" items="${mentorMenteeStats}">
+        chartData.labels.push("${stat.month}");
+        chartData.datasets[0].data.push(${stat.mentor_count});
+        chartData.datasets[1].data.push(${stat.mentee_count});
+    </c:forEach>
+
+    new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+    // Dữ liệu từ server
+    var requestData = {
+        labels: ["Cancel", "Closed", "Draft", "Open", "Pending", "Processing"],
+        datasets: [{
+            data: [], // Sẽ cập nhật từ JSP
+            backgroundColor: ["#FFCC00", "#009900", "#3366FF", "#FF3300", "#9900FF", "#00CCCC"], // Đủ màu cho 6 trạng thái
+        }]
+    };
+
+    // Lặp qua danh sách và thêm dữ liệu từ JSP
+    <c:forEach var="stat" items="${listRequestByStatus}" varStatus="loop">
+        requestData.datasets[0].data.push(${stat});
+    </c:forEach>
+
+    // Vẽ biểu đồ
+    var ctxs = document.getElementById("requestStatusChart").getContext("2d");
+    new Chart(ctxs, {
+        type: "pie",
+        data: requestData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "top"
+                }
+            }
+        }
+    });
+</script>
+</script>
     </body>
 
     <!-- Mirrored from dreamslms.dreamstechnologies.com/html/mentee-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Feb 2025 21:04:23 GMT -->
