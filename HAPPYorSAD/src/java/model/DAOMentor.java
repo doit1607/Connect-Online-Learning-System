@@ -5,7 +5,7 @@ import entity.Mentor1;
 import entity.MentorDTO;
 import entity.User;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -759,6 +759,46 @@ public class DAOMentor extends DBConnection {
 
         return mentors;
     }
+    public List<Map<String, Object>> getMentorMenteeStats() {
+    String sql = """
+        WITH Last12Months AS (
+            SELECT FORMAT(DATEADD(MONTH, -n, GETDATE()), 'yyyy-MM') AS month
+            FROM (SELECT TOP 12 ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n FROM master.dbo.spt_values) AS numbers
+        )
+        SELECT l.month, 
+               ISNULL(m.mentor_count, 0) AS mentor_count, 
+               ISNULL(m.mentee_count, 0) AS mentee_count
+        FROM Last12Months l
+        LEFT JOIN (
+            SELECT FORMAT(created_at, 'yyyy-MM') AS month, 
+                   COUNT(DISTINCT CASE WHEN role = 'mentor' THEN id END) AS mentor_count, 
+                   COUNT(DISTINCT CASE WHEN role = 'mentee' THEN id END) AS mentee_count
+            FROM Users
+            WHERE created_at >= DATEADD(MONTH, -12, GETDATE()) 
+            GROUP BY FORMAT(created_at, 'yyyy-MM')
+        ) m ON l.month = m.month
+        ORDER BY l.month;
+    """;
+
+    List<Map<String, Object>> stats = new ArrayList<>();
+    
+    try (PreparedStatement st = conn.prepareStatement(sql);
+         ResultSet rs = st.executeQuery()) {
+        
+        while (rs.next()) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("month", rs.getString("month"));
+            row.put("mentor_count", rs.getInt("mentor_count"));
+            row.put("mentee_count", rs.getInt("mentee_count"));
+            stats.add(row);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return stats;
+}
+    
 
     public static void main(String[] args) {
         try {

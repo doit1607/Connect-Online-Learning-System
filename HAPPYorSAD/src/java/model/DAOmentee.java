@@ -5,6 +5,7 @@
 package model;
 
 import entity.Mentee;
+import entity.MenteeDTO;
 import entity.Mentor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,6 +144,30 @@ public List<Mentee> getAllMentee() {
         }
         return null;
     }
+    public List<MenteeDTO> getTop10MenteesBySpending() {
+    List<MenteeDTO> menteeList = new ArrayList<>();
+    String sql = "SELECT top 10 m.id, m.name, m.email, COALESCE(SUM(r.totalPrice), 0) AS total_spent " +
+                 "FROM Mentee m " +
+                 "LEFT JOIN Request r ON m.id = r.mentee_id AND r.status = 'Closed' " +
+                 "GROUP BY m.id, m.name,m.email " +
+                 "ORDER BY total_spent DESC ";
+
+    try (PreparedStatement st = conn.prepareStatement(sql);
+         ResultSet rs = st.executeQuery()) {
+        while (rs.next()) {
+            MenteeDTO mentee = new MenteeDTO();
+            mentee.setId(rs.getInt("id"));
+            mentee.setName(rs.getString("name"));
+            mentee.setEmail(rs.getString("email"));
+            mentee.setTotalSpent(rs.getDouble("total_spent"));
+            menteeList.add(mentee);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return menteeList;
+}
+
 
     public static void main(String[] args) {
         DAOmentee dao = new DAOmentee();
