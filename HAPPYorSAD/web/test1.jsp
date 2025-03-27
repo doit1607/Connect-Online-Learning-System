@@ -961,8 +961,13 @@
                                                                                 <c:set var="isSelectable" value="${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus == 'Available')}" />
                                                                                 <a href="#" 
                                                                                    class="timing
-                                                                                   ${menteeStatus == 'Studying' && mentorStatus == 'Studying' ? 'red' : ''}
-                                                                                   ${menteeStatus == 'Duplicated' && mentorStatus == 'Available' ? 'yellow' : ''}
+                                                                                   ${menteeStatus == 'Available' && mentorStatus == 'Studying' ? 'red' : ''}
+                                                                                   
+                                                                                   ${mentorStatus == 'Done' ? 'red' : ''}
+                                                                                   ${mentorStatus == 'Studying' && menteeStatus =='Available' ? 'red' : ''}
+                                                                                   
+                                                                                   ${menteeStatus == 'Duplicated'  ? 'yellow' : ''}
+
                                                                                    ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus == 'Available') ? 'green' : ''}"
                                                                                    data-slot-info="${entry.key}_${slot.slotNumber}"
                                                                                    data-selectable="${isSelectable}"
