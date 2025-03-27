@@ -22,25 +22,6 @@
         <link rel="stylesheet" href="/HAPPYorSAD/assets/plugins/boxicons/css/boxicons.min.css">
         <link rel="stylesheet" href="/HAPPYorSAD/assets/css/style.css">
         <style>
-
-            .delete-btn {
-                max-width: 300px; /* Đặt giới hạn chiều rộng */
-
-                white-space: normal; /* Cho phép xuống dòng */
-                word-wrap: break-word; /* Ngắt dòng khi cần */
-                overflow-wrap: break-word; /* Hỗ trợ tốt hơn cho các trình duyệt mới */
-                width: 100%; /* Tràn hết chiều rộng của ô */
-                display: block; /* Đảm bảo button là block element để full width */
-                padding: 10px;
-                font-size: 14px;
-                text-align: center;
-                background-color: #b22222; /* Màu đỏ đậm giống hình của bạn */
-                color: white; /* Chữ màu trắng */
-                border: none; /* Xóa viền */
-                cursor: pointer;
-            }
-
-
             .timing.selected {
                 background-color: #007bff;
                 color: white;
@@ -739,17 +720,6 @@
                 }
             }
 
-            .delete-btn {
-                background-color: #ff4444;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-            }
-            .delete-btn:hover {
-                background-color: #cc0000;
-            }
-
 
 
         </style>
@@ -1087,483 +1057,528 @@
 
                             <!-- Schedule for selected slots -->
                             <div id="bookedSchedule">
-
-                                <div id="savedSchedule" style="margin-top: 20px;">
-                                    <h3>Saved Schedule</h3>
-                                    <table class="schedule-table">
-                                        <tbody id="savedSlotsContainer">
-                                            <tr><td colspan="7">Loading schedule...</td></tr>
-                                        </tbody>
-                                    </table>
-                                    <h3>Selected Schedule</h3>
-                                    <table class="schedule-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Day</th>
-                                                <th>Date</th>
-                                                <th>Month</th>
-                                                <th>Year</th>
-                                                <th>Slot</th>
-                                                <th>Time</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="bookedSlotsContainer">
-                                            <!-- Empty initially, updated dynamically by JavaScript -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><!-- /Schedule Widget -->
-                            <div class="price-display">
-                                Total Price: <span class="price-amount">0</span>
+                                <h3>Selected Schedule</h3>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Date</th>
+                                            <th>Month</th>
+                                            <th>Year</th>
+                                            <th>Slot</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bookedSlotsContainer">
+                                        <!-- Empty initially, updated dynamically by JavaScript -->
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- Submit Section -->
-                            <div class="button-container">
-                                <input type="hidden" name="service" id="serviceInput" value="">
-                                <input type="hidden" id="totalPriceInput" name="totalprice" value="0">
-                                <button type="button" class="submit-bbb">Submit</button>
-                                <button type="button" class="save-bbb">Save</button>
-                            </div>
-                            <!-- /Submit Section -->
+                        </div><!-- /Schedule Widget -->
+                        <div class="price-display">
+                            Total Price: <span class="price-amount">0</span>
                         </div>
-                        </form>
+                        <!-- Submit Section -->
+                        <div class="button-container">
+                            <input type="hidden" name="service" id="serviceInput" value="">
+                            <input type="hidden" id="totalPriceInput" name="totalprice" value="0">
+                            <button type="button" class="submit-bbb">Submit</button>
+                            <button type="button" class="save-bbb">Save</button>
+                        </div>
+                        <!-- /Submit Section -->
                     </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <form id="hiddenForm" action="/HAPPYorSAD/test" method="GET">
-                <input type="hidden" name="mentorId" id="hiddenMentorId">
-                <input type="hidden" name="courseId" id="hiddenCourseId">
-                <input type="hidden" name="price" id="hiddenPrice">
-                <input type="hidden" name="year" id="hiddenYear">
-                <input type="hidden" name="month" id="hiddenMonth">
-                <input type="hidden" name="weekOffset" id="weekOffset" value="${weekOffset}">
-                <input type="hidden" name="service" id="hiddenService">
-                <!-- Thêm các trường mới -->
-                <input type="hidden" name="title" value="${requestScope.title}">
-                <input type="hidden" name="content" value="${requestScope.content}">
-                <input type="hidden" name="startdate" value="<%= java.time.LocalDate.now().toString() %>">
-                <input type="hidden" name="enddate" value="${requestScope.enddate}">
-                <c:if test="${not empty requestScope.requestId}">
-                    <input type="hidden" name="pricee" id="hiddenPrice" value="${requestScope.pricee}">
-                </c:if>
+        <form id="hiddenForm" action="/HAPPYorSAD/test" method="GET">
+            <input type="hidden" name="mentorId" id="hiddenMentorId">
+            <input type="hidden" name="courseId" id="hiddenCourseId">
+            <input type="hidden" name="price" id="hiddenPrice">
+            <input type="hidden" name="year" id="hiddenYear">
+            <input type="hidden" name="month" id="hiddenMonth">
+            <input type="hidden" name="weekOffset" id="weekOffset" value="${weekOffset}">
+            <input type="hidden" name="service" id="hiddenService">
+        </form>
 
-                <c:if test="${not empty requestScope.requestId}">
-                    <input type="hidden" name="requestId" id="hiddenRequestId" value="${requestScope.requestId}">
-                </c:if>
+        <span id="selectedMonth" style="display:none;">${currentMonth} ${currentYear}</span>
 
-            </form>
+        <script type="text/javascript">
+            function changeWeek(offsetChange) {
+                console.log('Changing week with offset:', offsetChange);
+                let currentOffset = parseInt(document.getElementById("weekOffset").value) || 0;
+                let newOffset = currentOffset + offsetChange;
+                if (typeof changeMonthTriggered !== 'undefined' && changeMonthTriggered) {
+                    newOffset = 0;
+                    delete window.changeMonthTriggered;
+                }
 
-            <span id="selectedMonth" style="display:none;">${currentMonth} ${currentYear}</span>
+                const selectedMonthElement = document.getElementById("selectedMonth");
+                if (!selectedMonthElement) {
+                    console.error('Element with ID "selectedMonth" not found');
+                    return;
+                }
 
-            <script type="text/javascript">
-                function changeWeek(offsetChange) {
-                    console.log('Changing week with offset:', offsetChange);
-                    let currentOffset = parseInt(document.getElementById("weekOffset").value) || 0;
-                    let newOffset = currentOffset + offsetChange;
+                const selectedMonth = selectedMonthElement.textContent.trim();
+                console.log('Selected month:', selectedMonth);
 
-                    const selectedMonthElement = document.getElementById("selectedMonth");
-                    const selectedMonth = selectedMonthElement.textContent.trim();
-                    const parts = selectedMonth.split(" ");
-                    if (parts.length !== 2) {
-                        console.error('Invalid month format. Expected format: "Month Year" (e.g., "March 2025")');
-                        return;
+                const parts = selectedMonth.split(" ");
+                if (parts.length !== 2) {
+                    console.error('Invalid month format. Expected format: "Month Year" (e.g., "March 2025")');
+                    return;
+                }
+
+                const month = parts[0];
+                const year = parts[1];
+
+                try {
+                    document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']")?.value || "";
+                    document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']")?.value || "";
+                    document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']")?.value || "";
+                    document.getElementById("hiddenYear").value = year;
+                    document.getElementById("hiddenMonth").value = month;
+                    document.getElementById("weekOffset").value = newOffset;
+
+                    console.log('Submitting form with offset:', newOffset);
+                    document.getElementById("hiddenForm").submit();
+                } catch (error) {
+                    console.error('Error while submitting form:', error);
+                }
+            }
+        </script>
+
+        <script>
+            function showNotification(message) {
+                const modal = document.getElementById("customModal");
+                const modalMessage = document.getElementById("customModalMessage");
+                const closeBtn = document.getElementById("closeModalBtn");
+
+                modalMessage.textContent = message;
+                modal.style.display = "flex";
+
+                closeBtn.onclick = function () {
+                    modal.style.display = "none";
+                };
+
+                modal.onclick = function (event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
                     }
-                    const month = parts[0];
-                    const year = parts[1];
+                };
+            }
 
-                    try {
-                        document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']")?.value || "";
-                        document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']")?.value || "";
+            const eventHandlersAttached = {
+                submitBtn: false,
+                bookSlotsBtn: false,
+                clearAllBtn: false,
+                timeSlots: false,
+                saveBtn: false
+            };
 
+            document.addEventListener("DOMContentLoaded", function () {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
 
-                        console.log("Price from input[name='price']: ", document.querySelector("input[name='price']")?.value);
-                        document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']")?.value || "";
+                const timeSlots = document.querySelectorAll(".timing");
+                const priceDisplay = document.querySelector(".price-amount");
+                const pricePerSlot = ${requestScope.price};
+                const walletBalance = ${sessionScope.walletBalance};
+                const totalSlotsInput = document.getElementById("totalSlots");
+                const submitBtn = document.querySelector(".submit-bbb");
+                const saveBtn = document.querySelector(".save-bbb");
+                const monthItems = document.querySelectorAll(".month-item");
+                const selectedMonthSpan = document.getElementById("selectedMonth");
+                const bookSlotsBtn = document.getElementById("bookSlots");
+                const repeatCheckbox = document.getElementById("repeatBooking");
+                const repeatOptions = document.getElementById("repeatOptions");
+                const repeatByWeeks = document.getElementById("repeatByWeeks");
+                const repeatBySlots = document.getElementById("repeatBySlots");
+                const weeksOption = document.getElementById("weeksOption");
+                const slotsOption = document.getElementById("slotsOption");
+                const repeatWeeks = document.getElementById("repeatWeeks");
+                const maxSlotsInput = document.getElementById("maxSlots");
+                const bookedSlotsContainer = document.getElementById("bookedSlotsContainer");
+                const requestTitle = document.getElementById("request-title");
+                const requestContent = document.getElementById("request-content");
+                const endDate = document.getElementById("end-date");
+                const clearAllBtn = document.getElementById("clearAllBtn");
+                const bookingForm = document.getElementById("bookingForm");
 
+                let slotRepeatMap = new Map();
+                let totalPrice = 0;
+                let totalSlots = 0;
+                let selectedSlots = new Set();
+                let tempSlotBooked = new Set((sessionStorage.getItem("tempSlotBooked") || "").split(",").filter(slot => slot.trim() !== ""));
+                let isBookProcessing = false;
+                let isSubmitProcessing = false;
+                let isSaveProcessing = false;
+                let isClearProcessing = false;
 
-                        document.getElementById("hiddenYear").value = year;
-                        document.getElementById("hiddenMonth").value = month;
-                        document.getElementById("weekOffset").value = newOffset;
+                function restoreFormData() {
+                    const savedTitle = sessionStorage.getItem("requestTitle");
+                    const savedContent = sessionStorage.getItem("requestContent");
+                    const savedEndDate = sessionStorage.getItem("endDate");
 
-// Giữ nguyên service từ URL hiện tại
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const service = urlParams.get('service');
-                        if (service) {
-                            document.getElementById("hiddenService").value = service;
-                        }
+                    if (savedTitle)
+                        requestTitle.value = savedTitle;
+                    if (savedContent)
+                        requestContent.value = savedContent;
+                    if (savedEndDate)
+                        endDate.value = savedEndDate;
+                }
 
-                        console.log('Submitting form with offset:', newOffset);
-                        document.getElementById("hiddenForm").submit();
-                    } catch (error) {
-                        console.error('Error while submitting form:', error);
+                function saveFormData() {
+                    sessionStorage.setItem("requestTitle", requestTitle.value);
+                    sessionStorage.setItem("requestContent", requestContent.value);
+                    sessionStorage.setItem("endDate", endDate.value);
+                    sessionStorage.setItem("tempSlotBooked", Array.from(tempSlotBooked).join(","));
+                }
+
+                function clearFormData() {
+                    sessionStorage.removeItem("requestTitle");
+                    sessionStorage.removeItem("requestContent");
+                    sessionStorage.removeItem("endDate");
+                    sessionStorage.removeItem("tempSlotBooked");
+                }
+
+                function updateBookedSchedule() {
+                    bookedSlotsContainer.innerHTML = "";
+                    tempSlotBooked.forEach(slot => {
+                        var slotTimeMap = {
+                            1: "7:30-09:30",
+                            2: "10:00-12:00",
+                            3: "13:00-15:00",
+                            4: "15:30-17:30",
+                            5: "19:30-21:30"
+                        };
+                        let [dateStr, slotNumber] = slot.split("_");
+                        let date = new Date(dateStr);
+                        let dayOfWeek = date.toLocaleString("en-US", {weekday: "long"});
+                        let day = date.getDate();
+                        let month = date.toLocaleString("en-US", {month: "long"});
+                        let year = date.getFullYear();
+                        let slotTime = slotTimeMap[slotNumber] || "Unknown Time";
+
+                        let tr = document.createElement("tr");
+                        let tdDayOfWeek = document.createElement("td");
+                        let tdDay = document.createElement("td");
+                        let tdMonth = document.createElement("td");
+                        let tdYear = document.createElement("td");
+                        let tdSlot = document.createElement("td");
+                        let tdSlotTime = document.createElement("td");
+                        let tdStatus = document.createElement("td");
+
+                        tdDayOfWeek.textContent = dayOfWeek;
+                        tdDay.textContent = day;
+                        tdMonth.textContent = month;
+                        tdYear.textContent = year;
+                        tdSlot.textContent = "Slot " + slotNumber;
+                        tdSlotTime.textContent = slotTime;
+                        tdStatus.textContent = "Selected";
+
+                        tr.appendChild(tdDayOfWeek);
+                        tr.appendChild(tdDay);
+                        tr.appendChild(tdMonth);
+                        tr.appendChild(tdYear);
+                        tr.appendChild(tdSlot);
+                        tr.appendChild(tdSlotTime);
+                        tr.appendChild(tdStatus);
+
+                        bookedSlotsContainer.appendChild(tr);
+                    });
+                }
+
+                function updateUI() {
+                    priceDisplay.textContent = totalPrice;
+                    totalSlotsInput.value = totalSlots;
+                    document.getElementById("totalPriceInput").value = totalPrice;
+
+                    if (totalPrice > walletBalance) {
+                        showNotification("Insufficient wallet balance to book more slots!");
+                        submitBtn.disabled = true;
+                        saveBtn.disabled = true;
+                        submitBtn.classList.add("disabled");
+                        saveBtn.classList.add("disabled");
+                    } else {
+                        submitBtn.disabled = false;
+                        saveBtn.disabled = false;
+                        submitBtn.classList.remove("disabled");
+                        saveBtn.classList.remove("disabled");
                     }
                 }
-            </script>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const requestId = urlParams.get('requestId');
-                    const menteeId = '<%= session.getAttribute("menteeId") != null ? session.getAttribute("menteeId") : "0" %>'; // Lấy từ session, đảm bảo là số     
-                    const scheduleTable = document.getElementById('savedSlotsContainer');
+                function updateTempSlotUI() {
+                    timeSlots.forEach(slot => {
+                        let slotInfo = slot.dataset.slotInfo;
+                        if (tempSlotBooked.has(slotInfo)) {
+                            slot.classList.add("selected");
+                        } else {
+                            slot.classList.remove("selected");
+                        }
+                    });
+                    totalSlots = tempSlotBooked.size;
+                    totalPrice = totalSlots * pricePerSlot;
+                    updateUI();
+                    updateBookedSchedule();
+                }
 
-                    if (requestId) {
-                        fetch('FetchSlotsForRequest?requestId=' + requestId + '&menteeId=' + menteeId + '&format=main')
-                                .then(response => {
-                                    if (!response.ok)
-                                        throw new Error('Network response was not ok: ' + response.status);
-                                    return response.text();
-                                })
-                                .then(data => scheduleTable.innerHTML = data)
-                                .catch(error => {
-                                    console.error('Error loading schedule:', error);
-                                    scheduleTable.innerHTML = '<tr><td colspan="7">Failed to load schedule. Please try again later.</td></tr>';
-                                });
-                    } else {
-                        console.error('No requestId found in URL');
-                        scheduleTable.innerHTML = '<tr><td colspan="7">No request ID provided</td></tr>';
+                function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
+                    let repeatedSlots = new Set();
+                    let [dateStr, slotNumber] = slot.split("_");
+                    let slotDate = new Date(dateStr);
+                    let currentDate = new Date(slotDate);
+                    let slotCount = 1;
+
+                    repeatedSlots.add(slot);
+                    let repeatedSlotsArray = [];
+
+                    if (mode === "weeks" && repeatCheckbox.checked) {
+                        for (let week = 1; week <= weeks; week++) {
+                            currentDate.setDate(currentDate.getDate() + 7);
+                            let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
+                            repeatedSlots.add(newSlot);
+                            repeatedSlotsArray.push(newSlot);
+                            slotCount++;
+                        }
+                    } else if (mode === "slots" && repeatCheckbox.checked && slotCount < maxSlots) {
+                        while (slotCount < maxSlots) {
+                            currentDate.setDate(currentDate.getDate() + 7);
+                            let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
+                            repeatedSlots.add(newSlot);
+                            repeatedSlotsArray.push(newSlot);
+                            slotCount++;
+                        }
+                    }
+                    if (repeatedSlotsArray.length > 0) {
+                        slotRepeatMap.set(slot, repeatedSlotsArray);
+                    }
+                    return Array.from(repeatedSlots);
+                }
+
+                repeatCheckbox.addEventListener("change", function () {
+                    repeatOptions.style.display = this.checked ? "block" : "none";
+                });
+
+                repeatByWeeks.addEventListener("change", function () {
+                    if (this.checked) {
+                        weeksOption.style.display = "block";
+                        slotsOption.style.display = "none";
                     }
                 });
 
-                function deleteSlot(slotId) {
-                    if (confirm('Bạn có chắc muốn xóa slot này?')) {
-                        fetch('FetchSlotsForRequest?slotId=' + slotId, {
-                            method: 'DELETE'
+                repeatBySlots.addEventListener("change", function () {
+                    if (this.checked) {
+                        weeksOption.style.display = "none";
+                        slotsOption.style.display = "block";
+                    }
+                });
+
+                [requestTitle, requestContent, endDate].forEach(input => {
+                    input.addEventListener("input", saveFormData);
+                });
+
+                if (!eventHandlersAttached.timeSlots) {
+                    timeSlots.forEach(slot => {
+                        slot.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            let slotInfo = this.dataset.slotInfo;
+                            let isSelectable = this.dataset.selectable === "true";
+
+                            if (!isSelectable) {
+                                if (this.classList.contains("yellow")) {
+                                    showNotification("Your study schedule conflicts with this slot, please choose another slot.");
+                                } else if (this.classList.contains("red")) {
+                                    showNotification("This slot has already been booked, please choose another slot.");
+                                } else {
+                                    showNotification("Only green (Available) slots can be selected!");
+                                }
+                                return;
+                            }
+
+                            if (tempSlotBooked.has(slotInfo)) {
+                                tempSlotBooked.delete(slotInfo);
+                                this.classList.remove("selected");
+                                if (slotRepeatMap.has(slotInfo)) {
+                                    slotRepeatMap.get(slotInfo).forEach(repeatedSlot => tempSlotBooked.delete(repeatedSlot));
+                                    slotRepeatMap.delete(slotInfo);
+                                }
+                            } else {
+                                tempSlotBooked.add(slotInfo);
+                                this.classList.add("selected");
+                                if (repeatCheckbox.checked) {
+                                    let mode = repeatByWeeks.checked ? "weeks" : "slots";
+                                    let weeks = parseInt(repeatWeeks.value) || 1;
+                                    let maxSlots = parseInt(maxSlotsInput.value) || 5;
+                                    let repeatedSlots = generateRepeatedSlots(slotInfo, mode, weeks, maxSlots);
+                                    repeatedSlots.forEach(s => {
+                                        let repeatedSlotElement = document.querySelector(`.timing[data-slot-info="${s}"]`);
+                                        if (repeatedSlotElement && repeatedSlotElement.dataset.selectable === "true") {
+                                            tempSlotBooked.add(s);
+                                            repeatedSlotElement.classList.add("selected");
+                                        } else if (repeatedSlotElement) {
+                                            if (repeatedSlotElement.classList.contains("yellow")) {
+                                                showNotification("Your study schedule conflicts with repeated slot " + s + ", please adjust your selection.");
+                                            } else if (repeatedSlotElement.classList.contains("red")) {
+                                                showNotification("Repeated slot " + s + " has already been booked, please adjust your selection.");
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            saveFormData();
+                            totalSlots = tempSlotBooked.size;
+                            totalPrice = totalSlots * pricePerSlot;
+                            updateTempSlotUI();
+                        });
+                    });
+                    eventHandlersAttached.timeSlots = true;
+                }
+
+                if (!eventHandlersAttached.bookSlotsBtn && bookSlotsBtn) {
+                    console.log("Attaching handler for bookSlotsBtn at " + new Date().toISOString());
+                    bookSlotsBtn.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        console.log("Book Slots clicked - Handler triggered at " + new Date().toISOString());
+
+                        if (isBookProcessing) {
+                            console.log("Book processing, skipping...");
+                            return;
+                        }
+                        isBookProcessing = true;
+                        bookSlotsBtn.disabled = true;
+                        bookSlotsBtn.classList.add("disabled");
+
+                        if (tempSlotBooked.size === 0) {
+                            showNotification("Please select at least one slot!");
+                            isBookProcessing = false;
+                            bookSlotsBtn.disabled = false;
+                            bookSlotsBtn.classList.remove("disabled");
+                            return;
+                        }
+
+                        let formData = new FormData();
+                        formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
+                        tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
+                        console.log("Sending FormData for Book:", Array.from(formData.entries()));
+
+                        fetch("/HAPPYorSAD/test?action=book", {
+                            method: "POST",
+                            body: formData,
+                            credentials: "same-origin"
                         })
                                 .then(response => {
                                     if (!response.ok)
-                                        throw new Error('Failed to delete');
+                                        throw new Error("Network response was not ok " + response.status);
                                     return response.text();
                                 })
                                 .then(data => {
-                                    alert(data); // Hiển thị thông báo từ server
-                                    location.reload(); // Tải lại trang sau khi xóa
+                                    console.log("Raw response from Book:", data);
+                                    if (!data.includes("error")) {
+                                        updateTempSlotUI();
+                                        showNotification(`Successfully booked ${tempSlotBooked.size} slots!`);
+                                    }
                                 })
                                 .catch(error => {
-                                    console.error('Error deleting slot:', error);
-                                    alert('Xóa slot thất bại!');
+                                    console.error("Error during booking:", error);
+                                    showNotification("Error during booking: " + error.message);
+                                })
+                                .finally(() => {
+                                    isBookProcessing = false;
+                                    bookSlotsBtn.disabled = false;
+                                    bookSlotsBtn.classList.remove("disabled");
+                                    console.log("Book processing completed");
                                 });
-                    }
-                }
-            </script>
 
-            <script>
-                function showNotification(message) {
-                    const modal = document.getElementById("customModal");
-                    const modalMessage = document.getElementById("customModalMessage");
-                    const closeBtn = document.getElementById("closeModalBtn");
-
-                    modalMessage.textContent = message;
-                    modal.style.display = "flex";
-
-                    closeBtn.onclick = function () {
-                        modal.style.display = "none";
-                    };
-
-                    modal.onclick = function (event) {
-                        if (event.target === modal) {
-                            modal.style.display = "none";
-                        }
-                    };
-                }
-
-                const eventHandlersAttached = {
-                    submitBtn: false,
-                    bookSlotsBtn: false,
-                    clearAllBtn: false,
-                    timeSlots: false,
-                    saveBtn: false
-                };
-
-                document.addEventListener("DOMContentLoaded", function () {
-                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                        saveFormData();
                     });
+                    eventHandlersAttached.bookSlotsBtn = true;
+                }
 
-                    const timeSlots = document.querySelectorAll(".timing");
-                    const priceDisplay = document.querySelector(".price-amount");
-                    const pricePerSlot = ${requestScope.price};
-                    const walletBalance = ${sessionScope.walletBalance};
-                    const totalSlotsInput = document.getElementById("totalSlots");
-                    const submitBtn = document.querySelector(".submit-bbb");
-                    const saveBtn = document.querySelector(".save-bbb");
-                    const monthItems = document.querySelectorAll(".month-item");
-                    const selectedMonthSpan = document.getElementById("selectedMonth");
-                    const bookSlotsBtn = document.getElementById("bookSlots");
-                    const repeatCheckbox = document.getElementById("repeatBooking");
-                    const repeatOptions = document.getElementById("repeatOptions");
-                    const repeatByWeeks = document.getElementById("repeatByWeeks");
-                    const repeatBySlots = document.getElementById("repeatBySlots");
-                    const weeksOption = document.getElementById("weeksOption");
-                    const slotsOption = document.getElementById("slotsOption");
-                    const repeatWeeks = document.getElementById("repeatWeeks");
-                    const maxSlotsInput = document.getElementById("maxSlots");
-                    const bookedSlotsContainer = document.getElementById("bookedSlotsContainer");
-                    const requestTitle = document.getElementById("request-title");
-                    const requestContent = document.getElementById("request-content");
-                    const endDate = document.getElementById("end-date");
-                    const clearAllBtn = document.getElementById("clearAllBtn");
-                    const bookingForm = document.getElementById("bookingForm");
+                if (!eventHandlersAttached.clearAllBtn && clearAllBtn) {
+                    console.log("Attaching handler for clearAllBtn at " + new Date().toISOString());
+                    clearAllBtn.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        console.log("Clear clicked - Handler triggered at " + new Date().toISOString());
 
-                    let slotRepeatMap = new Map();
-                    let totalPrice = 0;
-                    let totalSlots = 0;
-                    let selectedSlots = new Set();
-                    let tempSlotBooked = new Set((sessionStorage.getItem("tempSlotBooked") || "").split(",").filter(slot => slot.trim() !== ""));
-                    let isBookProcessing = false;
-                    let isSubmitProcessing = false;
-                    let isSaveProcessing = false;
-                    let isClearProcessing = false;
+                        if (isClearProcessing) {
+                            console.log("Clear processing, skipping...");
+                            return;
+                        }
+                        isClearProcessing = true;
+                        clearAllBtn.disabled = true;
+                        clearAllBtn.classList.add("disabled");
 
-                    function restoreFormData() {
-                        const savedTitle = sessionStorage.getItem("requestTitle");
-                        const savedContent = sessionStorage.getItem("requestContent");
-                        const savedEndDate = sessionStorage.getItem("endDate");
-
-                        if (savedTitle)
-                            requestTitle.value = savedTitle;
-                        if (savedContent)
-                            requestContent.value = savedContent;
-                        if (savedEndDate)
-                            endDate.value = savedEndDate;
-                    }
-
-                    function saveFormData() {
-                        sessionStorage.setItem("requestTitle", requestTitle.value);
-                        sessionStorage.setItem("requestContent", requestContent.value);
-                        sessionStorage.setItem("endDate", endDate.value);
-                        sessionStorage.setItem("tempSlotBooked", Array.from(tempSlotBooked).join(","));
-                    }
-
-                    function clearFormData() {
-                        sessionStorage.removeItem("requestTitle");
-                        sessionStorage.removeItem("requestContent");
-                        sessionStorage.removeItem("endDate");
+                        tempSlotBooked.clear();
+                        slotRepeatMap.clear();
                         sessionStorage.removeItem("tempSlotBooked");
-                    }
-
-                    function updateBookedSchedule() {
-                        bookedSlotsContainer.innerHTML = "";
-                        tempSlotBooked.forEach(slot => {
-                            var slotTimeMap = {
-                                1: "7:30-09:30",
-                                2: "10:00-12:00",
-                                3: "13:00-15:00",
-                                4: "15:30-17:30",
-                                5: "19:30-21:30"
-                            };
-                            let [dateStr, slotNumber] = slot.split("_");
-                            let date = new Date(dateStr);
-                            let dayOfWeek = date.toLocaleString("en-US", {weekday: "long"});
-                            let day = date.getDate();
-                            let month = date.toLocaleString("en-US", {month: "long"});
-                            let year = date.getFullYear();
-                            let slotTime = slotTimeMap[slotNumber] || "Unknown Time";
-
-                            let tr = document.createElement("tr");
-                            let tdDayOfWeek = document.createElement("td");
-                            let tdDay = document.createElement("td");
-                            let tdMonth = document.createElement("td");
-                            let tdYear = document.createElement("td");
-                            let tdSlot = document.createElement("td");
-                            let tdSlotTime = document.createElement("td");
-                            let tdStatus = document.createElement("td");
-
-                            tdDayOfWeek.textContent = dayOfWeek;
-                            tdDay.textContent = day;
-                            tdMonth.textContent = month;
-                            tdYear.textContent = year;
-                            tdSlot.textContent = "Slot " + slotNumber;
-                            tdSlotTime.textContent = slotTime;
-                            tdStatus.textContent = "Selected";
-
-                            tr.appendChild(tdDayOfWeek);
-                            tr.appendChild(tdDay);
-                            tr.appendChild(tdMonth);
-                            tr.appendChild(tdYear);
-                            tr.appendChild(tdSlot);
-                            tr.appendChild(tdSlotTime);
-                            tr.appendChild(tdStatus);
-
-                            bookedSlotsContainer.appendChild(tr);
-                        });
-                    }
-
-                    function updateUI() {
-                        priceDisplay.textContent = totalPrice;
-                        totalSlotsInput.value = totalSlots;
-                        document.getElementById("totalPriceInput").value = totalPrice;
-
-                        if (totalPrice > walletBalance) {
-                            showNotification("Insufficient wallet balance to book more slots!");
-                            submitBtn.disabled = true;
-                            saveBtn.disabled = true;
-                            submitBtn.classList.add("disabled");
-                            saveBtn.classList.add("disabled");
-                        } else {
-                            submitBtn.disabled = false;
-                            saveBtn.disabled = false;
-                            submitBtn.classList.remove("disabled");
-                            saveBtn.classList.remove("disabled");
-                        }
-                    }
-
-                    function updateTempSlotUI() {
-                        timeSlots.forEach(slot => {
-                            let slotInfo = slot.dataset.slotInfo;
-                            if (tempSlotBooked.has(slotInfo)) {
-                                slot.classList.add("selected");
-                            } else {
-                                slot.classList.remove("selected");
-                            }
-                        });
-                        totalSlots = tempSlotBooked.size;
-                        totalPrice = totalSlots * pricePerSlot;
+                        timeSlots.forEach(slot => slot.classList.remove("selected"));
+                        if (bookedSlotsContainer)
+                            bookedSlotsContainer.innerHTML = "";
+                        totalSlots = 0;
+                        totalPrice = 0;
                         updateUI();
-                        updateBookedSchedule();
-                    }
 
-                    function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
-                        let repeatedSlots = new Set();
-                        let [dateStr, slotNumber] = slot.split("_");
-                        let slotDate = new Date(dateStr);
-                        let currentDate = new Date(slotDate);
-                        let slotCount = 1;
-
-                        repeatedSlots.add(slot);
-                        let repeatedSlotsArray = [];
-
-                        if (mode === "weeks" && repeatCheckbox.checked) {
-                            for (let week = 1; week <= weeks; week++) {
-                                currentDate.setDate(currentDate.getDate() + 7);
-                                let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
-                                repeatedSlots.add(newSlot);
-                                repeatedSlotsArray.push(newSlot);
-                                slotCount++;
-                            }
-                        } else if (mode === "slots" && repeatCheckbox.checked && slotCount < maxSlots) {
-                            while (slotCount < maxSlots) {
-                                currentDate.setDate(currentDate.getDate() + 7);
-                                let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
-                                repeatedSlots.add(newSlot);
-                                repeatedSlotsArray.push(newSlot);
-                                slotCount++;
-                            }
-                        }
-                        if (repeatedSlotsArray.length > 0) {
-                            slotRepeatMap.set(slot, repeatedSlotsArray);
-                        }
-                        return Array.from(repeatedSlots);
-                    }
-
-                    repeatCheckbox.addEventListener("change", function () {
-                        repeatOptions.style.display = this.checked ? "block" : "none";
+                        fetch("/HAPPYorSAD/test?action=clear", {
+                            method: "POST",
+                            credentials: "same-origin"
+                        })
+                                .then(response => {
+                                    if (!response.ok)
+                                        throw new Error("Network response was not ok " + response.status);
+                                    return response.text();
+                                })
+                                .then(data => {
+                                    console.log("Clear response:", data);
+                                })
+                                .catch(error => {
+                                    console.error("Error during clearing:", error);
+                                    showNotification("Error clearing slots: " + error.message);
+                                })
+                                .finally(() => {
+                                    isClearProcessing = false;
+                                    clearAllBtn.disabled = false;
+                                    clearAllBtn.classList.remove("disabled");
+                                    console.log("Clear processing completed");
+                                });
                     });
+                    eventHandlersAttached.clearAllBtn = true;
+                }
 
-                    repeatByWeeks.addEventListener("change", function () {
-                        if (this.checked) {
-                            weeksOption.style.display = "block";
-                            slotsOption.style.display = "none";
+                if (!eventHandlersAttached.submitBtn && submitBtn) {
+                    submitBtn.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        console.log("Submit clicked - Handler triggered at " + new Date().toISOString());
+
+                        if (isSubmitProcessing) {
+                            console.log("Submit processing, skipping...");
+                            return;
                         }
-                    });
+                        isSubmitProcessing = true;
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add("disabled");
 
-                    repeatBySlots.addEventListener("change", function () {
-                        if (this.checked) {
-                            weeksOption.style.display = "none";
-                            slotsOption.style.display = "block";
-                        }
-                    });
-
-                    [requestTitle, requestContent, endDate].forEach(input => {
-                        input.addEventListener("input", saveFormData);
-                    });
-
-                    if (!eventHandlersAttached.timeSlots) {
-                        timeSlots.forEach(slot => {
-                            slot.addEventListener("click", function (event) {
-                                event.preventDefault();
-                                let slotInfo = this.dataset.slotInfo;
-                                let isSelectable = this.dataset.selectable === "true";
-
-                                if (!isSelectable) {
-                                    if (this.classList.contains("yellow")) {
-                                        showNotification("Your study schedule conflicts with this slot, please choose another slot.");
-                                    } else if (this.classList.contains("red")) {
-                                        showNotification("This slot has already been booked, please choose another slot.");
-                                    } else {
-                                        showNotification("Only green (Available) slots can be selected!");
-                                    }
-                                    return;
-                                }
-
-                                if (tempSlotBooked.has(slotInfo)) {
-                                    tempSlotBooked.delete(slotInfo);
-                                    this.classList.remove("selected");
-                                    if (slotRepeatMap.has(slotInfo)) {
-                                        slotRepeatMap.get(slotInfo).forEach(repeatedSlot => tempSlotBooked.delete(repeatedSlot));
-                                        slotRepeatMap.delete(slotInfo);
-                                    }
-                                } else {
-                                    tempSlotBooked.add(slotInfo);
-                                    this.classList.add("selected");
-                                    if (repeatCheckbox.checked) {
-                                        let mode = repeatByWeeks.checked ? "weeks" : "slots";
-                                        let weeks = parseInt(repeatWeeks.value) || 1;
-                                        let maxSlots = parseInt(maxSlotsInput.value) || 5;
-                                        let repeatedSlots = generateRepeatedSlots(slotInfo, mode, weeks, maxSlots);
-                                        repeatedSlots.forEach(s => {
-                                            let repeatedSlotElement = document.querySelector(`.timing[data-slot-info="${s}"]`);
-                                            if (repeatedSlotElement && repeatedSlotElement.dataset.selectable === "true") {
-                                                tempSlotBooked.add(s);
-                                                repeatedSlotElement.classList.add("selected");
-                                            } else if (repeatedSlotElement) {
-                                                if (repeatedSlotElement.classList.contains("yellow")) {
-                                                    showNotification("Your study schedule conflicts with repeated slot " + s + ", please adjust your selection.");
-                                                } else if (repeatedSlotElement.classList.contains("red")) {
-                                                    showNotification("Repeated slot " + s + " has already been booked, please adjust your selection.");
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                                saveFormData();
-                                totalSlots = tempSlotBooked.size;
-                                totalPrice = totalSlots * pricePerSlot;
-                                updateTempSlotUI();
-                            });
-                        });
-                        eventHandlersAttached.timeSlots = true;
-                    }
-
-                    if (!eventHandlersAttached.bookSlotsBtn && bookSlotsBtn) {
-                        console.log("Attaching handler for bookSlotsBtn at " + new Date().toISOString());
-                        bookSlotsBtn.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            console.log("Book Slots clicked - Handler triggered at " + new Date().toISOString());
-
-                            if (isBookProcessing) {
-                                console.log("Book processing, skipping...");
-                                return;
-                            }
-                            isBookProcessing = true;
-                            bookSlotsBtn.disabled = true;
-                            bookSlotsBtn.classList.add("disabled");
-
+                        if (bookingForm.checkValidity()) {
                             if (tempSlotBooked.size === 0) {
-                                showNotification("Please select at least one slot!");
-                                isBookProcessing = false;
-                                bookSlotsBtn.disabled = false;
-                                bookSlotsBtn.classList.remove("disabled");
+                                showNotification("Please select at least one slot before submitting!");
+                                isSubmitProcessing = false;
+                                submitBtn.disabled = false;
+                                submitBtn.classList.remove("disabled");
                                 return;
                             }
 
-                            let formData = new FormData();
+                            document.getElementById("serviceInput").value = "submit";
+                            document.getElementById("totalPriceInput").value = totalPrice;
+
+                            let formData = new FormData(bookingForm);
                             formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
                             tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
-                            console.log("Sending FormData for Book:", Array.from(formData.entries()));
+                            console.log("Sending FormData for Submit:", Array.from(formData.entries()));
 
-                            fetch("/HAPPYorSAD/test?action=book", {
+                            fetch(bookingForm.action, {
                                 method: "POST",
                                 body: formData,
                                 credentials: "same-origin"
@@ -1574,54 +1589,74 @@
                                         return response.text();
                                     })
                                     .then(data => {
-                                        console.log("Raw response from Book:", data);
-                                        if (!data.includes("error")) {
+                                        console.log("Raw response from Submit:", data);
+                                        if (data.includes("successfully")) {
+                                            clearFormData();
+                                            tempSlotBooked.clear();
+                                            slotRepeatMap.clear();
                                             updateTempSlotUI();
-                                            showNotification(`Successfully booked ${tempSlotBooked.size} slots!`);
+                                            bookedSlotsContainer.innerHTML = "";
+                                            totalSlots = 0;
+                                            totalPrice = 0;
+                                            updateUI();
+                                            showNotification("Request created successfully!");
+                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
                                         }
                                     })
                                     .catch(error => {
-                                        console.error("Error during booking:", error);
-                                        showNotification("Error during booking: " + error.message);
+                                        console.error("Error during submission:", error);
+                                        showNotification("Error during submission: " + error.message);
                                     })
                                     .finally(() => {
-                                        isBookProcessing = false;
-                                        bookSlotsBtn.disabled = false;
-                                        bookSlotsBtn.classList.remove("disabled");
-                                        console.log("Book processing completed");
+                                        isSubmitProcessing = false;
+                                        submitBtn.disabled = false;
+                                        submitBtn.classList.remove("disabled");
+                                        console.log("Submit processing completed");
                                     });
+                        } else {
+                            showNotification("Please fill in all required fields.");
+                            isSubmitProcessing = false;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove("disabled");
+                        }
+                    });
+                    eventHandlersAttached.submitBtn = true;
+                }
 
-                            saveFormData();
-                        });
-                        eventHandlersAttached.bookSlotsBtn = true;
-                    }
+                if (!eventHandlersAttached.saveBtn && saveBtn) {
+                    console.log("Attaching handler for saveBtn at " + new Date().toISOString());
+                    saveBtn.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        console.log("Save clicked - Handler triggered at " + new Date().toISOString());
 
-                    if (!eventHandlersAttached.clearAllBtn && clearAllBtn) {
-                        console.log("Attaching handler for clearAllBtn at " + new Date().toISOString());
-                        clearAllBtn.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            console.log("Clear clicked - Handler triggered at " + new Date().toISOString());
+                        if (isSaveProcessing) {
+                            console.log("Save processing, skipping...");
+                            return;
+                        }
+                        isSaveProcessing = true;
+                        saveBtn.disabled = true;
+                        saveBtn.classList.add("disabled");
 
-                            if (isClearProcessing) {
-                                console.log("Clear processing, skipping...");
+                        if (bookingForm.checkValidity()) {
+                            if (tempSlotBooked.size === 0) {
+                                showNotification("Please select at least one slot before saving!");
+                                isSaveProcessing = false;
+                                saveBtn.disabled = false;
+                                saveBtn.classList.remove("disabled");
                                 return;
                             }
-                            isClearProcessing = true;
-                            clearAllBtn.disabled = true;
-                            clearAllBtn.classList.add("disabled");
 
-                            tempSlotBooked.clear();
-                            slotRepeatMap.clear();
-                            sessionStorage.removeItem("tempSlotBooked");
-                            timeSlots.forEach(slot => slot.classList.remove("selected"));
-                            if (bookedSlotsContainer)
-                                bookedSlotsContainer.innerHTML = "";
-                            totalSlots = 0;
-                            totalPrice = 0;
-                            updateUI();
+                            document.getElementById("serviceInput").value = "save";
+                            document.getElementById("totalPriceInput").value = totalPrice;
 
-                            fetch("/HAPPYorSAD/test?action=clear", {
+                            let formData = new FormData(bookingForm);
+                            formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
+                            tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
+                            console.log("Sending FormData for Save:", Array.from(formData.entries()));
+
+                            fetch(bookingForm.action, {
                                 method: "POST",
+                                body: formData,
                                 credentials: "same-origin"
                             })
                                     .then(response => {
@@ -1630,263 +1665,126 @@
                                         return response.text();
                                     })
                                     .then(data => {
-                                        console.log("Clear response:", data);
+                                        console.log("Raw response from Save:", data);
+                                        if (data.includes("ShowMenteeRequest")) {
+                                            clearFormData();
+                                            tempSlotBooked.clear();
+                                            slotRepeatMap.clear();
+                                            updateTempSlotUI();
+                                            bookedSlotsContainer.innerHTML = "";
+                                            totalSlots = 0;
+                                            totalPrice = 0;
+                                            updateUI();
+                                            showNotification("Request saved successfully!");
+                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
+                                        } else {
+                                            showNotification("Failed to save request. Please try again.");
+                                        }
                                     })
                                     .catch(error => {
-                                        console.error("Error during clearing:", error);
-                                        showNotification("Error clearing slots: " + error.message);
+                                        console.error("Error during saving:", error);
+                                        showNotification("Error during saving: " + error.message);
                                     })
                                     .finally(() => {
-                                        isClearProcessing = false;
-                                        clearAllBtn.disabled = false;
-                                        clearAllBtn.classList.remove("disabled");
-                                        console.log("Clear processing completed");
+                                        isSaveProcessing = false;
+                                        saveBtn.disabled = false;
+                                        saveBtn.classList.remove("disabled");
+                                        console.log("Save processing completed");
                                     });
-                        });
-                        eventHandlersAttached.clearAllBtn = true;
-                    }
-
-                    if (!eventHandlersAttached.submitBtn && submitBtn) {
-                        submitBtn.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            console.log("Submit clicked - Handler triggered at " + new Date().toISOString());
-
-                            if (isSubmitProcessing) {
-                                console.log("Submit processing, skipping...");
-                                return;
-                            }
-                            isSubmitProcessing = true;
-                            submitBtn.disabled = true;
-                            submitBtn.classList.add("disabled");
-
-                            if (bookingForm.checkValidity()) {
-                                if (tempSlotBooked.size === 0) {
-                                    showNotification("Please select at least one slot before submitting!");
-                                    isSubmitProcessing = false;
-                                    submitBtn.disabled = false;
-                                    submitBtn.classList.remove("disabled");
-                                    return;
-                                }
-
-                                document.getElementById("serviceInput").value = "submit";
-                                document.getElementById("totalPriceInput").value = totalPrice;
-
-                                let formData = new FormData(bookingForm);
-                                formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
-                                tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
-                                console.log("Sending FormData for Submit:", Array.from(formData.entries()));
-
-                                fetch(bookingForm.action, {
-                                    method: "POST",
-                                    body: formData,
-                                    credentials: "same-origin"
-                                })
-                                        .then(response => {
-                                            if (!response.ok)
-                                                throw new Error("Network response was not ok " + response.status);
-                                            return response.text();
-                                        })
-                                        .then(data => {
-                                            console.log("Raw response from Submit:", data);
-                                            if (data.includes("successfully")) {
-                                                clearFormData();
-                                                tempSlotBooked.clear();
-                                                slotRepeatMap.clear();
-                                                updateTempSlotUI();
-                                                bookedSlotsContainer.innerHTML = "";
-                                                totalSlots = 0;
-                                                totalPrice = 0;
-                                                updateUI();
-                                                showNotification("Request created successfully!");
-                                                window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error("Error during submission:", error);
-                                            showNotification("Error during submission: " + error.message);
-                                        })
-                                        .finally(() => {
-                                            isSubmitProcessing = false;
-                                            submitBtn.disabled = false;
-                                            submitBtn.classList.remove("disabled");
-                                            console.log("Submit processing completed");
-                                        });
-                            } else {
-                                showNotification("Please fill in all required fields.");
-                                isSubmitProcessing = false;
-                                submitBtn.disabled = false;
-                                submitBtn.classList.remove("disabled");
-                            }
-                        });
-                        eventHandlersAttached.submitBtn = true;
-                    }
-
-                    if (!eventHandlersAttached.saveBtn && saveBtn) {
-                        console.log("Attaching handler for saveBtn at " + new Date().toISOString());
-                        saveBtn.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            console.log("Save clicked - Handler triggered at " + new Date().toISOString());
-
-                            if (isSaveProcessing) {
-                                console.log("Save processing, skipping...");
-                                return;
-                            }
-                            isSaveProcessing = true;
-                            saveBtn.disabled = true;
-                            saveBtn.classList.add("disabled");
-
-                            if (bookingForm.checkValidity()) {
-                                if (tempSlotBooked.size === 0) {
-                                    showNotification("Please select at least one slot before saving!");
-                                    isSaveProcessing = false;
-                                    saveBtn.disabled = false;
-                                    saveBtn.classList.remove("disabled");
-                                    return;
-                                }
-
-                                document.getElementById("serviceInput").value = "save";
-                                document.getElementById("totalPriceInput").value = totalPrice;
-
-                                let formData = new FormData(bookingForm);
-                                formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
-                                tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
-                                console.log("Sending FormData for Save:", Array.from(formData.entries()));
-
-                                fetch(bookingForm.action, {
-                                    method: "POST",
-                                    body: formData,
-                                    credentials: "same-origin"
-                                })
-                                        .then(response => {
-                                            if (!response.ok)
-                                                throw new Error("Network response was not ok " + response.status);
-                                            return response.text();
-                                        })
-                                        .then(data => {
-                                            console.log("Raw response from Save:", data);
-                                            if (data.includes("ShowMenteeRequest")) {
-                                                clearFormData();
-                                                tempSlotBooked.clear();
-                                                slotRepeatMap.clear();
-                                                updateTempSlotUI();
-                                                bookedSlotsContainer.innerHTML = "";
-                                                totalSlots = 0;
-                                                totalPrice = 0;
-                                                updateUI();
-                                                showNotification("Request saved successfully!");
-                                                window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
-                                            } else {
-                                                showNotification("Failed to save request. Please try again.");
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error("Error during saving:", error);
-                                            showNotification("Error during saving: " + error.message);
-                                        })
-                                        .finally(() => {
-                                            isSaveProcessing = false;
-                                            saveBtn.disabled = false;
-                                            saveBtn.classList.remove("disabled");
-                                            console.log("Save processing completed");
-                                        });
-                            } else {
-                                showNotification("Please fill in all required fields.");
-                                isSaveProcessing = false;
-                                saveBtn.disabled = false;
-                                saveBtn.classList.remove("disabled");
-                            }
-                        });
-                        eventHandlersAttached.saveBtn = true;
-                    }
-
-                    monthItems.forEach(item => {
-                        item.addEventListener("click", function (event) {
-                            event.preventDefault();
-
-                            const selectedMonth = this.getAttribute("data-month");
-                            document.getElementById("selectedMonth").textContent = selectedMonth;
-                            localStorage.setItem("selectedMonth", selectedMonth);
-
-                            const parts = selectedMonth.split(" ");
-                            if (parts.length === 2) {
-                                const year = parts[1];
-                                const month = parts[0];
-                                document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']").value;
-                                document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']").value;
-                                document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']").value;
-                                document.getElementById("hiddenYear").value = year;
-                                document.getElementById("hiddenMonth").value = month;
-                                document.getElementById("weekOffset").value = 0; // Reset weekOffset khi chọn tháng mới
-                                const urlParams = new URLSearchParams(window.location.search);
-                                const service = urlParams.get('service');
-                                if (service) {
-                                    document.getElementById("hiddenService").value = service;
-                                }
-                                document.getElementById("hiddenForm").submit();
-                            }
-                        });
+                        } else {
+                            showNotification("Please fill in all required fields.");
+                            isSaveProcessing = false;
+                            saveBtn.disabled = false;
+                            saveBtn.classList.remove("disabled");
+                        }
                     });
+                    eventHandlersAttached.saveBtn = true;
+                }
 
-                    window.addEventListener("load", function () {
-                        const savedMonth = localStorage.getItem("selectedMonth");
-                        const currentDate = new Date();
-                        const currentMonth = currentDate.toLocaleString("en-US", {month: "long"});
-                        const currentYear = currentDate.getFullYear();
-                        const defaultMonth = `${currentMonth} ${currentYear}`;
+                monthItems.forEach(item => {
+                    item.addEventListener("click", function (event) {
+                        event.preventDefault();
 
-                                    if (savedMonth) {
-                                        document.getElementById("selectedMonth").textContent = savedMonth;
-                                        monthItems.forEach(item => {
-                                            if (item.getAttribute("data-month") === savedMonth) {
-                                                item.classList.add("active");
-                                            } else {
-                                                item.classList.remove("active");
-                                            }
-                                        });
-                                    } else {
-                                        document.getElementById("selectedMonth").textContent = defaultMonth;
-                                        monthItems.forEach(item => {
-                                            if (item.getAttribute("data-month") === defaultMonth) {
-                                                item.classList.add("active");
-                                            } else {
-                                                item.classList.remove("active");
-                                            }
-                                        });
-                                        localStorage.setItem("savedMonth", defaultMonth);
-                                    }
-                                    updateTempSlotUI();
-                                    restoreFormData();
-                                    repeatByWeeks.checked = true;
-                                    weeksOption.style.display = "block";
-                                    slotsOption.style.display = "none";
-                                });
+                        const selectedMonth = this.getAttribute("data-month");
+                        document.getElementById("selectedMonth").textContent = selectedMonth;
+
+                        localStorage.setItem("selectedMonth", selectedMonth);
+                        window.changeMonthTriggered = true;
+
+                        const parts = selectedMonth.split(" ");
+                        if (parts.length === 2) {
+                            const year = parts[1];
+                            const month = parts[0];
+                            document.getElementById("hiddenMentorId").value = document.querySelector("input[name='mentorId']").value;
+                            document.getElementById("hiddenCourseId").value = document.querySelector("input[name='courseId']").value;
+                            document.getElementById("hiddenPrice").value = document.querySelector("input[name='price']").value;
+                            document.getElementById("hiddenYear").value = year;
+                            document.getElementById("hiddenMonth").value = month;
+                            document.getElementById("hiddenForm").submit();
+                        }
+                    });
+                });
+
+                window.addEventListener("load", function () {
+                    const savedMonth = localStorage.getItem("selectedMonth");
+                    const currentDate = new Date();
+                    const currentMonth = currentDate.toLocaleString("en-US", {month: "long"});
+                    const currentYear = currentDate.getFullYear();
+                    const defaultMonth = `${currentMonth} ${currentYear}`;
+
+                                if (savedMonth) {
+                                    document.getElementById("selectedMonth").textContent = savedMonth;
+                                    monthItems.forEach(item => {
+                                        if (item.getAttribute("data-month") === savedMonth) {
+                                            item.classList.add("active");
+                                        } else {
+                                            item.classList.remove("active");
+                                        }
+                                    });
+                                } else {
+                                    document.getElementById("selectedMonth").textContent = defaultMonth;
+                                    monthItems.forEach(item => {
+                                        if (item.getAttribute("data-month") === defaultMonth) {
+                                            item.classList.add("active");
+                                        } else {
+                                            item.classList.remove("active");
+                                        }
+                                    });
+                                    localStorage.setItem("savedMonth", defaultMonth);
+                                }
+                                updateTempSlotUI();
+                                restoreFormData();
+                                repeatByWeeks.checked = true;
+                                weeksOption.style.display = "block";
+                                slotsOption.style.display = "none";
                             });
+                        });
+        </script>
+
+        <c:if test="${not empty sessionScope.msg}">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    showNotification("${sessionScope.msg}");
+                });
             </script>
+            <c:remove var="msg" scope="session"/>
+        </c:if>
 
-            <c:if test="${not empty sessionScope.msg}">
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        showNotification("${sessionScope.msg}");
-                    });
-                </script>
-                <c:remove var="msg" scope="session"/>
-            </c:if>
-
-            <!-- /Page Content -->
-            <%@include file="/sourcesHome/homeFooter.jsp" %>
-        </div>
-        <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-        <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
-        <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
-        data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
-        crossorigin="anonymous"></script>
-    </body>
+        <!-- /Page Content -->
+        <%@include file="/sourcesHome/homeFooter.jsp" %>
+    </div>
+    <script data-cfasync="false" src="/HAPPYorSAD/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/bootstrap.bundle.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/select2/js/select2.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/ckeditor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/dropzone/dropzone.min.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/ResizeSensor.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/assets/js/script.js" type="d693b69077856eb34d3f2643-text/javascript"></script>
+    <script src="/HAPPYorSAD/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" 
+    data-cf-settings="d693b69077856eb34d3f2643-|49" defer></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91074a70ad7f06b9","version":"2025.1.0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"3ca157e612a14eccbb30cf6db6691c29","b":1}' 
+    crossorigin="anonymous"></script>
+</body>
 </html>

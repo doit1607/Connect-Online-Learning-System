@@ -49,9 +49,6 @@ public class FetchSlotsForRequest extends HttpServlet {
             DAOslot dao = new DAOslot();
             DAOmentee_Slot daoMs = new DAOmentee_Slot();
             List<Mentee_Slot> scheduleList = daoMs.getSlotsByRequestId1(requestIdd);
-            for (Mentee_Slot slot : scheduleList) {
-                System.out.println("Hello1: " + slot);
-            }
 
             out.println("<!-- Debug: Fetching slots for requestId = " + requestIdd + " -->");
 
@@ -86,11 +83,11 @@ public class FetchSlotsForRequest extends HttpServlet {
                     String month = slotDate.getMonth().toString().substring(0, 1).toUpperCase()
                             + slotDate.getMonth().toString().substring(1).toLowerCase();
                     int year = slotDate.getYear();
-                    out.println("<tr>");
-                    out.println("<td>" + dayOfWeekStr + "</td>"); 
-                    out.println("<td>" + day + "</td>");          
-                    out.println("<td>" + month + "</td>");       
-                    out.println("<td>" + year + "</td>");         
+                    out.println("<tr data-slot='" + slot.getSlot_id() + "'>");
+                    out.println("<td>" + dayOfWeekStr + "</td>");
+                    out.println("<td>" + day + "</td>");
+                    out.println("<td>" + month + "</td>");
+                    out.println("<td>" + year + "</td>");
 
                     out.println("<td>" + slot.getSlot_number() + "</td>");
                     out.println("<td>" + slot.getStart_time() + "</td>");
@@ -100,13 +97,13 @@ public class FetchSlotsForRequest extends HttpServlet {
                     // Kiểm tra xem slot này có được mentee khác book không
                     boolean isBookedByOther = false;
                     List<Mentee_Slot> relatedSlots = daoMs.getSlotsBySlotId(slot.getSlot_id()); // Truyền slot_id
-                    System.out.println("Slot ID being checked: " + slot.getSlot_id());
-                    System.out.println("Number of related slots found: " + relatedSlots.size());
+//                    System.out.println("Slot ID being checked: " + slot.getSlot_id());
+//                    System.out.println("Number of related slots found: " + relatedSlots.size());
 
                     for (Mentee_Slot otherSlot : relatedSlots) {
-                        System.out.println("Checking slot - Slot ID: " + otherSlot.getSlot_id()
-                                + ", Mentee ID: " + otherSlot.getMentee_id()
-                                + ", Status: " + otherSlot.getStatus());
+//                        System.out.println("Checking slot - Slot ID: " + otherSlot.getSlot_id()
+//                                + ", Mentee ID: " + otherSlot.getMentee_id()
+//                                + ", Status: " + otherSlot.getStatus());
 
                         if (otherSlot.getSlot_id() == slot.getSlot_id()
                                 && // So sánh slot_id
@@ -119,7 +116,7 @@ public class FetchSlotsForRequest extends HttpServlet {
                         }
                     }
 
-                    System.out.println("Final result - isBookedByOther: " + isBookedByOther);
+//                    System.out.println("Final result - isBookedByOther: " + isBookedByOther);
 
                     if (isBookedByOther) {
                         out.println("<td><button class='delete-btn' onclick=\"deleteSlot('" + slot.getSlot_id() + "')\">Slot has been Booked by another Mentee - Click to delete</button></td>");

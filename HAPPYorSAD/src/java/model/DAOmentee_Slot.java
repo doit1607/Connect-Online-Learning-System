@@ -55,6 +55,23 @@ public class DAOmentee_Slot extends DBConnection {
         }
         return false;
     }
+    
+        public boolean bookSlotExist(int menteeId, int slotId, int requestId) {
+        String query = "UPDATE Mentee_Slot SET status = 'Pending' WHERE mentee_id = ? AND slot_id = ? AND request_id = ? AND status = 'Draft'";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, menteeId);
+            pstmt.setInt(2, slotId);
+            pstmt.setInt(3, requestId); // Kiểm tra xem requestId có null không
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 
     public void updateRequestIdForSlot(int slotId, int menteeId, int requestId) throws SQLException {
         String sql = "UPDATE [dbo].[Mentee_Slot]\n"
@@ -353,6 +370,19 @@ public class DAOmentee_Slot extends DBConnection {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean deleteSlotByMenteeIdAndSlotId(int menteeId, int slotId) {
+        String sql = "DELETE FROM Mentee_Slot WHERE mentee_id = ? AND slot_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, menteeId);
+            ps.setInt(2, slotId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
