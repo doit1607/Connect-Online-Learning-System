@@ -962,10 +962,10 @@
                                                                                 <a href="#" 
                                                                                    class="timing
                                                                                    ${menteeStatus == 'Available' && mentorStatus == 'Studying' ? 'red' : ''}
-                                                                                   
+
                                                                                    ${mentorStatus == 'Done' ? 'red' : ''}
                                                                                    ${mentorStatus == 'Studying' && menteeStatus =='Available' ? 'red' : ''}
-                                                                                   
+
                                                                                    ${menteeStatus == 'Duplicated'  ? 'yellow' : ''}
 
                                                                                    ${mentorStatus == 'Available' && (menteeStatus == null || menteeStatus == 'Available') ? 'green' : ''}"
@@ -1317,53 +1317,72 @@
                 }
 
                 function updateTempSlotUI() {
+                    console.log("Updating temp slot UI...");
+                    console.log("Current tempSlotBooked:", Array.from(tempSlotBooked));
+
                     timeSlots.forEach(slot => {
                         let slotInfo = slot.dataset.slotInfo;
+                        console.log(`Checking slot: ${slotInfo}, in tempSlotBooked: ${tempSlotBooked.has(slotInfo)}`);
+
                         if (tempSlotBooked.has(slotInfo)) {
                             slot.classList.add("selected");
+                            console.log(`Added 'selected' class to slot: ${slotInfo}`);
                         } else {
                             slot.classList.remove("selected");
+                            console.log(`Removed 'selected' class from slot: ${slotInfo}`);
                         }
                     });
+
                     totalSlots = tempSlotBooked.size;
                     totalPrice = totalSlots * pricePerSlot;
+                    console.log("Updated totals:", {totalSlots, totalPrice});
+
                     updateUI();
                     updateBookedSchedule();
                 }
 
                 function generateRepeatedSlots(slot, mode, weeks, maxSlots) {
+                    console.log("Generating repeated slots for:", {slot, mode, weeks, maxSlots});
                     let repeatedSlots = new Set();
                     let [dateStr, slotNumber] = slot.split("_");
                     let slotDate = new Date(dateStr);
                     let currentDate = new Date(slotDate);
                     let slotCount = 1;
 
+                    console.log("Initial slot details:", {dateStr, slotNumber, initialDate: slotDate});
                     repeatedSlots.add(slot);
                     let repeatedSlotsArray = [];
 
                     if (mode === "weeks" && repeatCheckbox.checked) {
+                        console.log("Repeating by weeks...");
                         for (let week = 1; week <= weeks; week++) {
                             currentDate.setDate(currentDate.getDate() + 7);
                             let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
                             repeatedSlots.add(newSlot);
                             repeatedSlotsArray.push(newSlot);
                             slotCount++;
+                            console.log(`Week ${week}: Added slot ${newSlot}`);
                         }
                     } else if (mode === "slots" && repeatCheckbox.checked && slotCount < maxSlots) {
+                        console.log("Repeating by slots...");
                         while (slotCount < maxSlots) {
                             currentDate.setDate(currentDate.getDate() + 7);
                             let newSlot = currentDate.toISOString().split('T')[0] + "_" + slotNumber;
                             repeatedSlots.add(newSlot);
                             repeatedSlotsArray.push(newSlot);
                             slotCount++;
+                            console.log(`Slot ${slotCount}: Added slot ${newSlot}`);
                         }
                     }
+
                     if (repeatedSlotsArray.length > 0) {
                         slotRepeatMap.set(slot, repeatedSlotsArray);
+                        console.log("Updated slotRepeatMap:", slotRepeatMap);
                     }
+
+                    console.log("Generated repeated slots:", Array.from(repeatedSlots));
                     return Array.from(repeatedSlots);
                 }
-
                 repeatCheckbox.addEventListener("change", function () {
                     repeatOptions.style.display = this.checked ? "block" : "none";
                 });
@@ -1386,12 +1405,16 @@
                     input.addEventListener("input", saveFormData);
                 });
 
+
+
                 if (!eventHandlersAttached.timeSlots) {
                     timeSlots.forEach(slot => {
                         slot.addEventListener("click", function (event) {
                             event.preventDefault();
                             let slotInfo = this.dataset.slotInfo;
                             let isSelectable = this.dataset.selectable === "true";
+
+                            console.log("Slot clicked:", {slotInfo, isSelectable});
 
                             if (!isSelectable) {
                                 if (this.classList.contains("yellow")) {
@@ -1405,38 +1428,51 @@
                             }
 
                             if (tempSlotBooked.has(slotInfo)) {
+                                console.log("Removing slot:", slotInfo);
                                 tempSlotBooked.delete(slotInfo);
                                 this.classList.remove("selected");
                                 if (slotRepeatMap.has(slotInfo)) {
                                     slotRepeatMap.get(slotInfo).forEach(repeatedSlot => tempSlotBooked.delete(repeatedSlot));
                                     slotRepeatMap.delete(slotInfo);
+                                    console.log("Removed repeated slots for:", slotInfo, "New slotRepeatMap:", slotRepeatMap);
                                 }
                             } else {
+                                console.log("Adding slot:", slotInfo);
                                 tempSlotBooked.add(slotInfo);
                                 this.classList.add("selected");
                                 if (repeatCheckbox.checked) {
                                     let mode = repeatByWeeks.checked ? "weeks" : "slots";
                                     let weeks = parseInt(repeatWeeks.value) || 1;
                                     let maxSlots = parseInt(maxSlotsInput.value) || 5;
+                                    console.log("Repeat options:", {mode, weeks, maxSlots});
                                     let repeatedSlots = generateRepeatedSlots(slotInfo, mode, weeks, maxSlots);
+                                    console.log("Generated repeated slots:", repeatedSlots);
+
                                     repeatedSlots.forEach(s => {
+                                        // Thêm tất cả slot lặp lại vào tempSlotBooked, bất kể có DOM hay không
+                                        tempSlotBooked.add(s);
+                                        console.log("Added repeated slot to tempSlotBooked:", s);
+
                                         let repeatedSlotElement = document.querySelector(`.timing[data-slot-info="${s}"]`);
                                         if (repeatedSlotElement && repeatedSlotElement.dataset.selectable === "true") {
-                                            tempSlotBooked.add(s);
                                             repeatedSlotElement.classList.add("selected");
+                                            console.log("Updated UI for repeated slot:", s);
                                         } else if (repeatedSlotElement) {
                                             if (repeatedSlotElement.classList.contains("yellow")) {
                                                 showNotification("Your study schedule conflicts with repeated slot " + s + ", please adjust your selection.");
+                                                console.log("Conflict (yellow) with repeated slot:", s);
                                             } else if (repeatedSlotElement.classList.contains("red")) {
                                                 showNotification("Repeated slot " + s + " has already been booked, please adjust your selection.");
+                                                console.log("Conflict (red) with repeated slot:", s);
                                             }
+                                        } else {
+                                            console.log("No DOM element found for repeated slot:", s);
                                         }
                                     });
                                 }
                             }
                             saveFormData();
-                            totalSlots = tempSlotBooked.size;
-                            totalPrice = totalSlots * pricePerSlot;
+                            console.log("Calling updateTempSlotUI with tempSlotBooked:", Array.from(tempSlotBooked));
                             updateTempSlotUI();
                         });
                     });

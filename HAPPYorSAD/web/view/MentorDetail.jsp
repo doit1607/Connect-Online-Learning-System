@@ -287,7 +287,7 @@
                 height: 250px;
                 border-radius: 10px;
                 object-fit: cover;
-                border: 2px solid #ddd;               
+                border: 2px solid #ddd;
             }
 
             .rating {
@@ -390,7 +390,6 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- Sử dụng iframe để gọi servlet -->
                                             <iframe src="/HAPPYorSAD//viewCVMODAL?mentorId=${mentor.id}" width="100%" height="900px" frameborder="0"></iframe>
                                         </div>
                                         <div class="modal-footer">
@@ -413,6 +412,11 @@
                                         <input type="hidden" name="courseId" value="${requestScope.courseId}"> <!-- Thêm courseId -->
                                         <input type="hidden" name="price" value="${requestScope.price}"> <!-- Thêm price -->
                                         <input type="hidden" name="mentorname" value="${mentorname}"> <!-- Thêm price -->
+                                        <input type="hidden" name="achievementDescription" value="${requestScope.achievementDescription}"> <!-- Thêm price -->
+                                        <input type="hidden" name="professionIntro" value="${requestScope.professionIntro}"> <!-- Thêm price -->
+                                        <input type="hidden" name="weekOffset" id="weekOffset" value="${requestScope.weekOffset != null ? requestScope.weekOffset : 0}">
+
+
 
                                         <input type="hidden" name="month" id="monthInput" value="${requestScope.selectedMonth != null ? requestScope.selectedMonth : currentMonth}">
                                         <input type="hidden" name="year" id="yearInput" value="${requestScope.selectedYear != null ? requestScope.selectedYear : currentYear}"><div class="row align-items-center">
@@ -549,7 +553,6 @@
                             <!-- /Mentor's Schedule -->
 
                             <!-- Reviews from Mentees -->
-                            <!-- Reviews from Mentees -->
                             <div class="card overview-sec">
                                 <div class="card-body">
                                     <h2 class="subs-title">Reviews from Mentees</h2>
@@ -558,16 +561,12 @@
                                             <p>No reviews yet.</p>
                                         </c:when>
                                         <c:otherwise>
-                                            <!-- Hiển thị tất cả review, nhưng ẩn các review từ 5 trở đi -->
                                             <c:forEach var="review" items="${listReview}" varStatus="loop">
                                                 <div class="review-item mb-3 p-3 border rounded shadow-sm ${loop.index >= 5 ? 'd-none' : ''}" data-hidden="${loop.index >= 5}">
                                                     <div class="d-flex align-items-center">
-                                                        <!-- Hiển thị ảnh mentee -->
                                                         <img src="${review.image}" alt="Mentee Image" class="mentee-img me-3">
                                                         <div>
-                                                            <!-- Hiển thị tên mentee -->
                                                             <p class="fw-bold mb-1">${review.name}</p>
-                                                            <!-- Hiển thị rating bằng sao -->
                                                             <div class="rating">
                                                                 <c:forEach var="i" begin="1" end="${review.rating}">
                                                                     <span class="star">★</span>
@@ -578,12 +577,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Hiển thị bình luận -->
                                                     <p class="mt-2 text-muted">${review.commit}</p>
                                                 </div>
                                             </c:forEach>
 
-                                            <!-- Nếu có nhiều hơn 5 review, hiển thị nút "Tải thêm" -->
                                             <c:if test="${listReview.size() > 5}">
                                                 <div class="text-center">
                                                     <button id="loadMoreBtn" class="btn btn-outline-primary">Load more feedback</button>
@@ -593,7 +590,6 @@
                                     </c:choose>
                                 </div>
                             </div>
-                            <!-- /Reviews from Mentees -->
                             <!-- /Reviews from Mentees -->
 
                             <!-- List of Courses -->
@@ -609,9 +605,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-content">
-
                                                     <h3 class="title"><a href="CourseDetails?Cid=${o.id}">${o.title}</a></h3>                                                   
-
                                                     <div class="all-btn all-category d-flex align-items-center">
                                                         <a href="CourseDetails?Cid=${o.id}" class="btn btn-primary">MORE DETAIL</a>
                                                     </div>
@@ -639,26 +633,20 @@
         <script src="/HAPPYorSAD/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="text/javascript"></script>
         <script src="/HAPPYorSAD/assets/js/script.js" type="text/javascript"></script>
 
-        <!-- Script khởi tạo popover -->
         <script>
             $(document).ready(function () {
-                // Khởi tạo popover với tùy chọn để hiển thị HTML
                 $('[data-bs-toggle="popover"]').popover({
                     html: true,
                     trigger: 'hover',
-                    placement: 'top' // Có thể thay đổi vị trí: 'top', 'bottom', 'left', 'right'
+                    placement: 'top'
                 });
 
-                // Đảm bảo popover được đóng khi rời khỏi
                 $('[data-bs-toggle="popover"]').on('mouseleave', function () {
                     $(this).popover('hide');
                 });
 
-                // Xử lý sự kiện khi nhấn nút "Tải thêm feedback"
                 $('#loadMoreBtn').on('click', function () {
-                    // Hiển thị tất cả các review-item đang bị ẩn
                     $('.review-item[data-hidden="true"]').removeClass('d-none').attr('data-hidden', 'false');
-                    // Ẩn nút "Tải thêm" sau khi hiển thị hết
                     $(this).hide();
                 });
             });

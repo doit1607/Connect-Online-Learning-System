@@ -529,23 +529,12 @@
         <!-- /Leading Companies -->
 
 
-
-
-        <!-- Join as Mentor -->
-        <!--            <section class="trusted-by">
-                        <p class="trusted-text">Trusted By</p>
-                        <h2>500+ Leading Universities And Companies</h2>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/640px-Google_%22G%22_logo.svg.png" alt="Google">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Colruyt.svg/2560px-Logo_Colruyt.svg.png" alt="Colruyt">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Oxford-University-Circlet.svg/1636px-Oxford-University-Circlet.svg.png" alt="Oxford">
-                        </div>
-                    </section>-->
         <!-- Users Love -->
         <section class="section user-love">
             <div class="container">
                 <div class="section-header white-header aos" data-aos="fade-up">
                     <div class="section-sub-head feature-head text-center">
-                        <span>Check out these real reviews</span>
+                        <span>Check out these real quotes </span>
                         <h2>Users-love-us Don't take it from us.</h2>
                     </div>
                 </div>
@@ -566,19 +555,18 @@
                                 <div class="testimonial-two-head text-center align-items-center d-flex">
                                     <div class="testimonial-four-saying ">
                                         <div class="testi-right">
-                                            <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
+                                                                                        <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
+
                                         </div>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book.</p>
+                                        <p>The first rule of any technology used in a business is that automation applied to an efficient operation will magnify the efficiency. The second is that automation applied to an inefficient operation will magnify the inefficiency.
+</p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user1.jpg"
-                                                                                       alt="Img" class="img-fluid"></a>
+                                                <a href="https://vi.wikipedia.org/wiki/Bill_Gates"><img src="/HAPPYorSAD/assets/img/user/R.jpg"
+                                                                                                        alt="Img" class="img-fluid"></a>
                                             </div>
-                                            <h3><a href="instructor-profile.html">Daziy Millar</a></h3>
-                                            <span>Founder of Awesomeux Technology</span>
+                                            <h3><a href="https://vi.wikipedia.org/wiki/Bill_Gates">Bill Gates</a></h3>
+                                            <span>Co-founding The Software Company Microsoft</span>
                                         </div>
                                     </div>
                                 </div>
@@ -591,17 +579,14 @@
                                         <div class="testi-right">
                                             <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
                                         </div>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book.</p>
+                                        <p>The only way to get love is to be lovable. It's very irritating if you have a lot of money. You'd like to think you could write a check: 'I'll buy a million dollars' worth of love.' But it doesn't work that way. The more you give love away, the more you get.</p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user3.jpg"
-                                                                                       alt="Img" class="img-fluid"></a>
+                                                <a href="https://en.wikipedia.org/wiki/Warren_Buffett"><img src="/HAPPYorSAD/assets/img/user/Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_(cropped).jpg"
+                                                                                                            alt="Img" class="img-fluid"></a>
                                             </div>
-                                            <h3><a href="instructor-profile.html">john smith</a></h3>
-                                            <span>Founder of Awesomeux Technology</span>
+                                            <h3><a href="https://en.wikipedia.org/wiki/Warren_Buffett">Warren Buffett</a></h3>
+                                            <span>CEO of Berkshire Hathaway</span>
                                         </div>
                                     </div>
                                 </div>
@@ -614,17 +599,15 @@
                                         <div class="testi-right">
                                             <img src="/HAPPYorSAD/assets/img/qute-01.png" alt="Img">
                                         </div>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book.</p>
+                                        <p>I think it's very important to have a feedback loop, where you're constantly thinking about what you've done and how you could be doing it better. I think that's the single best piece of advice: constantly think about how you could be doing things better and questioning yourself.
+                                           </p>
                                         <div class="four-testimonial-founder">
                                             <div class="fount-about-img">
-                                                <a href="instructor-profile.html"><img src="/HAPPYorSAD/assets/img/user/user2.jpg"
-                                                                                       alt="Img" class="img-fluid"></a>
+                                                <a href="https://vi.wikipedia.org/wiki/Elon_Musk"><img src="/HAPPYorSAD/assets/img/user/USAFA_Hosts_Elon_Musk_(Image_1_of_17)_(cropped).jpg"
+                                                                                                       alt="Img" class="img-fluid"></a>
                                             </div>
-                                            <h3><a href="instructor-profile.html">David Lee</a></h3>
-                                            <span>Founder of Awesomeux Technology</span>
+                                            <h3><a href="https://vi.wikipedia.org/wiki/Elon_Musk">Elon Musk</a></h3>
+                                            <span>Key Roles In Tesla, SpaceX, And Twitter</span>
                                         </div>
                                     </div>
                                 </div>
