@@ -131,7 +131,7 @@ public class ViewRequest extends HttpServlet {
         dao.updateStatusRequesIsOverEndDate();
         if (newrequest == null) {
             System.out.println("Error: Request not found with ID " + requestId);
-            session.setAttribute("error", "Request không tồn tại.");
+            session.setAttribute("error", "Request not exist.!");
             response.sendRedirect("/HAPPYorSAD/errorPage");
             return;
         }
@@ -156,36 +156,36 @@ public class ViewRequest extends HttpServlet {
                 daotran.updateHoldAfterReject(usernamementee, totalprice);
                 daotran.withdrawToWallet(usernamementee, totalprice);
                 daotran.depositToWallet("robert_jones", totalprice);
-                daotran.createTransaction("robert_jones", totalprice, "DEPOSIT", "Tien dang ky khoa hoc cua mentee " + usernamementee);
-                session.setAttribute("msg", "Yêu cầu " + requestId + " đã được chấp nhận.");
+                daotran.createTransaction("robert_jones", totalprice, "DEPOSIT", "Course fee of Mentee " + usernamementee);
+                session.setAttribute("msg", "Request " + requestId + " is accepted!");
             } catch (SQLException ex) {
                 Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-                session.setAttribute("error", "Lỗi khi chấp nhận yêu cầu.");
+                session.setAttribute("error", "Error for accecpt request!");
             }
         } else if (status.equals("Cancel")) {
             System.out.println("Updating request status to Cancel");
             try {
                 daotran.updateHoldAfterReject(usernamementee, totalprice);
                 double hold = daotran.getHold(usernamementee);
-                daotran.createTransaction(usernamementee, totalprice, "DEPOSIT", "Mentor tu choi khoa hoc");
+                daotran.createTransaction(usernamementee, totalprice, "DEPOSIT", "Mentor reject the request!");
                 dao.updateRequestStatus(requestId, "Cancel");
-                session.setAttribute("msg", "Yêu cầu " + requestId + " đã bị hủy.");
+                session.setAttribute("msg", "Request " + requestId + " is cancled.");
                 session.setAttribute("walletHold", hold);
             } catch (SQLException ex) {
                 Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-                session.setAttribute("error", "Lỗi khi hủy yêu cầu.");
+                session.setAttribute("error", "Error for accecpt request!");
             }
         } else if ("Completed".equals(status) && "PendingCompleted".equals(newrequest.getStatus())) {
             try {
                 dao.updateRequestStatus(requestId, "Completed");
-                session.setAttribute("msg", "Yêu cầu " + requestId + " đã được xác nhận hoàn thành.");
+                session.setAttribute("msg", "Request " + requestId + " is completed!.");
             } catch (SQLException ex) {
                 Logger.getLogger(ViewRequest.class.getName()).log(Level.SEVERE, null, ex);
-                session.setAttribute("error", "Lỗi khi xác nhận hoàn thành request.");
+                session.setAttribute("error", "Error when accepted request.");
             }
         } else {
             System.out.println("Error: Invalid status received - " + status);
-            session.setAttribute("error", "Trạng thái không hợp lệ: " + status);
+            session.setAttribute("error", "Status is invalid: " + status);
         }
 
         // Giữ lại các tham số lọc khi redirect
