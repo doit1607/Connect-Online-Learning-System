@@ -19,12 +19,29 @@ import java.util.List;
  */
 public class DAOAcceptCV extends DBConnection {
 
-    public List<CV> getCVtoAccept() {
+    // dem so luong CV
+    public int getTotalRequest() {
+        String sql = "select count(*) from CV";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<CV> getCVtoAccept(int index) {
         List<CV> cvList = new ArrayList<>();
-        String sql = "SELECT * FROM CV WHERE status = 'Pending'";
+        String sql = "SELECT * FROM CV WHERE status = 'Pending'\n"
+                + "order by created_at\n"
+                + "offset ? rows fetch next 3 rows only";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 3);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 CV cv = new CV();
@@ -67,15 +84,7 @@ public class DAOAcceptCV extends DBConnection {
         }
     }
 
-//    public void deleteCVByUsername(String username) {
-//        String sql = "DELETE FROM CV WHERE username = ?";
-//        try {
-//            PreparedStatement pre = conn.prepareStatement(sql);
-//            pre.setString(1, username);
-//            pre.executeUpdate();
-//        } catch (Exception e) {
-//        }
-//    }
+    // ham dung de insert them thong bao
     public void saveNotification(String username, String message) {
         String sql = "INSERT INTO NotificationForCV (username, message, created_at) VALUES (?, ?, GETDATE())";
         try {
@@ -103,7 +112,8 @@ public class DAOAcceptCV extends DBConnection {
 
         return notifications;
     }
-    
+
+    // Ham dung de duyet CV
     public void approveCV(String username) {
         String sql = "UPDATE CV SET status = 'approved' WHERE username = ?";
         try {
@@ -115,7 +125,8 @@ public class DAOAcceptCV extends DBConnection {
             e.printStackTrace();
         }
     }
-    
+
+    // Ham dung de tu choi CV voi li do gi
     public void rejectCV(String username, String reason) {
         String sql = "UPDATE CV SET status = 'rejected' WHERE username = ?";
         try {
@@ -150,7 +161,7 @@ public class DAOAcceptCV extends DBConnection {
             e.printStackTrace();
         }
     }
-    
+
     public List<CV> getAllCV() {
         List<CV> cvList = new ArrayList<>();
         String sql = "SELECT * FROM CV";
@@ -223,10 +234,10 @@ public class DAOAcceptCV extends DBConnection {
         }
         return cvList;
     }
-    
+
     public static void main(String[] args) {
         DAOAcceptCV dao = new DAOAcceptCV();
-        List<CV> cvList = dao.getCVtoAccept();
+        List<CV> cvList = dao.getCVtoAccept(1);
 
         if (cvList.isEmpty()) {
             System.out.println("⚠️ No CVs found in database.");
