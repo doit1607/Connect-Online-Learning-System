@@ -217,9 +217,11 @@
                                                                        <c:if test="${cvStatus ne 'approved'}">disabled</c:if> 
                                                                        <c:if test="${isChecked}">checked</c:if> >
 
-                                                                       <label for="${course}" style="
-                                                                       <c:if test='${cvStatus ne "approved"}'>pointer-events: none; opacity: 0.5;</c:if>"
-                                                                       onclick="<c:if test='${cvStatus eq "approved"}'>loadCourses('${course}')</c:if>">
+                                                                       <label for="${course}" 
+                                                                       style="<c:if test='${cvStatus ne "approved" or not isChecked}'>pointer-events: none; opacity: 0.5;</c:if>"
+                                                                       onclick="if (document.getElementById('${course}').checked) {
+                                                                                   loadCourses('${course}');
+                                                                               }">
                                                                     ${course}
                                                                 </label>
                                                             </c:forEach>
