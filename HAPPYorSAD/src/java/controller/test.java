@@ -177,17 +177,21 @@ public class test extends HttpServlet {
                 if (requestId_raw == null) {
                     if (totalprice > 0 && walletbalance != null && walletbalance >= totalprice) {
                         LOGGER.info("Updating wallet hold for user: " + usernamementee + ", Amount: " + totalprice);
+                        // Cập nhật hold trước
                         daowallet.updateHold(usernamementee, totalprice);
+
+                        // Lấy thông tin wallet cập nhật
                         double balance = daowallet.getBalance(usernamementee);
                         double totalbalance = daowallet.getTotalBalance(usernamementee);
                         double hold = daowallet.getHold(usernamementee);
+
                         DAOCourse dao = new DAOCourse();
                         String coursename = dao.getCourseName(courseId);
-                        daowallet.createTransaction(usernamementee, totalprice, "WITHDRAW", "Thanh toan khoa hoc " + coursename);
+                        daowallet.createTransaction(usernamementee, totalprice, "HOLD", "Hold for course " + coursename);
+
                         session.setAttribute("walletBalance", balance);
                         session.setAttribute("walletTotalbalance", totalbalance);
                         session.setAttribute("walletHold", hold);
-
                         Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Open", courseId);
                         LOGGER.info("Inserting new request: " + requests);
                         int newRequestId = daorequest.insertRequestAndGetId(requests);
@@ -379,182 +383,182 @@ public class test extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    LOGGER.info("Processing request");
-    HttpSession session = request.getSession();
-    DAOMentor daomentor = new DAOMentor();
-    DAOCourse daocourse = new DAOCourse();
+        LOGGER.info("Processing request");
+        HttpSession session = request.getSession();
+        DAOMentor daomentor = new DAOMentor();
+        DAOCourse daocourse = new DAOCourse();
 
-    String mentorIdStr = request.getParameter("mentorId");
-    String courseIdStr = request.getParameter("courseId");
-    String selectedMonthStr = request.getParameter("month");
-    String selectedYearStr = request.getParameter("year");
-    String weekOffsetStr = request.getParameter("weekOffset");
-    String service = request.getParameter("service");
-    LOGGER.info("Parameters - Mentor ID: " + mentorIdStr + ", Course ID: " + courseIdStr + ", Service: " + service);
+        String mentorIdStr = request.getParameter("mentorId");
+        String courseIdStr = request.getParameter("courseId");
+        String selectedMonthStr = request.getParameter("month");
+        String selectedYearStr = request.getParameter("year");
+        String weekOffsetStr = request.getParameter("weekOffset");
+        String service = request.getParameter("service");
+        LOGGER.info("Parameters - Mentor ID: " + mentorIdStr + ", Course ID: " + courseIdStr + ", Service: " + service);
 
-    int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
-    int courseId = (courseIdStr != null && !courseIdStr.isEmpty()) ? Integer.parseInt(courseIdStr) : 0;
-    int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
+        int mentorId = (mentorIdStr != null && !mentorIdStr.isEmpty()) ? Integer.parseInt(mentorIdStr) : 0;
+        int courseId = (courseIdStr != null && !courseIdStr.isEmpty()) ? Integer.parseInt(courseIdStr) : 0;
+        int weekOffset = (weekOffsetStr != null && !weekOffsetStr.isEmpty()) ? Integer.parseInt(weekOffsetStr) : 0;
 
-    Mentor mentor = daomentor.getMentorByID(mentorId);
-    String price_raw = request.getParameter("price");
-    double price = (price_raw != null) ? Double.parseDouble(price_raw) : 0.0;
+        Mentor mentor = daomentor.getMentorByID(mentorId);
+        String price_raw = request.getParameter("price");
+        double price = (price_raw != null) ? Double.parseDouble(price_raw) : 0.0;
 
-    request.setAttribute("mentorrequest", mentor);
-    request.setAttribute("mentorId", mentorId);
-    request.setAttribute("courseId", courseId);
-    request.setAttribute("price", price);
-    LOGGER.info("Set basic attributes - Mentor: " + mentor + ", Price: " + price);
+        request.setAttribute("mentorrequest", mentor);
+        request.setAttribute("mentorId", mentorId);
+        request.setAttribute("courseId", courseId);
+        request.setAttribute("price", price);
+        LOGGER.info("Set basic attributes - Mentor: " + mentor + ", Price: " + price);
 
-    if ("update".equals(service)) {
-        LOGGER.info("Processing update service");
-        request.setAttribute("title", request.getParameter("title"));
-        request.setAttribute("content", request.getParameter("content"));
-        request.setAttribute("startdate", LocalDate.now().toString());
-        request.setAttribute("enddate", request.getParameter("enddate"));
-        request.setAttribute("requestId", request.getParameter("requestId"));
+        if ("update".equals(service)) {
+            LOGGER.info("Processing update service");
+            request.setAttribute("title", request.getParameter("title"));
+            request.setAttribute("content", request.getParameter("content"));
+            request.setAttribute("startdate", LocalDate.now().toString());
+            request.setAttribute("enddate", request.getParameter("enddate"));
+            request.setAttribute("requestId", request.getParameter("requestId"));
 
-        String requestIdStr = request.getParameter("requestId");
-        if (requestIdStr != null && !requestIdStr.isEmpty()) {
-            int requestId = Integer.parseInt(requestIdStr);
-            Request existingRequest = new DAORequest().getRequestById(requestId);
-            if (existingRequest != null) {
-                request.setAttribute("totalSlots", existingRequest.getTotalSlot());
-                request.setAttribute("totalprice", existingRequest.gettotalprice());
-                List<Slot> draftSlots = daoMenteeSL.getSlotsByRequestIdAndStatus(requestId, "Draft");
-                LOGGER.info("Retrieved draft slots for request ID " + requestId + ": " + draftSlots);
-                request.setAttribute("tempSlotBooked", draftSlots);
-            } else {
-                LOGGER.warning("Request not found for ID: " + requestId);
+            String requestIdStr = request.getParameter("requestId");
+            if (requestIdStr != null && !requestIdStr.isEmpty()) {
+                int requestId = Integer.parseInt(requestIdStr);
+                Request existingRequest = new DAORequest().getRequestById(requestId);
+                if (existingRequest != null) {
+                    request.setAttribute("totalSlots", existingRequest.getTotalSlot());
+                    request.setAttribute("totalprice", existingRequest.gettotalprice());
+                    List<Slot> draftSlots = daoMenteeSL.getSlotsByRequestIdAndStatus(requestId, "Draft");
+                    LOGGER.info("Retrieved draft slots for request ID " + requestId + ": " + draftSlots);
+                    request.setAttribute("tempSlotBooked", draftSlots);
+                } else {
+                    LOGGER.warning("Request not found for ID: " + requestId);
+                }
             }
         }
-    }
 
-    Integer userId = (Integer) session.getAttribute("userId");
-    if (userId == null) {
-        LOGGER.warning("User not logged in. Redirecting to login.");
-        redirect(response, "view/LoginUser.jsp");
-        return;
-    }
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            LOGGER.warning("User not logged in. Redirecting to login.");
+            redirect(response, "view/LoginUser.jsp");
+            return;
+        }
 
-    Integer menteeId = DAOmentee.getMenteeIdByUserId(userId);
-    LOGGER.info("Mentee ID retrieved: " + menteeId);
+        Integer menteeId = DAOmentee.getMenteeIdByUserId(userId);
+        LOGGER.info("Mentee ID retrieved: " + menteeId);
 
-    int selectedMonth = (selectedMonthStr != null && !selectedMonthStr.isEmpty())
-            ? Month.valueOf(selectedMonthStr.toUpperCase()).getValue() : LocalDate.now().getMonthValue();
-    int selectedYear = (selectedYearStr != null && !selectedYearStr.isEmpty())
-            ? Integer.parseInt(selectedYearStr) : LocalDate.now().getYear();
-    LOGGER.info("Selected month: " + selectedMonth + ", Year: " + selectedYear);
+        int selectedMonth = (selectedMonthStr != null && !selectedMonthStr.isEmpty())
+                ? Month.valueOf(selectedMonthStr.toUpperCase()).getValue() : LocalDate.now().getMonthValue();
+        int selectedYear = (selectedYearStr != null && !selectedYearStr.isEmpty())
+                ? Integer.parseInt(selectedYearStr) : LocalDate.now().getYear();
+        LOGGER.info("Selected month: " + selectedMonth + ", Year: " + selectedYear);
 
-    List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
-    int scheduleId = schedules.isEmpty() ? 1 : schedules.get(0).getId();
-    LOGGER.info("Schedule ID: " + scheduleId);
+        List<Schedule> schedules = daoSc.getSchedulesByMonth(selectedYear, selectedMonth);
+        int scheduleId = schedules.isEmpty() ? 1 : schedules.get(0).getId();
+        LOGGER.info("Schedule ID: " + scheduleId);
 
-    java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
-    java.sql.Date endDate = daoSc.getEndDateByScheduleId(scheduleId);
-    if (startDate == null || endDate == null) {
-        LOGGER.severe("Schedule start or end date not found for scheduleId: " + scheduleId);
-        redirect(response, "test1.jsp");
-        return;
-    }
+        java.sql.Date startDate = daoSc.getStartDateByScheduleId(scheduleId);
+        java.sql.Date endDate = daoSc.getEndDateByScheduleId(scheduleId);
+        if (startDate == null || endDate == null) {
+            LOGGER.severe("Schedule start or end date not found for scheduleId: " + scheduleId);
+            redirect(response, "test1.jsp");
+            return;
+        }
 
-    LocalDate baseDate = LocalDate.of(selectedYear, selectedMonth, 1);
-    LocalDate firstDayOfWeek = baseDate.plusWeeks(weekOffset);
-    LocalDate lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
-    weekOffset = adjustWeekBoundaries(startDate.toLocalDate(), endDate.toLocalDate(), firstDayOfWeek, lastDayOfWeek, weekOffset);
-    firstDayOfWeek = baseDate.plusWeeks(weekOffset);
-    lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
-    LOGGER.info("Week boundaries - First day: " + firstDayOfWeek + ", Last day: " + lastDayOfWeek);
+        LocalDate baseDate = LocalDate.of(selectedYear, selectedMonth, 1);
+        LocalDate firstDayOfWeek = baseDate.plusWeeks(weekOffset);
+        LocalDate lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
+        weekOffset = adjustWeekBoundaries(startDate.toLocalDate(), endDate.toLocalDate(), firstDayOfWeek, lastDayOfWeek, weekOffset);
+        firstDayOfWeek = baseDate.plusWeeks(weekOffset);
+        lastDayOfWeek = calculateLastDayOfWeek(firstDayOfWeek, endDate.toLocalDate());
+        LOGGER.info("Week boundaries - First day: " + firstDayOfWeek + ", Last day: " + lastDayOfWeek);
 
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
-    Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
-    List<String> formattedWeekDates = new ArrayList<>();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
+        Map<String, Map<String, String>> weekDateInfoMap = new LinkedHashMap<>();
+        List<String> formattedWeekDates = new ArrayList<>();
 
-    Map<String, String> slotStatusMap = new LinkedHashMap<>(); // Map để lưu trạng thái của slot
+        Map<String, String> slotStatusMap = new LinkedHashMap<>(); // Map để lưu trạng thái của slot
 
-    // Lấy danh sách slot Studying của mentee
-    Set<String> studyingSlots = getStudyingSlotsForMentee(menteeId);
-    LOGGER.info("Studying slots for mentee " + menteeId + ": " + studyingSlots);
+        // Lấy danh sách slot Studying của mentee
+        Set<String> studyingSlots = getStudyingSlotsForMentee(menteeId);
+        LOGGER.info("Studying slots for mentee " + menteeId + ": " + studyingSlots);
 
-    LocalDate currentDay = firstDayOfWeek;
-    while (!currentDay.isAfter(lastDayOfWeek)) {
-        String formattedDate = currentDay.format(dateFormatter);
-        java.sql.Date sqlDate = java.sql.Date.valueOf(currentDay);
-        List<Slot> slots = daoMentorSL.getSlotsByDateForRequest(sqlDate, mentorId);
-        System.out.println("hellooo"+slots);
-        slotsByDay.put(formattedDate, slots);
+        LocalDate currentDay = firstDayOfWeek;
+        while (!currentDay.isAfter(lastDayOfWeek)) {
+            String formattedDate = currentDay.format(dateFormatter);
+            java.sql.Date sqlDate = java.sql.Date.valueOf(currentDay);
+            List<Slot> slots = daoMentorSL.getSlotsByDateForRequest(sqlDate, mentorId);
+            System.out.println("hellooo" + slots);
+            slotsByDay.put(formattedDate, slots);
 
-        Map<String, String> dateInfo = Map.of(
-                "dayOfWeek", currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                "day", String.valueOf(currentDay.getDayOfMonth()),
-                "month", currentDay.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                "year", String.valueOf(currentDay.getYear())
-        );
-        weekDateInfoMap.put(formattedDate, dateInfo);
-        formattedWeekDates.add(formattedDate);
+            Map<String, String> dateInfo = Map.of(
+                    "dayOfWeek", currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                    "day", String.valueOf(currentDay.getDayOfMonth()),
+                    "month", currentDay.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                    "year", String.valueOf(currentDay.getYear())
+            );
+            weekDateInfoMap.put(formattedDate, dateInfo);
+            formattedWeekDates.add(formattedDate);
 
-        for (int slotNumber = 1; slotNumber <= 5; slotNumber++) {
-            String slotKey = formattedDate + "_" + slotNumber;
+            for (int slotNumber = 1; slotNumber <= 5; slotNumber++) {
+                String slotKey = formattedDate + "_" + slotNumber;
 
-            // 1. Kiểm tra trạng thái Studying của mentee trước (giữ nguyên logic cũ)
-            if (studyingSlots.contains(slotKey)) {
-                slotStatusMap.put(slotKey, "Duplicated"); // Slot đã học bởi mentee này
-                LOGGER.info("Slot " + slotKey + " -> Studying (Mentee)");
-                continue; // Bỏ qua các kiểm tra tiếp theo nếu mentee đã Studying
-            }
+                // 1. Kiểm tra trạng thái Studying của mentee trước (giữ nguyên logic cũ)
+                if (studyingSlots.contains(slotKey)) {
+                    slotStatusMap.put(slotKey, "Duplicated"); // Slot đã học bởi mentee này
+                    LOGGER.info("Slot " + slotKey + " -> Studying (Mentee)");
+                    continue; // Bỏ qua các kiểm tra tiếp theo nếu mentee đã Studying
+                }
 
-            // 2. Kiểm tra trạng thái thực tế của mentor từ Mentor_Slot
-            boolean mentorSlotFound = false;
-            String mentorStatus = "Available"; // Mặc định là Available nếu không tìm thấy slot
-            for (Slot slot : slots) {
-                if (slot.getSlotNumber() == slotNumber) {
-                    mentorSlotFound = true;
-                    mentorStatus = slot.getStatus(); // Lấy trạng thái thực tế từ Mentor_Slot
-                    break;
+                // 2. Kiểm tra trạng thái thực tế của mentor từ Mentor_Slot
+                boolean mentorSlotFound = false;
+                String mentorStatus = "Available"; // Mặc định là Available nếu không tìm thấy slot
+                for (Slot slot : slots) {
+                    if (slot.getSlotNumber() == slotNumber) {
+                        mentorSlotFound = true;
+                        mentorStatus = slot.getStatus(); // Lấy trạng thái thực tế từ Mentor_Slot
+                        break;
+                    }
+                }
+
+                // 3. Xác định trạng thái slot dựa trên trạng thái của mentor
+                if (mentorSlotFound) {
+                    slotStatusMap.put(slotKey, mentorStatus); // Sử dụng trạng thái thực tế của mentor
+                    LOGGER.info("Slot " + slotKey + " -> " + mentorStatus + " (Mentor)");
+                } else {
+                    slotStatusMap.put(slotKey, "Available"); // Không có slot của mentor -> Available
+                    LOGGER.info("Slot " + slotKey + " -> Available (No Mentor Slot)");
                 }
             }
 
-            // 3. Xác định trạng thái slot dựa trên trạng thái của mentor
-            if (mentorSlotFound) {
-                slotStatusMap.put(slotKey, mentorStatus); // Sử dụng trạng thái thực tế của mentor
-                LOGGER.info("Slot " + slotKey + " -> " + mentorStatus + " (Mentor)");
-            } else {
-                slotStatusMap.put(slotKey, "Available"); // Không có slot của mentor -> Available
-                LOGGER.info("Slot " + slotKey + " -> Available (No Mentor Slot)");
-            }
+            currentDay = currentDay.plusDays(1);
         }
+        LOGGER.info("Generated slots by day: " + slotsByDay.size() + " days");
 
-        currentDay = currentDay.plusDays(1);
+        Map<Integer, String> slotTimeMap = Map.of(1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00");
+
+        Course c = daoC.getCourseByIdd(courseId);
+        Mentor m = daomentor.getMentorByIdd(mentorId);
+        Map<String, List<Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
+
+        request.setAttribute("slotStatusMap", slotStatusMap); // Truyền trạng thái slot sang JSP
+        request.setAttribute("course", c);
+        request.setAttribute("mentorrequest", m);
+        request.setAttribute("months", schedulesByMonth.keySet());
+        request.setAttribute("schedulesByMonth", schedulesByMonth);
+        request.setAttribute("weekDateInfoMap", weekDateInfoMap);
+        request.setAttribute("formattedWeekDates", formattedWeekDates);
+        request.setAttribute("weekOffset", weekOffset);
+        request.setAttribute("slotsByDay", slotsByDay);
+        request.setAttribute("slotTimeMap", slotTimeMap);
+        request.setAttribute("scheduleId", scheduleId);
+        request.setAttribute("selectedYear", selectedYear);
+        request.setAttribute("selectedMonth", selectedMonth);
+        request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        LOGGER.info("Before forwarding to test1.jsp");
+        LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
+        LOGGER.info("slotsByDay: " + slotsByDay);
+        request.getRequestDispatcher("test1.jsp").forward(request, response);
+        LOGGER.info("After forwarding to test1.jsp");
     }
-    LOGGER.info("Generated slots by day: " + slotsByDay.size() + " days");
-
-    Map<Integer, String> slotTimeMap = Map.of(1, "07:30:00", 2, "10:00:00", 3, "13:00:00", 4, "15:30:00", 5, "19:30:00");
-
-    Course c = daoC.getCourseByIdd(courseId);
-    Mentor m = daomentor.getMentorByIdd(mentorId);
-    Map<String, List<Schedule>> schedulesByMonth = daoSc.getSchedulesByMonth();
-
-    request.setAttribute("slotStatusMap", slotStatusMap); // Truyền trạng thái slot sang JSP
-    request.setAttribute("course", c);
-    request.setAttribute("mentorrequest", m);
-    request.setAttribute("months", schedulesByMonth.keySet());
-    request.setAttribute("schedulesByMonth", schedulesByMonth);
-    request.setAttribute("weekDateInfoMap", weekDateInfoMap);
-    request.setAttribute("formattedWeekDates", formattedWeekDates);
-    request.setAttribute("weekOffset", weekOffset);
-    request.setAttribute("slotsByDay", slotsByDay);
-    request.setAttribute("slotTimeMap", slotTimeMap);
-    request.setAttribute("scheduleId", scheduleId);
-    request.setAttribute("selectedYear", selectedYear);
-    request.setAttribute("selectedMonth", selectedMonth);
-    request.setAttribute("currentMonth", Month.of(selectedMonth).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-    LOGGER.info("Before forwarding to test1.jsp");
-    LOGGER.info("weekDateInfoMap: " + weekDateInfoMap);
-    LOGGER.info("slotsByDay: " + slotsByDay);
-    request.getRequestDispatcher("test1.jsp").forward(request, response);
-    LOGGER.info("After forwarding to test1.jsp");
-}
 
     private LocalDate calculateLastDayOfWeek(LocalDate firstDay, LocalDate endDate) {
         LocalDate potentialLastDay = firstDay.plusDays(6);

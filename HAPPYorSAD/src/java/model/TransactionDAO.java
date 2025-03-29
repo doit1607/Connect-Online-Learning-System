@@ -284,4 +284,9 @@ public class TransactionDAO extends DBConnection {
         }
         return transactionList;
     }
+    
+    public static void main(String[] args) {
+        TransactionDAO dao = new TransactionDAO();
+        dao.createTransaction("jane_smith", 100000, "HOLD", "HELLO");
+    }
 }
