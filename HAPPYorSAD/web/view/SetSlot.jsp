@@ -194,11 +194,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/MySchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>My Schedule
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
                                             </a>
