@@ -234,7 +234,7 @@
                                 <div class="settings-menu">
                                     <h3>Dashboard</h3>
                                     <ul>
-                                        <li class="nav-item active">
+                                        <li class="nav-item ">
                                             <a href="/../HAPPYorSAD/AcceptCV" class="accept-cv">
                                                 <i class="fas fa-user"></i>Manage CV
                                             </a>
@@ -248,7 +248,7 @@
                                                 <i class="bx bxs-graduation"></i>Request Course
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item active">
                                             <a href="ConfirmSchedule" class="nav-link">
                                                 <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
