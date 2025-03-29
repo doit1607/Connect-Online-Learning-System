@@ -65,16 +65,6 @@ public class UpdateMenteeProfile extends HttpServlet {
 
         request.setAttribute("mentee", u);
         request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-
-//        boolean isUpdated = mente.updateMenteeProfile(u);
-//        if (isUpdated) {
-//            request.setAttribute("successMessage", "Profile updated successfully!");
-//            request.getRequestDispatcher("Home").forward(request, response);
-//        } else {
-//            request.setAttribute("error", "Unable to update profile!");
-//            request.setAttribute("mentee", u);
-//            request.getRequestDispatcher("/CRUD/updateMenteeProfile.jsp").forward(request, response);
-//        }
     }
 
     /**
@@ -91,9 +81,25 @@ public class UpdateMenteeProfile extends HttpServlet {
         try {
             // Lấy dữ liệu từ form
             String username = request.getParameter("username");
+            
             String fullname = request.getParameter("fullname");
             String address = request.getParameter("address");
             String gender = request.getParameter("gender");
+            
+            String regexName = "^[a-zA-Z]+(\\s[a-zA-Z]+)*$";
+
+            if (!fullname.matches(regexName)) {
+                request.getSession().setAttribute("errorMessage", "Wrong input update! Please input again.");
+                response.sendRedirect("updatementeeprofile");
+                return;
+            }
+
+            String regexAddress = "^[a-zA-Z0-9,\\.]+(\\s[a-zA-Z0-9,\\.]+)*$";
+            if (!address.matches(regexAddress)) {
+                request.getSession().setAttribute("errorMessage", "Wrong input update! Please input again.");
+                response.sendRedirect("updatementeeprofile");
+                return;
+            }
 
             // Xử lý ngày sinh
             Date dateOfBirth = null;
@@ -101,6 +107,12 @@ public class UpdateMenteeProfile extends HttpServlet {
             if (dob != null && !dob.isEmpty()) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 dateOfBirth = formatter.parse(dob);
+                Date currentDate = new Date();
+                if (dateOfBirth.after(currentDate)) {
+                    request.getSession().setAttribute("errorMessage", "Date of birth cannot be greater than current date.");
+                    response.sendRedirect("updatementeeprofile");
+                    return;
+                }
             }
 
             // Xử lý upload avatar
