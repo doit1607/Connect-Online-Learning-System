@@ -60,6 +60,7 @@ public class ShowAllRequest extends HttpServlet {
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
         String service = request.getParameter("service");
+        dao.updateStatusRequesIsOverEndDate();
 
 
 //        int requestId = Integer.parseInt(request.getParameter("requestid"));
