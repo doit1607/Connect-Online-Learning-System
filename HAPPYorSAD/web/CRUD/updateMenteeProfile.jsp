@@ -219,6 +219,18 @@
                                             }
                                         %>
 
+                                        <% 
+                                        String errorMessage = (String) session.getAttribute("errorMessage");
+                                        if (errorMessage != null) {
+                                        %>
+                                        <div class="alert alert-danger">
+                                            <%= errorMessage %>
+                                        </div>
+                                        <%
+                                            session.removeAttribute("errorMessage");
+                                        }
+                                        %>
+                                        
                                         <input type="hidden" name="username" value="${sessionScope.usernameUser}">
 
                                         <div class="row">
