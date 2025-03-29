@@ -47,8 +47,8 @@ public class MenteeStatistic extends HttpServlet {
             int index = Integer.parseInt(indexPage);
 
             int count = dao.getTotalMentee();
-            int endPage = count / 2;
-            if (count % 2 != 0) {
+            int endPage = count / 7;
+            if (count % 7 != 0) {
                 endPage++;
             }
 
