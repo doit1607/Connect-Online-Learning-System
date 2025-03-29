@@ -71,23 +71,23 @@ public class AcceptCV extends HttpServlet {
             return;
         }
 
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int index = Integer.parseInt(indexPage);
+
+        int count = dao1.getTotalRequest();
+        int endPage = count / 3;
+        if (count % 3 != 0) {
+            endPage++;
+        }
+
         // lay ra list CV da duoc approved
         if ("approved".equals(status)) {
             String searchQuery = request.getParameter("searchQuery");
             if (searchQuery != null) {
                 searchQuery = searchQuery.trim().toLowerCase();
-            }
-
-            String indexPage = request.getParameter("index");
-            if (indexPage == null) {
-                indexPage = "1";
-            }
-            int index = Integer.parseInt(indexPage);
-
-            int count = dao1.getTotalRequest();
-            int endPage = count / 3;
-            if (count % 3 != 0) {
-                endPage++;
             }
 
             List<CV> cvApproved = dao1.getCVApproved(index);
@@ -113,7 +113,7 @@ public class AcceptCV extends HttpServlet {
                 searchQuery = searchQuery.trim().toLowerCase();
             }
 
-            List<CV> cvRejected = dao1.getCVrejected();
+            List<CV> cvRejected = dao1.getCVrejected(index);
             if (searchQuery != null && !searchQuery.isEmpty()) {
                 final String finalSearchQuery = searchQuery;
                 cvRejected = cvRejected.stream()
@@ -123,11 +123,15 @@ public class AcceptCV extends HttpServlet {
             }
 
             request.setAttribute("cvRejected", cvRejected);
+            request.setAttribute("tag", index);
+            request.setAttribute("endPage", endPage);
             request.getRequestDispatcher("/view/ListCVRejected.jsp").forward(request, response);
             return;
         }
 
-        List<CV> cv = dao.getCVtoAccept();
+        List<CV> cv = dao.getCVtoAccept(index);
+        request.setAttribute("tag", index);
+        request.setAttribute("endPage", endPage);
         request.setAttribute("acceptCV", cv);
         request.getRequestDispatcher("/view/AcceptCV.jsp").forward(request, response);
 
