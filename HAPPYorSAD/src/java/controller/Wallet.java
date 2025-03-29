@@ -95,14 +95,14 @@ public class Wallet extends HttpServlet {
         String paymentMethod = request.getParameter("optradio");
         double amount = Double.parseDouble(amountStr);
         if ("deposit".equals(paymentMethod)) {
-            int transactionId = transactionDAO.createTransaction(username, amount, "DEPOSIT", "Deposit via wallet");
+            int transactionId = transactionDAO.createTransaction(username, amount, "DEPOSIT", "Deposit Successfully!");
             transactionDAO.updateTransactionStatus(transactionId, "Completed");
             transactionDAO.depositToWallet(username, amount);
             response.sendRedirect("/HAPPYorSAD/wallet?service=deposit&msg=Deposit successful");
         } else if ("withdraw".equals(paymentMethod)) {
             double availableBalance = transactionDAO.getBalance(username);
             if (amount <= availableBalance) {
-                int transactionId = transactionDAO.createTransaction(username, amount, "WITHDRAW", "Withdraw via wallet");
+                int transactionId = transactionDAO.createTransaction(username, amount, "WITHDRAW", "Withdraw Successfully");
                 transactionDAO.updateTransactionStatus(transactionId, "Pending");
                 transactionDAO.updateHold(username, amount);
                 response.sendRedirect("/HAPPYorSAD/wallet?service=withdraw&msg=Withdraw request submitted");
