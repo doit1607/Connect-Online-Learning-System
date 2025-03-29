@@ -402,7 +402,8 @@
                                                                 console.log("Server response:", xhr.responseText); // Xem server có trả về gì không
                                                                 if (xhr.status == 200) {
                                                                     document.getElementById("courseList").innerHTML = xhr.responseText;
-                                                                    document.getElementById("coursePopup").style.display = "block";
+                                                                    let popup = document.getElementById("coursePopup");
+                                                                    popup.style.display = "flex";
                                                                 } else {
                                                                     console.error("Error fetching courses");
                                                                 }
