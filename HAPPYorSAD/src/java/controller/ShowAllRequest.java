@@ -99,7 +99,7 @@ public class ShowAllRequest extends HttpServlet {
             }
 
             double totalprice = newrequest.gettotalprice();
-            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT", "Tien khoa hoc cua mentee " + usernamementee);
+            daotran.createTransaction((String) session.getAttribute("usernameUser"), totalprice, "DEPOSIT", "Course fee of Mentee " + usernamementee);
             double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
             dao.updateRequestStatus(requestId, "Processing");
         }
@@ -124,8 +124,8 @@ public class ShowAllRequest extends HttpServlet {
             double pricePerSlot = daoMentor.getMentorPrice(newrequest.getCourseId());
             double totalPrice = newrequest.getTotalSlot() * pricePerSlot;
 
-            double refundAmount = absentCount * pricePerSlot * 0.7; // Tiền hoàn lại cho mentee
-            double mentorAmount = presentCount * pricePerSlot * 0.8; // Tiền trả cho mentor
+            double refundAmount = absentCount * pricePerSlot * 0.7; 
+            double mentorAmount = presentCount * pricePerSlot * 0.8;
 
             int mentorid = newrequest.getMentorId();
             int mentoruser_id = daomentor.getMentorUserid(mentorid);
@@ -133,41 +133,35 @@ public class ShowAllRequest extends HttpServlet {
             int menteeuser_id = daomentee.getMenteeUserid(menteeid);
             String usernamementee = daomentee.getMenteeUsername(menteeuser_id);
             String usernamementor = daomentor.getMentorUsername(mentoruser_id);
-            double finalprice = refundAmount + mentorAmount; // Tổng tiền manager phải rút
+            double finalprice = refundAmount + mentorAmount; 
 
-            // Bước 3: Thực hiện các giao dịch tài chính
-            // Hoàn tiền cho Mentee nếu có slot "absent"
+       
+            
             if (refundAmount > 0) {
                 daotran.processRefund(usernamementee, refundAmount);
-                // Manager rút tiền để hoàn cho mentee
                 daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), refundAmount);
                 daotran.createTransaction((String) session.getAttribute("usernameUser"), refundAmount, "WITHDRAW",
-                        "Hoàn tiền " + refundAmount + " cho mentee " + usernamementee + " với " + absentCount + " slot absent");
+                        "Refund " + refundAmount + " for Mentee " + usernamementee + " with " + absentCount + " slot absent");
             }
 
-            // Trả tiền cho Mentor nếu có slot "present"
+           
             if (mentorAmount > 0) {
-                // Manager rút tiền để trả cho mentor
                 daotran.withdrawToWallet((String) session.getAttribute("usernameUser"), mentorAmount);
                 daotran.createTransaction((String) session.getAttribute("usernameUser"), mentorAmount, "WITHDRAW",
-                        "Trả tiền khóa học " + mentorAmount + " cho mentor " + usernamementor + " với " + presentCount + " slot present");
+                        "Refund " + mentorAmount + " for Mentor " + usernamementor + " with " + presentCount + " slot present");
 
-                // Thêm tiền vào ví mentor
                 daotran.depositToWallet(usernamementor, mentorAmount);
                 daotran.createTransaction(usernamementor, mentorAmount, "DEPOSIT",
-                        "Tiền khóa học của mentee " + usernamementee + " với " + presentCount + " slot");
+                        "Course fees of Mentee " + usernamementee + " with " + presentCount + " slot");
             }
 
-            // Ghi lại giao dịch hoàn tiền cho mentee (nếu có)
             if (refundAmount > 0) {
                 daotran.createTransaction(usernamementee, refundAmount, "DEPOSIT",
-                        "Tiền refund cho " + absentCount + " slot absent với khóa học của mentor " + usernamementor);
+                        "Refund money for " + absentCount + " slot absent with Mentor " + usernamementor);
             }
 
-            // Bước 4: Cập nhật trạng thái yêu cầu thành "Closed"
             dao.updateRequestStatus(requestId, "Closed");
 
-            // Cập nhật số dư ví của manager
             double balance = daotran.getBalance((String) session.getAttribute("usernameUser"));
             session.setAttribute("walletBalance", balance);
         }
@@ -208,16 +202,14 @@ public class ShowAllRequest extends HttpServlet {
         if (count % 10 != 0) {
             endPage++;
         }
-        // Lấy danh sách yêu cầu từ DAO
+
         List<Request> requestList;
         if (search == null && status == null && startDate == null && endDate == null) {
-            requestList = dao.showAllRequest(index); // Gọi hàm mới
+            requestList = dao.showAllRequest(index); 
         } else {
             requestList = dao.getAllRequests(search, status, startDate, endDate);
         }
-        //List<Request> requestList = dao.getAllRequests(search, status, startDate, endDate);
 
-        // Gửi danh sách đến JSP
         request.setAttribute("tag", index);
         request.setAttribute("endPage", endPage);
         request.setAttribute("requestList", requestList);
