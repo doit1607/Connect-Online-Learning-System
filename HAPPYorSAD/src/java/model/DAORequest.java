@@ -467,7 +467,7 @@ public class DAORequest extends DBConnection {
                 + "JOIN Mentee m ON r.mentee_id = m.id\n"
                 + "JOIN Users u ON m.user_id = u.id\n"
                 + "JOIN Course c ON r.course_id = c.id\n"
-                + "JOIN Mentor m2 ON r.mentor_id = m2.user_id\n"
+                + "JOIN Mentor m2 ON r.mentor_id = m2.id\n"
                 + "WHERE r.status != 'Draft'\n"
                 + "ORDER BY r.created_at DESC\n"
                 + "offset ? rows fetch next 10 rows only";
