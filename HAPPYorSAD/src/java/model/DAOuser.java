@@ -503,6 +503,21 @@ public class DAOuser extends DBConnection {
         }
         return null;
     }
+    
+    public boolean checkPhoneExist(String phone) {
+    try {
+        String sql = "SELECT * FROM Users WHERE phone_number = ?";
+        PreparedStatement state = conn.prepareStatement(sql);
+        state.setString(1, phone);
+        ResultSet rs = state.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false; 
+}
 
     public int getUserIdByUsername(String username) {
         int userId = -1;
