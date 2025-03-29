@@ -861,13 +861,16 @@ public class DAOCourse extends DBConnection {
     }
 
     // lay ra MentorCourse theo trang thai approved
-    public List<MentorCourse> getApprovedCourses() {
+    public List<MentorCourse> getApprovedCourses(int index) {
         List<MentorCourse> courses = new ArrayList<>();
         String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
-                + "join Course c on mc.course_id = c.id where mc.status = 'approved'";
+                + "join Course c on mc.course_id = c.id where mc.status = 'approved'"
+                + "order by mc.mentor_id\n"
+                + "offset ? rows fetch next 5 rows only";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 5);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
@@ -885,13 +888,16 @@ public class DAOCourse extends DBConnection {
     }
 
     // lay ra MentorCourse theo trang thai rejected
-    public List<MentorCourse> getRejectedCourses() {
+    public List<MentorCourse> getRejectedCourses(int index) {
         List<MentorCourse> courses = new ArrayList<>();
         String sql = "select mc.mentor_id, m.name, mc.course_id, c.title, mc.status from Mentor m join MentorCourse mc on m.id = mc.mentor_id\n"
-                + "join Course c on mc.course_id = c.id where mc.status = 'rejected'";
+                + "join Course c on mc.course_id = c.id where mc.status = 'rejected'"
+                + "order by mc.mentor_id\n"
+                + "offset ? rows fetch next 5 rows only";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 5);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 courses.add(new MentorCourse(
