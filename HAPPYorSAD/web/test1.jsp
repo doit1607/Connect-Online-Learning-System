@@ -1089,7 +1089,6 @@
                             <input type="hidden" name="service" id="serviceInput" value="">
                             <input type="hidden" id="totalPriceInput" name="totalprice" value="0">
                             <button type="button" class="submit-bbb">Submit</button>
-                            <button type="button" class="save-bbb">Save</button>
                         </div>
                         <!-- /Submit Section -->
                     </div>
@@ -1664,83 +1663,7 @@
                     eventHandlersAttached.submitBtn = true;
                 }
 
-                if (!eventHandlersAttached.saveBtn && saveBtn) {
-                    console.log("Attaching handler for saveBtn at " + new Date().toISOString());
-                    saveBtn.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        console.log("Save clicked - Handler triggered at " + new Date().toISOString());
-
-                        if (isSaveProcessing) {
-                            console.log("Save processing, skipping...");
-                            return;
-                        }
-                        isSaveProcessing = true;
-                        saveBtn.disabled = true;
-                        saveBtn.classList.add("disabled");
-
-                        if (bookingForm.checkValidity()) {
-                            if (tempSlotBooked.size === 0) {
-                                showNotification("Please select at least one slot before saving!");
-                                isSaveProcessing = false;
-                                saveBtn.disabled = false;
-                                saveBtn.classList.remove("disabled");
-                                return;
-                            }
-
-                            document.getElementById("serviceInput").value = "save";
-                            document.getElementById("totalPriceInput").value = totalPrice;
-
-                            let formData = new FormData(bookingForm);
-                            formData.append("submissionId", Date.now() + "_" + Math.random().toString(36).substr(2, 9));
-                            tempSlotBooked.forEach(slot => formData.append("tempSlotBooked", slot));
-                            console.log("Sending FormData for Save:", Array.from(formData.entries()));
-
-                            fetch(bookingForm.action, {
-                                method: "POST",
-                                body: formData,
-                                credentials: "same-origin"
-                            })
-                                    .then(response => {
-                                        if (!response.ok)
-                                            throw new Error("Network response was not ok " + response.status);
-                                        return response.text();
-                                    })
-                                    .then(data => {
-                                        console.log("Raw response from Save:", data);
-                                        if (data.includes("ShowMenteeRequest")) {
-                                            clearFormData();
-                                            tempSlotBooked.clear();
-                                            slotRepeatMap.clear();
-                                            updateTempSlotUI();
-                                            bookedSlotsContainer.innerHTML = "";
-                                            totalSlots = 0;
-                                            totalPrice = 0;
-                                            updateUI();
-                                            showNotification("Request saved successfully!");
-                                            window.location.href = "/HAPPYorSAD/ShowMenteeRequest";
-                                        } else {
-                                            showNotification("Failed to save request. Please try again.");
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error during saving:", error);
-                                        showNotification("Error during saving: " + error.message);
-                                    })
-                                    .finally(() => {
-                                        isSaveProcessing = false;
-                                        saveBtn.disabled = false;
-                                        saveBtn.classList.remove("disabled");
-                                        console.log("Save processing completed");
-                                    });
-                        } else {
-                            showNotification("Please fill in all required fields.");
-                            isSaveProcessing = false;
-                            saveBtn.disabled = false;
-                            saveBtn.classList.remove("disabled");
-                        }
-                    });
-                    eventHandlersAttached.saveBtn = true;
-                }
+ 
 
                 monthItems.forEach(item => {
                     item.addEventListener("click", function (event) {

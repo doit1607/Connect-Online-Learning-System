@@ -161,12 +161,9 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     <div class="row">
                         <div class="col-md-12">
                             <div class="breadcrumb-list">
-                                <h2 class="breadcrumb-title">Dashboard</h2>
+                                <h2 class="breadcrumb-title">Dashboard Mentor</h2>
                                 <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Available Timings</li>
-                                    </ol>
+
                                 </nav>
                             </div>
                         </div>
@@ -193,11 +190,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                 <i class="bx bxs-tachometer"></i>Schedule
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="/../HAPPYorSAD/MySchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>My Schedule
-                                            </a>
-                                        </li>
+
                                         <li class="nav-item">
                                             <a href="Notifications" class="nav-link">
                                                 <i class="bx bxs-bell"></i>Notifications
@@ -239,24 +232,19 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                             </div>
                         </div>  
                         <div class="col-lg-9 col-xl-9">
-                            <div class="dashboard-header"><h3>Set Your Schedule</h3></div>
                             <div class="card custom-card">
                                 <div class="card-body">
-                                    <div class="card-header"><h3>Select Slots</h3></div>
+                                    <div class="card-header"><h3>Set Your Schedule</h3></div>
                                     <div class="row align-items-center mb-3">
-                                        <div class="col-12 col-sm-4 col-md-6">
-                                            <h4 class="mb-1">${nextMonth} ${nextYear}</h4>
-                                            <p class="text-muted">Schedule ID: ${nextScheduleId}</p>
-                                        </div>
-                                        <div class="col-12 col-sm-8 col-md-6 text-sm-end">
-                                            <div class="week-navigation">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <div class="week-navigation text-center">
                                                 <form id="prevForm" action="/HAPPYorSAD/SetSlot" method="post" style="display:inline;">
                                                     <input type="hidden" name="action" value="changeMonth">
                                                     <input type="hidden" name="direction" value="previous">
                                                     <input type="hidden" name="currentScheduleId" value="${nextScheduleId}">
                                                     <button type="submit" class="btn btn-primary" id="prevButton">Previous</button>
                                                 </form>
-                                                <span id="currentMonthYear">${nextMonth} ${nextYear}</span>
+                                                <span id="currentMonthYear" class="mx-3">${nextMonth} ${nextYear}</span>
                                                 <form id="nextForm" action="/HAPPYorSAD/SetSlot" method="post" style="display:inline;">
                                                     <input type="hidden" name="action" value="changeMonth">
                                                     <input type="hidden" name="direction" value="next">
@@ -264,9 +252,10 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                     <button type="submit" class="btn btn-primary" id="nextButton">Next</button>
                                                 </form>
                                             </div>
-                                            <a href="#" class="text-primary ms-3" id="addSchedule">+ Add Schedule</a>
                                         </div>
+
                                     </div>
+
                                     <div class="row slot-row">
                                         <c:choose>
                                             <c:when test="${empty nextWeekDates}">
@@ -326,8 +315,27 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                     <form id="saveForm" action="/HAPPYorSAD/SetSlot?action=save" method="post">
                                         <input type="hidden" name="scheduleId" value="${nextScheduleId}">
                                         <button type="button" class="btn btn-gray" onclick="window.location.reload()">Clear</button>
-                                        <button type="submit" class="btn btn-primary prime-btn">Save Changes</button>
+                                        <button type="button" class="btn btn-primary prime-btn" data-bs-toggle="modal" data-bs-target="#confirmModal">Save Changes</button>
                                     </form>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">Confirm save</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure? Once saved it cannot be edited.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+                                                <button type="button" class="btn btn-primary" onclick="document.getElementById('saveForm').submit();">Confirm</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -384,7 +392,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Alert fade out
                 setTimeout(function () {
                     let alerts = document.querySelectorAll(".alert");
                     alerts.forEach(alert => {
@@ -394,7 +401,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     });
                 }, 3000);
 
-                // Show message or error modal
                 const message = "${message}";
                 const errorMessage = "${errorMessage}";
                 if (message || errorMessage) {
@@ -404,15 +410,23 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 }
 
                 // Show rejected slots modal if applicable
-                const hasRejectedSlots = ${hasRejectedSlots != null ? hasRejectedSlots : 'false'};
+                const hasRejectedSlots = "${hasRejectedSlots}" === "true"; // Chuyển chuỗi thành boolean
                 const scheduleId = "${nextScheduleId}";
                 console.log("hasRejectedSlots:", hasRejectedSlots);
                 console.log("scheduleId:", scheduleId);
-                if (hasRejectedSlots && scheduleId !== "-1") {
-                    const rejectedModal = new bootstrap.Modal(document.getElementById("rejectedSlotsModal"));
-                    rejectedModal.show();
-                }
 
+                if (hasRejectedSlots && scheduleId !== "-1") {
+                    const modalElement = document.getElementById("rejectedSlotsModal");
+                    if (modalElement) {
+                        console.log("Modal found, showing...");
+                        const rejectedModal = new bootstrap.Modal(modalElement);
+                        rejectedModal.show();
+                    } else {
+                        console.error("Modal element #rejectedSlotsModal not found in DOM");
+                    }
+                } else {
+                    console.log("Conditions not met: hasRejectedSlots =", hasRejectedSlots, "scheduleId =", scheduleId);
+                }
 
                 console.log("nextWeekDates from JSP:", "${nextWeekDates}");
 
@@ -552,7 +566,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                         // Create span for "Empty"
                         const span = document.createElement("span");
                         span.className = "text-muted";
-                        span.textContent = "Empty";
+                        span.textContent = "Non set";
 
                         // Create new add button
                         const addButton = document.createElement("button");
@@ -608,5 +622,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 }
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

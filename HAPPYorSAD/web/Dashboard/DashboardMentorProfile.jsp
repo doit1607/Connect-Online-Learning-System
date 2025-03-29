@@ -184,12 +184,7 @@
                                                     <p>${sessionScope.profile.phoneNumber}</p>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12">
-                                                <div class="contact-info mb-0">
-                                                    <h6>Bio</h6>
-                                                    <p>${sessionScope.profile.bio}</p>
-                                                </div>
-                                            </div>
+                                            
                                         </div>  
 
                                     </div>

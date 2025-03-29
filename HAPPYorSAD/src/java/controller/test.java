@@ -145,14 +145,14 @@ public class test extends HttpServlet {
             if (tempSlots != null && tempSlots.length > 0) {
                 Set<String> tempSlotBooked = new HashSet<>(Arrays.asList(tempSlots));
                 session.setAttribute("tempSlotBooked", tempSlotBooked);
-                String responseMessage = "Đã lưu tạm " + tempSlotBooked.size() + " slot.";
+                String responseMessage = "Saved " + tempSlotBooked.size() + " slot.";
                 LOGGER.info("Saved tempSlotBooked to session: " + tempSlotBooked);
                 response.setContentType("text/plain");
                 response.getWriter().write(responseMessage);
             } else {
                 LOGGER.warning("No slots selected for booking");
                 response.setContentType("text/plain");
-                response.getWriter().write("Không có slot nào được chọn.");
+                response.getWriter().write("No Slot Selected.");
             }
             return;
         }
@@ -161,7 +161,7 @@ public class test extends HttpServlet {
             LOGGER.info("Clearing tempSlotBooked from session");
             session.removeAttribute("tempSlotBooked");
             response.setContentType("text/plain");
-            response.getWriter().write("Đã xóa tất cả slot tạm.");
+            response.getWriter().write("Clear slot .");
             return;
         }
 
@@ -266,7 +266,7 @@ public class test extends HttpServlet {
                         LOGGER.info("Request updated successfully: " + requestId);
                     } else {
                         LOGGER.warning("Request not found: " + requestId);
-                        request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
+                        request.setAttribute("errorMessage", "No update.");
                     }
                 }
                 LOGGER.info("Redirecting to ShowMenteeRequest");
@@ -280,106 +280,6 @@ public class test extends HttpServlet {
             }
         }
 
-        if ("save".equals(service)) {
-            String requestId_raw = request.getParameter("requestId");
-            String[] tempSlotBooked = request.getParameterValues("tempSlotBooked");
-            double totalPrice = Double.parseDouble(request.getParameter("totalPriceInput"));
-            LOGGER.info("Processing save with tempSlotBooked: " + Arrays.toString(tempSlotBooked));
-
-            if (tempSlotBooked != null && tempSlotBooked.length > 0) {
-                totalSlots = tempSlotBooked.length;
-                totalprice = totalSlots * price;
-                LOGGER.info("Total slots: " + totalSlots + ", Total price: " + totalprice);
-
-                if (requestId_raw == null) {
-                    // Trường hợp lưu mới (Insert)
-                    Request requests = new Request(menteeId, mentorId, title, totalSlots, totalprice, startDate, endDate, content, "Draft", courseId);
-                    LOGGER.info("Inserting new draft request: " + requests);
-                    int newRequestId = daorequest.insertRequestAndGetId(requests);
-                    if (newRequestId > 0) {
-                        for (String slot : tempSlotBooked) {
-                            LOGGER.info("Processing slot for draft: " + slot);
-                            String[] parts = slot.split("_");
-                            String slotDate = parts[0];
-                            int slotNumber = Integer.parseInt(parts[1]);
-                            Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
-                            if (slotId != null) {
-                                daoMenteeSL.bookSlot(menteeId, slotId, newRequestId, "Draft");
-                            } else {
-                                LOGGER.warning("Slot not available: " + slot);
-                            }
-                        }
-                        LOGGER.info("Saved draft request with ID: " + newRequestId);
-                        // Gửi dữ liệu về JSP
-                        request.setAttribute("requestId", newRequestId);
-                        request.setAttribute("title", title);
-                        request.setAttribute("content", content);
-                        request.setAttribute("startdate", startDate);
-                        request.setAttribute("enddate", endDate);
-                        request.setAttribute("totalSlots", totalSlots);
-                        request.setAttribute("totalprice", totalprice);
-                        request.setAttribute("tempSlotBooked", Arrays.asList(tempSlotBooked));
-                    } else {
-                        LOGGER.severe("Failed to save draft request");
-                        request.setAttribute("errorMessage", "Failed to save draft request.");
-                    }
-                } else {
-                    // Trường hợp cập nhật (Update)
-                    int requestId = Integer.parseInt(requestId_raw);
-                    Request existingRequest = daorequest.getRequestById(requestId);
-                    if (existingRequest != null) {
-                        existingRequest.setTitle(title);
-                        existingRequest.setContent(content);
-                        existingRequest.setStartDate(startDate);
-                        existingRequest.setEndDate(endDate);
-                        existingRequest.setTotalSlot(totalSlots);
-                        existingRequest.settotalprice(totalprice);
-                        existingRequest.setStatus("Draft");
-                        LOGGER.info("Updating draft request ID: " + requestId);
-                        if (daorequest.updateRequest(existingRequest)) {
-                            daoMenteeSL.deleteSlotsByRequestIdAndStatus(requestId, "Draft");
-                            for (String slot : tempSlotBooked) {
-                                LOGGER.info("Processing slot for draft: " + slot);
-                                String[] parts = slot.split("_");
-                                String slotDate = parts[0];
-                                int slotNumber = Integer.parseInt(parts[1]);
-                                Integer slotId = daoMenteeSL.getSlotId(slotDate, slotNumber);
-                                if (slotId != null) {
-                                    daoMenteeSL.bookSlot(menteeId, slotId, requestId, "Draft");
-                                }
-                            }
-                            LOGGER.info("Updated draft request ID: " + requestId);
-                            // Gửi dữ liệu về JSP
-                            request.setAttribute("requestId", requestId);
-                            request.setAttribute("title", title);
-                            request.setAttribute("content", content);
-                            request.setAttribute("startdate", startDate);
-                            request.setAttribute("enddate", endDate);
-                            request.setAttribute("totalSlots", totalSlots);
-                            request.setAttribute("totalprice", totalprice);
-                            request.setAttribute("tempSlotBooked", Arrays.asList(tempSlotBooked));
-                        } else {
-                            LOGGER.severe("Failed to update draft request: " + requestId);
-                            request.setAttribute("errorMessage", "Failed to update draft request.");
-                        }
-                    } else {
-                        LOGGER.warning("Request not found: " + requestId);
-                        request.setAttribute("errorMessage", "Không tìm thấy yêu cầu cần cập nhật.");
-                    }
-                }
-
-                // Forward về JSP để hiển thị dữ liệu đã lưu
-                LOGGER.info("Forwarding to booking JSP with saved data");
-                request.getRequestDispatcher("/path/to/your/booking.jsp").forward(request, response);
-                return;
-
-            } else {
-                LOGGER.warning("No slots selected for saving draft");
-                request.setAttribute("errorMessage", "Vui lòng chọn ít nhất một slot để lưu.");
-                request.getRequestDispatcher("/path/to/your/booking.jsp").forward(request, response);
-                return;
-            }
-        }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

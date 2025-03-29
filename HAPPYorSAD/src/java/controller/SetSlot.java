@@ -69,10 +69,7 @@ public class SetSlot extends HttpServlet {
                 handleAddSlot(request, response, session, nextScheduleId, mentorId);
                 return;
             } else if ("save".equals(action)) {
-                handleSaveSlots(request, response, session, nextScheduleId, mentorId);
-                return;
-            } else if ("addSchedule".equals(action)) {
-                handleAddSchedule(request, response, mentorId, nextMonth, nextYear);
+                handleSaveSlots(request, response, session, mentorId);
                 return;
             } else if ("deleteTemp".equals(action)) {
                 handleDeleteTempSlot(request, response, session, nextScheduleId, mentorId);
@@ -353,13 +350,40 @@ public class SetSlot extends HttpServlet {
         request.setAttribute("nextSlotsByDay", nextSlotsByDay);
     }
 
-    private void handleSaveSlots(HttpServletRequest request, HttpServletResponse response, HttpSession session, int scheduleId, Integer mentorId)
+    private void handleSaveSlots(HttpServletRequest request, HttpServletResponse response, HttpSession session, Integer mentorId)
             throws IOException {
         Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
         if (tempSlotsByDate != null && !tempSlotsByDate.isEmpty()) {
             for (Map.Entry<Date, List<TempSlot>> entry : tempSlotsByDate.entrySet()) {
                 Date slotDate = entry.getKey();
-                for (TempSlot slot : entry.getValue()) {
+                List<TempSlot> slots = entry.getValue();
+
+                // Extract month and year from slotDate
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(slotDate);
+                int slotMonth = cal.get(Calendar.MONTH) + 1; // +1 because Calendar.MONTH is 0-based
+                int slotYear = cal.get(Calendar.YEAR);
+
+                // Get or create scheduleId for this month/year
+                int scheduleId = daoSc.getScheduleIdByMonth(slotMonth, slotYear);
+                if (scheduleId == -1) {
+                    session.setAttribute("message", "No schedule exists for " + slotMonth + "/" + slotYear + ". Please contact admin.");
+                    response.sendRedirect("/HAPPYorSAD/SetSlot");
+                    return;
+                }
+
+                // Check if the mentor is assigned to this schedule, if not, assign it
+                if (!daoSc.isScheduleAssignedToMentor(mentorId, scheduleId)) {
+                    boolean assigned = daoSc.addSchedule(mentorId, scheduleId);
+                    if (!assigned) {
+                        session.setAttribute("message", "Failed to assign schedule for " + slotMonth + "/" + slotYear + ".");
+                        response.sendRedirect("/HAPPYorSAD/SetSlot");
+                        return;
+                    }
+                }
+
+                // Save the slots
+                for (TempSlot slot : slots) {
                     int slotNumber = slot.getSlotNumber();
                     int slotId = daoSlot.getSlotId(scheduleId, slotDate, slotNumber);
                     if (slotId > 0) {
@@ -373,36 +397,6 @@ public class SetSlot extends HttpServlet {
             session.setAttribute("message", "No slots to save.");
         }
         response.sendRedirect("/HAPPYorSAD/SetSlot");
-    }
-
-    private void handleAddSchedule(HttpServletRequest request, HttpServletResponse response, int mentorId, int selectedMonth, int selectedYear)
-            throws IOException {
-        HttpSession session = request.getSession(false);
-        int nextMonth = (selectedMonth % 12) + 1;
-        int nextYear = (selectedMonth == 12) ? selectedYear + 1 : selectedYear;
-        int nextScheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
-
-        while (nextScheduleId != -1 && daoSc.isScheduleAssignedToMentor(mentorId, nextScheduleId)) {
-            nextMonth = (nextMonth % 12) + 1;
-            nextYear = (nextMonth == 1) ? nextYear + 1 : nextYear;
-            nextScheduleId = daoSc.getScheduleIdByMonth(nextMonth, nextYear);
-        }
-
-        if (nextScheduleId == -1) {
-            session.setAttribute("message", "No existing schedule for " + nextMonth + "/" + nextYear + ". Please contact admin to create one.");
-            response.sendRedirect("/HAPPYorSAD/SetSlot");
-            return;
-        }
-
-        boolean success = daoSc.addSchedule(mentorId, nextScheduleId);
-        if (success) {
-            session.setAttribute("scheduleId", nextScheduleId);
-            session.setAttribute("message", "Schedule for " + nextMonth + "/" + nextYear + " added successfully!");
-            response.sendRedirect("/HAPPYorSAD/SetSlot?scheduleId=" + nextScheduleId);
-        } else {
-            session.setAttribute("message", "Failed to add schedule for " + nextMonth + "/" + nextYear + ".");
-            response.sendRedirect("/HAPPYorSAD/SetSlot");
-        }
     }
 
     private boolean hasRejectedSlots(int scheduleId, Integer mentorId) {

@@ -197,13 +197,8 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     <div class="row">
                         <div class="col-md-12">
                             <div class="breadcrumb-list">
-                                <h2 class="breadcrumb-title">Dashboard</h2>
-                                <nav aria-label="breadcrumb" class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Attendance</li>
-                                    </ol>
-                                </nav>
+                                <h2 class="breadcrumb-title">Dashboard Mentor</h2>
+                                
                             </div>
                         </div>
                     </div>
@@ -273,7 +268,6 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
 
                         <!-- Main Content -->
                         <div class="col-lg-9 col-xl-9">
-                            <div class="dashboard-header"><h3>Attendance</h3></div>
                             <div class="card custom-card">
                                 <div class="card-body">
                                     <div class="card-header"><h3>Your Attendance</h3></div>
