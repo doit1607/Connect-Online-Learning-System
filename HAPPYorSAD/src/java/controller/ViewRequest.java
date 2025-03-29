@@ -128,6 +128,7 @@ public class ViewRequest extends HttpServlet {
         DAOmentee_Slot daoMs = new DAOmentee_Slot();
 
         Request newrequest = dao.getRequestById(requestId);
+        dao.updateStatusRequesIsOverEndDate();
         if (newrequest == null) {
             System.out.println("Error: Request not found with ID " + requestId);
             session.setAttribute("error", "Request không tồn tại.");
