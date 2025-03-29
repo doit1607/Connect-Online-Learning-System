@@ -149,7 +149,7 @@
                                     <table class="table table-nowrap mb-0">
                                         <tr>
                                             <th>No.</th>
-                                            <th>ID</th>
+                                            
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>User Name</th>
@@ -162,7 +162,7 @@
                                         <c:forEach items="${mentees}" var="o" varStatus="status1">
                                             <tr>
                                                 <td><div class="STT text-center"> <h6>${status1.index + 1}</h6></div></td>
-                                                <td>${o.id}</td>
+                                                
                                                 <td> <img  class="img-fluid" alt="Img" src="${o.image}"></td>
                                                 <td>${o.name}</td>
                                                 <td>${o.userName}</td>
