@@ -72,9 +72,9 @@ public class ApproveCourse extends HttpServlet {
 
         // Lọc theo trạng thái trước
         if ("approved".equals(status)) {
-            courseList = dao.getApprovedCourses();
+            courseList = dao.getApprovedCourses(index);
         } else if ("rejected".equals(status)) {
-            courseList = dao.getRejectedCourses();
+            courseList = dao.getRejectedCourses(index);
         } else {
             courseList = dao.getPendingCourses(index);
             status = "pending"; // Gán mặc định để không bị lỗi khi hiển thị
