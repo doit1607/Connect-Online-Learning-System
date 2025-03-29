@@ -43,7 +43,7 @@ public class ShowMenteeRequest extends HttpServlet {
         DAOmentee_Slot daoMSL = new DAOmentee_Slot();
         HttpSession session = request.getSession();
         Integer menteeId = (Integer) session.getAttribute("menteeId");
-
+        dao.updateStatusRequesIsOverEndDate();
         LOGGER.log(Level.INFO, "Processing request for menteeId: {0}", menteeId);
 
         Mentee mentee = daom.getMenteeById(menteeId);
