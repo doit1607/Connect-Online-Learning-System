@@ -59,7 +59,7 @@ public class LoginUserController extends HttpServlet {
             session.setAttribute("userId", userId);
             int menteeId = daoRequest.getMenteeIdByUserId(userId);
             session.setAttribute("menteeId", menteeId);
-            int mentorId = daoRequest.getMentorIdByUserId(userId); // Lay ID cua Mentor tu bang User
+            int mentorId = daoRequest.getMentorIdByUserId(userId);
             session.setAttribute("mentorId", mentorId);
             session.setAttribute("userAvatar", avatar);
             if (userDAO.loginUser(username, password)) {
@@ -133,14 +133,78 @@ public class LoginUserController extends HttpServlet {
             String address = request.getParameter("addressRegis");
             String fullname = request.getParameter("fullnameRegis");
             String role = request.getParameter("roleRegis");
-            System.out.println(role);
+            String dobString = request.getParameter("dobRegis");
+
+            String specialCharPattern = "^[a-zA-Z0-9]*$";
+            String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+            String phonePattern = "^0[0-9]{9}$";
+            String passwordPattern = "^(?=.*[A-Z]).{8,}$";
             Date dateOfBirth = null;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             try {
-                String dob = request.getParameter("dobRegis");
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                dateOfBirth = formatter.parse(dob);
+                if (dobString != null && !dobString.isEmpty()) {
+                    dateOfBirth = formatter.parse(dobString);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            request.setAttribute("usernameRegis", username);
+            request.setAttribute("passwordRegis", password);
+            request.setAttribute("emailRegis", email);
+            request.setAttribute("phoneRegis", phone);
+            request.setAttribute("genderRegis", gender);
+            request.setAttribute("addressRegis", address);
+            request.setAttribute("fullnameRegis", fullname);
+            request.setAttribute("roleRegis", role);
+            if (dateOfBirth != null) {
+                request.setAttribute("dobRegis", formatter.format(dateOfBirth));
+            } else {
+                request.setAttribute("dobRegis", dobString);
+            }
+
+            if (!username.matches(specialCharPattern)) {
+                request.setAttribute("msgusername", "Username must not contain special characters!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+            if (!password.matches(passwordPattern)) {
+                request.setAttribute("msgpassword", "Password must have at least 1 uppercase letter and be at least 8 characters long!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+            if (!fullname.matches("^[a-zA-Z\\s]*$")) {
+                request.setAttribute("msgfullname", "Full name must not contain special characters!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+            if (address != null && !address.matches("^[a-zA-Z0-9\\s]*$")) {
+                request.setAttribute("msgaddress", "Address must not contain special characters!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+
+            if (username.equals(email)) {
+                request.setAttribute("msgusername", "Username cannot be the same as email!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+
+            if (!email.matches(emailPattern)) {
+                request.setAttribute("msgemail", "Invalid email format!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+
+            }
+
+            if (!phone.matches(phonePattern)) {
+                request.setAttribute("msgphone", "Phone number must be 10 digits starting with 0!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
+            }
+            if (userDAO.checkPhoneExist(phone)) {
+                request.setAttribute("msgphone", "Phone number already exists!");
+                request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
+                return;
             }
 
             if (!userDAO.checkUsernameExist(username)) {
@@ -161,16 +225,13 @@ public class LoginUserController extends HttpServlet {
                     em.sendVerificationEmail(email, username, verificationLink);
                     request.setAttribute("msgemail", "The email already exists but has not been activated. Please check your email to activate your account!");
                     request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
-
                 }
-
             } else {
                 request.setAttribute("msgusername", "Username already exists!");
                 request.getRequestDispatcher("/view/RegisterUser.jsp").forward(request, response);
             }
             return;
         }
-
         if ("activate".equals(service)) {
             String email = request.getParameter("email");
             if (!userDAO.isActivationExpired(email)) {
@@ -186,7 +247,6 @@ public class LoginUserController extends HttpServlet {
                 request.setAttribute("error", "Invalid or expired verification link!");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             }
-
         }
 
         if ("changepass".equals(service)) {
@@ -217,7 +277,7 @@ public class LoginUserController extends HttpServlet {
                 String newPassword = generateRandomPassword();
                 userDAO.updatePassword(username, newPassword);
                 EmailUtil em = new EmailUtil();
-                em.sendVerificationEmail(email, username, newPassword);
+                em.sendResetPassword(email, username, newPassword);
                 request.setAttribute("msg", "A new password has been sent to your email.");
                 request.getRequestDispatcher("/view/LoginUser.jsp").forward(request, response);
             } else {
