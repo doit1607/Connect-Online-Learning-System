@@ -101,7 +101,7 @@ public class UpdateCV extends HttpServlet {
             if ("true".equalsIgnoreCase(submitApproval)) {
                 dao1.updateCVStatus(username, "Pending");
                 session.setAttribute("successMessage", "CV submitted for approval successfully!");
-                response.sendRedirect("UpdateCV");
+                response.sendRedirect("ProfileServlet");
                 return;
             }
 
