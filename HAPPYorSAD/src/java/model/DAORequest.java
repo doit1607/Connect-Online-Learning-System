@@ -27,6 +27,16 @@ import static model.DBConnection.conn;
 public class DAORequest extends DBConnection {
 
 
+    
+    public void updateStatusRequesIsOverEndDate(){
+       String sql = "Update Request set status = 'Cancel' where end_date < CURRENT_TIMESTAMP AND status = 'Open' ";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateRequestTotalPrice(int requestId, double finalPrice) throws SQLException {
         String sql = "UPDATE request SET totalprice = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
