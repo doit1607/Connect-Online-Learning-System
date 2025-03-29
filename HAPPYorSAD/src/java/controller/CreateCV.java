@@ -94,7 +94,7 @@ public class CreateCV extends HttpServlet {
             session.setAttribute("cvStatus", cvSta);
 
             session.setAttribute("successMessage", "CV created successfully!");
-            request.getRequestDispatcher("/CRUD/CreateCV.jsp").forward(request, response);
+            request.getRequestDispatcher("/Dashboard/DashboardMentorProfile.jsp").forward(request, response);
             return;
         }
 
