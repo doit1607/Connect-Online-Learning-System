@@ -74,6 +74,9 @@ public class SetSlot extends HttpServlet {
             } else if ("addSchedule".equals(action)) {
                 handleAddSchedule(request, response, mentorId, nextMonth, nextYear);
                 return;
+            } else if ("deleteTemp".equals(action)) {
+                handleDeleteTempSlot(request, response, session, nextScheduleId, mentorId);
+                return;
             } else if ("resetRejectedSlots".equals(action)) {
                 handleResetRejectedSlots(request, response, session, nextScheduleId, mentorId);
                 return;
@@ -417,13 +420,40 @@ public class SetSlot extends HttpServlet {
             LOGGER.info("Slot ID: " + slot.getId() + ", Status: " + slot.getStatus());
         }
 
-       boolean hasRejected = slots.stream()
-            .filter(slot -> slot.getStatus() != null) // Kiểm tra null để tránh NullPointerException
-            .anyMatch(slot -> "Rejected".equalsIgnoreCase(slot.getStatus())); // Không phân biệt hoa thường
+        boolean hasRejected = slots.stream()
+                .filter(slot -> slot.getStatus() != null) // Kiểm tra null để tránh NullPointerException
+                .anyMatch(slot -> "Rejected".equalsIgnoreCase(slot.getStatus())); // Không phân biệt hoa thường
 
         LOGGER.info("Result: " + (hasRejected ? "There are rejected slots." : "No rejected slots found."));
 
         return hasRejected;
+    }
+
+    private void handleDeleteTempSlot(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+            int scheduleId, Integer mentorId) throws IOException {
+        String slotDateStr = request.getParameter("slot_date");
+        String slotNumberStr = request.getParameter("slotNumber");
+
+        if (slotDateStr != null && slotNumberStr != null) {
+            Date slotDate = Date.valueOf(slotDateStr);
+            int slotNumber = Integer.parseInt(slotNumberStr);
+
+            Map<Date, List<TempSlot>> tempSlotsByDate = (Map<Date, List<TempSlot>>) session.getAttribute("tempSlotsByDate");
+            if (tempSlotsByDate != null) {
+                List<TempSlot> tempSlots = tempSlotsByDate.get(slotDate);
+                if (tempSlots != null) {
+                    tempSlots.removeIf(slot -> slot.getSlotNumber() == slotNumber);
+                    if (tempSlots.isEmpty()) {
+                        tempSlotsByDate.remove(slotDate);
+                    } else {
+                        tempSlotsByDate.put(slotDate, tempSlots);
+                    }
+                    session.setAttribute("tempSlotsByDate", tempSlotsByDate);
+                    session.setAttribute("message", "Temporary slot removed successfully");
+                }
+            }
+        }
+        response.sendRedirect("/HAPPYorSAD/SetSlot");
     }
 
     @Override

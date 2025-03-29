@@ -134,6 +134,19 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             #rejectedSlotsModal .modal-footer .btn {
                 min-width: 100px;
             }
+            .remove-temp-slot {
+                margin-left: 5px;
+                font-size: 14px;
+                padding: 2px 8px;
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            .remove-temp-slot:hover {
+                background-color: #c82333;
+            }
         </style>
 
 
@@ -283,6 +296,10 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                         <c:if test="${temp.slotNumber == i}">
                                                                                             <span class="temp-slot-item temp-slot-highlight">
                                                                                                 Slot ${temp.slotNumber}
+                                                                                                <button type="button" class="remove-temp-slot" 
+                                                                                                        data-date="${day}" 
+                                                                                                        data-slot="${i}" 
+                                                                                                        data-schedule="${nextScheduleId}">-</button>
                                                                                             </span>
                                                                                             <c:set var="slotFound" value="true"/>
                                                                                         </c:if>
@@ -319,13 +336,13 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
             </div>
         </div>
 
-     
+
 
         <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Thông báo</h5>
+                        <h5 class="modal-title">Notification</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -377,7 +394,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     });
                 }, 3000);
 
-                // Message/Error Modal
+                // Show message or error modal
                 const message = "${message}";
                 const errorMessage = "${errorMessage}";
                 if (message || errorMessage) {
@@ -386,59 +403,181 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     setTimeout(() => messageModal.hide(), 3000);
                 }
 
-                // Rejected Slots Modal
+                // Show rejected slots modal if applicable
                 const hasRejectedSlots = ${hasRejectedSlots != null ? hasRejectedSlots : 'false'};
                 const scheduleId = "${nextScheduleId}";
-                console.log("hasRejectedSlots:", hasRejectedSlots); // Debug
-                console.log("scheduleId:", scheduleId); // Debug
+                console.log("hasRejectedSlots:", hasRejectedSlots);
+                console.log("scheduleId:", scheduleId);
                 if (hasRejectedSlots && scheduleId !== "-1") {
                     const rejectedModal = new bootstrap.Modal(document.getElementById("rejectedSlotsModal"));
                     rejectedModal.show();
                 }
 
-                // Add Slot Buttons
-                const addSlotButtons = document.querySelectorAll(".add-temp-slot");
-                addSlotButtons.forEach(button => {
-                    button.addEventListener("click", async () => {
-                        const date = button.dataset.date;
-                        const slotNumber = button.dataset.slot;
-                        const scheduleId = "${nextScheduleId}";
-                        if (!date || !slotNumber || !scheduleId || scheduleId === "-1") {
-                            alert("Invalid slot data or no schedule selected");
-                            return;
-                        }
-                        button.classList.add("loading");
-                        try {
-                            const response = await fetch("/HAPPYorSAD/SetSlot?action=add", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                                body: new URLSearchParams({scheduleId, slot_date: date, slotNumber})
-                            });
-                            if (response.ok) {
-                                updateSlotUI(date, slotNumber, button);
-                            } else {
-                                alert("Failed to add slot: " + await response.text());
-                            }
-                        } catch (error) {
-                            alert("Error adding slot: " + error.message);
-                        } finally {
-                            if (button)
-                                button.classList.remove("loading");
-                        }
-                    });
-                });
 
-                function updateSlotUI(date, slotNumber, button) {
-                    const slotCell = button.closest("td");
-                    if (slotCell) {
-                        slotCell.innerHTML = `
-                             <span class="temp-slot-item temp-slot-highlight">
-                                 Slot ${slotNumber}
-                             </span>`;
+                console.log("nextWeekDates from JSP:", "${nextWeekDates}");
+
+                const isValidSchedule = scheduleId && scheduleId !== "-1";
+                if (!isValidSchedule) {
+                    document.querySelectorAll(".add-temp-slot, .remove-temp-slot").forEach(button => {
+                        button.disabled = true;
+                        button.classList.add("disabled");
+                        button.title = "No valid schedule selected";
+                    });
+                }
+                // Function to attach event listeners to add buttons
+                function attachAddSlotListeners() {
+                    const addSlotButtons = document.querySelectorAll(".add-temp-slot");
+                    console.log("Attaching listeners to", addSlotButtons.length, "add buttons");
+                    addSlotButtons.forEach(button => {
+                        button.removeEventListener("click", handleAddSlot); // Prevent duplicates
+                        button.addEventListener("click", handleAddSlot);
+                        console.log("Listener attached to button with date:", button.dataset.date, "slot:", button.dataset.slot);
+                    });
+                }
+
+                // Function to attach event listeners to remove buttons
+                function attachRemoveSlotListeners() {
+                    const removeSlotButtons = document.querySelectorAll(".remove-temp-slot");
+                    removeSlotButtons.forEach(button => {
+                        button.removeEventListener("click", handleRemoveSlot);
+                        button.addEventListener("click", handleRemoveSlot);
+                    });
+                }
+
+                // Handle add slot
+                async function handleAddSlot() {
+                    const date = this.dataset.date;
+                    const slotNumber = this.dataset.slot;
+                    const scheduleId = "${nextScheduleId}";
+                    console.log("Add slot - date:", date, "slotNumber:", slotNumber, "scheduleId:", scheduleId);
+                    if (!date) {
+                        alert("Invalid date for this slot");
+                        return;
+                    }
+                    if (!slotNumber) {
+                        alert("Invalid slot number");
+                        return;
+                    }
+                    if (!scheduleId || scheduleId === "-1") {
+                        alert("No valid schedule selected. Please select or add a schedule.");
+                        return;
+                    }
+                    this.classList.add("loading");
+                    try {
+                        const response = await fetch("/HAPPYorSAD/SetSlot?action=add", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                            body: new URLSearchParams({scheduleId, slot_date: date, slotNumber})
+                        });
+                        if (response.ok) {
+                            updateSlotUI(date, slotNumber, this);
+                        } else {
+                            alert("Failed to add slot: " + await response.text());
+                        }
+                    } catch (error) {
+                        alert("Error adding slot: " + error.message);
+                    } finally {
+                        this.classList.remove("loading");
                     }
                 }
 
-                // Add Schedule
+                // Handle remove slot
+                async function handleRemoveSlot() {
+                    const date = this.dataset.date;
+                    const slotNumber = this.dataset.slot;
+                    const scheduleId = "${nextScheduleId}";
+                    if (!date) {
+                        alert("Invalid date for this slot");
+                        return;
+                    }
+                    if (!slotNumber) {
+                        alert("Invalid slot number");
+                        return;
+                    }
+                    if (!scheduleId || scheduleId === "-1") {
+                        alert("No valid schedule selected. Please select or add a schedule.");
+                        return;
+                    }
+                    this.classList.add("loading");
+                    try {
+                        const response = await fetch("/HAPPYorSAD/SetSlot?action=deleteTemp", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                            body: new URLSearchParams({scheduleId, slot_date: date, slotNumber})
+                        });
+                        if (response.ok) {
+                            updateRemoveSlotUI(date, slotNumber, this);
+                        } else {
+                            alert("Failed to remove slot: " + await response.text());
+                        }
+                    } catch (error) {
+                        alert("Error removing slot: " + error.message);
+                    } finally {
+                        this.classList.remove("loading");
+                    }
+                }
+
+                function updateSlotUI(date, slotNumber, button) {
+                    console.log("updateSlotUI called - date:", date, "slotNumber:", slotNumber, "button:", button);
+                    const slotCell = button.closest("td");
+                    console.log("slotCell found:", slotCell ? "Yes" : "No", "slotCell:", slotCell);
+                    if (slotCell) {
+                        var htmlContent = '<span class="temp-slot-item temp-slot-highlight">';
+                        htmlContent += 'Slot ' + slotNumber;
+                        htmlContent += '<button type="button" class="remove-temp-slot" ';
+                        htmlContent += 'data-date="' + date + '" ';
+                        htmlContent += 'data-slot="' + slotNumber + '" ';
+                        htmlContent += 'data-schedule="' + "${nextScheduleId}" + '">-</button>';
+                        htmlContent += '</span>';
+
+                        console.log("Setting slotCell HTML - scheduleId:", "${nextScheduleId}", "HTML:", htmlContent);
+                        slotCell.innerHTML = htmlContent;
+                        console.log("slotCell updated, attaching remove listeners...");
+                        attachRemoveSlotListeners();
+                        console.log("Remove listeners attached");
+                    } else {
+                        console.warn("No slotCell found for button:", button);
+                    }
+                }
+
+                // Update UI after removing a slot (reverts to empty with add button)
+                function updateRemoveSlotUI(date, slotNumber, button) {
+                    console.log("updateRemoveSlotUI called - date:", date, "slotNumber:", slotNumber, "button:", button);
+                    const slotCell = button.closest("td");
+                    console.log("slotCell found:", slotCell ? "Yes" : "No", "slotCell:", slotCell);
+                    if (slotCell) {
+                        // Clear existing content
+                        slotCell.innerHTML = "";
+
+                        // Create span for "Empty"
+                        const span = document.createElement("span");
+                        span.className = "text-muted";
+                        span.textContent = "Empty";
+
+                        // Create new add button
+                        const addButton = document.createElement("button");
+                        addButton.type = "button";
+                        addButton.className = "btn btn-sm btn-success add-temp-slot";
+                        addButton.textContent = "+";
+                        addButton.setAttribute("data-date", date);
+                        addButton.setAttribute("data-slot", slotNumber);
+                        addButton.setAttribute("data-schedule", "${nextScheduleId}");
+
+                        // Append elements
+                        slotCell.appendChild(span);
+                        slotCell.appendChild(addButton);
+
+                        console.log("New add button created - date:", date, "slot:", slotNumber, "schedule:", "${nextScheduleId}");
+
+                        // Re-attach listeners to all add buttons, ensuring the new one is included
+                        attachAddSlotListeners();
+                        console.log("Add listeners re-attached");
+                    } else {
+                        console.warn("No slotCell found for button:", button);
+                    }
+                }
+
+                // Handle "Add Schedule" button
                 const addScheduleBtn = document.getElementById("addSchedule");
                 if (addScheduleBtn) {
                     addScheduleBtn.addEventListener("click", (e) => {
@@ -448,7 +587,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                     });
                 }
 
-                // Disable Previous Button
+                // Disable Previous button if current month/year is displayed
                 const currentMonth = <%= currentMonth %>;
                 const currentYear = <%= currentYear %>;
                 const displayedMonth = "${nextMonth}";
@@ -460,6 +599,12 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                 if ((displayedYear == currentYear && displayedMonthNum <= currentMonth) || (displayedYear < currentYear)) {
                     prevButton.disabled = true;
                     prevButton.classList.add("disabled");
+                }
+
+                // Initial attachment of event listeners
+                if (isValidSchedule) {
+                    attachAddSlotListeners();
+                    attachRemoveSlotListeners();
                 }
             });
         </script>
