@@ -239,10 +239,10 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                             </div>
                         </div>  
                         <div class="col-lg-9 col-xl-9">
-                            <div class="dashboard-header"><h3>General Availability</h3></div>
+                            <div class="dashboard-header"><h3>Set Your Schedule</h3></div>
                             <div class="card custom-card">
                                 <div class="card-body">
-                                    <div class="card-header"><h3>Select Available Slots</h3></div>
+                                    <div class="card-header"><h3>Select Slots</h3></div>
                                     <div class="row align-items-center mb-3">
                                         <div class="col-12 col-sm-4 col-md-6">
                                             <h4 class="mb-1">${nextMonth} ${nextYear}</h4>
@@ -305,7 +305,7 @@ int currentYear = cal.get(java.util.Calendar.YEAR);
                                                                                         </c:if>
                                                                                     </c:forEach>
                                                                                     <c:if test="${not slotFound}">
-                                                                                        <span class="text-muted">Empty</span>
+                                                                                        <span class="text-muted">Non set</span>
                                                                                         <button type="button" class="btn btn-sm btn-success add-temp-slot" 
                                                                                                 data-date="${day}" data-slot="${i}" data-schedule="${nextScheduleId}">+</button>
                                                                                     </c:if>

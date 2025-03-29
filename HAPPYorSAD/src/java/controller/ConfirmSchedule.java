@@ -68,21 +68,17 @@ public class ConfirmSchedule extends HttpServlet {
                 if (mentorId > 0) {
                     String mentorName = daoMentor.getMentorNameById(mentorId);
 
-                    if (month == null) {
-                        // Hiển thị danh sách tháng dựa trên trạng thái
-                        if (status == null || status.isEmpty() || status.equals("nonAvailable")) {
-                            List<Integer> monthsWithPendingSchedules = daoMs.getMonthsWithPendingSchedules(mentorId);
-                            request.setAttribute("monthsWithPendingSchedules", monthsWithPendingSchedules);
-                            request.setAttribute("selectedMentorName", mentorName);
-                            request.setAttribute("selectedMentorId", mentorId);
-                        } else if (status.equals("Available")) {
-                            List<Integer> monthsWithAcceptedSchedules = daoMs.getMonthsWithAcceptedSchedules(mentorId);
-                            request.setAttribute("monthsWithAcceptedSchedules", monthsWithAcceptedSchedules);
-                            request.setAttribute("selectedMentorName", mentorName);
-                            request.setAttribute("selectedMentorId", mentorId);
-                        }
+                    if (month == null && (status == null || status.isEmpty())) {
+                        List<Integer> monthsWithPendingSchedules = daoMs.getMonthsWithPendingSchedules(mentorId);
+                        request.setAttribute("monthsWithPendingSchedules", monthsWithPendingSchedules);
+                        request.setAttribute("selectedMentorName", mentorName);
+                        request.setAttribute("selectedMentorId", mentorId);
+                    } else if (month == null && status != null && !status.isEmpty()) {
+                        List<Integer> monthsWithAcceptedSchedules = daoMs.getMonthsWithAcceptedSchedules(mentorId);
+                        request.setAttribute("monthsWithAcceptedSchedules", monthsWithAcceptedSchedules);
+                        request.setAttribute("selectedMentorName", mentorName);
+                        request.setAttribute("selectedMentorId", mentorId);
                     } else {
-                        // Hiển thị lịch trình chi tiết trong tháng với filter status
                         List<Mentor_Slot> allSlots = daoMs.getFilteredSlots(month, status, mentorSearch);
                         if (!allSlots.isEmpty()) {
                             if ("dateAsc".equals(sort)) {
@@ -116,20 +112,40 @@ public class ConfirmSchedule extends HttpServlet {
                 } else {
                     LOGGER.info("No mentor found for search: " + mentorSearch);
                 }
-            } else {
-                List<Mentor> mentorsWithPendingSchedules = daoMentor.getMentorsWithPendingSchedules();
-                request.setAttribute("mentorsWithPendingSchedules", mentorsWithPendingSchedules);
-                LOGGER.info("Retrieved " + mentorsWithPendingSchedules.size() + " mentors with pending schedules");
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error filtering mentors: " + e.getMessage(), e);
-            request.setAttribute("message", "Error occurred while filtering mentors.");
+            } else if (month != null && (status == null || status.isEmpty())) {
+                List<Mentor> mentorsWithSchedulesInMonth = daoMentor.getMentorsWithSchedulesInMonth(month);
+                request.setAttribute("mentorsWithSchedulesInMonth", mentorsWithSchedulesInMonth);
+                LOGGER.info("Retrieved " + mentorsWithSchedulesInMonth.size() + " mentors with schedules in month " + month);
+            } else if (status != null && !status.isEmpty() && month == null) {
+                List<Mentor> mentorsWithSchedulesByStatus = daoMentor.getMentorsWithSchedulesByStatus(status);
+                request.setAttribute("mentorsWithSchedulesByStatus", mentorsWithSchedulesByStatus);
+                LOGGER.info("Retrieved " + mentorsWithSchedulesByStatus.size() + " mentors with schedules for status " + status);
+            } else if ((mentorSearch == null || mentorSearch.isEmpty()) && month == null && (status == null || status.isEmpty())) {
+                List<Mentor> mentorsWithSchedulesALL = daoMentor.getMentorsWithSchedulesALL();
+                request.setAttribute("mentorsWithSchedulesALL", mentorsWithSchedulesALL);
+                LOGGER.info("Retrieved " + mentorsWithSchedulesALL.size() + " mentors with schedules (no filters applied)");
+            
+        }else {
+            List<Mentor> mentorsWithPendingSchedules = daoMentor.getMentorsWithPendingSchedules();
+            request.setAttribute("mentorsWithPendingSchedules", mentorsWithPendingSchedules);
+            LOGGER.info("Retrieved " + mentorsWithPendingSchedules.size() + " mentors with pending schedules");
         }
+    }
+    catch (Exception e
 
-        LOGGER.info("Forwarding to ScheduleManager.jsp");
-        request.getRequestDispatcher("view/ScheduleManager.jsp").forward(request, response);
+    
+        ) {
+        LOGGER.log(Level.SEVERE, "Error filtering mentors: " + e.getMessage(), e);
+        request.setAttribute("message", "Error occurred while filtering mentors.");
     }
 
+    LOGGER.info (
+
+    "Forwarding to ScheduleManager.jsp");
+    request.getRequestDispatcher (
+
+"view/ScheduleManager.jsp").forward(request, response);
+}
     private void handleAcceptAllSlots(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String mentorIdStr = request.getParameter("mentorId");
@@ -207,21 +223,21 @@ public class ConfirmSchedule extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         LOGGER.info("Received GET request");
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         LOGGER.info("Received POST request");
         processRequest(request, response);
     }
 
     @Override
-    public String getServletInfo() {
+public String getServletInfo() {
         return "Servlet for Manager to Confirm Mentor Schedules";
     }
 }

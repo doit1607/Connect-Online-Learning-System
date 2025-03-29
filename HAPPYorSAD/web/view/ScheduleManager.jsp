@@ -3,6 +3,29 @@
 <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
 <c:set var="totalItems" value="${mentorsWithPendingSchedules != null ? mentorsWithPendingSchedules.size() : (monthsWithPendingSchedules != null ? monthsWithPendingSchedules.size() : (monthsWithAcceptedSchedules != null ? monthsWithAcceptedSchedules.size() : 0))}" />
 <c:set var="totalPages" value="${totalItems > 0 ? ((totalItems + itemsPerPage - 1) / itemsPerPage) : 1}" />
+<c:choose>
+    <c:when test="${not empty mentorsWithSchedulesInMonth}">
+        <c:set var="totalItems" value="${mentorsWithSchedulesInMonth.size()}" />
+    </c:when>
+    <c:when test="${not empty mentorsWithSchedulesByStatus}">
+        <c:set var="totalItems" value="${mentorsWithSchedulesByStatus.size()}" />
+    </c:when>
+    <c:when test="${not empty mentorsWithPendingSchedules}">
+        <c:set var="totalItems" value="${mentorsWithPendingSchedules.size()}" />
+    </c:when>
+    <c:when test="${not empty monthsWithPendingSchedules}">
+        <c:set var="totalItems" value="${monthsWithPendingSchedules.size()}" />
+    </c:when>
+    <c:when test="${not empty monthsWithAcceptedSchedules}">
+        <c:set var="totalItems" value="${monthsWithAcceptedSchedules.size()}" />
+    </c:when>
+    <c:when test="${not empty mentorsWithSchedulesALL}">
+        <c:set var="totalItems" value="${mentorsWithSchedulesALL.size()}" />
+    </c:when>
+    <c:otherwise>
+        <c:set var="totalItems" value="0" />
+    </c:otherwise>
+</c:choose>
 <!DOCTYPE html>
 <html>
     <head>
@@ -181,23 +204,31 @@
     </head>
 
     <body>
-        <%@include file="../sourcesHome/headerManager.jsp" %>
+        <!-- Main Wrapper -->
         <div class="main-wrapper">
+            <!-- Header -->
+            <%@include file="/../sourcesHome/headerManager.jsp" %>
+            <!-- /Header -->
+            <!-- Breadcrumb -->
             <div class="breadcrumb-bar breadcrumb-bar-info">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 col-12">
                             <div class="breadcrumb-list">
-                                <h2 class="breadcrumb-title">Manager - Schedule Confirmation</h2>
+                                <h2 class="breadcrumb-title">Manager</h2>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- /Breadcrumb -->
 
             <div class="page-content">
-                <div class="container-custom">
+                <div class="container">
                     <div class="row">
+
+                        <!-- sidebar -->
                         <div class="col-xl-3 col-lg-3 theiaStickySidebar">
                             <div class="settings-widget account-settings">
                                 <div class="settings-menu">
@@ -219,7 +250,7 @@
                                         </li>
                                         <li class="nav-item">
                                             <a href="ConfirmSchedule" class="nav-link">
-                                                <i class="bx bxs-graduation"></i>Manage Scheudle
+                                                <i class="bx bxs-graduation"></i>Manage Schedule
                                             </a>
                                         </li>
 
@@ -248,7 +279,6 @@
                         </div>
 
                         <div class="col-xl-9 col-lg-9">
-                            <!-- Thông báo nh?c nh? v? slot pending -->
                             <c:if test="${not empty mentorsWithPendingSchedules and empty param.mentorSearch}">
                                 <div class="message text-info">
                                     <strong>Reminder:</strong> There are ${mentorsWithPendingSchedules.size()} mentors with pending schedules.
@@ -278,7 +308,6 @@
                                                 <option value="">All</option>
                                                 <option value="nonAvailable" ${param.status == 'nonAvailable' ? 'selected' : ''}>Not confirmed yet</option>
                                                 <option value="Available" ${param.status == 'Available' ? 'selected' : ''}>Confirmed</option>
-                                                <option value="Rejected" ${param.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
@@ -287,6 +316,120 @@
                                     </div>
                                 </form>
                             </div>
+                            <c:if test="${not empty mentorsWithSchedulesInMonth and empty param.mentorSearch and not empty param.month}">
+                                <h3>Mentors with Schedules in Month ${param.month}</h3>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mentor ID</th>
+                                            <th>Mentor Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="mentor" items="${mentorsWithSchedulesInMonth}" 
+                                                   begin="${(currentPage - 1) * itemsPerPage}" 
+                                                   end="${currentPage * itemsPerPage - 1}">
+                                            <tr>
+                                                <td>${mentor.mentorId}</td>
+                                                <td>${mentor.name}</td>
+                                                <td><a href="ConfirmSchedule?mentorSearch=${mentor.mentorId}&month=${param.month}" class="btn-custom btn-accept">View Schedule</a></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+
+                                <!-- Pagination Controls -->
+                                <div class="pagination">
+                                    <c:if test="${currentPage > 1}">
+                                        <a href="ConfirmSchedule?month=${param.month}&page=${currentPage - 1}">« Previous</a>
+                                    </c:if>
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <a href="ConfirmSchedule?month=${param.month}&page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                    </c:forEach>
+                                    <c:if test="${currentPage < totalPages}">
+                                        <a href="ConfirmSchedule?month=${param.month}&page=${currentPage + 1}">Next »</a>
+                                    </c:if>
+                                </div>
+                            </c:if>
+
+                            <c:if test="${not empty mentorsWithSchedulesByStatus and empty param.mentorSearch and empty param.month and not empty param.status}">
+                                <h3>Mentors with Schedules - Status: 
+                                    <c:choose>
+                                        <c:when test="${param.status == 'nonAvailable'}">Not Confirmed Yet</c:when>
+                                        <c:when test="${param.status == 'Available'}">Confirmed</c:when>
+                                        <c:otherwise>${param.status}</c:otherwise>
+                                    </c:choose>
+                                </h3>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mentor ID</th>
+                                            <th>Mentor Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="mentor" items="${mentorsWithSchedulesByStatus}" 
+                                                   begin="${(currentPage - 1) * itemsPerPage}" 
+                                                   end="${currentPage * itemsPerPage - 1}">
+                                            <tr>
+                                                <td>${mentor.mentorId}</td>
+                                                <td>${mentor.name}</td>
+                                                <td><a href="ConfirmSchedule?mentorSearch=${mentor.mentorId}&status=${param.status}" class="btn-custom btn-accept">View Schedule</a></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <div class="pagination">
+                                    <c:if test="${currentPage > 1}">
+                                        <a href="ConfirmSchedule?status=${param.status}&page=${currentPage - 1}">« Previous</a>
+                                    </c:if>
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <a href="ConfirmSchedule?status=${param.status}&page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                    </c:forEach>
+                                    <c:if test="${currentPage < totalPages}">
+                                        <a href="ConfirmSchedule?status=${param.status}&page=${currentPage + 1}">Next »</a>
+                                    </c:if>
+                                </div>
+                            </c:if>
+
+
+                            <c:if test="${not empty mentorsWithSchedulesALL and empty param.mentorSearch and empty param.month and empty param.status}">
+                                <h3>All Mentors</h3>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mentor ID</th>
+                                            <th>Mentor Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="mentor" items="${mentorsWithSchedulesALL}" 
+                                                   begin="${(currentPage - 1) * itemsPerPage}" 
+                                                   end="${currentPage * itemsPerPage - 1}">
+                                            <tr>
+                                                <td>${mentor.mentorId}</td>
+                                                <td>${mentor.name}</td>
+                                                <td><a href="ConfirmSchedule?mentorSearch=${mentor.mentorId}" class="btn-custom btn-accept">View Schedule</a></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <div class="pagination">
+                                    <c:if test="${currentPage > 1}">
+                                        <a href="ConfirmSchedule?page=${currentPage - 1}">« Previous</a>
+                                    </c:if>
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <a href="ConfirmSchedule?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                    </c:forEach>
+                                    <c:if test="${currentPage < totalPages}">
+                                        <a href="ConfirmSchedule?page=${currentPage + 1}">Next »</a>
+                                    </c:if>
+                                </div>
+                            </c:if>
+
 
                             <!-- Danh sách mentor có l?ch trình pending -->
                             <%-- For Mentors with Pending Schedules --%>
@@ -472,7 +615,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>	
         </div>
 
         <script src="/HAPPYorSAD/assets/js/jquery-3.7.1.min.js"></script>

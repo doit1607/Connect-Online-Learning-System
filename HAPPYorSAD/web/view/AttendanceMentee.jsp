@@ -399,8 +399,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>${notification}</p>
-                                        <p><strong>Request đã hoàn thành hết các Slot.</strong> Nhấn để chuyển sang trang view request để xác nhận hoàn thành.</p>
-                                    </div>
+                                        <p><strong>The request has completed all Slots.</strong> Click to go to the view request page to confirm completion.</p>                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <a href="/HAPPYorSAD/ShowMenteeRequest?requestId=${requestId}" class="btn btn-primary">Confirm Completion</a>

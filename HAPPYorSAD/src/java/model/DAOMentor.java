@@ -20,6 +20,65 @@ public class DAOMentor extends DBConnection {
 
     public static DAOuser userDao = new DAOuser();
 
+    public List<Mentor> getMentorsWithSchedulesByStatus(String status) throws SQLException {
+        List<Mentor> mentors = new ArrayList<>();
+        String sql = "				 SELECT DISTINCT m.id, m.name \n"
+                + "                 FROM Mentor m \n"
+                + "                 JOIN Mentor_Slot ms ON m.id = ms.mentor_id \n"
+                + "                 WHERE ms.status = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentors.add(mentor);
+            }
+
+        }
+        return mentors;
+    }
+    
+     public List<Mentor> getMentorsWithSchedulesALL() throws SQLException {
+        List<Mentor> mentors = new ArrayList<>();
+        String sql = "				 SELECT DISTINCT m.id, m.name \n"
+                + "                 FROM Mentor m \n"
+                + "                 JOIN Mentor_Slot ms ON m.id = ms.mentor_id \n";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentors.add(mentor);
+            }
+
+        }
+        return mentors;
+    }
+     
+
+    public List<Mentor> getMentorsWithSchedulesInMonth(int month) throws SQLException {
+        List<Mentor> mentors = new ArrayList<>();
+        String sql = "SELECT DISTINCT m.id, m.name\n"
+                + "                 FROM Mentor m \n"
+                + "                 JOIN Mentor_Slot ms ON m.id = ms.mentor_id \n"
+                + "				 join Slot sl on sl.id = ms.slot_id\n"
+                + "                 WHERE MONTH(sl.slot_date) = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, month);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("id"));
+                mentor.setName(rs.getString("name"));
+                mentors.add(mentor);
+            }
+        }
+        return mentors;
+    }
+
     public static Integer getMentorIdByUserId(int userId) {
         String sql = "SELECT id FROM Mentor WHERE user_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -714,26 +773,27 @@ public class DAOMentor extends DBConnection {
             }
         }
     }
+
     public List<MentorDTO> getTop10Mentors(int type) {
         List<MentorDTO> mentors = new ArrayList<>();
         String sql = "";
 
         if (type == 1) {
             // Doanh thu
-            sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n" +
-"           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n" +
-"    FROM Mentor m\n" +
-"    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n" +
-"    GROUP BY m.id, m.name, m.email, m.image, m.rating\n" +
-"	ORDER BY total_revenue DESC;";
+            sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n"
+                    + "           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n"
+                    + "    FROM Mentor m\n"
+                    + "    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n"
+                    + "    GROUP BY m.id, m.name, m.email, m.image, m.rating\n"
+                    + "	ORDER BY total_revenue DESC;";
         } else if (type == 2) {
             // Rating
-            sql = sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n" +
-"           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n" +
-"    FROM Mentor m\n" +
-"    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n" +
-"    GROUP BY m.id, m.name, m.email, m.image, m.rating\n" +
-"	ORDER BY m.rating DESC;";
+            sql = sql = " SELECT TOP(10) m.id, m.image, m.name, m.email, m.rating, \n"
+                    + "           COALESCE(SUM(r.totalPrice), 0) AS total_revenue\n"
+                    + "    FROM Mentor m\n"
+                    + "    LEFT JOIN Request r ON m.id = r.mentor_id AND r.status = 'Closed'\n"
+                    + "    GROUP BY m.id, m.name, m.email, m.image, m.rating\n"
+                    + "	ORDER BY m.rating DESC;";
         } else {
             return mentors; // Nếu type không hợp lệ
         }
@@ -759,8 +819,9 @@ public class DAOMentor extends DBConnection {
 
         return mentors;
     }
+
     public List<Map<String, Object>> getMentorMenteeStats() {
-    String sql = """
+        String sql = """
         WITH Last12Months AS (
             SELECT FORMAT(DATEADD(MONTH, -n, GETDATE()), 'yyyy-MM') AS month
             FROM (SELECT TOP 12 ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n FROM master.dbo.spt_values) AS numbers
@@ -780,25 +841,23 @@ public class DAOMentor extends DBConnection {
         ORDER BY l.month;
     """;
 
-    List<Map<String, Object>> stats = new ArrayList<>();
-    
-    try (PreparedStatement st = conn.prepareStatement(sql);
-         ResultSet rs = st.executeQuery()) {
-        
-        while (rs.next()) {
-            Map<String, Object> row = new HashMap<>();
-            row.put("month", rs.getString("month"));
-            row.put("mentor_count", rs.getInt("mentor_count"));
-            row.put("mentee_count", rs.getInt("mentee_count"));
-            stats.add(row);
+        List<Map<String, Object>> stats = new ArrayList<>();
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("month", rs.getString("month"));
+                row.put("mentor_count", rs.getInt("mentor_count"));
+                row.put("mentee_count", rs.getInt("mentee_count"));
+                stats.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return stats;
     }
-    
-    return stats;
-}
-    
 
     public static void main(String[] args) {
         try {
@@ -832,11 +891,15 @@ public class DAOMentor extends DBConnection {
         }
     }
 
-    private static void printMentors(List<Mentor> mentors) {
+    private static void printMentors(List<Mentor> mentors) throws SQLException {
         if (mentors.isEmpty()) {
             System.out.println("No mentors found.");
             return;
         }
+        
+        DAOMentor dao = new DAOMentor();
+        List<Mentor> l = dao.getMentorsWithSchedulesALL();
+        System.out.println(l);
         System.out.println("Found " + mentors.size() + " mentors:");
         for (Mentor mentor : mentors) {
             System.out.println("ID: " + mentor.getMentorId() + ", Name: " + mentor.getName());
