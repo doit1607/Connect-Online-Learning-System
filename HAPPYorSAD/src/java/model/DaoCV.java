@@ -166,14 +166,17 @@ public class DaoCV extends DBConnection {
 
     }
 
-    public List<CV> getCVrejected() {
+    public List<CV> getCVrejected(int index) {
         List<CV> listCV = new ArrayList<>();
         String sql = "select c.username, c.profession, c.professionIntro, c.courses\n"
                 + ", c.achievementDescription, c.serviceDescription, c.created_at, n.message from CV c\n"
                 + "join Users u on c.username = u.username\n"
-                + "join NotificationForCV n on u.username = n.username where n.message like '%CV has been rejected.%'";
+                + "join NotificationForCV n on u.username = n.username where n.message like '%CV has been rejected.%'\n"
+                + "order by created_at\n"
+                + "offset ? rows fetch next 3 rows only";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, (index - 1) * 3);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 CV cv = new CV();
